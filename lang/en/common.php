@@ -1,0 +1,27 @@
+<?php
+
+return array (
+  'actions' => 'Actions',
+  'active' => 'active',
+  'already_have_account' => 'already have an account',
+  'buyer_registration' => 'Buyer registration',
+  'cancel' => 'Cancelled',
+  'confirm_delete' => 'Confirmed Delete',
+  'confirm_password' => 'Confirm Password',
+  'create' => 'Created',
+  'delete' => 'Deleted',
+  'edit' => 'Edit is',
+  'email' => 'by email',
+  'filter' => 'Filter is',
+  'inactive' => 'inactive',
+  'no' => 'No is',
+  'not_available' => 'not available',
+  'not_set' => 'not set',
+  'password' => 'Password is',
+  'register_button' => 'Registration button',
+  'required' => 'Required',
+  'seller_registration' => 'Seller registration',
+  'status' => 'Status is',
+  'update' => 'Updated',
+  'yes' => 'Yes is',
+);

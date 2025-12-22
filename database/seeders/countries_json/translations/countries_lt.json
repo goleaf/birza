@@ -1,0 +1,1002 @@
+[
+  {
+    "alpha2": "AD",
+    "region": "Andora"
+  },
+  {
+    "alpha2": "AE",
+    "region": "Jungtiniai Arabų Emyratai"
+  },
+  {
+    "alpha2": "AF",
+    "region": "Afganistanas"
+  },
+  {
+    "alpha2": "AG",
+    "region": "Antigva ir Barbuda"
+  },
+  {
+    "alpha2": "AI",
+    "region": "Angilija"
+  },
+  {
+    "alpha2": "AL",
+    "region": "Albanija"
+  },
+  {
+    "alpha2": "AM",
+    "region": "Armėnija"
+  },
+  {
+    "alpha2": "AO",
+    "region": "Angola"
+  },
+  {
+    "alpha2": "AQ",
+    "region": "Antarktida"
+  },
+  {
+    "alpha2": "AR",
+    "region": "Argentina"
+  },
+  {
+    "alpha2": "AS",
+    "region": "Amerikos Samoa"
+  },
+  {
+    "alpha2": "AT",
+    "region": "Austrija"
+  },
+  {
+    "alpha2": "AU",
+    "region": "Australija"
+  },
+  {
+    "alpha2": "AW",
+    "region": "Aruba"
+  },
+  {
+    "alpha2": "AX",
+    "region": "Alandų Salos"
+  },
+  {
+    "alpha2": "AZ",
+    "region": "Azerbaidžanas"
+  },
+  {
+    "alpha2": "BA",
+    "region": "Bosnija ir Hercegovina"
+  },
+  {
+    "alpha2": "BB",
+    "region": "Barbadosas"
+  },
+  {
+    "alpha2": "BD",
+    "region": "Bangladešas"
+  },
+  {
+    "alpha2": "BE",
+    "region": "Belgija"
+  },
+  {
+    "alpha2": "BF",
+    "region": "Burkina Fasas"
+  },
+  {
+    "alpha2": "BG",
+    "region": "Bulgarija"
+  },
+  {
+    "alpha2": "BH",
+    "region": "Bahreinas"
+  },
+  {
+    "alpha2": "BI",
+    "region": "Burundis"
+  },
+  {
+    "alpha2": "BJ",
+    "region": "Beninas"
+  },
+  {
+    "alpha2": "BL",
+    "region": "Sen Bartelemi"
+  },
+  {
+    "alpha2": "BM",
+    "region": "Bermuda"
+  },
+  {
+    "alpha2": "BN",
+    "region": "Brunėjus"
+  },
+  {
+    "alpha2": "BO",
+    "region": "Bolivija"
+  },
+  {
+    "alpha2": "BQ",
+    "region": "Karibų Nyderlandai"
+  },
+  {
+    "alpha2": "BR",
+    "region": "Brazilija"
+  },
+  {
+    "alpha2": "BS",
+    "region": "Bahamos"
+  },
+  {
+    "alpha2": "BT",
+    "region": "Butanas"
+  },
+  {
+    "alpha2": "BV",
+    "region": "Buvė Sala"
+  },
+  {
+    "alpha2": "BW",
+    "region": "Botsvana"
+  },
+  {
+    "alpha2": "BY",
+    "region": "Baltarusija"
+  },
+  {
+    "alpha2": "BZ",
+    "region": "Belizas"
+  },
+  {
+    "alpha2": "CA",
+    "region": "Kanada"
+  },
+  {
+    "alpha2": "CC",
+    "region": "Kokosų (Kilingo) Salos"
+  },
+  {
+    "alpha2": "CD",
+    "region": "Kongas-Kinšasa"
+  },
+  {
+    "alpha2": "CF",
+    "region": "Centrinės Afrikos Respublika"
+  },
+  {
+    "alpha2": "CG",
+    "region": "Kongas-Brazavilis"
+  },
+  {
+    "alpha2": "CH",
+    "region": "Šveicarija"
+  },
+  {
+    "alpha2": "CI",
+    "region": "Dramblio Kaulo Krantas"
+  },
+  {
+    "alpha2": "CK",
+    "region": "Kuko Salos"
+  },
+  {
+    "alpha2": "CL",
+    "region": "Čilė"
+  },
+  {
+    "alpha2": "CM",
+    "region": "Kamerūnas"
+  },
+  {
+    "alpha2": "CN",
+    "region": "Kinija"
+  },
+  {
+    "alpha2": "CO",
+    "region": "Kolumbija"
+  },
+  {
+    "alpha2": "CR",
+    "region": "Kosta Rika"
+  },
+  {
+    "alpha2": "CU",
+    "region": "Kuba"
+  },
+  {
+    "alpha2": "CV",
+    "region": "Žaliasis Kyšulys"
+  },
+  {
+    "alpha2": "CW",
+    "region": "Kiurasao"
+  },
+  {
+    "alpha2": "CX",
+    "region": "Kalėdų Sala"
+  },
+  {
+    "alpha2": "CY",
+    "region": "Kipras"
+  },
+  {
+    "alpha2": "CZ",
+    "region": "Čekija"
+  },
+  {
+    "alpha2": "DE",
+    "region": "Vokietija"
+  },
+  {
+    "alpha2": "DJ",
+    "region": "Džibutis"
+  },
+  {
+    "alpha2": "DK",
+    "region": "Danija"
+  },
+  {
+    "alpha2": "DM",
+    "region": "Dominika"
+  },
+  {
+    "alpha2": "DO",
+    "region": "Dominikos Respublika"
+  },
+  {
+    "alpha2": "DZ",
+    "region": "Alžyras"
+  },
+  {
+    "alpha2": "EC",
+    "region": "Ekvadoras"
+  },
+  {
+    "alpha2": "EE",
+    "region": "Estija"
+  },
+  {
+    "alpha2": "EG",
+    "region": "Egiptas"
+  },
+  {
+    "alpha2": "EH",
+    "region": "Vakarų Sachara"
+  },
+  {
+    "alpha2": "ER",
+    "region": "Eritrėja"
+  },
+  {
+    "alpha2": "ES",
+    "region": "Ispanija"
+  },
+  {
+    "alpha2": "ET",
+    "region": "Etiopija"
+  },
+  {
+    "alpha2": "FI",
+    "region": "Suomija"
+  },
+  {
+    "alpha2": "FJ",
+    "region": "Fidžis"
+  },
+  {
+    "alpha2": "FK",
+    "region": "Folklando Salos"
+  },
+  {
+    "alpha2": "FM",
+    "region": "Mikronezija"
+  },
+  {
+    "alpha2": "FO",
+    "region": "Farerų Salos"
+  },
+  {
+    "alpha2": "FR",
+    "region": "Prancūzija"
+  },
+  {
+    "alpha2": "GA",
+    "region": "Gabonas"
+  },
+  {
+    "alpha2": "GB",
+    "region": "Jungtinė Karalystė"
+  },
+  {
+    "alpha2": "GD",
+    "region": "Grenada"
+  },
+  {
+    "alpha2": "GE",
+    "region": "Sakartvelas"
+  },
+  {
+    "alpha2": "GF",
+    "region": "Prancūzijos Gviana"
+  },
+  {
+    "alpha2": "GG",
+    "region": "Gernsis"
+  },
+  {
+    "alpha2": "GH",
+    "region": "Gana"
+  },
+  {
+    "alpha2": "GI",
+    "region": "Gibraltaras"
+  },
+  {
+    "alpha2": "GL",
+    "region": "Grenlandija"
+  },
+  {
+    "alpha2": "GM",
+    "region": "Gambija"
+  },
+  {
+    "alpha2": "GN",
+    "region": "Gvinėja"
+  },
+  {
+    "alpha2": "GP",
+    "region": "Gvadelupa"
+  },
+  {
+    "alpha2": "GQ",
+    "region": "Pusiaujo Gvinėja"
+  },
+  {
+    "alpha2": "GR",
+    "region": "Graikija"
+  },
+  {
+    "alpha2": "GS",
+    "region": "Pietų Džordžija ir Pietų Sandvičo salos"
+  },
+  {
+    "alpha2": "GT",
+    "region": "Gvatemala"
+  },
+  {
+    "alpha2": "GU",
+    "region": "Guamas"
+  },
+  {
+    "alpha2": "GW",
+    "region": "Bisau Gvinėja"
+  },
+  {
+    "alpha2": "GY",
+    "region": "Gajana"
+  },
+  {
+    "alpha2": "HK",
+    "region": "Honkongas"
+  },
+  {
+    "alpha2": "HM",
+    "region": "Herdo ir Makdonaldo Salos"
+  },
+  {
+    "alpha2": "HN",
+    "region": "Hondūras"
+  },
+  {
+    "alpha2": "HR",
+    "region": "Kroatija"
+  },
+  {
+    "alpha2": "HT",
+    "region": "Haitis"
+  },
+  {
+    "alpha2": "HU",
+    "region": "Vengrija"
+  },
+  {
+    "alpha2": "ID",
+    "region": "Indonezija"
+  },
+  {
+    "alpha2": "IE",
+    "region": "Airija"
+  },
+  {
+    "alpha2": "IL",
+    "region": "Izraelis"
+  },
+  {
+    "alpha2": "IM",
+    "region": "Meno Sala"
+  },
+  {
+    "alpha2": "IN",
+    "region": "Indija"
+  },
+  {
+    "alpha2": "IO",
+    "region": "Indijos Vandenyno Britų Sritis"
+  },
+  {
+    "alpha2": "IQ",
+    "region": "Irakas"
+  },
+  {
+    "alpha2": "IR",
+    "region": "Iranas"
+  },
+  {
+    "alpha2": "IS",
+    "region": "Islandija"
+  },
+  {
+    "alpha2": "IT",
+    "region": "Italija"
+  },
+  {
+    "alpha2": "JE",
+    "region": "Džersis"
+  },
+  {
+    "alpha2": "JM",
+    "region": "Jamaika"
+  },
+  {
+    "alpha2": "JO",
+    "region": "Jordanija"
+  },
+  {
+    "alpha2": "JP",
+    "region": "Japonija"
+  },
+  {
+    "alpha2": "KE",
+    "region": "Kenija"
+  },
+  {
+    "alpha2": "KG",
+    "region": "Kirgizija"
+  },
+  {
+    "alpha2": "KH",
+    "region": "Kambodža"
+  },
+  {
+    "alpha2": "KI",
+    "region": "Kiribatis"
+  },
+  {
+    "alpha2": "KM",
+    "region": "Komorai"
+  },
+  {
+    "alpha2": "KN",
+    "region": "Sent Kitsas ir Nevis"
+  },
+  {
+    "alpha2": "KP",
+    "region": "Šiaurės Korėja"
+  },
+  {
+    "alpha2": "KR",
+    "region": "Pietų Korėja"
+  },
+  {
+    "alpha2": "KW",
+    "region": "Kuveitas"
+  },
+  {
+    "alpha2": "KY",
+    "region": "Kaimanų Salos"
+  },
+  {
+    "alpha2": "KZ",
+    "region": "Kazachstanas"
+  },
+  {
+    "alpha2": "LA",
+    "region": "Laosas"
+  },
+  {
+    "alpha2": "LB",
+    "region": "Libanas"
+  },
+  {
+    "alpha2": "LC",
+    "region": "Sent Lusija"
+  },
+  {
+    "alpha2": "LI",
+    "region": "Lichtenšteinas"
+  },
+  {
+    "alpha2": "LK",
+    "region": "Šri Lanka"
+  },
+  {
+    "alpha2": "LR",
+    "region": "Liberija"
+  },
+  {
+    "alpha2": "LS",
+    "region": "Lesotas"
+  },
+  {
+    "alpha2": "LT",
+    "region": "Lietuva"
+  },
+  {
+    "alpha2": "LU",
+    "region": "Liuksemburgas"
+  },
+  {
+    "alpha2": "LV",
+    "region": "Latvija"
+  },
+  {
+    "alpha2": "LY",
+    "region": "Libija"
+  },
+  {
+    "alpha2": "MA",
+    "region": "Marokas"
+  },
+  {
+    "alpha2": "MC",
+    "region": "Monakas"
+  },
+  {
+    "alpha2": "MD",
+    "region": "Moldova"
+  },
+  {
+    "alpha2": "ME",
+    "region": "Juodkalnija"
+  },
+  {
+    "alpha2": "MF",
+    "region": "Sen Martenas"
+  },
+  {
+    "alpha2": "MG",
+    "region": "Madagaskaras"
+  },
+  {
+    "alpha2": "MH",
+    "region": "Maršalo Salos"
+  },
+  {
+    "alpha2": "MK",
+    "region": "Šiaurės Makedonija"
+  },
+  {
+    "alpha2": "ML",
+    "region": "Malis"
+  },
+  {
+    "alpha2": "MM",
+    "region": "Mianmaras (Birma)"
+  },
+  {
+    "alpha2": "MN",
+    "region": "Mongolija"
+  },
+  {
+    "alpha2": "MO",
+    "region": "Makao"
+  },
+  {
+    "alpha2": "MP",
+    "region": "Marianos Šiaurinės Salos"
+  },
+  {
+    "alpha2": "MQ",
+    "region": "Martinika"
+  },
+  {
+    "alpha2": "MR",
+    "region": "Mauritanija"
+  },
+  {
+    "alpha2": "MS",
+    "region": "Montseratas"
+  },
+  {
+    "alpha2": "MT",
+    "region": "Malta"
+  },
+  {
+    "alpha2": "MU",
+    "region": "Mauricijus"
+  },
+  {
+    "alpha2": "MV",
+    "region": "Maldyvai"
+  },
+  {
+    "alpha2": "MW",
+    "region": "Malavis"
+  },
+  {
+    "alpha2": "MX",
+    "region": "Meksika"
+  },
+  {
+    "alpha2": "MY",
+    "region": "Malaizija"
+  },
+  {
+    "alpha2": "MZ",
+    "region": "Mozambikas"
+  },
+  {
+    "alpha2": "NA",
+    "region": "Namibija"
+  },
+  {
+    "alpha2": "NC",
+    "region": "Naujoji Kaledonija"
+  },
+  {
+    "alpha2": "NE",
+    "region": "Nigeris"
+  },
+  {
+    "alpha2": "NF",
+    "region": "Norfolko sala"
+  },
+  {
+    "alpha2": "NG",
+    "region": "Nigerija"
+  },
+  {
+    "alpha2": "NI",
+    "region": "Nikaragva"
+  },
+  {
+    "alpha2": "NL",
+    "region": "Nyderlandai"
+  },
+  {
+    "alpha2": "NO",
+    "region": "Norvegija"
+  },
+  {
+    "alpha2": "NP",
+    "region": "Nepalas"
+  },
+  {
+    "alpha2": "NR",
+    "region": "Nauru"
+  },
+  {
+    "alpha2": "NU",
+    "region": "Niujė"
+  },
+  {
+    "alpha2": "NZ",
+    "region": "Naujoji Zelandija"
+  },
+  {
+    "alpha2": "OM",
+    "region": "Omanas"
+  },
+  {
+    "alpha2": "PA",
+    "region": "Panama"
+  },
+  {
+    "alpha2": "PE",
+    "region": "Peru"
+  },
+  {
+    "alpha2": "PF",
+    "region": "Prancūzijos Polinezija"
+  },
+  {
+    "alpha2": "PG",
+    "region": "Papua Naujoji Gvinėja"
+  },
+  {
+    "alpha2": "PH",
+    "region": "Filipinai"
+  },
+  {
+    "alpha2": "PK",
+    "region": "Pakistanas"
+  },
+  {
+    "alpha2": "PL",
+    "region": "Lenkija"
+  },
+  {
+    "alpha2": "PM",
+    "region": "Sen Pjeras ir Mikelonas"
+  },
+  {
+    "alpha2": "PN",
+    "region": "Pitkerno salos"
+  },
+  {
+    "alpha2": "PR",
+    "region": "Puerto Rikas"
+  },
+  {
+    "alpha2": "PS",
+    "region": "Palestinos teritorija"
+  },
+  {
+    "alpha2": "PT",
+    "region": "Portugalija"
+  },
+  {
+    "alpha2": "PW",
+    "region": "Palau"
+  },
+  {
+    "alpha2": "PY",
+    "region": "Paragvajus"
+  },
+  {
+    "alpha2": "QA",
+    "region": "Kataras"
+  },
+  {
+    "alpha2": "RE",
+    "region": "Reunjonas"
+  },
+  {
+    "alpha2": "RO",
+    "region": "Rumunija"
+  },
+  {
+    "alpha2": "RS",
+    "region": "Serbija"
+  },
+  {
+    "alpha2": "RU",
+    "region": "Rusija"
+  },
+  {
+    "alpha2": "RW",
+    "region": "Ruanda"
+  },
+  {
+    "alpha2": "SA",
+    "region": "Saudo Arabija"
+  },
+  {
+    "alpha2": "SB",
+    "region": "Saliamono Salos"
+  },
+  {
+    "alpha2": "SC",
+    "region": "Seišeliai"
+  },
+  {
+    "alpha2": "SD",
+    "region": "Sudanas"
+  },
+  {
+    "alpha2": "SE",
+    "region": "Švedija"
+  },
+  {
+    "alpha2": "SG",
+    "region": "Singapūras"
+  },
+  {
+    "alpha2": "SH",
+    "region": "Šv. Elenos Sala"
+  },
+  {
+    "alpha2": "SI",
+    "region": "Slovėnija"
+  },
+  {
+    "alpha2": "SJ",
+    "region": "Svalbardas ir Janas Majenas"
+  },
+  {
+    "alpha2": "SK",
+    "region": "Slovakija"
+  },
+  {
+    "alpha2": "SL",
+    "region": "Siera Leonė"
+  },
+  {
+    "alpha2": "SM",
+    "region": "San Marinas"
+  },
+  {
+    "alpha2": "SN",
+    "region": "Senegalas"
+  },
+  {
+    "alpha2": "SO",
+    "region": "Somalis"
+  },
+  {
+    "alpha2": "SR",
+    "region": "Surinamas"
+  },
+  {
+    "alpha2": "SS",
+    "region": "Pietų Sudanas"
+  },
+  {
+    "alpha2": "ST",
+    "region": "San Tomė ir Prinsipė"
+  },
+  {
+    "alpha2": "SV",
+    "region": "Salvadoras"
+  },
+  {
+    "alpha2": "SX",
+    "region": "Sint Martenas"
+  },
+  {
+    "alpha2": "SY",
+    "region": "Sirija"
+  },
+  {
+    "alpha2": "SZ",
+    "region": "Svazilandas"
+  },
+  {
+    "alpha2": "TC",
+    "region": "Terkso ir Kaikoso Salos"
+  },
+  {
+    "alpha2": "TD",
+    "region": "Čadas"
+  },
+  {
+    "alpha2": "TF",
+    "region": "Prancūzijos Pietų sritys"
+  },
+  {
+    "alpha2": "TG",
+    "region": "Togas"
+  },
+  {
+    "alpha2": "TH",
+    "region": "Tailandas"
+  },
+  {
+    "alpha2": "TJ",
+    "region": "Tadžikija"
+  },
+  {
+    "alpha2": "TK",
+    "region": "Tokelau"
+  },
+  {
+    "alpha2": "TL",
+    "region": "Rytų Timoras"
+  },
+  {
+    "alpha2": "TM",
+    "region": "Turkmėnistanas"
+  },
+  {
+    "alpha2": "TN",
+    "region": "Tunisas"
+  },
+  {
+    "alpha2": "TO",
+    "region": "Tonga"
+  },
+  {
+    "alpha2": "TR",
+    "region": "Turkija"
+  },
+  {
+    "alpha2": "TT",
+    "region": "Trinidadas ir Tobagas"
+  },
+  {
+    "alpha2": "TV",
+    "region": "Tuvalu"
+  },
+  {
+    "alpha2": "TW",
+    "region": "Taivanas"
+  },
+  {
+    "alpha2": "TZ",
+    "region": "Tanzanija"
+  },
+  {
+    "alpha2": "UA",
+    "region": "Ukraina"
+  },
+  {
+    "alpha2": "UG",
+    "region": "Uganda"
+  },
+  {
+    "alpha2": "UM",
+    "region": "Jungtinių Valstijų Mažosios Tolimosios Salos"
+  },
+  {
+    "alpha2": "US",
+    "region": "Jungtinės Valstijos"
+  },
+  {
+    "alpha2": "UY",
+    "region": "Urugvajus"
+  },
+  {
+    "alpha2": "UZ",
+    "region": "Uzbekistanas"
+  },
+  {
+    "alpha2": "VA",
+    "region": "Vatikano Miesto Valstybė"
+  },
+  {
+    "alpha2": "VC",
+    "region": "Šventasis Vincentas ir Grenadinai"
+  },
+  {
+    "alpha2": "VE",
+    "region": "Venesuela"
+  },
+  {
+    "alpha2": "VG",
+    "region": "Didžiosios Britanijos Mergelių Salos"
+  },
+  {
+    "alpha2": "VI",
+    "region": "Jungtinių Valstijų Mergelių Salos"
+  },
+  {
+    "alpha2": "VN",
+    "region": "Vietnamas"
+  },
+  {
+    "alpha2": "VU",
+    "region": "Vanuatu"
+  },
+  {
+    "alpha2": "WF",
+    "region": "Volisas ir Futūna"
+  },
+  {
+    "alpha2": "WS",
+    "region": "Samoa"
+  },
+  {
+    "alpha2": "XK",
+    "region": "Kosovas"
+  },
+  {
+    "alpha2": "YE",
+    "region": "Jemenas"
+  },
+  {
+    "alpha2": "YT",
+    "region": "Majotas"
+  },
+  {
+    "alpha2": "ZA",
+    "region": "Pietų Afrika"
+  },
+  {
+    "alpha2": "ZM",
+    "region": "Zambija"
+  },
+  {
+    "alpha2": "ZW",
+    "region": "Zimbabvė"
+  }
+]

@@ -1,0 +1,62 @@
+<?php
+
+return [
+    'common' => [
+        'actions' => 'Actions',
+        'active' => 'Active',
+        'cancel' => 'Cancel',
+        'confirm_delete' => 'Are you sure you want to delete this item?',
+        'create' => 'Create',
+        'delete' => 'Delete',
+        'edit' => 'Edit',
+        'success_message' => 'Operation completed successfully',
+        'delete_message' => 'Item deleted successfully',
+        'save' => 'Save',
+        'update' => 'Update',
+        'view' => 'View',
+    ],
+
+    'buyers' => [
+        'title' => 'Buyers',
+        'orders' => [
+            'title' => 'Orders',
+        ],
+        'fields' => [
+            'name' => 'Name',
+            'email' => 'Email',
+            'company_name' => 'Company Name',
+            'company_code' => 'Company Code',
+            'vat_code' => 'VAT Code',
+            'address' => 'Address',
+            'phone' => 'Phone',
+            'bank_account' => 'Bank Account',
+            'pack_type' => 'Pack Type',
+            'unit' => 'Unit',
+            'country_of_origin' => 'Country of Origin',
+            'is_organic' => 'Organic Product',
+            'is_active' => 'Active Status',
+            'stock' => 'Stock Quantity',
+        ],
+        'credit' => [
+            'current_balance' => 'Current Balance',
+            'manage' => 'Manage Credit',
+            'amount' => 'Amount',
+            'action' => 'Action',
+            'add' => 'Add Credit',
+            'deduct' => 'Deduct Credit',
+            'note' => 'Note',
+            'note_placeholder' => 'Enter a note about this transaction',
+            'submit' => 'Submit',
+            'history' => 'Credit History',
+            'date' => 'Date',
+            'type' => 'Type',
+            'balance' => 'Balance',
+            'admin' => 'Administrator',
+            'type_add' => 'Added',
+            'type_deduct' => 'Deducted',
+            'added' => 'Added €:amount to balance',
+            'deducted' => 'Deducted €:amount from balance',
+            'insufficient_funds' => 'Insufficient funds for this deduction'
+        ],
+    ],
+];

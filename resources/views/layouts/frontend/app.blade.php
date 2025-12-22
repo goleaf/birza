@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @wireUiScripts
+    @stack('head-scripts')
+</head>
+
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100">
+
+        <header>
+            @include('layouts.frontend.header')
+        </header>
+
+        <main class="py-12">
+            @if (isset($fullWidth) && $fullWidth)
+                <div class="w-full px-4 sm:px-6 lg:px-8">
+                    @yield('content')
+                </div>
+            @else
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    @yield('content')
+                </div>
+            @endif
+        </main>
+
+        {{--
+        <footer>
+            @include('layouts.frontend.footer')
+        </footer>
+    --}}
+    </div>
+
+    @stack('body-scripts')
+
+
+    
+</body>
+
+</html>

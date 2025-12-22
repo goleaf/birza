@@ -1,0 +1,78 @@
+<?php
+
+return [
+    'common' => [
+        'cancel' => 'Atšaukti',
+        'create' => 'Sukurti',
+        'update' => 'Atnaujinti',
+        'delete' => 'Ištrinti',
+        'edit' => 'Redaguoti',
+        'save' => 'Išsaugoti',
+    ],
+    'buyers' => [
+        'edit' => [
+            'title' => 'Redaguoti profilį',
+        ],
+        'create' => [
+            'title' => 'Sukurti profilį',
+        ],
+        'fields' => [
+            'name' => 'Vardas',
+            'email' => 'El. paštas',
+            'password' => 'Slaptažodis',
+            'password_confirmation' => 'Patvirtinti slaptažodį',
+            'company_name' => 'Įmonės pavadinimas',
+            'company_code' => 'Įmonės kodas',
+            'vat_code' => 'PVM kodas',
+            'address' => 'Adresas',
+            'phone' => 'Telefonas',
+            'bank_account' => 'Banko sąskaita',
+            'credit_balance' => 'Kredito balansas',
+            'veterinary_certificate_number' => 'Veterinarijos sertifikato numeris',
+            'is_verified' => 'Patvirtintas',
+            'is_active' => 'Aktyvus',
+            'verification_status' => 'Patvirtinimo būsena',
+            'verification_status_all' => 'Visos patvirtinimo būsenos',
+            'verified' => 'Patvirtintas',
+            'not_verified' => 'Nepatvirtintas',
+            'active_status' => 'Aktyvumo būsena',
+            'active_status_all' => 'Visos aktyvumo būsenos',
+            'active' => 'Aktyvus',
+            'inactive' => 'Neaktyvus',
+        ],
+        'messages' => [
+            'created' => 'Pirkėjas sėkmingai sukurtas.',
+            'updated' => 'Pirkėjas sėkmingai atnaujintas.',
+            'deleted' => 'Pirkėjas sėkmingai ištrintas.',
+        ],
+        'credit' => [
+            'buyer_info' => 'Pirkėjo informacija',
+            'current_balance' => 'Dabartinis balansas',
+            'manage_credit' => 'Valdyti kreditą',
+            'view_history' => 'Peržiūrėti istoriją',
+        ],
+        'credit_history' => [
+            'filter' => [
+                'type' => 'Operacijos tipas',
+                'all_types' => 'Visi tipai',
+                'credit' => 'Kreditas',
+                'debit' => 'Debetas',
+                'date_from' => 'Nuo datos',
+                'date_to' => 'Iki datos',
+                'apply' => 'Taikyti filtrus',
+            ],
+            'table' => [
+                'date' => 'Data',
+                'type' => 'Tipas',
+                'amount' => 'Suma',
+                'balance_after' => 'Balansas po',
+                'note' => 'Pastaba',
+                'admin' => 'Administratorius',
+                'credit' => 'Kreditas',
+                'debit' => 'Debetas',
+                'system' => 'Sistema',
+                'no_records' => 'Operacijų istorija nerasta',
+            ],
+        ],
+    ],
+];

@@ -1,0 +1,78 @@
+<?php
+
+return [
+    'common' => [
+        'cancel' => 'Cancel',
+        'create' => 'Create',
+        'update' => 'Update',
+        'delete' => 'Delete',
+        'edit' => 'Edit',
+        'save' => 'Save',
+    ],
+    'buyers' => [
+        'edit' => [
+            'title' => 'Edit Profile',
+        ],
+        'create' => [
+            'title' => 'Create Profile',
+        ],
+        'fields' => [
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'password_confirmation' => 'Confirm Password',
+            'company_name' => 'Company Name',
+            'company_code' => 'Company Code',
+            'vat_code' => 'VAT Code',
+            'address' => 'Address',
+            'phone' => 'Phone',
+            'bank_account' => 'Bank Account',
+            'credit_balance' => 'Credit Balance',
+            'is_verified' => 'Verified',
+            'verification_status' => 'Verification Status',
+            'verification_status_all' => 'All Verification Statuses',
+            'verified' => 'Verified',
+            'not_verified' => 'Not Verified',
+            'veterinary_certificate_number' => 'Veterinary Certificate Number',
+            'is_active' => 'Active',
+            'active_status' => 'Active Status',
+            'active_status_all' => 'All Active Statuses',
+            'active' => 'Active',
+            'inactive' => 'Inactive',
+        ],
+        'credit' => [
+            'buyer_info' => 'Buyer Information',
+            'current_balance' => 'Current Balance',
+            'manage_credit' => 'Manage Credit',
+            'view_history' => 'View History',
+        ],
+        'credit_history' => [
+            'filter' => [
+                'type' => 'Transaction Type',
+                'all_types' => 'All Types',
+                'credit' => 'Credit',
+                'debit' => 'Debit',
+                'date_from' => 'From Date',
+                'date_to' => 'To Date',
+                'apply' => 'Apply Filters',
+            ],
+            'table' => [
+                'date' => 'Date',
+                'type' => 'Type',
+                'amount' => 'Amount',
+                'balance_after' => 'Balance After',
+                'note' => 'Note',
+                'admin' => 'Admin',
+                'credit' => 'Credit',
+                'debit' => 'Debit',
+                'system' => 'System',
+                'no_records' => 'No transaction records found',
+            ],
+        ],
+        'messages' => [
+            'created' => 'Buyer created successfully.',
+            'updated' => 'Buyer updated successfully.',
+            'deleted' => 'Buyer deleted successfully.',
+        ],
+    ],
+];

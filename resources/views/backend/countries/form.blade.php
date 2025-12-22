@@ -1,0 +1,94 @@
+@extends('layouts.backend.app')
+
+@section('content')
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b pb-3">
+                {{ $country->exists ? __('backend.countries.edit') : __('backend.countries.create') }}
+            </h2>
+
+            <form action="{{ $country->exists ? route('backend.countries.update', $country) : route('backend.countries.store') }}" method="POST" class="space-y-6">
+                @csrf
+                @if ($country->exists)
+                    @method('PUT')
+                @endif
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="form-group">
+                        <label for="alpha2" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ __('backend.countries.fields.alpha2') }}
+                        </label>
+                        <input type="text" name="alpha2" value="{{ old('alpha2', $country->alpha2) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" maxlength="2">
+                        @error('alpha2')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ __('backend.countries.fields.region') }}
+                        </label>
+                        <select name="region" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @foreach ($regionOptions as $region)
+                                <option value="{{ $region }}" {{ old('region', $country->region) == $region ? 'selected' : '' }}>
+                                    {{ $region }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('region')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="is_active" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ __('backend.countries.fields.is_active') }}
+                        </label>
+                        <select name="is_active" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="1" {{ old('is_active', $country->is_active ?? '') == '1' ? 'selected' : '' }}>
+                                Yes
+                            </option>
+                            <option value="0" {{ old('is_active', $country->is_active ?? '') == '0' ? 'selected' : '' }}>
+                                No
+                            </option>
+                        </select>
+                        @error('is_active')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    @foreach ($locales as $locale)
+                        <div class="bg-gray-50 p-4 rounded-md mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                                {{ strtoupper($locale) }} {{ __('backend.countries.translations') }}
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="{{ $locale }}[country_name]" class="block text-sm font-medium text-gray-700 mb-2">
+                                        {{ __('backend.countries.fields.country_name') }}
+                                    </label>
+                                    <input type="text" name="{{ $locale }}[country_name]" value="{{ old($locale . '.country_name', $country->getTranslation('country_name', $locale)) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    @error($locale . '.country_name')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="flex items-center justify-between mt-6">
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        {{ $country->exists ? __('backend.common.update') : __('backend.common.create') }}
+                    </button>
+                    <a href="{{ route('backend.countries.index') }}" class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors">
+                        {{ __('backend.common.cancel') }}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

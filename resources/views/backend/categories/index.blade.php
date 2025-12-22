@@ -1,0 +1,99 @@
+@extends('layouts.backend.app')
+
+@section('content')
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">
+            {{ __('backend.categories.title') }}
+        </h2>
+        <a href="{{ route('backend.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{ __('backend.categories.actions.create') }}
+        </a>
+    </div>
+
+    <div class="bg-white shadow-sm sm:rounded-lg">
+        <div class="bg-white border-b border-gray-200">
+            <table class="w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {{ strtoupper(app()->getLocale()) }} {{ __('backend.categories.fields.name') }}
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {{ __('backend.common.actions') }}
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {{ __('backend.categories.fields.attributes') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($categories->whereNull('parent_category_id') as $category)
+                        <tr class="bg-gray-200">
+                            <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-medium">
+                                <a href="{{ route('backend.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">
+                                    {{ __('backend.common.edit') }}
+                                </a>
+                                <form action="{{ route('backend.categories.destroy', $category) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('backend.common.confirm_delete') }}')">
+                                        {{ __('backend.common.delete') }}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if ($category->attributes->count() > 0)
+                                    <div class="space-x-1">
+                                        @foreach($category->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
+                                            <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                                {{ $attribute->getTranslation('name', app()->getLocale()) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    {{ __('backend.common.no_attributes') }}
+                                @endif
+                            </td>
+                        </tr>
+                        @foreach ($category->subcategories as $subcategory)
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-gray-400 mr-2">└─</span>
+                                        {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">
+                                    <a href="{{ route('backend.categories.edit', $subcategory) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        {{ __('backend.common.edit') }}
+                                    </a>
+                                    <form action="{{ route('backend.categories.destroy', $subcategory) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('backend.common.confirm_delete') }}')">
+                                            {{ __('backend.common.delete') }}
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if ($subcategory->attributes->count() > 0)
+                                        <div class="space-x-1">
+                                            @foreach($subcategory->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
+                                                <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                                    {{ $attribute->getTranslation('name', app()->getLocale()) }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        {{ __('backend.common.no_attributes') }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection

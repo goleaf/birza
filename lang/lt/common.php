@@ -1,0 +1,28 @@
+<?php
+
+return array (
+  'actions' => 'Akcijos',
+  'active' => 'Aktyviai',
+  'already_have_account' => 'Jau turi sąskaitą',
+  'buyer_registration' => 'Pirkėjo registracija',
+  'cancel' => 'Atšaukti',
+  'confirm_delete' => 'Patikrinkite ištrynimą',
+  'confirm_password' => 'Patvirtinkite slaptažodį',
+  'create' => 'sukurti',
+  'delete' => 'Dalinė',
+  'edit' => 'EDIT',
+  'email' => 'elektroniniu paštu',
+  'filter' => 'filtrai',
+  'inactive' => 'neaktyvus',
+  'no' => 'ne',
+  'not_available' => 'Nėra prieinamos',
+  'not_set' => 'Nėra nustatyta',
+  'password' => 'Slaptažodis',
+  'register_button' => 'Registracijos mygtukas',
+  'required' => 'Reikalingas',
+  'seller_registration' => 'Pardavėjo registracija',
+  'status' => 'statusą',
+  'update' => 'Atnaujinimas',
+  'yes' => 'Taip',
+  'products' => 'Produktai',
+);
