@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Buyer Information Card -->
     <div class="mb-8">
@@ -70,10 +68,10 @@
                 <div class="p-6 space-y-6">
                     <!-- Credit Action Buttons -->
                     <div class="grid grid-cols-2 gap-4">
-                        <button type="button" 
-                                onclick="selectAction('add')"
+                        <button type="button"
+                                wire:click="selectAction('add')"
                                 id="addButton"
-                                class="relative inline-flex items-center justify-center px-4 py-4 bg-green-600 text-white opacity-50">
+                                class="relative inline-flex items-center justify-center px-4 py-4 bg-green-600 text-white {{ $selectedAction === 'add' ? '' : 'opacity-50' }}">
                             <span class="flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -83,9 +81,9 @@
                         </button>
 
                         <button type="button"
-                                onclick="selectAction('deduct')"
+                                wire:click="selectAction('deduct')"
                                 id="deductButton"
-                                class="relative inline-flex items-center justify-center px-4 py-4 bg-red-600 text-white opacity-50">
+                                class="relative inline-flex items-center justify-center px-4 py-4 bg-red-600 text-white {{ $selectedAction === 'deduct' ? '' : 'opacity-50' }}">
                             <span class="flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -96,8 +94,10 @@
                     </div>
 
                     <!-- Credit Form -->
-                    <form id="creditForm" method="POST" class="space-y-6 hidden" enctype="multipart/form-data">
-                        @csrf
+                    <form wire:submit.prevent="submitCredit" class="space-y-6 {{ $selectedAction ? '' : 'hidden' }}" enctype="multipart/form-data">
+                        @error('action')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                         
                         <!-- Amount Input -->
                         <div class="space-y-2">
@@ -106,14 +106,17 @@
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" 
-                                       name="amount" 
                                        id="amount" 
+                                       wire:model.defer="amount"
                                        step="0.01" 
                                        min="0.01"
                                        required
                                        class="block w-full pl-8 pr-12 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                        placeholder="0.00">
                             </div>
+                            @error('amount')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Note Input -->
@@ -122,11 +125,14 @@
                                 {{ __('buyers.credit_history.note') }}
                             </label>
                             <textarea
-                                name="note" 
                                 id="note" 
+                                wire:model.defer="note"
                                 rows="3"
                                 class="block w-full border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" 
-                                placeholder="">{{ old('note') }}</textarea>
+                                placeholder=""></textarea>
+                            @error('note')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Attachment Input -->
@@ -134,14 +140,18 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">
                                 {{ __('common.attachment') }}
                             </label>
-                            <input type="file" name="attachment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            <input type="file" wire:model="attachment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                             <p class="mt-2 text-sm text-gray-500">{{ __('common.optional_upload_supporting_document') }}</p>
+                            @error('attachment')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Submit Button -->
                         <button type="submit" 
                                 id="submitButton"
-                                class="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 text-white">
+                                wire:loading.attr="disabled"
+                                class="w-full flex items-center justify-center px-4 py-3 text-white disabled:opacity-60 disabled:cursor-not-allowed {{ $selectedAction === 'add' ? 'bg-green-600' : 'bg-red-600' }}">
                             {{ __('buyers.credit_history.apply') }}
                         </button>
                     </form>
@@ -218,31 +228,4 @@
     </div>
 </div>
 
-<script>
-    let selectedAction = null;
-    const form = document.getElementById('creditForm');
-    const addButton = document.getElementById('addButton');
-    const deductButton = document.getElementById('deductButton');
-
-    function selectAction(action) {
-        selectedAction = action;
-        form.classList.remove('hidden');
-        
-        // Reset both buttons
-        addButton.className = 'relative inline-flex items-center justify-center px-4 py-4 bg-green-600 text-white opacity-50';
-        deductButton.className = 'relative inline-flex items-center justify-center px-4 py-4 bg-red-600 text-white opacity-50';
-        
-        // Update selected button
-        if (action === 'add') {
-            addButton.className = 'relative inline-flex items-center justify-center px-4 py-4 bg-green-600 text-white';
-            form.action = '{{ route('backend.buyers.add-credit', $buyer) }}';
-            document.getElementById('submitButton').className = 'w-full flex items-center justify-center px-4 py-3 bg-green-600 text-white';
-        } else {
-            deductButton.className = 'relative inline-flex items-center justify-center px-4 py-4 bg-red-600 text-white';
-            form.action = '{{ route('backend.buyers.debit-credit', $buyer) }}';
-            document.getElementById('submitButton').className = 'w-full flex items-center justify-center px-4 py-3 bg-red-600 text-white';
-        }
-    }
-</script>
-
-@endsection
+</div>

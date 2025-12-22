@@ -1,143 +1,116 @@
 <?php
 
-use App\Http\Controllers\Backend\Auth\LoginController;
-use App\Http\Controllers\Backend\BuyerController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\Backend\AttributeController;
-use App\Http\Controllers\Backend\AttributeValueController;
-use App\Http\Controllers\Backend\CountryController;
-use App\Http\Controllers\Backend\GlobalSettingsController;
-use App\Http\Controllers\Backend\OrderController;
-use App\Http\Controllers\Backend\SellerController;
-use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BuyerCreditHistoryController;
+use App\Livewire\Backend\Admin\Profile as AdminProfile;
+use App\Livewire\Backend\Attributes\Form as AttributeForm;
+use App\Livewire\Backend\Attributes\Index as AttributesIndex;
+use App\Livewire\Backend\Attributes\Values\Form as AttributeValueForm;
+use App\Livewire\Backend\Attributes\Values\Index as AttributeValuesIndex;
+use App\Livewire\Backend\Buyers\Credit as BuyerCredit;
+use App\Livewire\Backend\Buyers\CreditHistory as BuyerCreditHistory;
+use App\Livewire\Backend\Buyers\Form as BuyerForm;
+use App\Livewire\Backend\Buyers\Index as BuyersIndex;
+use App\Livewire\Backend\Buyers\Orders as BuyerOrders;
+use App\Livewire\Backend\Dashboard as AdminDashboard;
+use App\Livewire\Backend\Categories\Form as CategoryForm;
+use App\Livewire\Backend\Categories\Index as CategoriesIndex;
+use App\Livewire\Backend\Countries\Form as CountryForm;
+use App\Livewire\Backend\Countries\Index as CountriesIndex;
+use App\Livewire\Backend\Orders\Index as OrdersIndex;
+use App\Livewire\Backend\Orders\Show as OrdersShow;
+use App\Livewire\Backend\Products\Edit as ProductEdit;
+use App\Livewire\Backend\Products\Index as ProductsIndex;
+use App\Livewire\Backend\Products\Show as ProductShow;
+use App\Livewire\Backend\Auth\Login as AdminLogin;
+use App\Livewire\Backend\Sellers\Form as SellerForm;
+use App\Livewire\Backend\Sellers\Index as SellersIndex;
+use App\Livewire\Backend\Sellers\Orders as SellerOrders;
+use App\Livewire\Backend\Sellers\Show as SellerShow;
+use App\Livewire\Backend\Settings\Index as SettingsIndex;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::prefix('admin')->group(function () {
     // Redirect root /admin to dashboard if logged in, otherwise to login
     Route::get('/', function () {
-        return Auth::guard('admin')->check() 
+        return Auth::guard('admin')->check()
             ? redirect()->route('backend.dashboard')
             : redirect()->route('backend.login');
     });
 
     // Auth Routes
     Route::middleware('guest:admin')->group(function () {
-        Route::get('login', [LoginController::class, 'showLoginForm'])->name('backend.login');
-        Route::post('login', [LoginController::class, 'login']);
+        Route::get('login', AdminLogin::class)->name('backend.login');
     });
 
     // Protected Routes
     Route::middleware('auth:admin')->group(function () {
-        Route::post('logout', [LoginController::class, 'logout'])->name('backend.logout');
-        
+        Route::post('logout', function (Request $request) {
+            Auth::guard('admin')->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('backend.login');
+        })->name('backend.logout');
+
         // Dashboard
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('backend.dashboard');
+        Route::get('/dashboard', AdminDashboard::class)->name('backend.dashboard');
 
         // Admin Profile Routes
-        Route::get('/profile', [AdminProfileController::class, 'index'])->name('backend.admin.profile');
-        Route::patch('/profile', [AdminProfileController::class, 'updateProfile'])->name('backend.admin.profile.update');
-        Route::patch('/profile/password', [AdminProfileController::class, 'changePassword'])->name('backend.admin.password.update');
+        Route::get('/profile', AdminProfile::class)->name('backend.admin.profile');
 
         // Buyer Credit History Routes
-        Route::get('/buyers/{buyer}/credit-history', [BuyerCreditHistoryController::class, 'index'])->name('backend.buyers.credit_history');
-        Route::post('/buyers/{buyer}/add-credit', [BuyerCreditHistoryController::class, 'addCredit'])->name('backend.buyers.add-credit');
-        Route::post('/buyers/{buyer}/debit-credit', [BuyerCreditHistoryController::class, 'debitCredit'])->name('backend.buyers.debit-credit');
+        Route::get('/buyers/{buyer}/credit-history', BuyerCreditHistory::class)->name('backend.buyers.credit_history');
         Route::get('/buyers/credit-history/export', [BuyerCreditHistoryController::class, 'export'])->name('backend.buyers.credit_history.export');
         Route::get('credit-attachments/{attachment}', [BuyerCreditHistoryController::class, 'downloadAttachment'])->name('backend.credit.attachments.download');
 
         // Countries
-        Route::resource('countries', CountryController::class)->names([
-            'index' => 'backend.countries.index',
-            'create' => 'backend.countries.create',
-            'store' => 'backend.countries.store',
-            'edit' => 'backend.countries.edit',
-            'update' => 'backend.countries.update',
-            'destroy' => 'backend.countries.destroy',
-        ]);
+        Route::get('countries', CountriesIndex::class)->name('backend.countries.index');
+        Route::get('countries/create', CountryForm::class)->name('backend.countries.create');
+        Route::get('countries/{country}/edit', CountryForm::class)->name('backend.countries.edit');
 
         // Categories
-        Route::resource('categories', CategoryController::class)->names([
-            'index' => 'backend.categories.index',
-            'create' => 'backend.categories.create',
-            'store' => 'backend.categories.store',
-            'edit' => 'backend.categories.edit',
-            'update' => 'backend.categories.update',
-            'destroy' => 'backend.categories.destroy',
-        ]);
+        Route::get('categories', CategoriesIndex::class)->name('backend.categories.index');
+        Route::get('categories/create', CategoryForm::class)->name('backend.categories.create');
+        Route::get('categories/{category}/edit', CategoryForm::class)->name('backend.categories.edit');
 
         // Products
-        Route::resource('products', ProductController::class)->names([
-            'index' => 'backend.products.index',
-            'create' => 'backend.products.create',
-            'store' => 'backend.products.store',
-            'show' => 'backend.products.show',
-            'edit' => 'backend.products.edit',
-            'update' => 'backend.products.update',
-            'destroy' => 'backend.products.destroy',
-        ]);
-        Route::post('products/{product}/restore', [ProductController::class, 'restore'])->name('backend.products.restore');
-        Route::delete('products/{product}/force-delete', [ProductController::class, 'forceDelete'])->name('backend.products.force-delete');
+        Route::get('products', ProductsIndex::class)->name('backend.products.index');
+        Route::get('products/{product}', ProductShow::class)->name('backend.products.show');
+        Route::get('products/{product}/edit', ProductEdit::class)->name('backend.products.edit');
 
         // Attributes
-        Route::resource('attributes', AttributeController::class)->names([
-            'index' => 'backend.attributes.index',
-            'create' => 'backend.attributes.create',
-            'store' => 'backend.attributes.store',
-            'edit' => 'backend.attributes.edit',
-            'update' => 'backend.attributes.update',
-            'destroy' => 'backend.attributes.destroy',
-        ]);
+        Route::get('attributes', AttributesIndex::class)->name('backend.attributes.index');
+        Route::get('attributes/create', AttributeForm::class)->name('backend.attributes.create');
+        Route::get('attributes/{attribute}/edit', AttributeForm::class)->name('backend.attributes.edit');
 
         // Attribute Values
-        Route::get('attributes/{attribute}/values/create', [AttributeValueController::class, 'create'])->name('backend.attributes.values.create');
-        Route::post('attributes/{attribute}/values', [AttributeValueController::class, 'store'])->name('backend.attributes.values.store');
-        Route::get('attributes/{attribute}/values/{value}/edit', [AttributeValueController::class, 'edit'])->name('backend.attributes.values.edit');
-        Route::put('attributes/{attribute}/values/{value}', [AttributeValueController::class, 'update'])->name('backend.attributes.values.update');
-        Route::delete('attributes/{attribute}/values/{value}', [AttributeValueController::class, 'destroy'])->name('backend.attributes.values.destroy');
+        Route::get('attributes/{attribute}/values', AttributeValuesIndex::class)->name('backend.attributes.values.index');
+        Route::get('attributes/{attribute}/values/create', AttributeValueForm::class)->name('backend.attributes.values.create');
+        Route::get('attributes/{attribute}/values/{value}/edit', AttributeValueForm::class)->name('backend.attributes.values.edit');
 
         // Sellers
-        Route::resource('sellers', SellerController::class)->names([
-            'index' => 'backend.sellers.index',
-            'create' => 'backend.sellers.create',
-            'store' => 'backend.sellers.store',
-            'show' => 'backend.sellers.show',
-            'edit' => 'backend.sellers.edit',
-            'update' => 'backend.sellers.update',
-            'destroy' => 'backend.sellers.destroy',
-        ]);
-        Route::get('sellers/{id}/orders', [SellerController::class, 'orders'])->name('backend.sellers.orders');
+        Route::get('sellers', SellersIndex::class)->name('backend.sellers.index');
+        Route::get('sellers/create', SellerForm::class)->name('backend.sellers.create');
+        Route::get('sellers/{seller}', SellerShow::class)->name('backend.sellers.show');
+        Route::get('sellers/{seller}/edit', SellerForm::class)->name('backend.sellers.edit');
+        Route::get('sellers/{seller}/orders', SellerOrders::class)->name('backend.sellers.orders');
 
         // Buyers
-        Route::resource('buyers', BuyerController::class)->names([
-            'index' => 'backend.buyers.index',
-            'create' => 'backend.buyers.create',
-            'store' => 'backend.buyers.store',
-            'edit' => 'backend.buyers.edit',
-            'update' => 'backend.buyers.update',
-            'destroy' => 'backend.buyers.destroy',
-        ]);
-        Route::get('buyers/{buyer}/orders', [BuyerController::class, 'orders'])->name('backend.buyers.orders');
-        Route::get('buyers/{buyer}/credit', [BuyerController::class, 'showCredit'])->name('backend.buyers.credit');
-        Route::patch('buyers/{buyer}/credit', [BuyerController::class, 'updateCredit'])->name('backend.buyers.credit.update');
+        Route::get('buyers', BuyersIndex::class)->name('backend.buyers.index');
+        Route::get('buyers/create', BuyerForm::class)->name('backend.buyers.create');
+        Route::get('buyers/{buyer}/edit', BuyerForm::class)->name('backend.buyers.edit');
+        Route::get('buyers/{buyer}/orders', BuyerOrders::class)->name('backend.buyers.orders');
+        Route::get('buyers/{buyer}/credit', BuyerCredit::class)->name('backend.buyers.credit');
 
         // Global Settings
-        Route::get('settings', [GlobalSettingsController::class, 'index'])->name('backend.settings.index');
-        
-        // Orders
-        Route::resource('orders', OrderController::class)->names([
-            'index' => 'backend.orders.index',
-            'show' => 'backend.orders.show',
-            'edit' => 'backend.orders.edit',
-            'update' => 'backend.orders.update',
-        ])->except(['create', 'store', 'destroy']);
+        Route::get('settings', SettingsIndex::class)->name('backend.settings.index');
 
-        // Settings
-        Route::get('settings/edit', [GlobalSettingsController::class, 'edit'])->name('backend.settings.edit');
-        Route::patch('settings', [GlobalSettingsController::class, 'update'])->name('backend.settings.update');
+        // Orders
+        Route::get('orders', OrdersIndex::class)->name('backend.orders.index');
+        Route::get('orders/{order}', OrdersShow::class)->name('backend.orders.show');
     });
 });
 

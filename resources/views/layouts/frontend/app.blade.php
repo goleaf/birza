@@ -9,6 +9,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+    @wireUiStyles
     @wireUiScripts
     @stack('head-scripts')
 </head>
@@ -23,10 +25,14 @@
         <main class="py-12">
             @if (isset($fullWidth) && $fullWidth)
                 <div class="w-full px-4 sm:px-6 lg:px-8">
+                    <x-ui.flash-messages class="mb-6" />
+                    {{ $slot ?? '' }}
                     @yield('content')
                 </div>
             @else
                 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <x-ui.flash-messages class="mb-6" />
+                    {{ $slot ?? '' }}
                     @yield('content')
                 </div>
             @endif
@@ -39,6 +45,7 @@
     --}}
     </div>
 
+    @livewireScripts
     @stack('body-scripts')
 
 

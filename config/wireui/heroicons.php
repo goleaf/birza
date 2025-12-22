@@ -24,5 +24,7 @@ return [
         | <x-icon ... />
         |
     */
-    'alias' => 'icon',
+    // WireUI reserves <x-icon /> for its own icon component, and exposes heroicons as <x-heroicons />.
+    // Example: <x-heroicons name="..." />
+    'alias' => 'heroicons',
 ];

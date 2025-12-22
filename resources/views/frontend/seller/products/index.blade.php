@@ -1,41 +1,14 @@
-<!-- start extends -->
-@extends('layouts.frontend.app')
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
-        <!-- start white container -->
-        <div class="bg-white rounded-xl shadow-lg">
-            <!-- start padding container -->
-            <div class="p-8">
-                <!-- start header section -->
-                <div class="flex items-center justify-between mb-6">
-                    <!-- start title -->
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        {{ __('product.products_list') }}
-                    </h2>
-                    <!-- end title -->
-                    
-                    <!-- start back button -->
-                    <a 
-                        href="{{ route('seller.dashboard') }}"
-                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                    >
-                        {{ __('common.back_to_dashboard') }}
-                    </a>
-                    <!-- end back button -->
-                </div>
-                <!-- end header section -->
-
-                <!-- start success message -->
-                @if (session('success'))
-                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <!-- end success message -->
+        <x-ui.card class="rounded-xl shadow-lg" :title="__('product.products_list')">
+            <x-slot:actions>
+                <x-ui.button
+                    href="{{ route('seller.dashboard') }}"
+                    secondary
+                    :label="__('common.back_to_dashboard')"
+                />
+            </x-slot:actions>
 
                 <!-- start categories list -->
                 <div class="space-y-6">
@@ -123,10 +96,7 @@
                     @endforeach
                 </div>
                 <!-- end categories list -->
-            </div>
-            <!-- end padding container -->
-        </div>
-        <!-- end white container -->
+        </x-ui.card>
     </div>
     <!-- end main container -->
 
@@ -145,5 +115,5 @@
         }
     </script>
     <!-- end toggle script -->
-@endsection
+</div>
 <!-- end section -->

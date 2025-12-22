@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <div class="py-12">
     <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <!-- Profile Information -->
@@ -11,14 +9,12 @@
                     <p class="mt-1 text-sm text-gray-600">{{ __('auth.update_profile_info') }}</p>
                 </div>
                 
-                <form method="POST" action="{{ route('backend.admin.profile.update') }}" class="space-y-6">
-                    @csrf
-                    @method('PATCH')
+                <form wire:submit.prevent="saveProfile" class="space-y-6">
 
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">{{ __('auth.name') }}</label>
-                        <input type="text" name="name" id="name" value="{{ old('name', Auth::guard('admin')->user()->name) }}"
+                        <input type="text" id="name" wire:model.defer="name"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
                         @error('name')
@@ -29,7 +25,7 @@
                     <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">{{ __('auth.email') }}</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', Auth::guard('admin')->user()->email) }}"
+                        <input type="email" id="email" wire:model.defer="email"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
                         @error('email')
@@ -38,7 +34,8 @@
                     </div>
 
                     <div>
-                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <button type="submit" wire:loading.attr="disabled"
+                                class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed">
                             {{ __('common.save') }}
                         </button>
                     </div>
@@ -54,14 +51,12 @@
                     <p class="mt-1 text-sm text-gray-600">{{ __('auth.ensure_long_password') }}</p>
                 </div>
                 
-                <form method="POST" action="{{ route('backend.admin.password.update') }}" class="space-y-6">
-                    @csrf
-                    @method('PATCH')
+                <form wire:submit.prevent="savePassword" class="space-y-6">
 
                     <!-- Current Password -->
                     <div>
                         <label for="current_password" class="block text-sm font-medium text-gray-700">{{ __('auth.current_password') }}</label>
-                        <input type="password" name="current_password" id="current_password"
+                        <input type="password" id="current_password" wire:model.defer="current_password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
                         @error('current_password')
@@ -72,7 +67,7 @@
                     <!-- New Password -->
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">{{ __('auth.new_password') }}</label>
-                        <input type="password" name="password" id="password"
+                        <input type="password" id="password" wire:model.defer="password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
                         @error('password')
@@ -83,13 +78,14 @@
                     <!-- Confirm Password -->
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('auth.confirm_password') }}</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation"
+                        <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
                     </div>
 
                     <div>
-                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <button type="submit" wire:loading.attr="disabled"
+                                class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed">
                             {{ __('auth.update_password') }}
                         </button>
                     </div>
@@ -98,4 +94,4 @@
         </div>
     </div>
 </div>
-@endsection
+</div>

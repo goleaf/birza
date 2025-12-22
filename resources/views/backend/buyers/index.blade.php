@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold">{{ __('buyers.title') }}</h2>
     <a href="{{ route('backend.buyers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -75,13 +73,12 @@
 
               <a href="{{ route('backend.buyers.orders', $buyer) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.orders') }}</a>
               <a href="{{ route('backend.buyers.edit', $buyer) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.edit') }}</a>
-              <form action="{{ route('backend.buyers.destroy', $buyer) }}" method="POST" class="inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('common.confirm_delete') }}')">
-                  {{ __('common.delete') }}
-                </button>
-              </form>
+              <button type="button"
+                      class="text-red-600 hover:text-red-900"
+                      onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                      wire:click="deleteBuyer({{ $buyer->id }})">
+                {{ __('common.delete') }}
+              </button>
             </td>
           </tr>
         @endforeach
@@ -92,4 +89,4 @@
   <div class="mt-4">
     {{ $buyers->links() }}
   </div>
-@endsection
+</div>

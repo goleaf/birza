@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">
             {{ __('backend.countries.title') }}
@@ -43,13 +41,12 @@
                                 <a href="{{ route('backend.countries.edit', $country) }}" class="text-indigo-600 hover:text-indigo-900">
                                     {{ __('backend.common.edit') }}
                                 </a>
-                                <form action="{{ route('backend.countries.destroy', $country) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('backend.common.confirm_delete') }}')">
-                                        {{ __('backend.common.delete') }}
-                                    </button>
-                                </form>
+                                <button type="button"
+                                        class="text-red-600 hover:text-red-900"
+                                        onclick="confirm('{{ __('backend.common.confirm_delete') }}') || event.stopImmediatePropagation()"
+                                        wire:click="deleteCountry({{ $country->id }})">
+                                    {{ __('backend.common.delete') }}
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -61,4 +58,4 @@
             </div>
         </div>
     </div>
-@endsection
+</div>

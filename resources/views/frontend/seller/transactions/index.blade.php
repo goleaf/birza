@@ -1,6 +1,4 @@
-@extends('layouts.frontend.app')
-
-@section('content')
+<div>
     <div class="max-w-7xl mx-auto">
         <!-- start stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -164,4 +162,4 @@
         </div>
         <!-- end transactions list -->
     </div>
-@endsection
+</div>

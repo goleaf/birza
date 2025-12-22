@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <!-- start main container -->
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <!-- start white container -->
@@ -57,13 +55,12 @@
                                     <a href="{{ route('backend.attributes.edit', $attribute) }}" class="text-indigo-600 hover:text-indigo-900">
                                         {{ __('backend.common.edit') }}
                                     </a>
-                                    <form action="{{ route('backend.attributes.destroy', $attribute) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('backend.common.confirm_delete') }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900">
-                                            {{ __('backend.common.delete') }}
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            class="text-red-600 hover:text-red-900"
+                                            onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                            wire:click="deleteAttribute({{ $attribute->id }})">
+                                        {{ __('backend.common.delete') }}
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -84,4 +81,4 @@
     <!-- end white container -->
 </div>
 <!-- end main container -->
-@endsection
+</div>

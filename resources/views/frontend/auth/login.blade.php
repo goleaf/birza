@@ -8,44 +8,6 @@
                 {{ __('auth.login') }}
             </h2>
 
-            <!-- Success Message -->
-            @if (session('success'))
-                <div class="mb-4 p-4 rounded-xl bg-green-50 border border-green-200">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm text-green-700">
-                                {{ session('success') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Error Messages -->
-            @if ($errors->any())
-                <div class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <ul class="list-disc list-inside text-sm text-red-700">
-                                @foreach ($errors->all() as $error)
-                                    <div class="text-red-500 text-sm">{{ $error }}</div>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <!-- Form -->
             <form class="space-y-6" action="{{ route("{$userType}.login.submit") }}" method="POST">
                 @csrf

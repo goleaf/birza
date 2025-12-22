@@ -32,7 +32,13 @@ return [
     'confirm_delete' => 'Ar tikrai norite ištrinti?',
     'confirm_password' => 'Patvirtinti slaptažodį',
     'error_occurred' => 'Įvyko klaida',
+    'back_to_dashboard' => 'Grįžti į pagrindinį',
     'back_to_orders' => 'Atgal į užsakymus',
+    'back_to_products' => 'Grįžti į produktų sąrašą',
+    'add_to_cart' => 'Į krepšelį',
+    'out_of_stock' => 'Sandėlyje nėra',
+    'no_image' => 'Nėra nuotraukos',
+    'unnamed_product' => 'Produktas be pavadinimo',
 
     // Auth-ish
     'already_have_account' => 'Jau turite paskyrą',

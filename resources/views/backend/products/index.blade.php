@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 
 
         <!-- Filters Section -->
@@ -157,33 +155,25 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             @if ($product->trashed())
-                                                <form action="{{ route('backend.products.restore', $product->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    <button type="submit" class="text-green-600 hover:text-green-900 mr-3">
-                                                        {{ __('common.restore') }}
-                                                    </button>
-                                                </form>
-                                                <form action="{{ route('backend.products.force-delete', $product->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" 
-                                                            onclick="return confirm('{{ __('common.confirm_force_delete') }}')">
-                                                        {{ __('common.force_delete') }}
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="text-green-600 hover:text-green-900 mr-3"
+                                                        wire:click="restoreProduct({{ $product->id }})">
+                                                    {{ __('common.restore') }}
+                                                </button>
+                                                <button type="button" class="text-red-600 hover:text-red-900"
+                                                        onclick="if(!confirm('{{ __('common.confirm_force_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                                        wire:click="forceDeleteProduct({{ $product->id }})">
+                                                    {{ __('common.force_delete') }}
+                                                </button>
                                             @else
                                                 <a href="{{ route('backend.products.edit', $product) }}" 
                                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
                                                     {{ __('common.edit') }}
                                                 </a>
-                                                <form action="{{ route('backend.products.destroy', $product) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" 
-                                                            onclick="return confirm('{{ __('common.confirm_delete') }}')">
-                                                        {{ __('common.delete') }}
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="text-red-600 hover:text-red-900"
+                                                        onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                                        wire:click="deleteProduct({{ $product->id }})">
+                                                    {{ __('common.delete') }}
+                                                </button>
                                             @endif
                                         </td>
                                     </tr>
@@ -207,4 +197,4 @@
             </div>
         </div>
     </div>
-@endsection
+</div>

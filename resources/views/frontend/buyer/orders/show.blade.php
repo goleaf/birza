@@ -1,9 +1,4 @@
-<!-- start extends -->
-@extends('layouts.frontend.app')
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
         <!-- start order header -->
@@ -39,19 +34,13 @@
                     
                     <!-- start cancel form -->
                     @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
-                        <form action="{{ route('buyer.orders.cancel', $order) }}" method="POST" class="inline">
-                            @csrf
-                            @method('PUT')
-                            <!-- start cancel button -->
-                            <button 
-                                type="submit" 
+                        <button type="button"
                                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
-                                onclick="return confirm('{{ __('orders.confirm_cancel') }}')"
-                            >
-                                {{ __('orders.cancel_order') }}
-                            </button>
-                            <!-- end cancel button -->
-                        </form>
+                                onclick="if(!confirm('{{ __('orders.confirm_cancel') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                wire:click="cancelOrder"
+                                wire:loading.attr="disabled">
+                            {{ __('orders.cancel_order') }}
+                        </button>
                     @endif
                     <!-- end cancel form -->
                 </div>
@@ -171,5 +160,5 @@
         <!-- end order items -->
     </div>
     <!-- end main container -->
-@endsection
+</div>
 <!-- end section -->

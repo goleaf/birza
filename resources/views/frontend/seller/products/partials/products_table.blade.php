@@ -100,19 +100,19 @@
                         <div class="flex space-x-2">
                             @if ($product->deleted_at)
                                 <!-- start restore button -->
-                                <button 
-                                    onclick="confirmRestore({{ $product->id }})"
-                                    class="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
-                                >
+                                <button type="button"
+                                        class="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                                        onclick="if(!confirm('{{ __('product.restore_confirmation') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                        wire:click="restoreProduct({{ $product->id }})">
                                     {{ __('product.restore') }}
                                 </button>
                                 <!-- end restore button -->
                             @else
                                 <!-- start delete button -->
-                                <button 
-                                    onclick="confirmSoftDelete({{ $product->id }})"
-                                    class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                                >
+                                <button type="button"
+                                        class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                        onclick="if(!confirm('{{ __('product.soft_delete_confirmation') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                        wire:click="softDeleteProduct({{ $product->id }})">
                                     {{ __('product.soft_delete') }}
                                 </button>
                                 <!-- end delete button -->
@@ -129,30 +129,3 @@
     <!-- end table body -->
 </table>
 <!-- end table -->
-
-<!-- start javascript -->
-<script>
-    function confirmSoftDelete(productId) {
-        if (confirm("{{ __('product.soft_delete_confirmation') }}")) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = "{{ route('seller.products.destroy', '') }}/" + productId;
-            form.innerHTML =
-                '<input type="hidden" name="_token" value="{{ csrf_token() }}"><input type="hidden" name="_method" value="DELETE">';
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    function confirmRestore(productId) {
-        if (confirm("{{ __('product.restore_confirmation') }}")) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = "{{ route('seller.products.restore', '') }}/" + productId;
-            form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}">';
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-</script>
-<!-- end javascript -->

@@ -26,5 +26,6 @@ return [
         |
     */
     // Use a distinct alias so it doesn't collide with WireUI's own <x-icon /> component.
-    'alias' => 'phosphor-icon',
+    // Example: <x-phosphor name="..." />
+    'alias' => 'phosphor',
 ];

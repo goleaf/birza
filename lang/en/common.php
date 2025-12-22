@@ -32,7 +32,13 @@ return [
     'confirm_delete' => 'Are you sure you want to delete?',
     'confirm_password' => 'Confirm Password',
     'error_occurred' => 'An error occurred',
+    'back_to_dashboard' => 'Back to dashboard',
     'back_to_orders' => 'Back to orders',
+    'back_to_products' => 'Back to products',
+    'add_to_cart' => 'Add to cart',
+    'out_of_stock' => 'Out of stock',
+    'no_image' => 'No image',
+    'unnamed_product' => 'Unnamed product',
 
     // Auth-ish
     'already_have_account' => 'Already have an account',

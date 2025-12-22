@@ -1,6 +1,4 @@
-@extends('layouts.frontend.app')
-
-@section('content')
+<div>
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
         {{ __('dashboard.company_ads') }}
     </div>
@@ -511,4 +509,4 @@
         </div>
 
     </div>
-@endsection
+</div>

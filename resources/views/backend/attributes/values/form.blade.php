@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <!-- start main container -->
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <!-- start white container -->
@@ -15,13 +13,7 @@
             <!-- end title -->
 
             <!-- start form -->
-            <form 
-                action="{{ isset($attributeValue) ? route('backend.attributes.values.update', [$attribute, $attributeValue]) : route('backend.attributes.values.store', $attribute) }}" 
-                method="POST">
-                @csrf
-                @if(isset($attributeValue))
-                    @method('PUT')
-                @endif
+            <form wire:submit.prevent="save">
 
                 <!-- start translatable fields -->
                 @foreach(config('app.locales') as $locale)
@@ -29,7 +21,7 @@
                         <label for="value_{{ $locale }}" class="block font-medium text-gray-700 mb-1">
                             {{ strtoupper($locale) }} {{ __('backend.attribute_values.fields.value') }}
                         </label>
-                        <input type="text" id="value_{{ $locale }}" name="value[{{ $locale }}]" value="{{ old('value.' . $locale, isset($attributeValue) ? $attributeValue->getTranslation('value', $locale) : '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                        <input type="text" id="value_{{ $locale }}" wire:model.defer="value.{{ $locale }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         @error('value.' . $locale)
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -40,7 +32,7 @@
                 <!-- start is active checkbox -->
                 <div class="mb-4">
                     <label class="inline-flex items-center">
-                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', isset($attributeValue) ? $attributeValue->is_active : true) ? 'checked' : '' }} class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="checkbox" wire:model.defer="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <span class="ml-2">
                             {{ __('backend.attribute_values.fields.is_active') }}
                         </span>
@@ -53,7 +45,7 @@
                     <a href="{{ route('backend.attributes.values.index', $attribute) }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
                         {{ __('backend.common.cancel') }}
                     </a>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                    <button type="submit" wire:loading.attr="disabled" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed">
                         {{ isset($attributeValue) ? __('backend.common.update') : __('backend.common.create') }}
                     </button>
                 </div>
@@ -66,4 +58,4 @@
     <!-- end white container -->
 </div>
 <!-- end main container -->
-@endsection
+</div>

@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <div class="max-w-7xl mx-auto">
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
@@ -191,4 +189,4 @@
         @endif
     </div>
 </div>
-@endsection
+</div>

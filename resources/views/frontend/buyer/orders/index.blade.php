@@ -1,31 +1,6 @@
-<!-- start extends -->
-@extends('layouts.frontend.app')
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
-        <!-- start success message -->
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-        <!-- end success message -->
-
-        <!-- start errors -->
-        @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <!-- end errors -->
-
         <!-- start filters container -->
         <div class="bg-white shadow rounded-lg mb-6">
             <!-- start filters content -->
@@ -323,4 +298,4 @@
         </div>
         <!-- end orders list -->
     </div>
-@endsection
+</div>

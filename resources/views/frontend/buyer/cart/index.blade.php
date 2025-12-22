@@ -1,34 +1,6 @@
-<!-- start extends -->
-@extends('layouts.frontend.app')
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
     <!-- start main container -->
-    <div 
-        class="bg-white shadow-sm sm:rounded-lg px-6 py-6"
-    >
-        <!-- start title -->
-        <h2 
-            class="text-2xl font-bold mb-6"
-        >
-            {{ __('cart.shopping_cart') }}
-        </h2>
-        <!-- end title -->
-
-        <!-- start messages -->
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('message'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {{ session('message') }}
-            </div>
-        @endif
-        <!-- end messages -->
+    <x-ui.card class="shadow-sm sm:rounded-lg" :title="__('cart.shopping_cart')">
 
         <!-- start cart items -->
         @if (LaraCart::count() > 0)
@@ -136,47 +108,23 @@
                             <!-- start buttons group -->
                             <div class="flex items-center space-x-2">
                                 <!-- start update quantity form -->
-                                <form 
-                                    action="{{ route('buyer.cart.update-quantity', $item->getHash()) }}" 
-                                    method="POST"
-                                    class="flex items-center space-x-2"
-                                >
-                                    @csrf
-                                    @method('PATCH')
+                                <form class="flex items-center space-x-2" wire:submit.prevent="updateQuantity('{{ $item->getHash() }}')">
                                     <div class="flex flex-col">
                                         <input 
                                             type="number" 
-                                            name="quantity" 
-                                            value="{{ $item->qty ?? 1 }}"
-                                            class="w-20 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 {{ $errors->has('quantity') ? 'border-red-500' : '' }}"
+                                            wire:model.defer="quantities.{{ $item->getHash() }}"
+                                            class="w-20 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 {{ $errors->has('quantities.' . $item->getHash()) ? 'border-red-500' : '' }}"
                                         >
-                                        @error('quantity')
+                                        @error('quantities.' . $item->getHash())
                                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <button 
-                                        type="submit"
-                                        class="px-2 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                                    >
-                                        {{ __('cart.update') }}
-                                    </button>
+                                    <x-ui.button type="submit" sm primary :label="__('cart.update')" />
                                 </form>
                                 <!-- end update quantity form -->
 
                                 <!-- start remove item form -->
-                                <form 
-                                    action="{{ route('buyer.cart.remove', $item->getHash()) }}" 
-                                    method="POST"
-                                >
-                                    @csrf
-                                    @method('DELETE')
-                                    <button 
-                                        type="submit"
-                                        class="px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-                                    >
-                                        {{ __('cart.remove') }}
-                                    </button>
-                                </form>
+                                <x-ui.button type="button" sm negative wire:click="removeItem('{{ $item->getHash() }}')" :label="__('cart.remove')" />
                                 <!-- end remove item form -->
                             </div>
                             <!-- end buttons group -->
@@ -209,24 +157,12 @@
 
                     <!-- start action buttons -->
                     <div class="flex space-x-4 mt-6">
-                        <a 
+                        <x-ui.button
                             href="{{ route('buyer.products.index') }}"
-                            class="px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition"
-                        >
-                            {{ __('cart.continue_shopping') }}
-                        </a>
-                        <form 
-                            action="{{ route('buyer.cart.checkout') }}" 
-                            method="POST"
-                        >
-                            @csrf
-                            <button 
-                                type="submit"
-                                class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition"
-                            >
-                                {{ __('cart.checkout') }}
-                            </button>
-                        </form>
+                            secondary
+                            :label="__('cart.continue_shopping')"
+                        />
+                        <x-ui.button type="button" positive wire:click="checkout" :label="__('cart.checkout')" />
                     </div>
                     <!-- end action buttons -->
                 </div>
@@ -238,17 +174,12 @@
                 <p class="text-gray-600 text-lg mb-6">
                     {{ __('cart.empty_cart') }}
                 </p>
-                <a 
-                    href="{{ route('buyer.products.index') }}"
-                    class="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
-                >
-                    {{ __('cart.continue_shopping') }}
-                </a>
+                <x-ui.button href="{{ route('buyer.products.index') }}" primary :label="__('cart.continue_shopping')" />
             </div>
             <!-- end empty cart message -->
         @endif
         <!-- end cart items -->
-    </div>
+    </x-ui.card>
     <!-- end main container -->
-@endsection
+</div>
 <!-- end section -->

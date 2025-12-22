@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">{{ __('sellers.title') }}</h2>
         <a href="{{ route('backend.sellers.create') }}"
@@ -63,13 +61,12 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('backend.sellers.show', $seller) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.view') }}</a>
                                 <a href="{{ route('backend.sellers.edit', $seller) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('common.edit') }}</a>
-                                <form action="{{ route('backend.sellers.destroy', $seller) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('common.confirm_delete') }}')">
-                                        {{ __('common.delete') }}
-                                    </button>
-                                </form>
+                                <button type="button"
+                                        class="text-red-600 hover:text-red-900"
+                                        onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                        wire:click="deleteSeller({{ $seller->id }})">
+                                    {{ __('common.delete') }}
+                                </button>
                                 <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="text-blue-600 hover:text-blue-900 ml-3">{{ __('sellers.orders_list') }}</a>
                             </td>
                         </tr>
@@ -82,4 +79,4 @@
     <div class="mt-4">
         {{ $sellers->links() }}
     </div>
-@endsection
+</div>

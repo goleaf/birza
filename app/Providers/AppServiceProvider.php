@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Keep Laravel "namespaced" vendor views working without resources/views/vendor/*
+        // by mapping them to our top-level resources/views/* folders.
+        View::replaceNamespace('pagination', resource_path('views/pagination'));
+        View::replaceNamespace('notifications', resource_path('views/notifications'));
+        View::replaceNamespace('error-solutions', resource_path('views/error-solutions'));
+
+        // Ensure Livewire's bundled Alpine boots AFTER WireUI's deferred scripts have registered directives.
+        // WireUI scripts are rendered with `defer`, so we also defer Livewire's script tag.
+        Livewire::useScriptTagAttributes([
+            'defer' => true,
+        ]);
     }
 }

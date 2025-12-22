@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Buyer Information Card -->
     <div class="mb-8">
@@ -150,4 +148,4 @@
         {{ $creditHistory->withQueryString()->links() }}
     </div>
 </div>
-@endsection
+</div>

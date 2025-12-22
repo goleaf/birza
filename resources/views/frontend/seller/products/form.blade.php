@@ -1,9 +1,4 @@
-    <!-- start extends -->
-    @extends('layouts.frontend.app')
-    <!-- end extends -->
-
-    <!-- start section -->
-    @section('content')
+<div>
         <!-- start main container -->
         <div class="container mx-auto px-4 py-8">
             <!-- start form container -->
@@ -14,60 +9,9 @@
                 </h2>
                 <!-- end title -->
 
-                <!-- start success message -->
-                @if (session('success'))
-                    <div 
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" 
-                        role="alert"
-                    >
-                        <span class="block sm:inline">
-                            {{ session('success') }}
-                        </span>
-                    </div>
-                @endif
-                <!-- end success message -->
-
-                <!-- start errors -->
-                @if ($errors->any())
-                    <div 
-                        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" 
-                        role="alert"
-                    >
-                        <ul class="list-disc list-inside">
-                            @foreach ($errors->all() as $error)
-                                <li>
-                                    {{ $error }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <!-- end errors -->
-
                 <!-- start form -->
-                <form 
-                    method="POST" 
-                    action="{{ isset($product->id) ? route('seller.products.update', $product) : route('seller.products.store') }}" 
-                    enctype="multipart/form-data"
-                >
-                    @csrf
-                    @if (isset($product->id))
-                        @method('PUT')
-                    @endif
-
-                    @if (isset($selectedCategory))
-                        <input 
-                            type="hidden" 
-                            name="category_id" 
-                            value="{{ $selectedCategory->id }}"
-                        >
-                    @else
-                        <input 
-                            type="hidden" 
-                            name="category_id" 
-                            value="{{ $product->category_id }}"
-                        >
-                    @endif
+                <form wire:submit.prevent="save" enctype="multipart/form-data">
+                    <input type="hidden" wire:model="category_id">
 
                     <!-- start name field -->
                     <div class="mb-6">
@@ -76,9 +20,8 @@
                         </label>
                         <input 
                             type="text"
-                            name="name" 
                             required 
-                            value="{{ old('name', $product->name ?? '') }}"
+                            wire:model.defer="name"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('name') ? 'border-red-500' : '' }}"
                         >
                         @error('name')
@@ -96,9 +39,8 @@
                         <input 
                             type="number" 
                             step="0.01" 
-                            name="price" 
                             required 
-                            value="{{ old('price', $product->price ?? '') }}" 
+                            wire:model.defer="price"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('price') ? 'border-red-500' : '' }}"
                         >
                         @error('price')
@@ -114,8 +56,7 @@
                         </label>
                         <input 
                             type="text"
-                            name="pack_type"
-                            value="{{ old('pack_type', $product->pack_type ?? '') }}"
+                            wire:model.defer="pack_type"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('pack_type') ? 'border-red-500' : '' }}"
                         >
                         @error('pack_type')
@@ -130,14 +71,13 @@
                             {{ __('product.unit') }} *
                         </label>
                         <select 
-                            name="unit" 
                             required 
+                            wire:model.defer="unit"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('unit') ? 'border-red-500' : '' }}"
                         >
                             @foreach (collect(\App\Models\Product::UNITS)->sort() as $unit)
                                 <option 
                                     value="{{ $unit }}" 
-                                    {{ old('unit', $product->unit ?? '') == $unit ? 'selected' : '' }}
                                 >
                                     {{ __("units.$unit") }}
                                 </option>
@@ -155,8 +95,8 @@
                             {{ __('product.country_of_origin') }} *
                         </label>
                         <select 
-                            name="country_of_origin" 
                             required 
+                            wire:model.defer="country_of_origin"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('country_of_origin') ? 'border-red-500' : '' }}"
                         >
                             <option value="">
@@ -165,7 +105,6 @@
                             @foreach ($countries as $country)
                                 <option 
                                     value="{{ $country->id }}" 
-                                    {{ old('country_of_origin', $product->country_of_origin ?? '') == $country->id ? 'selected' : '' }}
                                 >
                                     {{ $country->getTranslation('country_name', app()->getLocale()) }}
                                 </option>
@@ -183,19 +122,17 @@
                             {{ __('product.is_organic') }} *
                         </label>
                         <select 
-                            name="is_organic" 
                             required 
+                            wire:model.defer="is_organic"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('is_organic') ? 'border-red-500' : '' }}"
                         >
                             <option 
                                 value="0" 
-                                {{ old('is_organic', $product->is_organic ?? 0) == 0 ? 'selected' : '' }}
                             >
                                 {{ __('common.no') }}
                             </option>
                             <option 
                                 value="1" 
-                                {{ old('is_organic', $product->is_organic ?? 0) == 1 ? 'selected' : '' }}
                             >
                                 {{ __('common.yes') }}
                             </option>
@@ -212,19 +149,17 @@
                             {{ __('product.is_active') }} *
                         </label>
                         <select 
-                            name="is_active" 
                             required 
+                            wire:model.defer="is_active"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('is_active') ? 'border-red-500' : '' }}"
                         >
                             <option 
                                 value="0" 
-                                {{ old('is_active', $product->is_active ?? 0) == 0 ? 'selected' : '' }}
                             >
                                 {{ __('common.no') }}
                             </option>
                             <option 
                                 value="1" 
-                                {{ old('is_active', $product->is_active ?? 0) == 1 ? 'selected' : '' }}
                             >
                                 {{ __('common.yes') }}
                             </option>
@@ -243,8 +178,7 @@
                         <input 
                             type="number" 
                             step="0.01" 
-                            name="min_order_price" 
-                            value="{{ old('min_order_price', $product->min_order_price ?? '') }}" 
+                            wire:model.defer="min_order_price"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('min_order_price') ? 'border-red-500' : '' }}"
                         >
                         @error('min_order_price')
@@ -260,8 +194,7 @@
                         </label>
                         <input 
                             type="number" 
-                            name="min_order_count" 
-                            value="{{ old('min_order_count', $product->min_order_count ?? '') }}" 
+                            wire:model.defer="min_order_count"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('min_order_count') ? 'border-red-500' : '' }}"
                             required
                         >
@@ -278,9 +211,8 @@
                         </label>
                         <input 
                             type="number" 
-                            name="stock" 
                             required 
-                            value="{{ old('stock', $product->stock ?? '') }}" 
+                            wire:model.defer="stock"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('stock') ? 'border-red-500' : '' }}"
                         >
                         @error('stock')
@@ -300,11 +232,11 @@
                                     {{ strtoupper($locale) }}{{ $locale == app()->getLocale() ? ' *' : '' }}
                                 </label>
                                 <textarea 
-                                    name="description[{{ $locale }}]" 
                                     rows="4" 
                                     {{ $locale == app()->getLocale() ? 'required' : '' }} 
+                                    wire:model.defer="description.{{ $locale }}"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has("description.$locale") ? 'border-red-500' : '' }}"
-                                >{{ old("description.$locale", isset($product) ? $product->getTranslation('description', $locale) : '') }}</textarea>
+                                ></textarea>
                                 @error("description.$locale")
                                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                 @enderror
@@ -329,8 +261,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    name="temperature_conditions_from"
-                                    value="{{ old('temperature_conditions_from', $product->temperature_conditions_from ?? '') }}"
+                                    wire:model.defer="temperature_conditions_from"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('temperature_conditions_from') ? 'border-red-500' : '' }}"
                                 >
                                 @error('temperature_conditions_from')
@@ -343,8 +274,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    name="temperature_conditions_to"
-                                    value="{{ old('temperature_conditions_to', $product->temperature_conditions_to ?? '') }}"
+                                    wire:model.defer="temperature_conditions_to"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('temperature_conditions_to') ? 'border-red-500' : '' }}"
                                 >
                                 @error('temperature_conditions_to')
@@ -362,8 +292,7 @@
                         </label>
                         <input
                             type="date"
-                            name="use_until"
-                            value="{{ old('use_until', isset($product->use_until) ? $product->use_until->format('Y-m-d') : '') }}"
+                            wire:model.defer="use_until"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('use_until') ? 'border-red-500' : '' }}"
                         >
                         @error('use_until')
@@ -381,8 +310,7 @@
                         </label>
                         <input
                             type="number"
-                            name="total_shelf_life"
-                            value="{{ old('total_shelf_life', $product->total_shelf_life ?? '') }}"
+                            wire:model.defer="total_shelf_life"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('total_shelf_life') ? 'border-red-500' : '' }}"
                             required
                         >
@@ -412,7 +340,7 @@
                             <span class="sr-only">{{ __('product.choose_file') }}</span>
                             <input 
                                 type="file" 
-                                name="product_image" 
+                                wire:model="product_image"
                                 accept="image/*" 
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('product_image') ? 'border-red-500' : '' }}"
                             >
@@ -438,7 +366,7 @@
                             <span class="sr-only">{{ __('product.choose_file') }}</span>
                             <input 
                                 type="file" 
-                                name="product_additional_image" 
+                                wire:model="product_additional_image"
                                 accept="image/*" 
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('product_additional_image') ? 'border-red-500' : '' }}"
                             >
@@ -453,7 +381,8 @@
                     <div class="flex items-center justify-between">
                         <button 
                             type="submit" 
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            wire:loading.attr="disabled"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             {{ isset($product->id) ? __('product.update') : __('product.create') }}
                         </button>
@@ -471,5 +400,5 @@
             <!-- end form container -->
         </div>
         <!-- end main container -->
-    @endsection
+</div>
     <!-- end section -->

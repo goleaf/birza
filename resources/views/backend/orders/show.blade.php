@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
 <div class="max-w-7xl mx-auto">
     <!-- Order Header -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -151,4 +149,4 @@
         </table>
     </div>
 </div>
-@endsection
+</div>

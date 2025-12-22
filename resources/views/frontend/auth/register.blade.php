@@ -8,17 +8,6 @@
                 {{ __('auth.register') }}
             </h2>
 
-            <!-- Messages -->
-            @if ($errors->any())
-                <div class="mb-4 bg-red-50 p-4 rounded-lg">
-                    <div class="text-red-500 text-sm">
-                        @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             <!-- Form -->
             <form class="space-y-6" action="{{ route("{$userType}.register.submit") }}" method="POST">
                 @csrf

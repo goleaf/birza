@@ -1,35 +1,7 @@
-<!-- start extends -->
-@extends('layouts.frontend.app')
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
 
     <!-- start main container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <!-- start success message -->
-        @if (session('success'))
-            <div class="mb-6 rounded-lg bg-green-50 p-4 text-sm text-green-800 flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                {{ session('success') }}
-            </div>
-        @endif
-        <!-- end success message -->
-
-        <!-- start errors -->
-        @if ($errors->any())
-            <div class="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-800">
-                <ul class="list-disc list-inside space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <!-- end errors -->
 
         <!-- start tabs navigation -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -73,9 +45,7 @@
         <div id="profile-content" class="tab-content">
             <div class="bg-white rounded-lg shadow-sm">
                 <div class="p-8">
-                    <form method="POST" action="{{ route('buyer.profile.update') }}">
-                        @csrf
-                        @method('PUT')
+                    <form wire:submit.prevent="saveProfile">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- start name field -->
@@ -88,9 +58,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="name" 
                                     id="name" 
-                                    value="{{ old('name', $buyer->name) }}"
+                                    wire:model.defer="name"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('name') border-red-500 @enderror"
                                     required
                                 >
@@ -110,9 +79,8 @@
                                 </label>
                                 <input 
                                     type="email" 
-                                    name="email" 
                                     id="email" 
-                                    value="{{ old('email', $buyer->email) }}"
+                                    wire:model.defer="email"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
                                     required
                                 >
@@ -132,9 +100,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="company_name" 
                                     id="company_name" 
-                                    value="{{ old('company_name', $buyer->company_name) }}"
+                                    wire:model.defer="company_name"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
                                     required
                                 >
@@ -154,9 +121,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="company_code" 
                                     id="company_code" 
-                                    value="{{ old('company_code', $buyer->company_code) }}"
+                                    wire:model.defer="company_code"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_code') border-red-500 @enderror"
                                     required
                                 >
@@ -173,9 +139,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="vat_code" 
                                     id="vat_code" 
-                                    value="{{ old('vat_code', $buyer->vat_code) }}"
+                                    wire:model.defer="vat_code"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                                 >
                             </div>
@@ -191,9 +156,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="address" 
                                     id="address" 
-                                    value="{{ old('address', $buyer->address) }}"
+                                    wire:model.defer="address"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('address') border-red-500 @enderror"
                                     required
                                 >
@@ -213,9 +177,8 @@
                                 </label>
                                 <input 
                                     type="tel" 
-                                    name="phone" 
                                     id="phone" 
-                                    value="{{ old('phone', $buyer->phone) }}"
+                                    wire:model.defer="phone"
                                     placeholder="+370" 
                                     data-mask="+370 99999999"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('phone') border-red-500 @enderror"
@@ -237,9 +200,8 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    name="bank_account" 
                                     id="bank_account" 
-                                    value="{{ old('bank_account', $buyer->bank_account) }}"
+                                    wire:model.defer="bank_account"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('bank_account') border-red-500 @enderror"
                                     required
                                 >
@@ -301,9 +263,7 @@
                         <!-- end password errors -->
 
                         <!-- start password form -->
-                        <form method="POST" action="{{ route('buyer.profile.password') }}" class="max-w-md mx-auto space-y-6">
-                            @csrf
-                            @method('PUT')
+                        <form wire:submit.prevent="savePassword" class="max-w-md mx-auto space-y-6">
 
                             <div class="space-y-2">
                                 <!-- start current password field -->
@@ -319,8 +279,8 @@
                                     </label>
                                     <input 
                                         type="password" 
-                                        name="current_password" 
                                         id="current_password"
+                                        wire:model.defer="current_password"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('current_password') border-red-500 @enderror"
                                         required
                                     >
@@ -343,8 +303,8 @@
                                     </label>
                                     <input 
                                         type="password" 
-                                        name="password" 
                                         id="password"
+                                        wire:model.defer="password"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('password') border-red-500 @enderror"
                                         required
                                     >
@@ -367,8 +327,8 @@
                                     </label>
                                     <input 
                                         type="password" 
-                                        name="password_confirmation" 
                                         id="password_confirmation"
+                                        wire:model.defer="password_confirmation"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                                         required
                                     >
@@ -378,7 +338,8 @@
                                 <!-- start password form button -->
                                 <button 
                                     type="submit"
-                                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200"
+                                    wire:loading.attr="disabled"
+                                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     {{ __('profile.update_password') }}
                                 </button>
@@ -461,4 +422,4 @@
         });
     </script>
 
-@endsection
+</div>

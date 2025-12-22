@@ -1,6 +1,4 @@
-@extends('layouts.frontend.app')
-
-@section('content')
+<div>
     <div class="bg-gradient-to-r from-blue-600 to-purple-600 overflow-hidden shadow-2xl sm:rounded-lg">
         <div class="p-8 bg-opacity-90 border-b border-gray-200">
             <div class="grid grid-cols-3 gap-4 text-white">
@@ -385,4 +383,4 @@
     </div>
 
 
-@endsection
+</div>

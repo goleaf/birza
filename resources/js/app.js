@@ -1,8 +1,3 @@
-import Alpine from 'alpinejs'
-window.Alpine = Alpine
-
-// WireUI registers Alpine directives/magic/stores inside its own deferred script.
-// Starting Alpine on DOMContentLoaded guarantees WireUI finished registering before Alpine boots.
-document.addEventListener('DOMContentLoaded', () => {
-    Alpine.start()
-})
+// App JS entrypoint.
+// Livewire v3 ships with Alpine v3 bundled, so we intentionally do NOT import/start Alpine here.
+// This avoids creating two Alpine instances (one from Vite + one from Livewire) which breaks directives/events.

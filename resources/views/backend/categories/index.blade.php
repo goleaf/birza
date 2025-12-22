@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-@section('content')
+<div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">
             {{ __('backend.categories.title') }}
@@ -34,13 +32,12 @@
                                 <a href="{{ route('backend.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">
                                     {{ __('backend.common.edit') }}
                                 </a>
-                                <form action="{{ route('backend.categories.destroy', $category) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('backend.common.confirm_delete') }}')">
-                                        {{ __('backend.common.delete') }}
-                                    </button>
-                                </form>
+                                <button type="button"
+                                        class="text-red-600 hover:text-red-900"
+                                        onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                        wire:click="deleteCategory({{ $category->id }})">
+                                    {{ __('backend.common.delete') }}
+                                </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($category->attributes->count() > 0)
@@ -68,13 +65,12 @@
                                     <a href="{{ route('backend.categories.edit', $subcategory) }}" class="text-indigo-600 hover:text-indigo-900">
                                         {{ __('backend.common.edit') }}
                                     </a>
-                                    <form action="{{ route('backend.categories.destroy', $subcategory) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('backend.common.confirm_delete') }}')">
-                                            {{ __('backend.common.delete') }}
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            class="text-red-600 hover:text-red-900"
+                                            onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
+                                            wire:click="deleteCategory({{ $subcategory->id }})">
+                                        {{ __('backend.common.delete') }}
+                                    </button>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($subcategory->attributes->count() > 0)
@@ -96,4 +92,4 @@
             </table>
         </div>
     </div>
-@endsection
+</div>

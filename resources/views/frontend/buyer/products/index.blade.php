@@ -1,11 +1,4 @@
-<!-- start extends -->
-@extends('layouts.frontend.app', [
-    'fullWidth' => true
-])
-<!-- end extends -->
-
-<!-- start section -->
-@section('content')
+<div>
     <!-- start bg container -->
     <div class="bg-white">
         <!-- start main -->
@@ -441,5 +434,5 @@
         };
         
     </script>
-@endsection
+</div>
 <!-- end section -->
