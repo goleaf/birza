@@ -42,7 +42,6 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        Barryvdh\TranslationManager\TranslationServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\UserGuardServiceProvider::class,
         App\Providers\GlobalSettingsServiceProvider::class,

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Translatable\HasTranslations;
+use App\Models\Concerns\HasJsonTranslations;
 
 class AttributeValue extends Model
 {
-    use HasTranslations, HasFactory;
+    use HasJsonTranslations, HasFactory;
 
     protected $fillable = [
         'attribute_id',

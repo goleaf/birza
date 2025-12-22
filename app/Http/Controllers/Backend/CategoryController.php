@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use Illuminate\Support\Str;
 use App\Models\Attribute;
 use Carbon\Carbon;

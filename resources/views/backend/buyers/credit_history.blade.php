@@ -118,7 +118,7 @@
                         <td colspan="6" class="px-6 py-4">
                             @if($history->attachments->isNotEmpty())
                                 <div class="mt-2 text-sm">
-                                    <span class="text-gray-600">{{ __('ui.attachments') }}:</span>
+                                    <span class="text-gray-600">{{ __('common.attachments') }}:</span>
                                     @foreach($history->attachments as $attachment)
                                         <a href="{{ route('backend.credit.attachments.download', $attachment) }}" class="ml-2 text-primary-600 hover:text-primary-800" download>
                                             {{ $attachment->original_name }}

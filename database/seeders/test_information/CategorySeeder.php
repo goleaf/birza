@@ -3,15 +3,11 @@
 namespace Database\Seeders\test_information;
 
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Spatie\Translatable\HasTranslations;
 
 class CategorySeeder extends Seeder
 {
-    use HasTranslations;
-
     public function run()
     {
         $categories = [

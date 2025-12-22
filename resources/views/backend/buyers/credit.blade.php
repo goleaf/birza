@@ -132,10 +132,10 @@
                         <!-- Attachment Input -->
                         <div class="mt-4">
                             <label class="block text-sm font-medium text-gray-700 mb-1">
-                                {{ __('ui.attachment') }}
+                                {{ __('common.attachment') }}
                             </label>
                             <input type="file" name="attachment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                            <p class="mt-2 text-sm text-gray-500">{{ __('ui.optional_upload_supporting_document') }}</p>
+                            <p class="mt-2 text-sm text-gray-500">{{ __('common.optional_upload_supporting_document') }}</p>
                         </div>
 
                         <!-- Submit Button -->

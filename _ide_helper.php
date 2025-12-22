@@ -10576,30 +10576,6 @@ namespace Illuminate\Support\Facades {
      */
     class Lang {
         /**
-         * Get the translation for the given key.
-         *
-         * @param string $key
-         * @param array $replace
-         * @param string $locale
-         * @return string
-         * @static
-         */
-        public static function get($key, $replace = [], $locale = null, $fallback = true)
-        {
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
-            return $instance->get($key, $replace, $locale, $fallback);
-        }
-
-        /**
-         * @static
-         */
-        public static function setTranslationManager($manager)
-        {
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
-            return $instance->setTranslationManager($manager);
-        }
-
-        /**
          * Determine if a translation exists for a given locale.
          *
          * @param string $key
@@ -10609,8 +10585,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function hasForLocale($key, $locale = null)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->hasForLocale($key, $locale);
         }
 
@@ -10625,9 +10600,24 @@ namespace Illuminate\Support\Facades {
          */
         public static function has($key, $locale = null, $fallback = true)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->has($key, $locale, $fallback);
+        }
+
+        /**
+         * Get the translation for the given key.
+         *
+         * @param string $key
+         * @param array $replace
+         * @param string|null $locale
+         * @param bool $fallback
+         * @return string|array
+         * @static
+         */
+        public static function get($key, $replace = [], $locale = null, $fallback = true)
+        {
+            /** @var \Illuminate\Translation\Translator $instance */
+            return $instance->get($key, $replace, $locale, $fallback);
         }
 
         /**
@@ -10642,8 +10632,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function choice($key, $number, $replace = [], $locale = null)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->choice($key, $number, $replace, $locale);
         }
 
@@ -10658,8 +10647,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function addLines($lines, $locale, $namespace = '*')
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->addLines($lines, $locale, $namespace);
         }
 
@@ -10674,8 +10662,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function load($namespace, $group, $locale)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->load($namespace, $group, $locale);
         }
 
@@ -10688,8 +10675,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function handleMissingKeysUsing($callback)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->handleMissingKeysUsing($callback);
         }
 
@@ -10703,8 +10689,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function addNamespace($namespace, $hint)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->addNamespace($namespace, $hint);
         }
 
@@ -10717,8 +10702,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function addPath($path)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->addPath($path);
         }
 
@@ -10731,8 +10715,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function addJsonPath($path)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->addJsonPath($path);
         }
 
@@ -10745,8 +10728,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function parseKey($key)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->parseKey($key);
         }
 
@@ -10759,8 +10741,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function determineLocalesUsing($callback)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->determineLocalesUsing($callback);
         }
 
@@ -10772,8 +10753,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function getSelector()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->getSelector();
         }
 
@@ -10786,8 +10766,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function setSelector($selector)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->setSelector($selector);
         }
 
@@ -10799,8 +10778,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function getLoader()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->getLoader();
         }
 
@@ -10812,8 +10790,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function locale()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->locale();
         }
 
@@ -10825,8 +10802,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function getLocale()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->getLocale();
         }
 
@@ -10840,8 +10816,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function setLocale($locale)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->setLocale($locale);
         }
 
@@ -10853,8 +10828,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function getFallback()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             return $instance->getFallback();
         }
 
@@ -10867,8 +10841,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function setFallback($fallback)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->setFallback($fallback);
         }
 
@@ -10881,8 +10854,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function setLoaded($loaded)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->setLoaded($loaded);
         }
 
@@ -10896,8 +10868,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function stringable($class, $handler = null)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->stringable($class, $handler);
         }
 
@@ -10912,7 +10883,7 @@ namespace Illuminate\Support\Facades {
         public static function setParsedKey($key, $parsed)
         {
             //Method inherited from \Illuminate\Support\NamespacedItemResolver 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->setParsedKey($key, $parsed);
         }
 
@@ -10925,7 +10896,7 @@ namespace Illuminate\Support\Facades {
         public static function flushParsedKeys()
         {
             //Method inherited from \Illuminate\Support\NamespacedItemResolver 
-            /** @var \Barryvdh\TranslationManager\Translator $instance */
+            /** @var \Illuminate\Translation\Translator $instance */
             $instance->flushParsedKeys();
         }
 
@@ -10940,8 +10911,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function macro($name, $macro)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            \Barryvdh\TranslationManager\Translator::macro($name, $macro);
+            \Illuminate\Translation\Translator::macro($name, $macro);
         }
 
         /**
@@ -10955,8 +10925,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function mixin($mixin, $replace = true)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            \Barryvdh\TranslationManager\Translator::mixin($mixin, $replace);
+            \Illuminate\Translation\Translator::mixin($mixin, $replace);
         }
 
         /**
@@ -10968,8 +10937,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function hasMacro($name)
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            return \Barryvdh\TranslationManager\Translator::hasMacro($name);
+            return \Illuminate\Translation\Translator::hasMacro($name);
         }
 
         /**
@@ -10980,8 +10948,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function flushMacros()
         {
-            //Method inherited from \Illuminate\Translation\Translator 
-            \Barryvdh\TranslationManager\Translator::flushMacros();
+            \Illuminate\Translation\Translator::flushMacros();
         }
 
             }
@@ -25228,26 +25195,6 @@ namespace Illuminate\Http {
         public static function hasValidRelativeSignatureWhileIgnoring($ignoreQuery = [])
         {
             return \Illuminate\Http\Request::hasValidRelativeSignatureWhileIgnoring($ignoreQuery);
-        }
-
-            }
-    }
-
-namespace Illuminate\Database\Eloquent\Factories {
-    /**
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     * @method $this trashed()
-     */
-    class Factory {
-        /**
-         * @see \Spatie\Translatable\TranslatableServiceProvider::packageRegistered()
-         * @param array|string $locales
-         * @param mixed|null $value
-         * @static
-         */
-        public static function translations($locales, $value)
-        {
-            return \Illuminate\Database\Eloquent\Factories\Factory::translations($locales, $value);
         }
 
             }

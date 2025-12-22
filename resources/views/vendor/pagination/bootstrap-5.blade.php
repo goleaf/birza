@@ -29,13 +29,13 @@
         <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
             <div>
                 <p class="small text-muted">
-                    {!! __('ui.showing') !!}
+                    {!! __('common.showing') !!}
                     <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                    {!! __('ui.to') !!}
+                    {!! __('common.to') !!}
                     <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                    {!! __('ui.of') !!}
+                    {!! __('common.of') !!}
                     <span class="fw-semibold">{{ $paginator->total() }}</span>
-                    {!! __('ui.results') !!}
+                    {!! __('common.results') !!}
                 </p>
             </div>
 

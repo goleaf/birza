@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Translatable\HasTranslations;
+use App\Models\Concerns\HasJsonTranslations;
 
 class Country extends Model
 {
-    use HasTranslations, HasFactory;
+    use HasJsonTranslations, HasFactory;
 
     protected $table = 'countries';
 

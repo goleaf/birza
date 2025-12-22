@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Translatable\HasTranslations;
+use App\Models\Concerns\HasJsonTranslations;
 
 class Product extends Model
 {
-    use HasTranslations, SoftDeletes, HasFactory;
+    use HasJsonTranslations, SoftDeletes, HasFactory;
 
     public const UNITS = ['piece', 'kg', 'l', 'pack'];
 

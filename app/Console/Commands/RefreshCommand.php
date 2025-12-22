@@ -30,8 +30,7 @@ class RefreshCommand extends Command
             'permissions' => 'Setting permissions for storage folder...',
             'cleanup' => 'Cleaning up storage files...',
             'ide' => 'Running IDE helper commands...',
-            'optimize' => 'Optimizing application...',
-            'translations' => 'Importing and finding translations...'
+            'optimize' => 'Optimizing application...'
         ];
     }
 
@@ -62,7 +61,6 @@ class RefreshCommand extends Command
         $this->info('- Clean up storage files');
         $this->info('- Generate IDE helper files');
         $this->info('- Optimize application');
-        $this->info('- Import and find translations');
         $this->newLine();
     }
 
@@ -78,8 +76,7 @@ class RefreshCommand extends Command
             ['message' => $this->stepMessages['permissions'], 'method' => 'setFolderPermissions'],
             ['message' => $this->stepMessages['cleanup'], 'method' => 'cleanupStorage'],
             ['message' => $this->stepMessages['ide'], 'method' => 'runIdeHelperCommands'],
-            ['message' => $this->stepMessages['optimize'], 'method' => 'optimizeApplication'],
-            ['message' => $this->stepMessages['translations'], 'method' => 'handleTranslations']
+            ['message' => $this->stepMessages['optimize'], 'method' => 'optimizeApplication']
         ];
     }
 
@@ -291,24 +288,6 @@ class RefreshCommand extends Command
             }
         } else {
             $this->call('optimize:clear');
-        }
-        return true;
-    }
-
-    private function handleTranslations(): bool
-    {
-        $commands = [
-            'translations:import' => [],
-            'translations:find' => []
-        ];
-
-        foreach ($commands as $command => $options) {
-            $this->line("Executing: {$command}");
-            $result = $this->call($command, $options);
-            if ($result !== 0) {
-                throw new \RuntimeException("Failed to execute {$command}");
-            }
-            $this->info("✓ {$command} executed successfully");
         }
         return true;
     }
