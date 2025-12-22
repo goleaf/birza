@@ -216,7 +216,7 @@ class SellerAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', __('messages_logout_success'));
+        return redirect('/')->with('success', __('messages.logout_success'));
     }
 
     public function verify(Request $request)
@@ -225,12 +225,12 @@ class SellerAuthController extends Controller
         $user = Seller::where('remember_token', $request->route('hash'))->firstOrFail();
 
         if (!hash_equals((string) $request->route('hash'), $user->remember_token)) {
-            throw new AuthenticationException(__('messages_verification_required'));
+            throw new AuthenticationException(__('messages.verification_required'));
         }
 
         if ($user->is_verified) {
             return redirect()->route('seller.login')
-                ->with('success', __('messages_email_already_verified'));
+                ->with('success', __('messages.email_already_verified'));
         }
 
         $user->is_active = true;
@@ -238,7 +238,7 @@ class SellerAuthController extends Controller
         $user->remember_token = null;
         $user->save();
 
-        return redirect()->route('seller.login')->with('success', __('messages_verification_success'));
+        return redirect()->route('seller.login')->with('success', __('messages.verification_success'));
     }
 
     public function resend(Request $request)
@@ -247,11 +247,11 @@ class SellerAuthController extends Controller
 
         if ($user->is_verified) {
             return redirect()->route('seller.dashboard')
-                ->with('success', __('messages_email_already_verified'));
+                ->with('success', __('messages.email_already_verified'));
         }
 
         if (RateLimiter::tooManyAttempts('verify:'.$user->id, 3)) {
-            return back()->with('error', __('messages_verification_check'));
+            return back()->with('error', __('messages.verification_check'));
         }
 
         $user->remember_token = sha1(Str::random(40));
@@ -271,7 +271,7 @@ class SellerAuthController extends Controller
         RateLimiter::hit('verify:'.$user->id);
 
         return back()->with('resent', true)
-            ->with('success', __('messages_verification_sent'));
+            ->with('success', __('messages.verification_sent'));
     }
 
     protected function throttleKey(Request $request)

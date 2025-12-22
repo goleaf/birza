@@ -8,6 +8,13 @@ return [
         'delete' => 'Delete',
         'edit' => 'Edit',
         'save' => 'Save',
+        'success_message' => 'Operation completed successfully.',
+        'delete_message' => 'Item deleted successfully.',
+        'delete_success' => 'Item deleted successfully.',
+        'restore_success' => 'Item restored successfully.',
+        'force_delete_success' => 'Item permanently deleted successfully.',
+        'common_success_message' => 'Operation completed successfully.',
+        'common_delete_message' => 'Item deleted successfully.',
     ],
     'buyers' => [
         'edit' => [
@@ -74,5 +81,15 @@ return [
             'updated' => 'Buyer updated successfully.',
             'deleted' => 'Buyer deleted successfully.',
         ],
+        'credit' => [
+            'messages' => [
+                'credit_added' => 'Credit added successfully.',
+                'credit_debited' => 'Credit debited successfully.',
+                'insufficient_balance' => 'Insufficient balance.',
+            ],
+        ],
     ],
+    'credit_added' => 'Credit added: :amount',
+    'credit_deducted' => 'Credit deducted: :amount',
+    'credit_insufficient_funds' => 'Insufficient funds.',
 ];

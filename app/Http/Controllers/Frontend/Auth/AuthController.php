@@ -170,7 +170,7 @@ class AuthController extends Controller
         Auth::guard($this->guard)->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', __('messages_logout_success'));
+        return redirect('/')->with('success', __('messages.logout_success'));
     }
 
     protected function throttleKey(Request $request)
@@ -243,12 +243,12 @@ class AuthController extends Controller
         $user = $this->model::where('remember_token', $request->route('hash'))->firstOrFail();
 
         if (!hash_equals((string) $request->route('hash'), $user->remember_token)) {
-            throw new AuthenticationException(__('messages_verification_required'));
+            throw new AuthenticationException(__('messages.verification_required'));
         }
 
         if ($user->is_verified) {
             return redirect()->route("{$this->userType}.login")
-                ->with('success', __('messages_email_already_verified'));
+                ->with('success', __('messages.email_already_verified'));
         }
 
         $user->is_active = true;
@@ -271,7 +271,7 @@ class AuthController extends Controller
         }
 
         if (RateLimiter::tooManyAttempts('verify:'.$user->id, 3)) {
-            return back()->with('error', __('messages_verification_check'));
+            return back()->with('error', __('messages.verification_check'));
         }
 
         if (!$user->is_verified) {
@@ -294,11 +294,11 @@ class AuthController extends Controller
             return back()
                 ->with('error', __('auth.must_verify_first'))
                 ->with('resent', true)
-                ->with('success', __('messages_verification_sent'));
+                ->with('success', __('messages.verification_sent'));
         }
 
         return redirect()->route("{$this->userType}.dashboard")
-            ->with('success', __('messages_email_already_verified'));
+            ->with('success', __('messages.email_already_verified'));
     }
 
     public function showVerificationNotice()

@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id();
             $table->json('category_name');
             $table->foreignId('parent_category_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->integer('order')->default(0);
+            $table->json('slug')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

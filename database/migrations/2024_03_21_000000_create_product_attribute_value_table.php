@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('product_attribute_value', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->nullable();
-            $table->foreignId('attribute_id')->constrained('attributes')->nullable();
-            $table->foreignId('attribute_value_id')->constrained('attribute_values')->nullable();
+            $table->foreignId('product_id')->nullable()->constrained('products');
+            $table->foreignId('attribute_id')->nullable()->constrained('attributes');
+            $table->foreignId('attribute_value_id')->nullable()->constrained('attribute_values');
             $table->timestamps();
 
             // $table->unique(['product_id', 'attribute_value_id', 'attribute_id'])->name('unique_product_attribute_value');

@@ -8,6 +8,13 @@ return [
         'delete' => 'Ištrinti',
         'edit' => 'Redaguoti',
         'save' => 'Išsaugoti',
+        'success_message' => 'Operacija sėkmingai užbaigta.',
+        'delete_message' => 'Įrašas sėkmingai ištrintas.',
+        'delete_success' => 'Įrašas sėkmingai ištrintas.',
+        'restore_success' => 'Įrašas sėkmingai atkurtas.',
+        'force_delete_success' => 'Įrašas visam laikui ištrintas.',
+        'common_success_message' => 'Operacija sėkmingai užbaigta.',
+        'common_delete_message' => 'Įrašas sėkmingai ištrintas.',
     ],
     'buyers' => [
         'edit' => [
@@ -50,6 +57,11 @@ return [
             'current_balance' => 'Dabartinis balansas',
             'manage_credit' => 'Valdyti kreditą',
             'view_history' => 'Peržiūrėti istoriją',
+            'messages' => [
+                'credit_added' => 'Kreditas sėkmingai pridėtas.',
+                'credit_debited' => 'Kreditas sėkmingai nurašytas.',
+                'insufficient_balance' => 'Nepakanka lėšų.',
+            ],
         ],
         'credit_history' => [
             'filter' => [
@@ -75,4 +87,7 @@ return [
             ],
         ],
     ],
+    'credit_added' => 'Kreditas pridėtas: :amount',
+    'credit_deducted' => 'Kreditas nurašytas: :amount',
+    'credit_insufficient_funds' => 'Nepakanka lėšų.',
 ];

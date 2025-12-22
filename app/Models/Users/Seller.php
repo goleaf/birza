@@ -10,12 +10,13 @@ use App\Models\SellerTransaction;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Seller extends Authenticatable
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory, Notifiable;
 
     protected $table = 'users_sellers';
 
@@ -52,6 +53,11 @@ class Seller extends Authenticatable
         'is_active' => 'boolean',
         'balance' => 'decimal:2',
     ];
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\SellerFactory::new();
+    }
 
     /**
      * Get the transactions for the seller

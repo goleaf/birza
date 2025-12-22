@@ -86,7 +86,7 @@ class BuyerController extends Controller
             'is_active' => $validated['is_active'],
         ]);
 
-        return redirect()->route('backend.buyers.index')->with('success', __('backend.common_success_message'));
+        return redirect()->route('backend.buyers.index')->with('success', __('backend.common.success_message'));
     }
 
     public function edit(Buyer $buyer)
@@ -110,13 +110,13 @@ class BuyerController extends Controller
 
         $buyer->update($validated);
 
-        return redirect()->route('backend.buyers.index')->with('success', __('backend.common_success_message'));
+        return redirect()->route('backend.buyers.index')->with('success', __('backend.common.success_message'));
     }
 
     public function destroy(Buyer $buyer)
     {
         $buyer->delete();
-        return redirect()->route('backend.buyers.index')->with('success', __('backend.common_delete_message'));
+        return redirect()->route('backend.buyers.index')->with('success', __('backend.common.delete_message'));
     }
 
     public function orders(Request $request, Buyer $buyer)
@@ -166,12 +166,12 @@ class BuyerController extends Controller
 
         if ($request->action === 'add') {
             $buyer->addCredit($amount, $adminId, $request->note);
-            $message = __('backend_credit_added', ['amount' => number_format($amount, 2)]);
+            $message = __('backend.credit_added', ['amount' => number_format($amount, 2)]);
         } else {
             if ($buyer->deductCredit($amount, $adminId, $request->note)) {
-                $message = __('backend_credit_deducted', ['amount' => number_format($amount, 2)]);
+                $message = __('backend.credit_deducted', ['amount' => number_format($amount, 2)]);
             } else {
-                return back()->withErrors(['amount' => __('backend_credit_insufficient_funds')]);
+                return back()->withErrors(['amount' => __('backend.credit_insufficient_funds')]);
             }
         }
 

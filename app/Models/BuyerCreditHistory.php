@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\CreditAttachment;
 use App\Models\Users\Admin;
 use App\Models\Users\Buyer;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BuyerCreditHistory extends Model
 {
+    use HasFactory;
     protected $table = 'buyer_credit_history';
 
     protected $fillable = [
@@ -21,8 +23,8 @@ class BuyerCreditHistory extends Model
     ];
 
     protected $casts = [
-        'amount' => 'decimal:2',
-        'balance_after' => 'decimal:2',
+        'amount' => 'float',
+        'balance_after' => 'float',
     ];
 
     public function buyer()

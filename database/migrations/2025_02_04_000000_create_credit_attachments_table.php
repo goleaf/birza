@@ -14,7 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('credit_history_id');
             $table->foreign('credit_history_id')
                   ->references('id')
-                  ->on('buyer_credit_histories')
+                  ->on('buyer_credit_history')
                   ->onDelete('cascade');
             $table->string('file_path');
             $table->string('original_name');

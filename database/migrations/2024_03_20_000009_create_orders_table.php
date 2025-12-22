@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('buyer_id')->constrained('users_buyers');
             $table->string('payment_method')->nullable();
             $table->string('payment_status')->default(Order::STATUS['PENDING']);
+            $table->string('status')->default(Order::STATUS['PENDING']);
             $table->decimal('order_total', 10, 2);
             $table->timestamps();
             $table->softDeletes();

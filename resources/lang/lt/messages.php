@@ -35,4 +35,11 @@ return array (
   'region_required' => 'Regionas yra privalomas',
   'settings_updated_success' => 'Nustatymai sėkmingai atnaujinti',
   'too_many_login_attempts' => 'Per daug prisijungimo bandymų',
+  'registration_success' => 'Registracija sėkminga!',
+  'logout_success' => 'Jūs sėkmingai atsijungėte.',
+  'verification_required' => 'Prašome patvirtinti savo el. pašto adresą.',
+  'email_already_verified' => 'Jūsų el. paštas jau patvirtintas.',
+  'verification_success' => 'Jūsų el. paštas sėkmingai patvirtintas.',
+  'verification_check' => 'Nepavyko patvirtinti el. pašto. Prašome patikrinti patvirtinimo nuorodą.',
+  'verification_sent' => 'Patvirtinimo el. laiškas išsiųstas.',
 );

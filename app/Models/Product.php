@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\OrderItem;
 use App\Models\Users\Seller;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use HasTranslations, SoftDeletes;
+    use HasTranslations, SoftDeletes, HasFactory;
 
     public const UNITS = ['piece', 'kg', 'l', 'pack'];
 
@@ -74,6 +75,11 @@ class Product extends Model
     }
 
     public function attributeValues()
+    {
+        return $this->belongsToMany(AttributeValue::class, 'product_attribute_value');
+    }
+
+    public function attributes()
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_value');
     }

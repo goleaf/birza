@@ -14,6 +14,7 @@ return new class extends Migration
             $table->enum('region', ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania']);
             $table->boolean('is_active')->default(true);
             $table->json('country_name')->unique();
+            $table->json('description')->nullable();
         });
     }
 

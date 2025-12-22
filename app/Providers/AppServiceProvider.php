@@ -11,7 +11,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Configure translations to use lang/ folder instead of resources/lang/
+        $this->app->useLangPath(base_path('lang'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Buyer extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes, HasFactory;
 
     protected $table = 'users_buyers';
 
@@ -50,6 +51,11 @@ class Buyer extends Authenticatable implements MustVerifyEmail
         'is_verified' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\BuyerFactory::new();
+    }
 
     public function orders(): HasMany
     {

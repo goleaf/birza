@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Country;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     public const STATUS = [
         'PENDING' => 'pending',
@@ -34,7 +35,8 @@ class Order extends Model
         'order_total',
         'buyer_id', 
         'payment_method',
-        'payment_status'
+        'payment_status',
+        'status'
     ];
 
     protected $casts = [

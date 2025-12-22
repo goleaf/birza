@@ -92,6 +92,12 @@ return array (
       'type' => 'Tipas',
       'type_add' => 'Pridėta',
       'type_deduct' => 'Nuskaičiuota',
+      'messages' => 
+      array (
+        'credit_added' => 'Kreditas sėkmingai pridėtas.',
+        'credit_debited' => 'Kreditas sėkmingai nurašytas.',
+        'insufficient_balance' => 'Nepakanka lėšų.',
+      ),
     ),
     'edit' => 
     array (
@@ -156,6 +162,11 @@ return array (
     'create' => 'Sukurti',
     'delete' => 'Ištrinti',
     'delete_message' => 'Elementas bus ištrintas',
+    'delete_success' => 'Įrašas sėkmingai ištrintas.',
+    'restore_success' => 'Įrašas sėkmingai atkurtas.',
+    'force_delete_success' => 'Įrašas visam laikui ištrintas.',
+    'common_success_message' => 'Operacija sėkmingai užbaigta.',
+    'common_delete_message' => 'Įrašas sėkmingai ištrintas.',
     'disabled' => 'Išjungtas',
     'edit' => 'Redaguoti',
     'error_message' => 'Įvyko klaida',
@@ -325,4 +336,7 @@ return array (
     ),
     'title' => 'Tiekėjai',
   ),
+  'credit_added' => 'Kreditas pridėtas: :amount',
+  'credit_deducted' => 'Kreditas nurašytas: :amount',
+  'credit_insufficient_funds' => 'Nepakanka lėšų.',
 );

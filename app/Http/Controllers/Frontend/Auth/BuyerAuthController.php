@@ -53,7 +53,7 @@ class BuyerAuthController extends Controller
     {
         $request->validate([
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users_buyers'],
-            'password' => ['required', 'string', Password::min(12)->mixedCase()->numbers()->symbols(), 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $buyer = Buyer::create([
@@ -71,7 +71,7 @@ class BuyerAuthController extends Controller
 
         Auth::guard('buyer')->login($buyer);
 
-        return $this->checkProfile() ?? redirect()->route('buyer.dashboard')->with('success', __('messages_registration_success'));
+        return $this->checkProfile() ?? redirect()->route('buyer.dashboard')->with('success', __('messages.registration_success'));
     }
 
     public function login(Request $request)
@@ -115,7 +115,7 @@ class BuyerAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', __('messages_logout_success'));
+        return redirect('/')->with('success', __('messages.logout_success'));
     }
 
     public function verify(Request $request)
@@ -124,11 +124,11 @@ class BuyerAuthController extends Controller
             $user = Buyer::findOrFail($request->route('id'));
 
             if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
-                throw new AuthenticationException(__('messages_verification_required'));
+                throw new AuthenticationException(__('messages.verification_required'));
             }
 
             if ($user->hasVerifiedEmail()) {
-                return redirect()->route('buyer.dashboard')->with('success', __('messages_email_already_verified'));
+                return redirect()->route('buyer.dashboard')->with('success', __('messages.email_already_verified'));
             }
 
             if ($user->markEmailAsVerified()) {
@@ -137,10 +137,10 @@ class BuyerAuthController extends Controller
                 event(new Verified($user));
             }
 
-            return $this->checkProfile() ?? redirect()->route('buyer.dashboard')->with('verified', true)->with('success', __('messages_verification_success'));
+            return $this->checkProfile() ?? redirect()->route('buyer.dashboard')->with('verified', true)->with('success', __('messages.verification_success'));
 
         } catch (\Exception $e) {
-            return redirect()->route('buyer.dashboard')->with('error', __('messages_verification_required'));
+            return redirect()->route('buyer.dashboard')->with('error', __('messages.verification_required'));
         }
     }
 
@@ -149,17 +149,17 @@ class BuyerAuthController extends Controller
         $user = $request->user('buyer');
 
         if ($user->hasVerifiedEmail()) {
-            return redirect()->route('buyer.dashboard')->with('success', __('messages_email_already_verified'));
+            return redirect()->route('buyer.dashboard')->with('success', __('messages.email_already_verified'));
         }
 
         if (RateLimiter::tooManyAttempts('verify:'.$user->id, 3)) {
-            return back()->with('error', __('messages_verification_check'));
+            return back()->with('error', __('messages.verification_check'));
         }
 
         $user->sendEmailVerificationNotification();
         RateLimiter::hit('verify:'.$user->id);
 
-        return back()->with('resent', true)->with('success', __('messages_verification_sent'));
+        return back()->with('resent', true)->with('success', __('messages.verification_sent'));
     }
 
     protected function throttleKey(Request $request)
