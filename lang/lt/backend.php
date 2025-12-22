@@ -7,6 +7,7 @@ return [
         'update' => 'Atnaujinti',
         'delete' => 'Ištrinti',
         'edit' => 'Redaguoti',
+        'export_csv' => 'Eksportuoti CSV',
         'save' => 'Išsaugoti',
         'success_message' => 'Operacija sėkmingai užbaigta.',
         'delete_message' => 'Įrašas sėkmingai ištrintas.',

@@ -70,9 +70,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="name"
                                        id="name"
-                                       value="{{ old('name', $seller->name) }}"
+                                       wire:model.defer="name"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm "
                                        required>
                             </div>
@@ -89,9 +88,8 @@
                                 </label>
                                 <input
                                        type="email"
-                                       name="email"
                                        id="email"
-                                       value="{{ old('email', $seller->email) }}"
+                                       wire:model.defer="email"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
                                        required>
                                 @error('email')
@@ -112,9 +110,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="company_name"
                                        id="company_name"
-                                       value="{{ old('company_name', $seller->company_name) }}"
+                                       wire:model.defer="company_name"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
                                        required>
                                 @error('company_name')
@@ -135,10 +132,9 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="company_code"
                                        id="company_code"
-                                       value="{{ old('company_code', $seller->company_code) }}"
-                                       class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
+                                       wire:model.defer="company_code"
+                                       class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_code') border-red-500 @enderror"
                                        required>
                                 @error('company_code')
                                     <p class="text-red-500 text-xs italic mt-1">
@@ -155,9 +151,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="vat_code"
                                        id="vat_code"
-                                       value="{{ old('vat_code', $seller->vat_code) }}"
+                                       wire:model.defer="vat_code"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm">
                             </div>
 
@@ -172,9 +167,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="address"
                                        id="address"
-                                       value="{{ old('address', $seller->address) }}"
+                                       wire:model.defer="address"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('address') border-red-500 @enderror"
                                        required>
                                 @error('address')
@@ -195,9 +189,8 @@
                                 </label>
                                 <input
                                        type="tel"
-                                       name="phone"
                                        id="phone"
-                                       value="{{ old('phone', $seller->phone) }}"
+                                       wire:model.defer="phone"
                                        placeholder="+370"
                                        data-mask="+370 99999999"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('phone') border-red-500 @enderror"
@@ -220,9 +213,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="bank_account"
                                        id="bank_account"
-                                       value="{{ old('bank_account', $seller->bank_account) }}"
+                                       wire:model.defer="bank_account"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('bank_account') border-red-500 @enderror"
                                        required>
                                 @error('bank_account')
@@ -243,9 +235,8 @@
                                 </label>
                                 <input
                                        type="text"
-                                       name="veterinary_certificate_number"
                                        id="veterinary_certificate_number"
-                                       value="{{ old('veterinary_certificate_number', $seller->veterinary_certificate_number) }}"
+                                       wire:model.defer="veterinary_certificate_number"
                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('veterinary_certificate_number') border-red-500 @enderror"
                                        required>
                                 @error('veterinary_certificate_number')
@@ -260,7 +251,8 @@
                         <div class="mt-6 flex justify-end space-x-4">
                             <button
                                     type="submit"
-                                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    wire:loading.attr="disabled"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed">
                                 {{ __('profile.update_profile') }}
                             </button>
                         </div>
@@ -275,11 +267,7 @@
                         <!-- start categories form container -->
                         <div class="p-8">
                             <!-- start categories form -->
-                            <form
-                                  action="{{ route('seller.profile.categories.update') }}"
-                                  method="POST">
-                                @csrf
-                                @method('PUT')
+                            <form wire:submit.prevent="saveCategories">
                                 <!-- start categories grid -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     @foreach ($categories as $category)
@@ -304,9 +292,8 @@
                                                              class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-300 ease-in-out group cursor-pointer">
                                                             <input
                                                                    type="checkbox"
-                                                                   name="categories[]"
                                                                    value="{{ $subcategory->id }}"
-                                                                   {{ $seller->categories->contains($subcategory->id) ? 'checked' : '' }}
+                                                                   wire:model.defer="selectedCategories"
                                                                    class="h-5 w-5 rounded-md border-gray-300 text-gray-600 focus:ring-gray-500 transition duration-200 transform hover:scale-110 cursor-pointer category-checkbox"
                                                                    data-dashboard-visible="{{ $subcategory->show_in_dashboard ? 'true' : 'false' }}"
                                                                    id="subcategory-{{ $subcategory->id }}">
@@ -314,7 +301,7 @@
                                                             <div class="flex-grow ml-4">
                                                                 <label
                                                                        for="subcategory-{{ $subcategory->id }}"
-                                                                       class="block text-base font-semibold category-label {{ $seller->categories->contains($subcategory->id) ? 'text-blue-900' : 'text-gray-900' }} group-hover:text-gray-700 transition duration-200 cursor-pointer">
+                                                                       class="block text-base font-semibold category-label {{ in_array($subcategory->id, $selectedCategories) ? 'text-blue-900' : 'text-gray-900' }} group-hover:text-gray-700 transition duration-200 cursor-pointer">
                                                                     {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
                                                                 </label>
                                                             </div>
@@ -336,7 +323,8 @@
                                 <div class="mt-8">
                                     <button
                                             type="submit"
-                                            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200">
+                                            wire:loading.attr="disabled"
+                                            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
                                         {{ __('profile.update_categories') }}
                                     </button>
                                 </div>
@@ -383,12 +371,7 @@
                                 <!-- end errors -->
 
                                 <!-- start password form -->
-                                <form
-                                      method="POST"
-                                      action="{{ route('seller.profile.password') }}"
-                                      class="max-w-md mx-auto">
-                                    @csrf
-                                    @method('PUT')
+                                <form wire:submit.prevent="savePassword" class="max-w-md mx-auto">
 
                                     <!-- start form fields -->
                                     <div class="space-y-6">
@@ -405,8 +388,8 @@
                                             </label>
                                             <input
                                                    type="password"
-                                                   name="current_password"
                                                    id="current_password"
+                                                   wire:model.defer="current_password"
                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('current_password') border-red-500 @enderror">
                                             @error('current_password')
                                                 <p class="text-red-500 text-xs italic mt-1">
@@ -429,8 +412,8 @@
                                             </label>
                                             <input
                                                    type="password"
-                                                   name="password"
                                                    id="password"
+                                                   wire:model.defer="password"
                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('password') border-red-500 @enderror">
                                             @error('password')
                                                 <p class="text-red-500 text-xs italic mt-1">
@@ -453,8 +436,8 @@
                                             </label>
                                             <input
                                                    type="password"
-                                                   name="password_confirmation"
                                                    id="password_confirmation"
+                                                   wire:model.defer="password_confirmation"
                                                    class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                         </div>
                                         <!-- end confirm password field -->
@@ -462,7 +445,8 @@
                                         <!-- start update button -->
                                         <button
                                                 type="submit"
-                                                class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200">
+                                                wire:loading.attr="disabled"
+                                                class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
                                             {{ __('profile.update_password') }}
                                         </button>
                                         <!-- end update button -->

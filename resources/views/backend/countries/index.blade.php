@@ -1,15 +1,14 @@
-<div>
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">
-            {{ __('backend.countries.title') }}
-        </h2>
-        <a href="{{ route('backend.countries.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{ __('backend.countries.actions.create') }}
-        </a>
-    </div>
+<x-ui.page :title="__('backend.countries.title')">
+    <x-slot:actions>
+        <x-button
+            primary
+            :href="route('backend.countries.create')"
+            :label="__('backend.countries.actions.create')"
+        />
+    </x-slot:actions>
 
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="bg-white border-b border-gray-200">
+    <x-card>
+        <div class="overflow-x-auto">
             <table class="w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -23,7 +22,7 @@
                             {{ __('backend.countries.fields.country_name') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.common.actions') }}
+                            {{ __('common.actions') }}
                         </th>
                     </tr>
                 </thead>
@@ -37,25 +36,32 @@
                                     {{ $country->getTranslation('country_name', $locale) }}
                                 </td>
                             @endforeach
-                            <td class="px-6 py-4 whitespace-nowrap font-medium">
-                                <a href="{{ route('backend.countries.edit', $country) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    {{ __('backend.common.edit') }}
-                                </a>
-                                <button type="button"
-                                        class="text-red-600 hover:text-red-900"
-                                        onclick="confirm('{{ __('backend.common.confirm_delete') }}') || event.stopImmediatePropagation()"
-                                        wire:click="deleteCountry({{ $country->id }})">
-                                    {{ __('backend.common.delete') }}
-                                </button>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <x-button
+                                        xs
+                                        flat
+                                        primary
+                                        :href="route('backend.countries.edit', $country)"
+                                        :label="__('common.edit')"
+                                    />
+                                    <x-button
+                                        xs
+                                        flat
+                                        negative
+                                        wire:click="confirmDeleteCountry({{ $country->id }})"
+                                        :label="__('common.delete')"
+                                    />
+                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <div class="mt-4 px-6">
-                {{ $countries->links() }}
-            </div>
         </div>
-    </div>
-</div>
+
+        <div class="mt-4">
+            {{ $countries->links() }}
+        </div>
+    </x-card>
+</x-ui.page>

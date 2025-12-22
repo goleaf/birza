@@ -10,9 +10,11 @@
                 <h2 class="text-2xl font-bold">
                     {{ __('backend.attributes.title') }}
                 </h2>
-                <a href="{{ route('backend.attributes.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('backend.attributes.actions.create') }}
-                </a>
+                <x-button
+                    primary
+                    :href="route('backend.attributes.create')"
+                    :label="__('backend.attributes.actions.create')"
+                />
             </div>
             <!-- end header -->
 
@@ -28,7 +30,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.attributes.fields.status') }}</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.attributes.fields.is_filterable') }}</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.attributes.fields.is_required') }}</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.common.actions') }}</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common.actions') }}</th>
                         </tr>
                     </thead>
                     <!-- end table header -->
@@ -45,7 +47,7 @@
                                         {{ __('backend.attributes.fields.values') }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $attribute->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">{{ $attribute->is_active ? __('backend.common.active') : __('backend.common.inactive') }}</span></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $attribute->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">{{ $attribute->is_active ? __('common.active') : __('common.inactive') }}</span></td>
                                 <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $attribute->is_filterable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">{{ $attribute->is_filterable ? __('common.yes') : __('common.no') }}</span></td>
                                 <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $attribute->is_required ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">{{ $attribute->is_required ? __('common.yes') : __('common.no') }}</span></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
@@ -53,14 +55,15 @@
                                         {{ __('backend.attributes.actions.add_value') }}
                                     </a>
                                     <a href="{{ route('backend.attributes.edit', $attribute) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('backend.common.edit') }}
+                                        {{ __('common.edit') }}
                                     </a>
-                                    <button type="button"
-                                            class="text-red-600 hover:text-red-900"
-                                            onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                            wire:click="deleteAttribute({{ $attribute->id }})">
-                                        {{ __('backend.common.delete') }}
-                                    </button>
+                                    <x-button
+                                        xs
+                                        flat
+                                        negative
+                                        wire:click="confirmDeleteAttribute({{ $attribute->id }})"
+                                        :label="__('common.delete')"
+                                    />
                                 </td>
                             </tr>
                         @endforeach

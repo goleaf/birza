@@ -7,6 +7,7 @@ return [
         'update' => 'Update',
         'delete' => 'Delete',
         'edit' => 'Edit',
+        'export_csv' => 'Export CSV',
         'save' => 'Save',
         'success_message' => 'Operation completed successfully.',
         'delete_message' => 'Item deleted successfully.',

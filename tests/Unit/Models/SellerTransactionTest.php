@@ -36,7 +36,8 @@ class SellerTransactionTest extends TestCase
             'amount' => '100.50',
         ]);
 
-        $this->assertIsFloat($transaction->amount);
+        $this->assertIsString($transaction->amount);
+        $this->assertIsNumeric($transaction->amount);
     }
 }
 

@@ -29,9 +29,6 @@ class DashboardControllerTest extends TestCase
             ->get(route('buyer.dashboard'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.buyer.dashboard.index');
-        $response->assertViewHas('buyer');
-        $response->assertViewHas('ordersData');
     }
 }
 

@@ -97,15 +97,6 @@
                 </div>
                 <!-- end attributes dropdown -->
 
-                <!-- start translations link -->
-                <a 
-                    href="{{ url('admin/translations') }}"
-                    class="{{ request()->is('admin/translations*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
-                >
-                    {{ __('navigation.translations') }}
-                </a>
-                <!-- end translations link -->
-
                 <!-- start global settings link -->
                 <a 
                     href="{{ route('backend.settings.index') }}"

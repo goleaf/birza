@@ -34,13 +34,12 @@
                     
                     <!-- start cancel form -->
                     @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
-                        <button type="button"
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
-                                onclick="if(!confirm('{{ __('orders.confirm_cancel') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                wire:click="cancelOrder"
-                                wire:loading.attr="disabled">
-                            {{ __('orders.cancel_order') }}
-                        </button>
+                        <x-button
+                            negative
+                            :label="__('orders.cancel_order')"
+                            wire:click="confirmCancelOrder"
+                            spinner="confirmCancelOrder"
+                        />
                     @endif
                     <!-- end cancel form -->
                 </div>

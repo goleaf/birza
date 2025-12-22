@@ -87,12 +87,13 @@
                     <div class="flex space-x-2">
                         @if (!$product->deleted_at)
                             <!-- start edit button -->
-                            <a 
-                                href="{{ route('seller.products.edit', $product) }}"
-                                class="px-3 py-1 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
-                            >
-                                {{ __('product.edit') }}
-                            </a>
+                            <x-button
+                                xs
+                                flat
+                                primary
+                                :href="route('seller.products.edit', $product)"
+                                :label="__('product.edit')"
+                            />
                             <!-- end edit button -->
                         @endif
 
@@ -100,21 +101,25 @@
                         <div class="flex space-x-2">
                             @if ($product->deleted_at)
                                 <!-- start restore button -->
-                                <button type="button"
-                                        class="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
-                                        onclick="if(!confirm('{{ __('product.restore_confirmation') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                        wire:click="restoreProduct({{ $product->id }})">
-                                    {{ __('product.restore') }}
-                                </button>
+                                <x-button
+                                    xs
+                                    flat
+                                    positive
+                                    :label="__('product.restore')"
+                                    wire:click="confirmRestoreProduct({{ $product->id }})"
+                                    spinner="confirmRestoreProduct"
+                                />
                                 <!-- end restore button -->
                             @else
                                 <!-- start delete button -->
-                                <button type="button"
-                                        class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                                        onclick="if(!confirm('{{ __('product.soft_delete_confirmation') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                        wire:click="softDeleteProduct({{ $product->id }})">
-                                    {{ __('product.soft_delete') }}
-                                </button>
+                                <x-button
+                                    xs
+                                    flat
+                                    negative
+                                    :label="__('product.soft_delete')"
+                                    wire:click="confirmSoftDeleteProduct({{ $product->id }})"
+                                    spinner="confirmSoftDeleteProduct"
+                                />
                                 <!-- end delete button -->
                             @endif
                         </div>

@@ -138,7 +138,8 @@ class ProductTest extends TestCase
             'is_organic' => '0',
         ]);
 
-        $this->assertIsFloat($product->price);
+        $this->assertIsString($product->price);
+        $this->assertIsNumeric($product->price);
         $this->assertIsBool($product->is_active);
         $this->assertIsBool($product->is_organic);
     }

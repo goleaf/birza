@@ -1,10 +1,7 @@
 <div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">{{ __('sellers.title') }}</h2>
-        <a href="{{ route('backend.sellers.create') }}"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{ __('common.create') }}
-        </a>
+        <x-button primary :href="route('backend.sellers.create')" :label="__('common.create')" />
     </div>
 
     <div class="bg-white shadow-sm rounded-lg mb-6">
@@ -61,12 +58,13 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('backend.sellers.show', $seller) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.view') }}</a>
                                 <a href="{{ route('backend.sellers.edit', $seller) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('common.edit') }}</a>
-                                <button type="button"
-                                        class="text-red-600 hover:text-red-900"
-                                        onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                        wire:click="deleteSeller({{ $seller->id }})">
-                                    {{ __('common.delete') }}
-                                </button>
+                                <x-button
+                                    xs
+                                    flat
+                                    negative
+                                    wire:click="confirmDeleteSeller({{ $seller->id }})"
+                                    :label="__('common.delete')"
+                                />
                                 <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="text-blue-600 hover:text-blue-900 ml-3">{{ __('sellers.orders_list') }}</a>
                             </td>
                         </tr>

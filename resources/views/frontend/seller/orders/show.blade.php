@@ -57,39 +57,32 @@
             <div class="px-6 py-4">
                 @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
                     <div class="flex space-x-4">
-                        <button type="button"
-                                wire:click="updateStatus('{{ \App\Models\Order::STATUS['PAID'] }}')"
-                                wire:loading.attr="disabled"
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-60 disabled:cursor-not-allowed">
-                            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
-                            {{ __('orders.confirm_order') }}
-                        </button>
+                        <x-button
+                            positive
+                            icon="check"
+                            :label="__('orders.confirm_order')"
+                            wire:click="updateStatus('{{ \App\Models\Order::STATUS['PAID'] }}')"
+                            spinner="updateStatus"
+                        />
 
-                        <button type="button"
-                                onclick="if(!confirm('{{ __('orders.confirm_cancel') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                wire:click="updateStatus('{{ \App\Models\Order::STATUS['CANCELLED'] }}')"
-                                wire:loading.attr="disabled"
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-60 disabled:cursor-not-allowed">
-                            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                            {{ __('orders.cancel_order') }}
-                        </button>
+                        <x-button
+                            negative
+                            icon="x-mark"
+                            :label="__('orders.cancel_order')"
+                            wire:click="confirmCancelOrder"
+                            spinner="confirmCancelOrder"
+                        />
                     </div>
 
                     <div class="mt-4">
-                        <label for="comment" class="block text-sm font-medium text-gray-700">{{ __('orders.comment') }}</label>
-                        <div class="mt-1">
-                            <textarea
-                                id="comment"
-                                wire:model.defer="comment"
-                                rows="3"
-                                class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                placeholder="{{ __('orders.comment_placeholder') }}"
-                            ></textarea>
-                        </div>
+                        <x-textarea
+                            id="comment"
+                            name="comment"
+                            :label="__('orders.comment')"
+                            :placeholder="__('orders.comment_placeholder')"
+                            wire:model.defer="comment"
+                            rows="3"
+                        />
                     </div>
                 @else
                     <div class="text-sm text-gray-500">

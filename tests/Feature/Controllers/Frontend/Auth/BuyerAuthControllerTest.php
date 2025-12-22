@@ -5,7 +5,9 @@ namespace Tests\Feature\Controllers\Frontend\Auth;
 use Tests\TestCase;
 use App\Models\Users\Buyer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Livewire\Livewire;
+use App\Livewire\Frontend\Auth\Login as FrontendLogin;
+use App\Livewire\Frontend\Auth\Register as FrontendRegister;
 
 class BuyerAuthControllerTest extends TestCase
 {
@@ -16,7 +18,6 @@ class BuyerAuthControllerTest extends TestCase
         $response = $this->get(route('buyer.login'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.auth.buyer.login');
     }
 
     public function test_registration_form_displays(): void
@@ -24,35 +25,38 @@ class BuyerAuthControllerTest extends TestCase
         $response = $this->get(route('buyer.register'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.auth.buyer.register');
     }
 
     public function test_buyer_can_register(): void
     {
-        $response = $this->post(route('buyer.register'), [
-            'name' => 'Test Buyer',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        Livewire::test(FrontendRegister::class, ['userType' => 'buyer'])
+            ->set('email', 'test@gmail.com')
+            ->set('password', 'password123')
+            ->set('password_confirmation', 'password123')
+            ->call('register')
+            ->assertRedirect(route('buyer.profile.edit'));
 
         $this->assertDatabaseHas('users_buyers', [
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
         ]);
     }
 
     public function test_buyer_can_login(): void
     {
         $buyer = Buyer::factory()->create([
-            'password' => Hash::make('password'),
-        ]);
-
-        $response = $this->post(route('buyer.login'), [
-            'email' => $buyer->email,
             'password' => 'password',
+            'company_name' => 'Test Co',
+            'company_code' => '123456789',
+            'address' => 'Test address',
+            'phone' => '+37060000000',
         ]);
 
-        $response->assertRedirect(route('buyer.dashboard'));
+        Livewire::test(FrontendLogin::class, ['userType' => 'buyer'])
+            ->set('email', $buyer->email)
+            ->set('password', 'password')
+            ->call('login')
+            ->assertRedirect(route('buyer.dashboard'));
+
         $this->assertAuthenticatedAs($buyer, 'buyer');
     }
 }

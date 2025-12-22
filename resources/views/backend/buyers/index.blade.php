@@ -1,9 +1,7 @@
 <div>
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold">{{ __('buyers.title') }}</h2>
-    <a href="{{ route('backend.buyers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      {{ __('common.create') }}
-    </a>
+    <x-button primary :href="route('backend.buyers.create')" :label="__('common.create')" />
   </div>
 
   <div class="bg-white shadow-sm rounded-lg mb-6 p-4">
@@ -73,12 +71,13 @@
 
               <a href="{{ route('backend.buyers.orders', $buyer) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.orders') }}</a>
               <a href="{{ route('backend.buyers.edit', $buyer) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.edit') }}</a>
-              <button type="button"
-                      class="text-red-600 hover:text-red-900"
-                      onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                      wire:click="deleteBuyer({{ $buyer->id }})">
-                {{ __('common.delete') }}
-              </button>
+              <x-button
+                  xs
+                  flat
+                  negative
+                  wire:click="confirmDeleteBuyer({{ $buyer->id }})"
+                  :label="__('common.delete')"
+              />
             </td>
           </tr>
         @endforeach

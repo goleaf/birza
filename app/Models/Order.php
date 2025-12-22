@@ -145,7 +145,8 @@ class Order extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_items')
-            ->withPivot('quantity', 'price')
+            ->withPivot(['quantity', 'unit_price', 'total_price', 'seller_id'])
+            ->wherePivotNull('deleted_at')
             ->withTimestamps();
     }
 }

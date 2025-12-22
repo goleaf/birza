@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Countries;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Country;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -9,11 +10,18 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use InteractsWithWireUi;
+
+    public function confirmDeleteCountry(int $countryId): void
+    {
+        $this->confirmDelete(method: 'deleteCountry', params: $countryId);
+    }
+
     public function deleteCountry(int $countryId): void
     {
         Country::query()->findOrFail($countryId)->delete();
 
-        session()->flash('success', __('backend.common.delete_success'));
+        $this->notifySuccess(__('backend.common.delete_success'));
     }
 
     public function render()

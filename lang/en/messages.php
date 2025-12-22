@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'account_deactivated' => 'Your account has been deactivated.',
     'alpha2_lowercase' => 'Alpha2 lowercase',
     'registration_success' => 'Registration successful!',
     'logout_success' => 'You have been logged out successfully.',

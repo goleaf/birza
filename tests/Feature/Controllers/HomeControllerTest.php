@@ -16,7 +16,6 @@ class HomeControllerTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.welcome');
     }
 
     public function test_home_redirects_active_seller_to_dashboard(): void

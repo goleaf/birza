@@ -58,8 +58,12 @@ class OrderItemTest extends TestCase
             'quantity' => '5',
         ]);
 
-        $this->assertIsFloat($item->unit_price);
-        $this->assertIsFloat($item->total_price);
+        $this->assertIsString($item->unit_price);
+        $this->assertIsNumeric($item->unit_price);
+
+        $this->assertIsString($item->total_price);
+        $this->assertIsNumeric($item->total_price);
+
         $this->assertIsInt($item->quantity);
     }
 }

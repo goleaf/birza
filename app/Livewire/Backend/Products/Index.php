@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Users\Seller;
@@ -12,11 +13,23 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use InteractsWithWireUi;
+
+    public function confirmDeleteProduct(int $productId): void
+    {
+        $this->confirmDelete(method: 'deleteProduct', params: $productId);
+    }
+
+    public function confirmForceDeleteProduct(int $productId): void
+    {
+        $this->confirmDelete(method: 'forceDeleteProduct', params: $productId);
+    }
+
     public function deleteProduct(int $productId): void
     {
         Product::query()->findOrFail($productId)->delete();
 
-        session()->flash('success', __('backend.common.delete_success'));
+        $this->notifySuccess(__('backend.common.delete_success'));
     }
 
     public function restoreProduct(int $productId): void
@@ -24,7 +37,7 @@ class Index extends Component
         $product = Product::withTrashed()->findOrFail($productId);
         $product->restore();
 
-        session()->flash('success', __('backend.common.restore_success'));
+        $this->notifySuccess(__('backend.common.restore_success'));
     }
 
     public function forceDeleteProduct(int $productId): void
@@ -41,7 +54,7 @@ class Index extends Component
 
         $product->forceDelete();
 
-        session()->flash('success', __('backend.common.force_delete_success'));
+        $this->notifySuccess(__('backend.common.force_delete_success'));
     }
 
     public function render()

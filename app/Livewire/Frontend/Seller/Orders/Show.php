@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Seller\Orders;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,8 @@ use Livewire\Component;
 #[Layout('layouts.frontend.app')]
 class Show extends Component
 {
+    use InteractsWithWireUi;
+
     public Order $order;
     public $orderItems;
     public ?string $comment = null;
@@ -41,7 +44,7 @@ class Show extends Component
 
         // Only allow simple transitions from the UI.
         if (! in_array($status, [Order::STATUS['PAID'], Order::STATUS['CANCELLED']], true)) {
-            $this->addError('status', __('common.error_occurred'));
+            $this->notifyError(__('common.error_occurred'));
             return;
         }
 
@@ -52,13 +55,13 @@ class Show extends Component
             ->exists();
 
         if (! $hasItems) {
-            session()->flash('error', __('orders.unauthorized_update'));
+            $this->notifyError(__('orders.unauthorized_update'));
             return;
         }
 
         // Only allow changing pending orders (matches current UI expectation).
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
-            session()->flash('error', __('orders.status_cannot_be_changed'));
+            $this->notifyError(__('orders.status_cannot_be_changed'));
             return;
         }
 
@@ -94,7 +97,19 @@ class Show extends Component
         $this->order->refresh();
         $this->comment = null;
 
-        session()->flash('success', __('orders.status_updated'));
+        $this->notifySuccess(__('orders.status_updated'));
+    }
+
+    public function confirmCancelOrder(): void
+    {
+        $this->confirmAction(
+            title: __('orders.confirm_cancel'),
+            description: __('orders.confirm_cancel'),
+            acceptLabel: __('orders.cancel_order'),
+            method: 'updateStatus',
+            params: Order::STATUS['CANCELLED'],
+            icon: 'warning',
+        );
     }
 
     public function render()

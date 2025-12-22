@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Buyer\Orders;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,8 @@ use Livewire\Component;
 #[Layout('layouts.frontend.app')]
 class Show extends Component
 {
+    use InteractsWithWireUi;
+
     public Order $order;
 
     public function mount(Order $order): void
@@ -29,7 +32,7 @@ class Show extends Component
         }
 
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
-            session()->flash('error', __('orders.messages.cannot_cancel'));
+            $this->notifyError(__('orders.messages.cannot_cancel'));
             return;
         }
 
@@ -46,7 +49,18 @@ class Show extends Component
 
         $this->order->refresh()->load(['items.product', 'items.seller']);
 
-        session()->flash('success', __('orders.messages.cancelled_success'));
+        $this->notifySuccess(__('orders.messages.cancelled_success'));
+    }
+
+    public function confirmCancelOrder(): void
+    {
+        $this->confirmAction(
+            title: __('orders.confirm_cancel'),
+            description: __('orders.confirm_cancel'),
+            acceptLabel: __('orders.cancel_order'),
+            method: 'cancelOrder',
+            icon: 'warning',
+        );
     }
 
     public function render()

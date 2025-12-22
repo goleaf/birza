@@ -15,7 +15,7 @@ class ProductSearchControllerTest extends TestCase
     {
         Product::factory()->active()->create(['name' => 'Test Product']);
 
-        $response = $this->getJson('/api/product-search?query=Test');
+        $response = $this->getJson('/api/products/search?query=Test');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -29,7 +29,7 @@ class ProductSearchControllerTest extends TestCase
         Product::factory()->active()->create(['name' => 'Apple']);
         Product::factory()->active()->create(['name' => 'Banana']);
 
-        $response = $this->getJson('/api/product-search?query=Apple');
+        $response = $this->getJson('/api/products/search?query=Apple');
 
         $response->assertStatus(200);
         $response->assertJsonCount(1, 'products');
@@ -37,7 +37,7 @@ class ProductSearchControllerTest extends TestCase
 
     public function test_search_handles_empty_query(): void
     {
-        $response = $this->getJson('/api/product-search?query=');
+        $response = $this->getJson('/api/products/search?query=');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([

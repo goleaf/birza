@@ -25,7 +25,6 @@ class CartControllerTest extends TestCase
             ->get(route('buyer.cart.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.buyer.cart.index');
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Attributes;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Attribute;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -9,11 +10,18 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use InteractsWithWireUi;
+
+    public function confirmDeleteAttribute(int $attributeId): void
+    {
+        $this->confirmDelete(method: 'deleteAttribute', params: $attributeId);
+    }
+
     public function deleteAttribute(int $attributeId): void
     {
         Attribute::query()->findOrFail($attributeId)->delete();
 
-        session()->flash('success', __('backend.common.delete_success'));
+        $this->notifySuccess(__('backend.common.delete_success'));
     }
 
     public function render()

@@ -259,26 +259,14 @@
                                     <!-- end view link -->
 
                                     @if ($order->payment_status === 'pending')
-                                        <!-- start cancel form -->
-                                        <form 
-                                            action="{{ route('buyer.orders.cancel', $order) }}" 
-                                            method="POST"
-                                            class="inline"
+                                        <button
+                                            type="button"
+                                            wire:click="cancelOrder({{ $order->id }})"
+                                            class="text-red-600 hover:text-red-900"
+                                            onclick="return confirm('{{ __('orders.confirm_cancel') }}')"
                                         >
-                                            @csrf
-                                            @method('PUT')
-                                            
-                                            <!-- start cancel button -->
-                                            <button 
-                                                type="submit" 
-                                                class="text-red-600 hover:text-red-900"
-                                                onclick="return confirm('{{ __('orders.confirm_cancel') }}')"
-                                            >
-                                                {{ __('common.cancel') }}
-                                            </button>
-                                            <!-- end cancel button -->
-                                        </form>
-                                        <!-- end cancel form -->
+                                            {{ __('common.cancel') }}
+                                        </button>
                                     @endif
                                 </td>
                             </tr>

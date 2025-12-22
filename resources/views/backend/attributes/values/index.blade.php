@@ -6,9 +6,11 @@
         <h2 class="text-2xl font-bold">
             {{ __('backend.attribute_values.index.title') }}: {{ $attribute->getTranslation('name', app()->getLocale()) }}
         </h2>
-        <a href="{{ route('backend.attributes.values.create', $attribute) }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-            {{ __('backend.attribute_values.actions.create') }}
-        </a>
+        <x-button
+            primary
+            :href="route('backend.attributes.values.create', $attribute)"
+            :label="__('backend.attribute_values.actions.create')"
+        />
     </div>
     <!-- end header -->
 
@@ -22,7 +24,7 @@
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ strtoupper(app()->getLocale()) }}</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.attribute_values.fields.status') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.common.actions') }}</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common.actions') }}</th>
                     </tr>
                 </thead>
                 <!-- end thead -->
@@ -39,14 +41,15 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <a href="{{ route('backend.attributes.values.edit', [$attribute, $value]) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                    {{ __('backend.common.edit') }}
+                                    {{ __('common.edit') }}
                                 </a>
-                                <button type="button"
-                                        class="text-red-600 hover:text-red-900"
-                                        onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                        wire:click="deleteValue({{ $value->id }})">
-                                    {{ __('backend.common.delete') }}
-                                </button>
+                                <x-button
+                                    xs
+                                    flat
+                                    negative
+                                    wire:click="confirmDeleteValue({{ $value->id }})"
+                                    :label="__('common.delete')"
+                                />
                             </td>
                         </tr>
                     @endforeach

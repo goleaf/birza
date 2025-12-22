@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers\Backend\Auth;
 use Tests\TestCase;
 use App\Models\Users\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use App\Livewire\Backend\Auth\Login as AdminLogin;
 
 class LoginControllerTest extends TestCase
 {
@@ -15,7 +17,6 @@ class LoginControllerTest extends TestCase
         $response = $this->get(route('backend.login'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.auth.login');
     }
 
     public function test_login_redirects_if_already_authenticated(): void
@@ -34,12 +35,12 @@ class LoginControllerTest extends TestCase
             'password' => \Hash::make('password'),
         ]);
 
-        $response = $this->post(route('backend.login'), [
-            'email' => $admin->email,
-            'password' => 'password',
-        ]);
+        Livewire::test(AdminLogin::class)
+            ->set('email', $admin->email)
+            ->set('password', 'password')
+            ->call('login')
+            ->assertRedirect(route('backend.dashboard'));
 
-        $response->assertRedirect(route('backend.dashboard'));
         $this->assertAuthenticatedAs($admin, 'admin');
     }
 
@@ -47,12 +48,12 @@ class LoginControllerTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $response = $this->post(route('backend.login'), [
-            'email' => $admin->email,
-            'password' => 'wrong-password',
-        ]);
+        Livewire::test(AdminLogin::class)
+            ->set('email', $admin->email)
+            ->set('password', 'wrong-password')
+            ->call('login')
+            ->assertHasErrors(['email']);
 
-        $response->assertSessionHasErrors('email');
         $this->assertGuest('admin');
     }
 

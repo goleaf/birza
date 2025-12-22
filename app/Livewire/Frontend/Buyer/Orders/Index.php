@@ -6,12 +6,41 @@ use App\Models\Order;
 use App\Models\Users\Buyer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    public function cancelOrder(int $orderId): void
+    {
+        /** @var Buyer $buyer */
+        $buyer = Auth::guard('buyer')->user();
+
+        $order = Order::with(['items.product'])
+            ->where('buyer_id', $buyer->id)
+            ->findOrFail($orderId);
+
+        if ($order->payment_status !== Order::STATUS['PENDING']) {
+            session()->flash('error', __('orders.messages.cannot_cancel'));
+            return;
+        }
+
+        DB::transaction(function () use ($order) {
+            $order->update([
+                'payment_status' => Order::STATUS['CANCELLED'],
+                'status' => Order::STATUS['CANCELLED'],
+            ]);
+
+            foreach ($order->items as $item) {
+                $item->product?->increment('stock', $item->quantity);
+            }
+        });
+
+        session()->flash('success', __('orders.messages.cancelled_success'));
+    }
+
     public function render()
     {
         /** @var Buyer $buyer */

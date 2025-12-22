@@ -25,7 +25,26 @@ trait HasJsonTranslations
         return in_array($key, $translatable, true);
     }
 
-    protected function getAttributeValue($key): mixed
+    public function setAttribute($key, $value): static
+    {
+        if (is_string($key) && $this->isTranslatableAttribute($key)) {
+            if (is_array($value)) {
+                return $this->setTranslations($key, $value);
+            }
+
+            if ($value === null) {
+                $this->attributes[$key] = null;
+                return $this;
+            }
+
+            // If you assign a string/value directly, treat it as the translation for current locale
+            return $this->setTranslation($key, (string) app()->getLocale(), $value);
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    public function getAttributeValue($key): mixed
     {
         if (is_string($key) && $this->isTranslatableAttribute($key)) {
             return $this->getTranslation($key, app()->getLocale());

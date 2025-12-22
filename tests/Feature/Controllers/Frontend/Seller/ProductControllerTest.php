@@ -27,7 +27,6 @@ class ProductControllerTest extends TestCase
             ->get(route('seller.products.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.seller.products.index');
     }
 }
 

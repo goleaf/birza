@@ -20,9 +20,9 @@ class Register extends Component
     public string $password = '';
     public string $password_confirmation = '';
 
-    public function mount(): void
+    public function mount(?string $userType = null): void
     {
-        $segment = request()->segment(1);
+        $segment = $userType ?? request()->segment(1);
 
         if (! in_array($segment, ['buyer', 'seller'], true)) {
             abort(404);

@@ -27,7 +27,6 @@ class OrderControllerTest extends TestCase
             ->get(route('backend.orders.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.orders.index');
     }
 }
 

@@ -12,24 +12,44 @@ class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_product_index_displays_products(): void
+    public function test_product_index_requires_authentication(): void
     {
         Product::factory()->active()->count(5)->create();
 
         $response = $this->get(route('buyer.products.index'));
 
-        $response->assertStatus(200);
-        $response->assertViewIs('frontend.buyer.products.index');
+        $response->assertRedirect(route('home'));
     }
 
-    public function test_product_show_displays_product(): void
+    public function test_product_index_displays_for_authenticated_buyer(): void
+    {
+        $buyer = Buyer::factory()->create();
+        Product::factory()->active()->count(5)->create();
+
+        $response = $this->actingAs($buyer, 'buyer')
+            ->get(route('buyer.products.index'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_product_show_requires_authentication(): void
     {
         $product = Product::factory()->active()->create();
 
         $response = $this->get(route('buyer.products.show', $product));
 
+        $response->assertRedirect(route('home'));
+    }
+
+    public function test_product_show_displays_for_authenticated_buyer(): void
+    {
+        $buyer = Buyer::factory()->create();
+        $product = Product::factory()->active()->create();
+
+        $response = $this->actingAs($buyer, 'buyer')
+            ->get(route('buyer.products.show', $product));
+
         $response->assertStatus(200);
-        $response->assertViewIs('frontend.buyer.products.show');
     }
 }
 

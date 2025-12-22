@@ -29,7 +29,6 @@ class ProductControllerTest extends TestCase
             ->get(route('backend.products.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.products.index');
     }
 
     public function test_product_create_form_displays(): void
@@ -40,7 +39,6 @@ class ProductControllerTest extends TestCase
             ->get(route('backend.products.create'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.products.form');
     }
 }
 

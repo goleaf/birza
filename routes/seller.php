@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Frontend\Auth\AuthController;
-use App\Http\Controllers\Frontend\Seller\ProfileController as SellerProfileController;
+use App\Livewire\Frontend\Auth\ForgotPassword as FrontendForgotPassword;
 use App\Livewire\Frontend\Auth\Login as FrontendLogin;
 use App\Livewire\Frontend\Auth\Register as FrontendRegister;
+use App\Livewire\Frontend\Auth\RegisterSuccess as FrontendRegisterSuccess;
+use App\Livewire\Frontend\Auth\ResetPassword as FrontendResetPassword;
+use App\Livewire\Frontend\Auth\VerificationNotice as FrontendVerificationNotice;
+use App\Livewire\Frontend\Auth\VerifyEmail as FrontendVerifyEmail;
 use App\Livewire\Frontend\Seller\Dashboard as SellerDashboard;
 use App\Livewire\Frontend\Seller\Orders\Index as SellerOrdersIndex;
 use App\Livewire\Frontend\Seller\Orders\Show as SellerOrdersShow;
@@ -21,26 +24,21 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
     Route::middleware('guest:seller')->group(function () {
         Route::get('/login', FrontendLogin::class)->name('login');
         Route::get('/register', FrontendRegister::class)->name('register');
-        Route::get('/register/success', [AuthController::class, 'showRegistrationSuccess'])->name('register.success');
+        Route::get('/register/success', FrontendRegisterSuccess::class)->name('register.success');
 
-        // Password Reset Routes
-        Route::get('/forgot-password', [AuthController::class, 'showLinkRequestForm'])->name('password.request');
-        Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
-        Route::get('/reset-password/{hash}', [AuthController::class, 'showResetForm'])->name('password.reset');
-        Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+        // Password reset
+        Route::get('/forgot-password', FrontendForgotPassword::class)->name('password.request');
+        Route::get('/reset-password/{hash}', FrontendResetPassword::class)->name('password.reset');
 
         // Email verification routes
-        Route::get('/email/verify/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
-        Route::get('/email/verify', [AuthController::class, 'showVerificationNotice'])->name('verification.notice');
-        Route::post('/email/resend', [AuthController::class, 'resend'])->name('verification.resend');
+        Route::get('/email/verify/{hash}', FrontendVerifyEmail::class)->name('verification.verify')->middleware('throttle:6,1');
+        Route::get('/email/verify', FrontendVerificationNotice::class)->name('verification.notice');
     });
 
     // Authenticated routes
     Route::middleware('auth:seller')->group(function () {
         Route::get('/dashboard', SellerDashboard::class)->name('dashboard');
         Route::get('/profile', SellerProfileEdit::class)->name('profile.edit');
-        Route::put('/profile', [SellerProfileController::class, 'update'])->name('profile.update');
-        Route::put('/profile/password', [SellerProfileController::class, 'updatePassword'])->name('profile.password');
         Route::post('/logout', function (Request $request) {
             Auth::guard('seller')->logout();
 
@@ -58,8 +56,6 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
         // Orders
         Route::get('/orders', SellerOrdersIndex::class)->name('orders.index');
         Route::get('/orders/{order}', SellerOrdersShow::class)->name('orders.show');
-
-        Route::put('/seller/profile/categories', [SellerProfileController::class, 'updateCategories'])->name('profile.categories.update');
 
         // Transactions
         Route::get('/transactions', SellerTransactionsIndex::class)->name('transactions.index');

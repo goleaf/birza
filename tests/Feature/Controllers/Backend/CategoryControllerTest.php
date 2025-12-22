@@ -27,7 +27,6 @@ class CategoryControllerTest extends TestCase
             ->get(route('backend.categories.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.categories.index');
     }
 
     public function test_category_create_form_displays(): void
@@ -38,7 +37,6 @@ class CategoryControllerTest extends TestCase
             ->get(route('backend.categories.create'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('backend.categories.form');
     }
 }
 

@@ -369,11 +369,10 @@
                         }
 
                         if (data.categories.length === 0 && data.products.length === 0) {
-                            resultsDiv.innerHTML = `
-                                <div class="px-4 py-2 text-gray-500">
-                                    ${window.translations.no_results_found}
-                                </div>
-                            `;
+                            const empty = document.createElement('div');
+                            empty.className = 'px-4 py-2 text-gray-500';
+                            empty.textContent = window.translations.no_results_found;
+                            resultsDiv.appendChild(empty);
                         }
 
                         searchResults.appendChild(resultsDiv);
@@ -385,12 +384,11 @@
         function createSection(type, items) {
             const section = document.createElement('div');
             const title = type === 'categories' ? window.translations.categories : window.translations.products;
-            
-            section.innerHTML = `
-                <div class="px-4 py-2 bg-gray-50 text-sm font-medium text-gray-700">
-                    ${title}
-                </div>
-            `;
+
+            const header = document.createElement('div');
+            header.className = 'px-4 py-2 bg-gray-50 text-sm font-medium text-gray-700';
+            header.textContent = title;
+            section.appendChild(header);
 
             items.forEach(item => {
                 const link = document.createElement('a');
@@ -400,18 +398,33 @@
                 link.className = 'block px-4 py-2 hover:bg-gray-100 transition-colors';
                 
                 if (type === 'products') {
-                    link.innerHTML = `
-                        <div class="flex items-center">
-                            <img src="/storage/products/${item.product_image}" 
-                                class="w-10 h-10 object-cover rounded mr-3">
-                            <div>
-                                <div class="font-medium">${item.name}</div>
-                                <div class="text-sm text-gray-600">${item.price} €</div>
-                            </div>
-                        </div>
-                    `;
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center';
+
+                    const img = document.createElement('img');
+                    img.src = `/storage/products/${item.product_image}`;
+                    img.className = 'w-10 h-10 object-cover rounded mr-3';
+                    img.alt = item.name || '';
+
+                    const col = document.createElement('div');
+
+                    const name = document.createElement('div');
+                    name.className = 'font-medium';
+                    name.textContent = item.name || '';
+
+                    const price = document.createElement('div');
+                    price.className = 'text-sm text-gray-600';
+                    price.textContent = `${item.price} €`;
+
+                    col.appendChild(name);
+                    col.appendChild(price);
+
+                    row.appendChild(img);
+                    row.appendChild(col);
+
+                    link.appendChild(row);
                 } else {
-                    link.textContent = item.category_name;
+                    link.textContent = item.category_name || '';
                 }
                 
                 section.appendChild(link);
@@ -435,4 +448,3 @@
         
     </script>
 </div>
-<!-- end section -->

@@ -76,12 +76,8 @@
                             </select>
                         </div>
                         <div class="flex space-x-2">
-                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                                {{ __('common.filter') }}
-                            </button>
-                            <a href="{{ route('backend.products.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-                                {{ __('common.reset') }}
-                            </a>
+                            <x-button type="submit" primary :label="__('common.filter')" />
+                            <x-button flat :href="route('backend.products.index')" :label="__('common.reset')" />
                         </div>
                     </div>
                 </form>
@@ -155,25 +151,32 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             @if ($product->trashed())
-                                                <button type="button" class="text-green-600 hover:text-green-900 mr-3"
-                                                        wire:click="restoreProduct({{ $product->id }})">
-                                                    {{ __('common.restore') }}
-                                                </button>
-                                                <button type="button" class="text-red-600 hover:text-red-900"
-                                                        onclick="if(!confirm('{{ __('common.confirm_force_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                                        wire:click="forceDeleteProduct({{ $product->id }})">
-                                                    {{ __('common.force_delete') }}
-                                                </button>
+                                                <x-button
+                                                    xs
+                                                    flat
+                                                    positive
+                                                    wire:click="restoreProduct({{ $product->id }})"
+                                                    :label="__('common.restore')"
+                                                />
+                                                <x-button
+                                                    xs
+                                                    flat
+                                                    negative
+                                                    wire:click="confirmForceDeleteProduct({{ $product->id }})"
+                                                    :label="__('common.force_delete')"
+                                                />
                                             @else
                                                 <a href="{{ route('backend.products.edit', $product) }}" 
                                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
                                                     {{ __('common.edit') }}
                                                 </a>
-                                                <button type="button" class="text-red-600 hover:text-red-900"
-                                                        onclick="if(!confirm('{{ __('common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                                        wire:click="deleteProduct({{ $product->id }})">
-                                                    {{ __('common.delete') }}
-                                                </button>
+                                                <x-button
+                                                    xs
+                                                    flat
+                                                    negative
+                                                    wire:click="confirmDeleteProduct({{ $product->id }})"
+                                                    :label="__('common.delete')"
+                                                />
                                             @endif
                                         </td>
                                     </tr>

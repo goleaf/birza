@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Buyers;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Users\Buyer;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -9,11 +10,18 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use InteractsWithWireUi;
+
+    public function confirmDeleteBuyer(int $buyerId): void
+    {
+        $this->confirmDelete(method: 'deleteBuyer', params: $buyerId);
+    }
+
     public function deleteBuyer(int $buyerId): void
     {
         Buyer::query()->findOrFail($buyerId)->delete();
 
-        session()->flash('success', __('backend.common.delete_success'));
+        $this->notifySuccess(__('backend.common.delete_success'));
     }
 
     public function render()

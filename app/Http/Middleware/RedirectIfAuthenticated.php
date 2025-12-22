@@ -7,8 +7,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Controllers\Frontend\Auth\BuyerAuthController;
-use App\Http\Controllers\Frontend\Auth\SellerAuthController;
 
 class RedirectIfAuthenticated
 {
@@ -23,6 +21,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                if ($guard === 'admin') {
+                    return redirect()->route('backend.dashboard');
+                }
                 if ($guard === 'seller') {
                     return redirect()->route('seller.dashboard');
                 }

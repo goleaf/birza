@@ -7,6 +7,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+    @wireUiStyles
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -47,6 +49,10 @@
                 </div>
             </div>
         </nav>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+            <x-ui.flash-messages />
+        </div>
 
         <!-- Hero Section -->
         <div class="bg-gradient-to-b from-gray-50 to-transparent py-16">
@@ -353,6 +359,9 @@
         @include('layouts.frontend.footer')
 
     </div>
+
+    @wireUiScripts
+    @livewireScripts
 </body>
 
 </html>

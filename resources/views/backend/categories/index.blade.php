@@ -3,9 +3,11 @@
         <h2 class="text-2xl font-bold">
             {{ __('backend.categories.title') }}
         </h2>
-        <a href="{{ route('backend.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{ __('backend.categories.actions.create') }}
-        </a>
+        <x-button
+            primary
+            :href="route('backend.categories.create')"
+            :label="__('backend.categories.actions.create')"
+        />
     </div>
 
     <div class="bg-white shadow-sm sm:rounded-lg">
@@ -17,7 +19,7 @@
                             {{ strtoupper(app()->getLocale()) }} {{ __('backend.categories.fields.name') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.common.actions') }}
+                            {{ __('common.actions') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             {{ __('backend.categories.fields.attributes') }}
@@ -30,14 +32,15 @@
                             <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap font-medium">
                                 <a href="{{ route('backend.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    {{ __('backend.common.edit') }}
+                                    {{ __('common.edit') }}
                                 </a>
-                                <button type="button"
-                                        class="text-red-600 hover:text-red-900"
-                                        onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                        wire:click="deleteCategory({{ $category->id }})">
-                                    {{ __('backend.common.delete') }}
-                                </button>
+                                <x-button
+                                    xs
+                                    flat
+                                    negative
+                                    wire:click="confirmDeleteCategory({{ $category->id }})"
+                                    :label="__('common.delete')"
+                                />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($category->attributes->count() > 0)
@@ -49,7 +52,7 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    {{ __('backend.common.no_attributes') }}
+                                    {{ __('common.no_attributes') }}
                                 @endif
                             </td>
                         </tr>
@@ -63,14 +66,15 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap font-medium">
                                     <a href="{{ route('backend.categories.edit', $subcategory) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('backend.common.edit') }}
+                                        {{ __('common.edit') }}
                                     </a>
-                                    <button type="button"
-                                            class="text-red-600 hover:text-red-900"
-                                            onclick="if(!confirm('{{ __('backend.common.confirm_delete') }}')){ event.stopImmediatePropagation(); event.preventDefault(); }"
-                                            wire:click="deleteCategory({{ $subcategory->id }})">
-                                        {{ __('backend.common.delete') }}
-                                    </button>
+                                    <x-button
+                                        xs
+                                        flat
+                                        negative
+                                        wire:click="confirmDeleteCategory({{ $subcategory->id }})"
+                                        :label="__('common.delete')"
+                                    />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($subcategory->attributes->count() > 0)
@@ -82,7 +86,7 @@
                                             @endforeach
                                         </div>
                                     @else
-                                        {{ __('backend.common.no_attributes') }}
+                                        {{ __('common.no_attributes') }}
                                     @endif
                                 </td>
                             </tr>

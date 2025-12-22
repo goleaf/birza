@@ -1,6 +1,4 @@
 <?php
-
-use App\Http\Controllers\Backend\BuyerCreditHistoryController;
 use App\Livewire\Backend\Admin\Profile as AdminProfile;
 use App\Livewire\Backend\Attributes\Form as AttributeForm;
 use App\Livewire\Backend\Attributes\Index as AttributesIndex;
@@ -18,6 +16,7 @@ use App\Livewire\Backend\Countries\Form as CountryForm;
 use App\Livewire\Backend\Countries\Index as CountriesIndex;
 use App\Livewire\Backend\Orders\Index as OrdersIndex;
 use App\Livewire\Backend\Orders\Show as OrdersShow;
+use App\Livewire\Backend\Products\Create as ProductCreate;
 use App\Livewire\Backend\Products\Edit as ProductEdit;
 use App\Livewire\Backend\Products\Index as ProductsIndex;
 use App\Livewire\Backend\Products\Show as ProductShow;
@@ -63,8 +62,6 @@ Route::prefix('admin')->group(function () {
 
         // Buyer Credit History Routes
         Route::get('/buyers/{buyer}/credit-history', BuyerCreditHistory::class)->name('backend.buyers.credit_history');
-        Route::get('/buyers/credit-history/export', [BuyerCreditHistoryController::class, 'export'])->name('backend.buyers.credit_history.export');
-        Route::get('credit-attachments/{attachment}', [BuyerCreditHistoryController::class, 'downloadAttachment'])->name('backend.credit.attachments.download');
 
         // Countries
         Route::get('countries', CountriesIndex::class)->name('backend.countries.index');
@@ -78,6 +75,7 @@ Route::prefix('admin')->group(function () {
 
         // Products
         Route::get('products', ProductsIndex::class)->name('backend.products.index');
+        Route::get('products/create', ProductCreate::class)->name('backend.products.create');
         Route::get('products/{product}', ProductShow::class)->name('backend.products.show');
         Route::get('products/{product}/edit', ProductEdit::class)->name('backend.products.edit');
 

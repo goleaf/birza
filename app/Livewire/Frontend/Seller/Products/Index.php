@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,8 @@ use Livewire\Component;
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    use InteractsWithWireUi;
+
     public function softDeleteProduct(int $productId): void
     {
         $sellerId = Auth::guard('seller')->id();
@@ -22,7 +25,7 @@ class Index extends Component
         $product->update(['is_active' => false]);
         $product->delete();
 
-        session()->flash('success', __('backend.common.delete_success'));
+        $this->notifySuccess(__('backend.common.delete_success'));
     }
 
     public function restoreProduct(int $productId): void
@@ -35,7 +38,31 @@ class Index extends Component
 
         $product->restore();
 
-        session()->flash('success', __('backend.common.restore_success'));
+        $this->notifySuccess(__('backend.common.restore_success'));
+    }
+
+    public function confirmSoftDeleteProduct(int $productId): void
+    {
+        $this->confirmAction(
+            title: __('product.soft_delete_confirmation'),
+            description: __('product.soft_delete_warning'),
+            acceptLabel: __('product.soft_delete'),
+            method: 'softDeleteProduct',
+            params: $productId,
+            icon: 'warning',
+        );
+    }
+
+    public function confirmRestoreProduct(int $productId): void
+    {
+        $this->confirmAction(
+            title: __('product.restore_confirmation'),
+            description: __('product.restore_warning'),
+            acceptLabel: __('product.restore'),
+            method: 'restoreProduct',
+            params: $productId,
+            icon: 'question',
+        );
     }
 
     public function render()
