@@ -3,10 +3,9 @@ const colors = require('tailwindcss/colors')
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
-        "./vendor/wireui/wireui/src/*.php",
-        "./vendor/wireui/wireui/ts/**/*.ts",
-        "./vendor/wireui/wireui/src/WireUi/**/*.php",
-        "./vendor/wireui/wireui/src/Components/**/*.php",
+        // WireUI classes live across the package PHP + TS sources.
+        "./vendor/wireui/wireui/src/**/*.php",
+        "./vendor/wireui/wireui/ts/**/*.{ts,js}",
     ],
 
     theme: {
