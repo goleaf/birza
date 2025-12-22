@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', __('Product Details'))
+@section('title', __('ui.product_details'))
 
 @section('content')
 <div class="container-fluid">
@@ -8,13 +8,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">{{ __('Product Details') }}</h3>
+                    <h3 class="card-title">{{ __('ui.product_details') }}</h3>
                     <div>
                         <a href="{{ route('backend.products.edit', $product) }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i> {{ __('Edit') }}
+                            <i class="fas fa-edit"></i> {{ __('ui.edit') }}
                         </a>
                         <a href="{{ route('backend.products.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="fas fa-arrow-left"></i> {{ __('Back') }}
+                            <i class="fas fa-arrow-left"></i> {{ __('ui.back') }}
                         </a>
                     </div>
                 </div>
@@ -22,35 +22,35 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
-                                <h4>{{ __('Basic Information') }}</h4>
+                                <h4>{{ __('ui.basic_information') }}</h4>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th width="30%">{{ __('Name') }}</th>
+                                        <th width="30%">{{ __('ui.name') }}</th>
                                         <td>{{ $product->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Category') }}</th>
+                                        <th>{{ __('ui.category') }}</th>
                                         <td>{{ $product->category->category_name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Seller') }}</th>
+                                        <th>{{ __('ui.seller') }}</th>
                                         <td>{{ $product->seller->company_name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Price') }}</th>
+                                        <th>{{ __('ui.price') }}</th>
                                         <td>{{ $product->price }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Stock') }}</th>
+                                        <th>{{ __('ui.stock') }}</th>
                                         <td>{{ $product->stock }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Status') }}</th>
+                                        <th>{{ __('ui.status') }}</th>
                                         <td>
                                             @if($product->is_active)
-                                                <span class="badge badge-success">{{ __('Active') }}</span>
+                                                <span class="badge badge-success">{{ __('ui.active') }}</span>
                                             @else
-                                                <span class="badge badge-danger">{{ __('Inactive') }}</span>
+                                                <span class="badge badge-danger">{{ __('ui.inactive') }}</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -59,32 +59,32 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-4">
-                                <h4>{{ __('Product Details') }}</h4>
+                                <h4>{{ __('ui.product_details') }}</h4>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th width="30%">{{ __('Pack Type') }}</th>
+                                        <th width="30%">{{ __('ui.pack_type') }}</th>
                                         <td>{{ $product->pack_type }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Unit') }}</th>
+                                        <th>{{ __('ui.unit') }}</th>
                                         <td>{{ $product->unit }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Organic') }}</th>
+                                        <th>{{ __('ui.organic') }}</th>
                                         <td>
                                             @if($product->is_organic)
-                                                <span class="badge badge-success">{{ __('Yes') }}</span>
+                                                <span class="badge badge-success">{{ __('ui.yes') }}</span>
                                             @else
-                                                <span class="badge badge-secondary">{{ __('No') }}</span>
+                                                <span class="badge badge-secondary">{{ __('ui.no') }}</span>
                                             @endif
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Min Order Price') }}</th>
+                                        <th>{{ __('ui.min_order_price') }}</th>
                                         <td>{{ $product->min_order_price ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>{{ __('Min Order Count') }}</th>
+                                        <th>{{ __('ui.min_order_count') }}</th>
                                         <td>{{ $product->min_order_count ?? '-' }}</td>
                                     </tr>
                                 </table>
@@ -95,12 +95,12 @@
                     @if($product->attributeValues->isNotEmpty())
                     <div class="row mt-4">
                         <div class="col-12">
-                            <h4>{{ __('Product Attributes') }}</h4>
+                            <h4>{{ __('ui.product_attributes') }}</h4>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>{{ __('Attribute') }}</th>
-                                        <th>{{ __('Value') }}</th>
+                                        <th>{{ __('ui.attribute') }}</th>
+                                        <th>{{ __('ui.value') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,7 +118,7 @@
 
                     <div class="row mt-4">
                         <div class="col-12">
-                            <h4>{{ __('Description') }}</h4>
+                            <h4>{{ __('ui.description') }}</h4>
                             <div class="card">
                                 <div class="card-body">
                                     {!! $product->description !!}
@@ -130,7 +130,7 @@
                     @if($product->product_image)
                     <div class="row mt-4">
                         <div class="col-12">
-                            <h4>{{ __('Product Images') }}</h4>
+                            <h4>{{ __('ui.product_images') }}</h4>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card">
