@@ -33,7 +33,9 @@ return array (
   'main_image_help' => 'Select the primary product image',
   'max_price' => 'Maximum price',
   'max_stock' => 'Maximum stock',
-  'messages.out_of_stock' => 'Out of stock',
+  'messages' => [
+    'out_of_stock' => 'Out of stock',
+  ],
   'min_order' => 'Minimum order',
   'min_order_count' => 'Minimum order quantity',
   'min_order_price' => 'Minimum order price (EUR)',

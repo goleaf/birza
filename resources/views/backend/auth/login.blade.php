@@ -1,6 +1,10 @@
+@extends('layouts.backend.app')
+
+@section('content')
 <x-ui.auth-card
     full-screen
     background-class="bg-gradient-to-br from-base-200 via-base-100 to-base-200"
+    max-width-class="w-full"
     :title="__('common.sign_in')"
 >
     <form class="space-y-4" method="POST" action="{{ route('backend.login') }}" x-data="{ showPassword: false }">
@@ -56,3 +60,4 @@
         </button>
     </form>
 </x-ui.auth-card>
+@endsection

@@ -13,5 +13,6 @@ return array (
   'select_categories' => 'Select categories',
   'subcategories' => 'Subcategories',
   'unauthorized_category' => 'unauthorized category',
+  'veterinary_certificate_number' => 'Veterinary certificate number',
   'your_categories' => 'your categories',
 );

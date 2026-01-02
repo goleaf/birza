@@ -33,7 +33,9 @@ return array (
   'main_image_help' => 'Pasirinkite pagrindinį produkto vaizdą',
   'max_price' => 'Maksimali kaina',
   'max_stock' => 'Maksimalus kiekis',
-  'messages.out_of_stock' => 'Prekių nebeturime',
+  'messages' => [
+    'out_of_stock' => 'Prekių nebeturime',
+  ],
   'min_order' => 'Minimalus užsakymas',
   'min_order_count' => 'Minimalus užsakymo kiekis',
   'min_order_price' => 'Minimali užsakymo kaina (Eur)',

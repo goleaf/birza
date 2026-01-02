@@ -141,7 +141,7 @@
                                         };
                                     @endphp
                                     <span class="badge badge-outline {{ $statusClass }}">
-                                        {{ __('orders.status.' . $order->payment_status) }}
+                                        {{ __('orders.status_' . strtolower($order->payment_status)) }}
                                     </span>
                                 </td>
                                 <td class="text-sm text-base-content/60">{{ $order->created_at->format('Y-m-d H:i') }}</td>

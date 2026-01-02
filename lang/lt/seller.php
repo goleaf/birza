@@ -13,5 +13,6 @@ return array (
   'select_categories' => 'Pasirinkti kategoriją',
   'subcategories' => 'Subkategorijos',
   'unauthorized_category' => 'Nepatvirtinta kategorija',
+  'veterinary_certificate_number' => 'Veterinarijos sertifikato numeris',
   'your_categories' => 'Jūsų kategorijos',
 );

@@ -17,6 +17,11 @@ return [
         'force_delete_success' => 'Įrašas visam laikui ištrintas.',
         'common_success_message' => 'Operacija sėkmingai užbaigta.',
         'common_delete_message' => 'Įrašas sėkmingai ištrintas.',
+        'actions' => 'Veiksmai',
+        'view' => 'Peržiūrėti',
+        'back' => 'Atgal',
+        'active' => 'Aktyvus',
+        'inactive' => 'Neaktyvus',
     ],
     'buyers' => [
         'edit' => [
@@ -76,6 +81,7 @@ return [
                 'apply' => 'Taikyti filtrus',
             ],
             'table' => [
+                'buyer' => 'Pirkėjas',
                 'date' => 'Data',
                 'type' => 'Tipas',
                 'amount' => 'Suma',
@@ -87,6 +93,58 @@ return [
                 'system' => 'Sistema',
                 'no_records' => 'Operacijų istorija nerasta',
             ],
+        ],
+        'orders' => [
+            'title' => 'Užsakymai',
+        ],
+    ],
+    'sellers' => [
+        'edit' => [
+            'title' => 'Redaguoti tiekėją',
+        ],
+        'create' => [
+            'title' => 'Sukurti tiekėją',
+        ],
+        'fields' => [
+            'name' => 'Vardas',
+            'email' => 'El. paštas',
+            'password' => 'Slaptažodis',
+            'password_confirmation' => 'Patvirtinti slaptažodį',
+            'company_name' => 'Įmonės pavadinimas',
+            'company_code' => 'Įmonės kodas',
+            'vat_code' => 'PVM kodas',
+            'address' => 'Adresas',
+            'phone' => 'Telefonas',
+            'bank_account' => 'Banko sąskaita',
+            'veterinary_certificate_number' => 'Veterinarijos sertifikato numeris',
+            'is_verified' => 'Patvirtintas',
+            'is_active' => 'Aktyvus',
+        ],
+    ],
+    'orders' => [
+        'order_number' => 'Užsakymo numeris',
+        'date' => 'Data',
+        'total' => 'Viso',
+        'status' => 'Statusas',
+        'status_pending' => 'Laukiama patvirtinimo',
+        'status_paid' => 'Sumokėta',
+        'status_failed' => 'Nepavyko',
+        'status_processing' => 'Vykdomas',
+        'status_shipped' => 'Išsiųstas',
+        'status_delivered' => 'Pristatytas',
+        'status_cancelled' => 'Atšauktas',
+        'status_refunded' => 'Grąžintas',
+        'no_orders' => 'Nėra užsakymų',
+    ],
+    'dashboard' => [
+        'title' => 'Valdymo skydas',
+        'stats' => [
+            'total_categories' => 'Iš viso kategorijų',
+            'total_products' => 'Iš viso produktų',
+            'total_orders' => 'Iš viso užsakymų',
+        ],
+        'recent_activity' => [
+            'title' => 'Naujausia veikla',
         ],
     ],
     'countries' => [
@@ -132,6 +190,18 @@ return [
         'select_parent' => 'Pasirinkti tėvų kategoriją',
         'attributes_reset_notice' => 'Tėvų kategorijos atributai perrašys subkategorijų atributus.',
     ],
+    'global_settings' => [
+        'edit_title' => 'Redaguoti globalius nustatymus',
+        'fields' => [
+            'portal_additional_price' => 'Portalo papildoma kaina',
+        ],
+    ],
+    'settings' => [
+        'edit_title' => 'Redaguoti nustatymus',
+        'fields' => [
+            'portal_additional_price' => 'Portalo papildoma kaina',
+        ],
+    ],
     'products' => [
         'create' => [
             'title' => 'Sukurti produktą',
@@ -157,9 +227,52 @@ return [
             'product_additional_image' => 'Papildoma produkto nuotrauka',
         ],
     ],
-    'attributes' => [
+    'attribute_values' => [
+        'index' => [
+            'title' => 'Atributo reikšmės',
+        ],
+        'create' => [
+            'title' => 'Sukurti atributo reikšmę',
+        ],
+        'edit' => [
+            'title' => 'Redaguoti atributo reikšmę',
+        ],
+        'actions' => [
+            'create' => 'Pridėti reikšmę',
+        ],
         'fields' => [
+            'value' => 'Reikšmė',
+            'is_active' => 'Aktyvus',
+            'status' => 'Statusas',
+        ],
+    ],
+    'attributes' => [
+        'title' => 'Atributai',
+        'actions' => [
+            'create' => 'Sukurti atributą',
+            'add_value' => 'Pridėti reikšmę',
+        ],
+        'create' => [
+            'title' => 'Sukurti atributą',
+        ],
+        'edit' => [
+            'title' => 'Redaguoti atributą',
+        ],
+        'fields' => [
+            'name' => 'Pavadinimas',
+            'type' => 'Tipas',
+            'values_count' => 'Reikšmės',
+            'status' => 'Statusas',
+            'values' => 'Reikšmės',
             'is_filterable' => 'Filtruojamas',
+            'is_required' => 'Privalomas',
+            'is_active' => 'Aktyvus',
+        ],
+        'types' => [
+            'select' => 'Pasirinkimas',
+            'number' => 'Skaičius',
+            'boolean' => 'Loginis',
+            'date' => 'Data',
         ],
     ],
     'footer' => [

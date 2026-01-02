@@ -1,8 +1,10 @@
 <x-backend.page :title="__('backend.categories.title')">
     <x-slot:actions>
-        <a href="{{ route('backend.categories.create') }}" class="btn btn-primary btn-sm">
-            {{ __('backend.categories.actions.create') }}
-        </a>
+        <x-ui.button
+            primary
+            :href="route('backend.categories.create')"
+            :label="__('backend.categories.actions.create')"
+        />
     </x-slot:actions>
 
     <x-ui.card>
@@ -16,17 +18,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories->whereNull('parent_category_id') as $category)
+                    @foreach ($categories as $category)
                         <tr class="bg-base-200">
                             <td class="font-semibold">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
                             <td>
                                 <div class="flex items-center gap-2">
-                                    <a href="{{ route('backend.categories.edit', $category) }}" class="btn btn-ghost btn-xs">
-                                        {{ __('common.edit') }}
-                                    </a>
-                                    <button type="button" wire:click="confirmDeleteCategory({{ $category->id }})" class="btn btn-ghost btn-xs text-error">
-                                        {{ __('common.delete') }}
-                                    </button>
+                                    <x-ui.button
+                                        xs
+                                        flat
+                                        :href="route('backend.categories.edit', $category)"
+                                        :label="__('common.edit')"
+                                    />
+                                    <x-ui.button
+                                        xs
+                                        flat
+                                        negative
+                                        type="button"
+                                        wire:click="confirmDeleteCategory({{ $category->id }})"
+                                        :label="__('common.delete')"
+                                    />
                                 </div>
                             </td>
                             <td>
@@ -53,12 +63,20 @@
                                 </td>
                                 <td>
                                     <div class="flex items-center gap-2">
-                                        <a href="{{ route('backend.categories.edit', $subcategory) }}" class="btn btn-ghost btn-xs">
-                                            {{ __('common.edit') }}
-                                        </a>
-                                        <button type="button" wire:click="confirmDeleteCategory({{ $subcategory->id }})" class="btn btn-ghost btn-xs text-error">
-                                            {{ __('common.delete') }}
-                                        </button>
+                                        <x-ui.button
+                                            xs
+                                            flat
+                                            :href="route('backend.categories.edit', $subcategory)"
+                                            :label="__('common.edit')"
+                                        />
+                                        <x-ui.button
+                                            xs
+                                            flat
+                                            negative
+                                            type="button"
+                                            wire:click="confirmDeleteCategory({{ $subcategory->id }})"
+                                            :label="__('common.delete')"
+                                        />
                                     </div>
                                 </td>
                                 <td>

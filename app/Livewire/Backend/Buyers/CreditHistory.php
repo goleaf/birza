@@ -55,7 +55,15 @@ class CreditHistory extends Component
         $callback = function () use ($buyerId, $type, $dateFrom, $dateTo) {
             $file = fopen('php://output', 'w');
 
-            fputcsv($file, ['Buyer', 'Amount', 'Type', 'Balance After', 'Admin', 'Note', 'Date']);
+            fputcsv($file, [
+                __('backend.buyers.credit_history.table.buyer'),
+                __('backend.buyers.credit_history.table.amount'),
+                __('backend.buyers.credit_history.table.type'),
+                __('backend.buyers.credit_history.table.balance_after'),
+                __('backend.buyers.credit_history.table.admin'),
+                __('backend.buyers.credit_history.table.note'),
+                __('backend.buyers.credit_history.table.date'),
+            ]);
 
             $query = BuyerCreditHistory::with(['buyer', 'admin'])
                 ->where('buyer_id', $buyerId)
@@ -80,7 +88,7 @@ class CreditHistory extends Component
                         $record->amount,
                         $record->type,
                         $record->balance_after,
-                        $record->admin?->name ?? 'System',
+                        $record->admin?->name ?? __('backend.buyers.credit_history.table.system'),
                         $record->note,
                         $record->created_at?->format('Y-m-d H:i:s'),
                     ]);
@@ -115,5 +123,4 @@ class CreditHistory extends Component
         ]);
     }
 }
-
 

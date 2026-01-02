@@ -17,6 +17,11 @@ return [
         'force_delete_success' => 'Item permanently deleted successfully.',
         'common_success_message' => 'Operation completed successfully.',
         'common_delete_message' => 'Item deleted successfully.',
+        'actions' => 'Actions',
+        'view' => 'View',
+        'back' => 'Back',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
     ],
     'buyers' => [
         'edit' => [
@@ -71,6 +76,7 @@ return [
                 'apply' => 'Apply Filters',
             ],
             'table' => [
+                'buyer' => 'Buyer',
                 'date' => 'Date',
                 'type' => 'Type',
                 'amount' => 'Amount',
@@ -83,10 +89,62 @@ return [
                 'no_records' => 'No transaction records found',
             ],
         ],
+        'orders' => [
+            'title' => 'Orders',
+        ],
         'messages' => [
             'created' => 'Buyer created successfully.',
             'updated' => 'Buyer updated successfully.',
             'deleted' => 'Buyer deleted successfully.',
+        ],
+    ],
+    'sellers' => [
+        'edit' => [
+            'title' => 'Edit Seller',
+        ],
+        'create' => [
+            'title' => 'Create Seller',
+        ],
+        'fields' => [
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'password_confirmation' => 'Confirm Password',
+            'company_name' => 'Company Name',
+            'company_code' => 'Company Code',
+            'vat_code' => 'VAT Code',
+            'address' => 'Address',
+            'phone' => 'Phone',
+            'bank_account' => 'Bank Account',
+            'veterinary_certificate_number' => 'Veterinary Certificate Number',
+            'is_verified' => 'Verified',
+            'is_active' => 'Active',
+        ],
+    ],
+    'orders' => [
+        'order_number' => 'Order number',
+        'date' => 'Date',
+        'total' => 'Total',
+        'status' => 'Status',
+        'status_pending' => 'Pending',
+        'status_paid' => 'Confirmed',
+        'status_failed' => 'Failed',
+        'status_processing' => 'Processing',
+        'status_shipped' => 'Shipped',
+        'status_delivered' => 'Delivered',
+        'status_cancelled' => 'Cancelled',
+        'status_refunded' => 'Refunded',
+        'no_orders' => 'No orders',
+    ],
+    'dashboard' => [
+        'title' => 'Dashboard',
+        'stats' => [
+            'total_categories' => 'Total categories',
+            'total_products' => 'Total products',
+            'total_orders' => 'Total orders',
+        ],
+        'recent_activity' => [
+            'title' => 'Recent activity',
         ],
     ],
     'countries' => [
@@ -132,6 +190,18 @@ return [
         'select_parent' => 'Select parent category',
         'attributes_reset_notice' => 'Attributes selected for a parent category will overwrite attributes on its subcategories.',
     ],
+    'global_settings' => [
+        'edit_title' => 'Edit Global Settings',
+        'fields' => [
+            'portal_additional_price' => 'Portal additional price',
+        ],
+    ],
+    'settings' => [
+        'edit_title' => 'Edit Settings',
+        'fields' => [
+            'portal_additional_price' => 'Portal additional price',
+        ],
+    ],
     'products' => [
         'create' => [
             'title' => 'Create Product',
@@ -157,9 +227,52 @@ return [
             'product_additional_image' => 'Additional Product Image',
         ],
     ],
-    'attributes' => [
+    'attribute_values' => [
+        'index' => [
+            'title' => 'Attribute values',
+        ],
+        'create' => [
+            'title' => 'Create Attribute Value',
+        ],
+        'edit' => [
+            'title' => 'Edit Attribute Value',
+        ],
+        'actions' => [
+            'create' => 'Add Value',
+        ],
         'fields' => [
+            'value' => 'Value',
+            'is_active' => 'Active',
+            'status' => 'Status',
+        ],
+    ],
+    'attributes' => [
+        'title' => 'Attributes',
+        'actions' => [
+            'create' => 'Create Attribute',
+            'add_value' => 'Add Value',
+        ],
+        'create' => [
+            'title' => 'Create Attribute',
+        ],
+        'edit' => [
+            'title' => 'Edit Attribute',
+        ],
+        'fields' => [
+            'name' => 'Name',
+            'type' => 'Type',
+            'values_count' => 'Values',
+            'status' => 'Status',
+            'values' => 'Values',
             'is_filterable' => 'Filterable',
+            'is_required' => 'Required',
+            'is_active' => 'Active',
+        ],
+        'types' => [
+            'select' => 'Select',
+            'number' => 'Number',
+            'boolean' => 'Boolean',
+            'date' => 'Date',
         ],
     ],
     'footer' => [

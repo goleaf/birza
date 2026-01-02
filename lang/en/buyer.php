@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'buyer' => 'Buyer',
+  'buyer_information' => 'Buyer information',
   'login' => 'Login to',
   'register' => 'Registered',
   'register_link' => 'Registered link',

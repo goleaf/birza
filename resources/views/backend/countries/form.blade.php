@@ -1,7 +1,10 @@
+@php
+    $activeLocale = in_array(app()->getLocale(), $locales, true) ? app()->getLocale() : ($locales[0] ?? 'en');
+@endphp
+
 <x-backend.page :title="$country->exists ? __('backend.countries.edit') : __('backend.countries.create')">
-    <div class="card bg-base-100 shadow">
-        <div class="card-body">
-            <form wire:submit.prevent="save" class="space-y-8">
+    <x-ui.card>
+        <form wire:submit.prevent="save" class="space-y-8">
                 <div class="grid gap-6 lg:grid-cols-3">
                     <div class="space-y-4 lg:col-span-1">
                         <div>
@@ -54,18 +57,34 @@
                             <h3 class="text-lg font-semibold">{{ __('backend.countries.translations') }}</h3>
                         </div>
 
-                        <div class="grid gap-4 md:grid-cols-2">
+                        <div class="space-y-4" x-data="{ locale: '{{ $activeLocale }}' }">
+                            <div role="tablist" class="tabs tabs-boxed">
+                                @foreach ($locales as $locale)
+                                    <button
+                                        type="button"
+                                        role="tab"
+                                        class="tab"
+                                        :class="locale === '{{ $locale }}' ? 'tab-active' : ''"
+                                        @click="locale = '{{ $locale }}'"
+                                    >
+                                        {{ strtoupper($locale) }}
+                                    </button>
+                                @endforeach
+                            </div>
+
                             @foreach ($locales as $locale)
-                                <div class="form-control">
-                                    <label for="country_name_{{ $locale }}" class="label">
-                                        <span class="label-text">{{ strtoupper($locale) }} {{ __('backend.countries.fields.country_name') }}</span>
-                                    </label>
-                                    <input
-                                        id="country_name_{{ $locale }}"
-                                        name="country_name.{{ $locale }}"
-                                        class="input input-bordered w-full"
-                                        wire:model.defer="country_name.{{ $locale }}"
-                                    />
+                                <div x-show="locale === '{{ $locale }}'" x-cloak>
+                                    <div class="form-control">
+                                        <label for="country_name_{{ $locale }}" class="label">
+                                            <span class="label-text">{{ strtoupper($locale) }} {{ __('backend.countries.fields.country_name') }}</span>
+                                        </label>
+                                        <input
+                                            id="country_name_{{ $locale }}"
+                                            name="country_name.{{ $locale }}"
+                                            class="input input-bordered w-full"
+                                            wire:model.defer="country_name.{{ $locale }}"
+                                        />
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -77,7 +96,6 @@
                     :cancel-href="route('backend.countries.index')"
                     submit-target="save"
                 />
-            </form>
-        </div>
-    </div>
+        </form>
+    </x-ui.card>
 </x-backend.page>
