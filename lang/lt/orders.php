@@ -1,9 +1,12 @@
 <?php
 
 return [
+    'back_to_orders' => 'Atgal į užsakymus',
+    'buyer' => 'Pirkėjas',
     'cancel_order' => 'Atšaukti užsakymą',
     'completed_orders' => 'Įvykdyti užsakymai',
     'confirm_cancel' => 'Patvirtinti atšaukimą',
+    'confirm_order' => 'Patvirtinti užsakymą',
     'daily_revenue' => 'Dienos pajamos',
     'date' => 'Data',
     'date_from' => 'Data nuo',
@@ -11,6 +14,8 @@ return [
     'filter' => 'Filtruoti',
     'filter_all_status' => 'Visi statusai',
     'id' => 'ID',
+    'comment' => 'Komentaras',
+    'comment_placeholder' => 'Pridėkite komentarą apie šį užsakymą...',
     'messages' => [
         'cancelled_success' => 'Sėkmingai atšaukta',
         'cannot_cancel' => 'Negalima atšaukti',
@@ -44,6 +49,7 @@ return [
     'status_refunded' => 'Grąžintas',
     'status_shipped' => 'Išsiųstas',
     'status_updated' => 'Statusas atnaujintas',
+    'status_cannot_be_changed' => 'Užsakymo statuso pakeisti negalima',
     'table_amount' => 'Suma',
     'table_date' => 'Data',
     'table_order_id' => 'Užsakymo ID',
@@ -53,12 +59,14 @@ return [
     'timeline_updated_at' => 'Atnaujinta',
     'title' => 'Užsakymai',
     'total' => 'Viso',
+    'total_amount' => 'Bendra suma',
     'total_orders' => 'Iš viso užsakymų',
     'total_spent' => 'Iš viso išleista',
     'unit_price' => 'Vieneto kaina',
+    'unauthorized_update' => 'Neturite teisės atnaujinti šio užsakymo',
+    'update_status' => 'Atnaujinti statusą',
     'view_details' => 'Peržiūrėti užsakymą',
     'weekly_revenue' => 'Savaitės pajamos',
     'yearly_revenue' => 'Metų pajamos',
 ];
-
 

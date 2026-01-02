@@ -53,6 +53,11 @@ return [
             'current_balance' => 'Current Balance',
             'manage_credit' => 'Manage Credit',
             'view_history' => 'View History',
+            'messages' => [
+                'credit_added' => 'Credit added successfully.',
+                'credit_debited' => 'Credit debited successfully.',
+                'insufficient_balance' => 'Insufficient balance.',
+            ],
         ],
         'credit_history' => [
             'filter' => [
@@ -81,13 +86,6 @@ return [
             'created' => 'Buyer created successfully.',
             'updated' => 'Buyer updated successfully.',
             'deleted' => 'Buyer deleted successfully.',
-        ],
-        'credit' => [
-            'messages' => [
-                'credit_added' => 'Credit added successfully.',
-                'credit_debited' => 'Credit debited successfully.',
-                'insufficient_balance' => 'Insufficient balance.',
-            ],
         ],
     ],
     'credit_added' => 'Credit added: :amount',

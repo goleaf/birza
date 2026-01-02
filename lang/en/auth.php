@@ -8,4 +8,5 @@ return array (
   'email' => 'by email',
   'failed' => 'Failed',
   'login_button' => 'The login button',
+  'test_credentials' => 'Test credentials',
 );
