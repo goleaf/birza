@@ -1,52 +1,39 @@
-<div>
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">
-            {{ __('backend.categories.title') }}
-        </h2>
-        <x-button
-            primary
-            :href="route('backend.categories.create')"
-            :label="__('backend.categories.actions.create')"
-        />
-    </div>
+<x-backend.page :title="__('backend.categories.title')">
+    <x-slot:actions>
+        <a href="{{ route('backend.categories.create') }}" class="btn btn-primary btn-sm">
+            {{ __('backend.categories.actions.create') }}
+        </a>
+    </x-slot:actions>
 
-    <div class="bg-white shadow-sm sm:rounded-lg">
-        <div class="bg-white border-b border-gray-200">
-            <table class="w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+    <x-ui.card>
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ strtoupper(app()->getLocale()) }} {{ __('backend.categories.fields.name') }}
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('common.actions') }}
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.categories.fields.attributes') }}
-                        </th>
+                        <th>{{ strtoupper(app()->getLocale()) }} {{ __('backend.categories.fields.name') }}</th>
+                        <th>{{ __('common.actions') }}</th>
+                        <th>{{ __('backend.categories.fields.attributes') }}</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @foreach ($categories->whereNull('parent_category_id') as $category)
-                        <tr class="bg-gray-200">
-                            <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap font-medium">
-                                <a href="{{ route('backend.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    {{ __('common.edit') }}
-                                </a>
-                                <x-button
-                                    xs
-                                    flat
-                                    negative
-                                    wire:click="confirmDeleteCategory({{ $category->id }})"
-                                    :label="__('common.delete')"
-                                />
+                        <tr class="bg-base-200">
+                            <td class="font-semibold">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('backend.categories.edit', $category) }}" class="btn btn-ghost btn-xs">
+                                        {{ __('common.edit') }}
+                                    </a>
+                                    <button type="button" wire:click="confirmDeleteCategory({{ $category->id }})" class="btn btn-ghost btn-xs text-error">
+                                        {{ __('common.delete') }}
+                                    </button>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td>
                                 @if ($category->attributes->count() > 0)
-                                    <div class="space-x-1">
+                                    <div class="flex flex-wrap gap-1">
                                         @foreach($category->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
-                                            <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                            <span class="badge {{ $attribute->is_active ? 'badge-primary' : 'badge-error' }} badge-outline">
                                                 {{ $attribute->getTranslation('name', app()->getLocale()) }}
                                             </span>
                                         @endforeach
@@ -57,30 +44,28 @@
                             </td>
                         </tr>
                         @foreach ($category->subcategories as $subcategory)
-                            <tr class="bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <span class="text-gray-400 mr-2">└─</span>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-base-content/50">└─</span>
                                         {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap font-medium">
-                                    <a href="{{ route('backend.categories.edit', $subcategory) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('common.edit') }}
-                                    </a>
-                                    <x-button
-                                        xs
-                                        flat
-                                        negative
-                                        wire:click="confirmDeleteCategory({{ $subcategory->id }})"
-                                        :label="__('common.delete')"
-                                    />
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ route('backend.categories.edit', $subcategory) }}" class="btn btn-ghost btn-xs">
+                                            {{ __('common.edit') }}
+                                        </a>
+                                        <button type="button" wire:click="confirmDeleteCategory({{ $subcategory->id }})" class="btn btn-ghost btn-xs text-error">
+                                            {{ __('common.delete') }}
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td>
                                     @if ($subcategory->attributes->count() > 0)
-                                        <div class="space-x-1">
+                                        <div class="flex flex-wrap gap-1">
                                             @foreach($subcategory->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
-                                                <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                                <span class="badge {{ $attribute->is_active ? 'badge-primary' : 'badge-error' }} badge-outline">
                                                     {{ $attribute->getTranslation('name', app()->getLocale()) }}
                                                 </span>
                                             @endforeach
@@ -95,5 +80,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
+    </x-ui.card>
+</x-backend.page>

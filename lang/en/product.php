@@ -49,6 +49,8 @@ return array (
   'pack_type' => 'Pack type',
   'package_weight' => 'Package weight',
   'price' => 'Price',
+  'price_high_low' => 'Price (High → Low)',
+  'price_low_high' => 'Price (Low → High)',
   'price_multilang' => 'Price (multi-language)',
   'price_per_liter' => 'Price per liter',
   'price_range' => 'Price range',

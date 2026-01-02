@@ -7,6 +7,7 @@ return [
         'update' => 'Update',
         'delete' => 'Delete',
         'edit' => 'Edit',
+        'disabled' => 'Disabled',
         'export_csv' => 'Export CSV',
         'save' => 'Save',
         'success_message' => 'Operation completed successfully.',
@@ -87,6 +88,83 @@ return [
             'updated' => 'Buyer updated successfully.',
             'deleted' => 'Buyer deleted successfully.',
         ],
+    ],
+    'countries' => [
+        'title' => 'Countries',
+        'create' => 'Create Country',
+        'edit' => 'Edit Country',
+        'translations' => 'Translations',
+        'actions' => [
+            'create' => 'Create Country',
+        ],
+        'fields' => [
+            'alpha2' => 'Alpha-2 code',
+            'code' => 'Code',
+            'region' => 'Region',
+            'country_name' => 'Country name',
+            'is_active' => 'Active',
+        ],
+        'regions' => [
+            'asia' => 'Asia',
+            'europe' => 'Europe',
+            'africa' => 'Africa',
+            'americas' => 'Americas',
+            'oceania' => 'Oceania',
+        ],
+    ],
+    'categories' => [
+        'title' => 'Categories',
+        'create' => [
+            'title' => 'Create Category',
+        ],
+        'edit' => [
+            'title' => 'Edit Category',
+        ],
+        'actions' => [
+            'create' => 'Create Category',
+            'update' => 'Update Category',
+        ],
+        'fields' => [
+            'name' => 'Name',
+            'attributes' => 'Attributes',
+            'parent_category' => 'Parent Category',
+        ],
+        'select_parent' => 'Select parent category',
+        'attributes_reset_notice' => 'Attributes selected for a parent category will overwrite attributes on its subcategories.',
+    ],
+    'products' => [
+        'create' => [
+            'title' => 'Create Product',
+        ],
+        'edit' => [
+            'title' => 'Edit Product',
+        ],
+        'fields' => [
+            'category' => 'Category',
+            'price' => 'Price',
+            'pack_type' => 'Pack Type',
+            'unit' => 'Unit',
+            'country_of_origin' => 'Country of Origin',
+            'is_organic' => 'Organic',
+            'is_active' => 'Active',
+            'stock' => 'Stock',
+            'min_order_price' => 'Minimum Order Price',
+            'min_order_count' => 'Minimum Order Count',
+            'package_weight' => 'Package Weight',
+            'price_per_liter' => 'Price per Liter',
+            'description' => 'Description',
+            'product_image' => 'Product Image',
+            'product_additional_image' => 'Additional Product Image',
+        ],
+    ],
+    'attributes' => [
+        'fields' => [
+            'is_filterable' => 'Filterable',
+        ],
+    ],
+    'footer' => [
+        'copyright' => ':year :app. All rights reserved.',
+        'version' => 'Version :version',
     ],
     'credit_added' => 'Credit added: :amount',
     'credit_deducted' => 'Credit deducted: :amount',

@@ -13,7 +13,7 @@ class CountryFactory extends Factory
     {
         return [
             'alpha2' => $this->faker->unique()->countryCode(),
-            'region' => $this->faker->randomElement(Country::getRegionOptions()),
+            'region' => $this->faker->randomElement(Country::getRegionValues()),
             'is_active' => true,
             'country_name' => [
                 'en' => $this->faker->country(),
@@ -33,4 +33,3 @@ class CountryFactory extends Factory
         ]);
     }
 }
-

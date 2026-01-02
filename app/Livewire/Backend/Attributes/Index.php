@@ -26,10 +26,60 @@ class Index extends Component
 
     public function render()
     {
+        $request = request();
+        $search = trim((string) $request->input('search', ''));
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $filterable = $request->input('filterable');
+        $required = $request->input('required');
+
+        $query = Attribute::query()
+            ->withCount('values');
+
+        if ($search !== '') {
+            $locale = app()->getLocale();
+            $query->where("name->{$locale}", 'like', '%' . $search . '%');
+        }
+
+        if ($status === 'active') {
+            $query->where('is_active', true);
+        } elseif ($status === 'inactive') {
+            $query->where('is_active', false);
+        }
+
+        if (is_string($type) && array_key_exists($type, Attribute::TYPES)) {
+            $query->where('type', $type);
+        }
+
+        if ($filterable === '1') {
+            $query->where('is_filterable', true);
+        } elseif ($filterable === '0') {
+            $query->where('is_filterable', false);
+        }
+
+        if ($required === '1') {
+            $query->where('is_required', true);
+        } elseif ($required === '0') {
+            $query->where('is_required', false);
+        }
+
         return view('backend.attributes.index', [
-            'attributes' => Attribute::with('values')->orderBy('id', 'desc')->paginate(20),
+            'attributes' => $query->orderBy('id', 'desc')->paginate(20)->withQueryString(),
+            'filters' => [
+                'search' => $search,
+                'status' => $status,
+                'type' => $type,
+                'filterable' => $filterable,
+                'required' => $required,
+            ],
+            'types' => Attribute::TYPES,
+            'stats' => [
+                'total' => Attribute::count(),
+                'active' => Attribute::where('is_active', true)->count(),
+                'filterable' => Attribute::where('is_filterable', true)->count(),
+                'required' => Attribute::where('is_required', true)->count(),
+            ],
         ]);
     }
 }
-
 

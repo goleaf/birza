@@ -38,6 +38,7 @@ return [
     'name_za' => 'Name (Z–A)',
     'company_az' => 'Company (A–Z)',
     'company_za' => 'Company (Z–A)',
+    'select_country' => 'Select country',
     'not_available' => 'Not available',
     'not_set' => 'Not set',
     'confirm_delete' => 'Are you sure you want to delete?',
@@ -50,6 +51,7 @@ return [
     'out_of_stock' => 'Out of stock',
     'no_image' => 'No image',
     'unnamed_product' => 'Unnamed product',
+    'select_option' => 'Select option',
 
     // Auth-ish
     'already_have_account' => 'Already have an account',

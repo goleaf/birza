@@ -1,12 +1,12 @@
-<div class="bg-gray-800">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-            <div class="text-gray-400 text-sm">
-                &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+<footer class="border-t border-base-300 bg-base-200">
+    <div class="mx-auto w-full max-w-7xl px-4 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-sm text-base-content/70">
+            <div>
+                &copy; {{ __('backend.footer.copyright', ['year' => date('Y'), 'app' => config('app.name')]) }}
             </div>
-            <div class="text-gray-400 text-sm">
-                Version 1.0
+            <div>
+                {{ __('backend.footer.version', ['version' => '1.0']) }}
             </div>
         </div>
     </div>
-</div>
+</footer>

@@ -7,6 +7,7 @@ return [
         'update' => 'Atnaujinti',
         'delete' => 'Ištrinti',
         'edit' => 'Redaguoti',
+        'disabled' => 'Neaktyvus',
         'export_csv' => 'Eksportuoti CSV',
         'save' => 'Išsaugoti',
         'success_message' => 'Operacija sėkmingai užbaigta.',
@@ -87,6 +88,83 @@ return [
                 'no_records' => 'Operacijų istorija nerasta',
             ],
         ],
+    ],
+    'countries' => [
+        'title' => 'Šalys',
+        'create' => 'Sukurti šalį',
+        'edit' => 'Redaguoti šalį',
+        'translations' => 'Vertimai',
+        'actions' => [
+            'create' => 'Sukurti šalį',
+        ],
+        'fields' => [
+            'alpha2' => 'Alpha-2 kodas',
+            'code' => 'Kodas',
+            'region' => 'Regionas',
+            'country_name' => 'Šalies pavadinimas',
+            'is_active' => 'Aktyvi',
+        ],
+        'regions' => [
+            'asia' => 'Azija',
+            'europe' => 'Europa',
+            'africa' => 'Afrika',
+            'americas' => 'Amerika',
+            'oceania' => 'Okeanija',
+        ],
+    ],
+    'categories' => [
+        'title' => 'Kategorijos',
+        'create' => [
+            'title' => 'Sukurti kategoriją',
+        ],
+        'edit' => [
+            'title' => 'Redaguoti kategoriją',
+        ],
+        'actions' => [
+            'create' => 'Sukurti kategoriją',
+            'update' => 'Atnaujinti kategoriją',
+        ],
+        'fields' => [
+            'name' => 'Pavadinimas',
+            'attributes' => 'Atributai',
+            'parent_category' => 'Tėvų kategorija',
+        ],
+        'select_parent' => 'Pasirinkti tėvų kategoriją',
+        'attributes_reset_notice' => 'Tėvų kategorijos atributai perrašys subkategorijų atributus.',
+    ],
+    'products' => [
+        'create' => [
+            'title' => 'Sukurti produktą',
+        ],
+        'edit' => [
+            'title' => 'Redaguoti produktą',
+        ],
+        'fields' => [
+            'category' => 'Kategorija',
+            'price' => 'Kaina',
+            'pack_type' => 'Pakuotės tipas',
+            'unit' => 'Mato vienetas',
+            'country_of_origin' => 'Kilmės šalis',
+            'is_organic' => 'Ekologiškas',
+            'is_active' => 'Aktyvus',
+            'stock' => 'Likutis',
+            'min_order_price' => 'Minimali užsakymo kaina',
+            'min_order_count' => 'Minimalus užsakymo kiekis',
+            'package_weight' => 'Pakuotės svoris',
+            'price_per_liter' => 'Kaina už litrą',
+            'description' => 'Aprašymas',
+            'product_image' => 'Produkto nuotrauka',
+            'product_additional_image' => 'Papildoma produkto nuotrauka',
+        ],
+    ],
+    'attributes' => [
+        'fields' => [
+            'is_filterable' => 'Filtruojamas',
+        ],
+    ],
+    'footer' => [
+        'copyright' => ':year :app. Visos teisės saugomos.',
+        'version' => 'Versija :version',
     ],
     'credit_added' => 'Kreditas pridėtas: :amount',
     'credit_deducted' => 'Kreditas nurašytas: :amount',

@@ -10,8 +10,9 @@ return [
     'global_settings' => 'Bendrieji nustatymai',
     'orders' => 'Užsakymai',
     'products' => 'Produktai',
+    'profile' => 'Profilis',
+    'logout' => 'Atsijungti',
     'sellers' => 'Tiekėjai',
     'settings' => 'Nustatymai',
     'translations' => 'Vertimai',
 ];
-

@@ -36,7 +36,7 @@ class Form extends Component
 
         $rules = [
             'alpha2' => ['required', 'string', 'max:2', 'lowercase', Rule::unique('countries', 'alpha2')->ignore($countryId)],
-            'region' => ['required', Rule::in(Country::getRegionOptions())],
+            'region' => ['required', Rule::in(Country::getRegionValues())],
             'is_active' => ['sometimes', 'boolean'],
         ];
 
@@ -68,5 +68,4 @@ class Form extends Component
         ]);
     }
 }
-
 

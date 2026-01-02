@@ -10,9 +10,10 @@ return [
     'global_settings' => 'Global Settings',
     'orders' => 'Orders',
     'products' => 'Products',
+    'profile' => 'Profile',
+    'logout' => 'Log out',
     'sellers' => 'Sellers',
     'settings' => 'Settings',
     'translations' => 'Translations',
 ];
-
 

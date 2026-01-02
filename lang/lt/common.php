@@ -38,6 +38,7 @@ return [
     'name_za' => 'Pavadinimas (Z–A)',
     'company_az' => 'Įmonė (A–Z)',
     'company_za' => 'Įmonė (Z–A)',
+    'select_country' => 'Pasirinkite šalį',
     'not_available' => 'Neprieinama',
     'not_set' => 'Nenustatyta',
     'confirm_delete' => 'Ar tikrai norite ištrinti?',
@@ -50,6 +51,7 @@ return [
     'out_of_stock' => 'Sandėlyje nėra',
     'no_image' => 'Nėra nuotraukos',
     'unnamed_product' => 'Produktas be pavadinimo',
+    'select_option' => 'Pasirinkti reikšmę',
 
     // Auth-ish
     'already_have_account' => 'Jau turite paskyrą',

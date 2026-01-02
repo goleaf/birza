@@ -1,56 +1,48 @@
-<div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-gray-900">{{ __('orders.for_seller', ['name' => $seller->name]) }}</h2>
-        </div>
-
+<x-backend.page :title="__('orders.for_seller', ['name' => $seller->name])">
+    <x-ui.card>
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.id') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.customer') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.products') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.date') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.actions') }}</th>
+                        <th>{{ __('orders.id') }}</th>
+                        <th>{{ __('orders.customer') }}</th>
+                        <th>{{ __('orders.products') }}</th>
+                        <th>{{ __('orders.date') }}</th>
+                        <th>{{ __('orders.actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @forelse($orders as $order)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                #{{ $order->id }}
+                            <td>#{{ $order->id }}</td>
+                            <td>
+                                <div class="font-medium">{{ $order->buyer->name }}</div>
+                                <div class="text-sm text-base-content/60">{{ $order->buyer->email }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $order->buyer->name }}</div>
-                                <div class="text-sm text-gray-500">{{ $order->buyer->email }}</div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
+                            <td>
+                                <div class="text-sm">
                                     @foreach($order->items as $item)
                                         <div class="mb-1">
-                                            {{ $item->product->name }} 
-                                            <span class="text-gray-500">
+                                            {{ $item->product->name }}
+                                            <span class="text-base-content/60">
                                                 ({{ $item->quantity }} × {{ number_format($item->unit_price, 2) }} {{ $order->currency }})
                                             </span>
                                         </div>
                                     @endforeach
                                 </div>
-                            </td> 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            </td>
+                            <td class="text-sm text-base-content/60">
                                 {{ $order->created_at->format('Y-m-d H:i:s') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <a href="{{ route('backend.orders.show', $order) }}" 
-                                   class="text-indigo-600 hover:text-indigo-900">
+                            <td>
+                                <a href="{{ route('backend.orders.show', $order) }}" class="btn btn-ghost btn-xs">
                                     {{ __('orders.view_details') }}
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="5" class="text-center text-base-content/60">
                                 {{ __('orders.none_found') }}
                             </td>
                         </tr>
@@ -58,9 +50,5 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="px-6 py-4 border-t border-gray-200">
-        </div>
-    </div>
-</div>
-</div>
+    </x-ui.card>
+</x-backend.page>

@@ -1,65 +1,43 @@
-<div>
-<!-- start main container -->
-<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <!-- start header -->
-    <div class="px-4 sm:px-0 mb-4 flex justify-between items-center">
-        <h2 class="text-2xl font-bold">
-            {{ __('backend.attribute_values.index.title') }}: {{ $attribute->getTranslation('name', app()->getLocale()) }}
-        </h2>
-        <x-button
-            primary
-            :href="route('backend.attributes.values.create', $attribute)"
-            :label="__('backend.attribute_values.actions.create')"
-        />
-    </div>
-    <!-- end header -->
+<x-backend.page :title="__('backend.attribute_values.index.title') . ': ' . $attribute->getTranslation('name', app()->getLocale())">
+    <x-slot:actions>
+        <a href="{{ route('backend.attributes.values.create', $attribute) }}" class="btn btn-primary btn-sm">
+            {{ __('backend.attribute_values.actions.create') }}
+        </a>
+    </x-slot:actions>
 
-    <!-- start table container -->
-    <div class="bg-white shadow rounded-lg">
+    <x-ui.card>
         <div class="overflow-x-auto">
-            <!-- start table -->
-            <table class="min-w-full divide-y divide-gray-200">
-                <!-- start thead -->
-                <thead class="bg-gray-50">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ strtoupper(app()->getLocale()) }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend.attribute_values.fields.status') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common.actions') }}</th>
+                        <th>{{ strtoupper(app()->getLocale()) }}</th>
+                        <th>{{ __('backend.attribute_values.fields.status') }}</th>
+                        <th class="text-right">{{ __('common.actions') }}</th>
                     </tr>
                 </thead>
-                <!-- end thead -->
-                
-                <!-- start tbody -->
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @foreach ($values as $value)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $value->getTranslation('value', app()->getLocale()) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $value->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            <td>{{ $value->getTranslation('value', app()->getLocale()) }}</td>
+                            <td>
+                                <span class="badge {{ $value->is_active ? 'badge-success' : 'badge-error' }} badge-outline">
                                     {{ $value->is_active ? __('backend.common.active') : __('backend.common.inactive') }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('backend.attributes.values.edit', [$attribute, $value]) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                    {{ __('common.edit') }}
-                                </a>
-                                <x-button
-                                    xs
-                                    flat
-                                    negative
-                                    wire:click="confirmDeleteValue({{ $value->id }})"
-                                    :label="__('common.delete')"
-                                />
+                            <td class="text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <a href="{{ route('backend.attributes.values.edit', [$attribute, $value]) }}" class="btn btn-ghost btn-xs">
+                                        {{ __('common.edit') }}
+                                    </a>
+                                    <button type="button" wire:click="confirmDeleteValue({{ $value->id }})" class="btn btn-ghost btn-xs text-error">
+                                        {{ __('common.delete') }}
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <!-- end tbody -->
             </table>
-            <!-- end table -->
         </div>
-    </div>
-    <!-- end table container -->
-</div>
-<!-- end main container -->
-</div>
+    </x-ui.card>
+</x-backend.page>

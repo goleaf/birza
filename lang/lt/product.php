@@ -50,6 +50,8 @@ return array (
   'pack_type' => 'Pakuotės tipas',
   'package_weight' => 'Pakuotės svoris',
   'price' => 'Kaina',
+  'price_high_low' => 'Kaina (nuo didžiausios)',
+  'price_low_high' => 'Kaina (nuo mažiausios)',
   'price_multilang' => 'Kaina (kelios kalbos)',
   'price_per_liter' => 'Kaina už litrą',
   'price_range' => 'Kainos intervalas',
