@@ -23,7 +23,7 @@ class Index extends Component
             ->findOrFail($orderId);
 
         if ($order->payment_status !== Order::STATUS['PENDING']) {
-            session()->flash('error', __('orders.messages.cannot_cancel'));
+            session()->flash('error', __('orders_messages_cannot_cancel'));
             return;
         }
 
@@ -38,7 +38,7 @@ class Index extends Component
             }
         });
 
-        session()->flash('success', __('orders.messages.cancelled_success'));
+        session()->flash('success', __('orders_messages_cancelled_success'));
     }
 
     public function render()

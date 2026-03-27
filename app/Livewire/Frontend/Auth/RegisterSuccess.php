@@ -44,17 +44,17 @@ class RegisterSuccess extends Component
         $user = $modelClass::where('email', strtolower($this->email))->first();
 
         if (! $user) {
-            $this->addError('email', __('auth.user_not_found'));
+            $this->addError('email', __('auth_user_not_found'));
             return;
         }
 
         if ($user->is_verified) {
-            session()->flash('success', __('messages.email_already_verified'));
+            session()->flash('success', __('messages_email_already_verified'));
             return;
         }
 
         if (RateLimiter::tooManyAttempts('verify:'.$user->id, 3)) {
-            session()->flash('error', __('messages.verification_check'));
+            session()->flash('error', __('messages_verification_check'));
             return;
         }
 
@@ -65,15 +65,15 @@ class RegisterSuccess extends Component
             'hash' => $user->remember_token,
         ]);
 
-        $message = __('emails.verify_email_body') . "\n\n" . $verificationUrl;
+        $message = __('emails_verify_email_body') . "\n\n" . $verificationUrl;
 
         Mail::raw($message, function ($mail) use ($user) {
-            $mail->to($user->email)->subject(__('emails.verify_email_subject'));
+            $mail->to($user->email)->subject(__('emails_verify_email_subject'));
         });
 
         RateLimiter::hit('verify:'.$user->id);
 
-        session()->flash('success', __('messages.verification_sent'));
+        session()->flash('success', __('messages_verification_sent'));
     }
 
     public function render()

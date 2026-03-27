@@ -2,7 +2,7 @@
 <div class="text-center">
     <!-- start title -->
     <h2 class="text-3xl font-extrabold text-gray-900 mb-8">
-        {{ __('welcome.choose_role') }}
+        {{ __('welcome_choose_role') }}
     </h2>
     <!-- end title -->
     
@@ -15,11 +15,11 @@
                 <svg class="w-12 h-12 mx-auto text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 
                 <h3 class="text-xl font-bold text-gray-900 mb-2">
-                    {{ __('buyer.role_name') }}
+                    {{ __('buyer_role_name') }}
                 </h3>
                 
                 <p class="text-gray-600 mb-4">
-                    {{ __('buyer.role_description') }}
+                    {{ __('buyer_role_description') }}
                 </p>
                 
                 <!-- start buyer buttons -->
@@ -28,14 +28,14 @@
                         href="{{ route('buyer.login') }}" 
                         class="block w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors"
                     >
-                        {{ __('buyer.login') }}
+                        {{ __('buyer_login_2') }}
                     </a>
                     
                     <a 
                         href="{{ route('buyer.register') }}" 
                         class="block w-full bg-gray-100 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-200 transition-colors"
                     >
-                        {{ __('buyer.register') }}
+                        {{ __('buyer_register') }}
                     </a>
                 </div>
                 <!-- end buyer buttons -->
@@ -51,11 +51,11 @@
                 <svg class="w-12 h-12 mx-auto text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                 
                 <h3 class="text-xl font-bold text-gray-900 mb-2">
-                    {{ __('seller.role_name') }}
+                    {{ __('seller_role_name') }}
                 </h3>
                 
                 <p class="text-gray-600 mb-4">
-                    {{ __('seller.role_description') }}
+                    {{ __('seller_role_description') }}
                 </p>
                 
                 <!-- start seller buttons -->
@@ -64,14 +64,14 @@
                         href="{{ route('seller.login') }}" 
                         class="block w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors"
                     >
-                        {{ __('seller.login') }}
+                        {{ __('seller_login_2') }}
                     </a>
                     
                     <a 
                         href="{{ route('seller.register') }}" 
                         class="block w-full bg-gray-100 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-200 transition-colors"
                     >
-                        {{ __('seller.register') }}
+                        {{ __('seller_register') }}
                     </a>
                 </div>
                 <!-- end seller buttons -->

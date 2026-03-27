@@ -29,7 +29,7 @@ class Index extends Component
     {
         Product::query()->findOrFail($productId)->delete();
 
-        $this->notifySuccess(__('backend.common.delete_success'));
+        $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function restoreProduct(int $productId): void
@@ -37,7 +37,7 @@ class Index extends Component
         $product = Product::withTrashed()->findOrFail($productId);
         $product->restore();
 
-        $this->notifySuccess(__('backend.common.restore_success'));
+        $this->notifySuccess(__('backend_common_restore_success'));
     }
 
     public function forceDeleteProduct(int $productId): void
@@ -54,7 +54,7 @@ class Index extends Component
 
         $product->forceDelete();
 
-        $this->notifySuccess(__('backend.common.force_delete_success'));
+        $this->notifySuccess(__('backend_common_force_delete_success'));
     }
 
     public function render()

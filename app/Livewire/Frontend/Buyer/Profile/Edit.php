@@ -59,7 +59,7 @@ class Edit extends Component
 
         $buyer?->update($validated);
 
-        session()->flash('success', __('profile.update_success'));
+        session()->flash('success', __('profile_update_success'));
     }
 
     public function savePassword(): void
@@ -78,7 +78,7 @@ class Edit extends Component
 
         $this->reset(['current_password', 'password', 'password_confirmation']);
 
-        session()->flash('password_success', __('profile.password_updated'));
+        session()->flash('password_success', __('profile_password_updated'));
     }
 
     public function render()

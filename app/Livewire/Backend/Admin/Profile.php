@@ -38,7 +38,7 @@ class Profile extends Component
 
         $admin?->update($validated);
 
-        session()->flash('success', __('profile.update_success'));
+        session()->flash('success', __('profile_update_success'));
     }
 
     public function savePassword(): void
@@ -56,7 +56,7 @@ class Profile extends Component
 
         $this->reset(['current_password', 'password', 'password_confirmation']);
 
-        session()->flash('success', __('profile.password_updated'));
+        session()->flash('success', __('profile_password_updated'));
     }
 
     public function render()

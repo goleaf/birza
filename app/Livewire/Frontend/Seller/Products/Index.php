@@ -25,7 +25,7 @@ class Index extends Component
         $product->update(['is_active' => false]);
         $product->delete();
 
-        $this->notifySuccess(__('backend.common.delete_success'));
+        $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function restoreProduct(int $productId): void
@@ -38,15 +38,15 @@ class Index extends Component
 
         $product->restore();
 
-        $this->notifySuccess(__('backend.common.restore_success'));
+        $this->notifySuccess(__('backend_common_restore_success'));
     }
 
     public function confirmSoftDeleteProduct(int $productId): void
     {
         $this->confirmAction(
-            title: __('product.soft_delete_confirmation'),
-            description: __('product.soft_delete_warning'),
-            acceptLabel: __('product.soft_delete'),
+            title: __('product_soft_delete_confirmation'),
+            description: __('product_soft_delete_warning'),
+            acceptLabel: __('product_soft_delete'),
             method: 'softDeleteProduct',
             params: $productId,
             icon: 'warning',
@@ -56,9 +56,9 @@ class Index extends Component
     public function confirmRestoreProduct(int $productId): void
     {
         $this->confirmAction(
-            title: __('product.restore_confirmation'),
-            description: __('product.restore_warning'),
-            acceptLabel: __('product.restore'),
+            title: __('product_restore_confirmation'),
+            description: __('product_restore_warning'),
+            acceptLabel: __('product_restore'),
             method: 'restoreProduct',
             params: $productId,
             icon: 'question',

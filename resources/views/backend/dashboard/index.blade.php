@@ -4,26 +4,26 @@
         <div class="p-6 bg-white border-b border-gray-200">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold">
-                    {{ __('backend.dashboard.title') }}
+                    {{ __('backend_dashboard_title') }}
                 </h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-blue-100 p-4 rounded-lg">
                     <h5 class="font-medium text-blue-800 mb-2">
-                        {{ __('backend.dashboard.stats.total_categories') }}
+                        {{ __('backend_dashboard_stats_total_categories') }}
                     </h5>
                     <p class="text-4xl font-bold text-blue-900 text-center">{{ $totalCategories }}</p>
                 </div>
                 <div class="bg-green-100 p-4 rounded-lg">
                     <h5 class="font-medium text-green-800 mb-2">
-                        {{ __('backend.dashboard.stats.total_products') }}
+                        {{ __('backend_dashboard_stats_total_products') }}
                     </h5>
                     <p class="text-4xl font-bold text-green-900 text-center">{{ $totalProducts }}</p>
                 </div>
                 <div class="bg-yellow-100 p-4 rounded-lg">
                     <h5 class="font-medium text-yellow-800 mb-2">
-                        {{ __('backend.dashboard.stats.total_orders') }}
+                        {{ __('backend_dashboard_stats_total_orders') }}
                     </h5>
                     <p class="text-4xl font-bold text-yellow-900 text-center">{{ $totalOrders }}</p>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h3 class="text-xl font-bold mb-4">
-                            {{ __('backend.dashboard.recent_activity.title') }}
+                            {{ __('backend_dashboard_recent_activity_title') }}
                         </h3>
                         <ul class="divide-y divide-gray-200">
                             @foreach($recentActivities as $activity)

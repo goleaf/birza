@@ -1,7 +1,7 @@
 <div>
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">{{ __('sellers.title') }}</h2>
-        <x-button primary :href="route('backend.sellers.create')" :label="__('common.create')" />
+        <h2 class="text-2xl font-bold">{{ __('sellers_title') }}</h2>
+        <x-button primary :href="route('backend.sellers.create')" :label="__('common_create')" />
     </div>
 
     <div class="bg-white shadow-sm rounded-lg mb-6">
@@ -10,17 +10,17 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex-1">
                         <input type="text" name="search" id="search" value="{{ request('search') }}" 
-                               placeholder="{{ __('common.search') }}"
+                               placeholder="{{ __('common_search') }}"
                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div class="w-48">
                         <select name="sort" id="sort" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="created_at,desc" {{ request('sort') === 'created_at,desc' ? 'selected' : '' }}>{{ __('common.newest') }}</option>
-                            <option value="created_at,asc" {{ request('sort') === 'created_at,asc' ? 'selected' : '' }}>{{ __('common.oldest') }}</option>
-                            <option value="name,asc" {{ request('sort') === 'name,asc' ? 'selected' : '' }}>{{ __('common.name_az') }}</option>
-                            <option value="name,desc" {{ request('sort') === 'name,desc' ? 'selected' : '' }}>{{ __('common.name_za') }}</option>
-                            <option value="company_name,asc" {{ request('sort') === 'company_name,asc' ? 'selected' : '' }}>{{ __('common.company_az') }}</option>
-                            <option value="company_name,desc" {{ request('sort') === 'company_name,desc' ? 'selected' : '' }}>{{ __('common.company_za') }}</option>
+                            <option value="created_at,desc" {{ request('sort') === 'created_at,desc' ? 'selected' : '' }}>{{ __('common_newest') }}</option>
+                            <option value="created_at,asc" {{ request('sort') === 'created_at,asc' ? 'selected' : '' }}>{{ __('common_oldest') }}</option>
+                            <option value="name,asc" {{ request('sort') === 'name,asc' ? 'selected' : '' }}>{{ __('common_name_az') }}</option>
+                            <option value="name,desc" {{ request('sort') === 'name,desc' ? 'selected' : '' }}>{{ __('common_name_za') }}</option>
+                            <option value="company_name,asc" {{ request('sort') === 'company_name,asc' ? 'selected' : '' }}>{{ __('common_company_az') }}</option>
+                            <option value="company_name,desc" {{ request('sort') === 'company_name,desc' ? 'selected' : '' }}>{{ __('common_company_za') }}</option>
                         </select>
                     </div>
                     <div class="flex space-x-2">
@@ -41,11 +41,11 @@
             <table class="w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers.field_name') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers.field_email') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers.field_company_name') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers.field_stock') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common.actions') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers_field_name') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers_field_email') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers_field_company_name') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('sellers_field_stock') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common_actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -56,16 +56,16 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $seller->company_name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $seller->stock }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('backend.sellers.show', $seller) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common.view') }}</a>
-                                <a href="{{ route('backend.sellers.edit', $seller) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('common.edit') }}</a>
+                                <a href="{{ route('backend.sellers.show', $seller) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">{{ __('common_view') }}</a>
+                                <a href="{{ route('backend.sellers.edit', $seller) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('common_edit') }}</a>
                                 <x-button
                                     xs
                                     flat
                                     negative
                                     wire:click="confirmDeleteSeller({{ $seller->id }})"
-                                    :label="__('common.delete')"
+                                    :label="__('common_delete')"
                                 />
-                                <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="text-blue-600 hover:text-blue-900 ml-3">{{ __('sellers.orders_list') }}</a>
+                                <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="text-blue-600 hover:text-blue-900 ml-3">{{ __('sellers_orders_list') }}</a>
                             </td>
                         </tr>
                     @endforeach

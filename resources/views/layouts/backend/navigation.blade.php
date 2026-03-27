@@ -11,7 +11,7 @@
                     href="{{ route('backend.countries.index') }}"
                     class="{{ request()->routeIs('backend.countries.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.countries') }}
+                    {{ __('navigation_countries') }}
                 </a>
                 <!-- end countries link -->
 
@@ -20,7 +20,7 @@
                     href="{{ route('backend.categories.index') }}"
                     class="{{ request()->routeIs('backend.categories.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.categories') }}
+                    {{ __('navigation_categories') }}
                 </a>
                 <!-- end categories link -->
 
@@ -29,7 +29,7 @@
                     href="{{ route('backend.products.index') }}"
                     class="{{ request()->routeIs('backend.products.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.products') }}
+                    {{ __('navigation_products') }}
                 </a>
                 <!-- end products link -->
 
@@ -38,7 +38,7 @@
                     href="{{ route('backend.sellers.index') }}"
                     class="{{ request()->routeIs('backend.sellers.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.sellers') }}
+                    {{ __('navigation_sellers') }}
                 </a>
                 <!-- end sellers link -->
 
@@ -47,7 +47,7 @@
                     href="{{ route('backend.buyers.index') }}"
                     class="{{ request()->routeIs('backend.buyers.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.buyers') }}
+                    {{ __('navigation_buyers') }}
                 </a>
                 <!-- end buyers link -->
 
@@ -56,7 +56,7 @@
                     href="{{ route('backend.orders.index') }}"
                     class="{{ request()->routeIs('backend.orders.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.orders') }}
+                    {{ __('navigation_orders') }}
                 </a>
                 <!-- end orders link -->
 
@@ -68,7 +68,7 @@
                         @click.away="open = false"
                         class="{{ request()->routeIs('backend.attributes.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium flex items-center"
                     >
-                        <span>{{ __('navigation.attributes') }}</span>
+                        <span>{{ __('navigation_attributes') }}</span>
                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
@@ -84,13 +84,13 @@
                             href="{{ route('backend.attributes.index') }}"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
-                            {{ __('navigation.attributes_list') }}
+                            {{ __('navigation_attributes_list') }}
                         </a>
                         <a 
                             href="{{ route('backend.attributes.create') }}"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
-                            {{ __('navigation.create_attribute') }}
+                            {{ __('navigation_create_attribute') }}
                         </a>
                     </div>
                     <!-- end attributes dropdown menu -->
@@ -102,7 +102,7 @@
                     href="{{ route('backend.settings.index') }}"
                     class="{{ request()->routeIs('backend.settings.*') ? 'text-white bg-gray-700' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium"
                 >
-                    {{ __('navigation.global_settings') }}
+                    {{ __('navigation_global_settings') }}
                 </a>
                 <!-- end global settings link -->
             </div>

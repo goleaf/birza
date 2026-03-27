@@ -8,30 +8,30 @@
                 <div class="flex space-x-3">
                     <a href="{{ route('backend.sellers.edit', $seller) }}" 
                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                        {{ __('common.edit') }}
+                        {{ __('common_edit') }}
                     </a>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers.contact_person') }}</h3>
+                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_contact_person') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->name }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers.email') }}</h3>
+                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_email') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->email }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers.vat_code') }}</h3>
+                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_vat_code') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->vat_code ?: '-' }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers.phone') }}</h3>
+                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_phone') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->phone ?: '-' }}</p>
                 </div>
                 <div class="md:col-span-2">
-                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers.address') }}</h3>
+                    <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_address') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->address ?: '-' }}</p>
                 </div>
             </div>
@@ -41,23 +41,23 @@
     <!-- Products -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">{{ __('sellers.products') }}</h2>
+            <h2 class="text-lg font-semibold text-gray-900">{{ __('sellers_products') }}</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('products.name') }}
+                            {{ __('products_name') }}
                         </th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('products.price') }}
+                            {{ __('products_price') }}
                         </th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('products.times_ordered') }}
+                            {{ __('products_times_ordered') }}
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('products.status') }}
+                            {{ __('products_status') }}
                         </th>
                     </tr>
                 </thead>
@@ -88,11 +88,11 @@
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 @if($product->is_active)
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        {{ __('common.active') }}
+                                        {{ __('common_active') }}
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                        {{ __('common.inactive') }}
+                                        {{ __('common_inactive') }}
                                     </span>
                                 @endif
                             </td>
@@ -100,7 +100,7 @@
                     @empty
                         <tr>
                             <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
-                                {{ __('products.no_products') }}
+                                {{ __('products_no_products') }}
                             </td>
                         </tr>
                     @endforelse
@@ -115,29 +115,29 @@
     <!-- Orders -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">{{ __('sellers.orders') }}</h2>
+            <h2 class="text-lg font-semibold text-gray-900">{{ __('sellers_orders') }}</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">
-                            {{ __('orders.id') }}
+                            {{ __('orders_id') }}
                         </th>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">
-                            {{ __('orders.buyer') }}
+                            {{ __('orders_buyer') }}
                         </th>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 w-1/3">
-                            {{ __('orders.items') }}
+                            {{ __('orders_items') }}
                         </th>
                         <th class="px-6 py-4 text-right text-sm font-semibold text-gray-600">
-                            {{ __('orders.total') }}
+                            {{ __('orders_total') }}
                         </th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-gray-600">
-                            {{ __('orders.status') }}
+                            {{ __('orders_status') }}
                         </th>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600">
-                            {{ __('orders.date') }}
+                            {{ __('orders_date') }}
                         </th>
                     </tr>
                 </thead>
@@ -155,7 +155,7 @@
                                     @if($order->buyer)
                                         {{ $order->buyer->company_name }}
                                     @else
-                                        <span class="text-gray-500 italic">{{ __('orders.buyer_not_found') }}</span>
+                                        <span class="text-gray-500 italic">{{ __('orders_buyer_not_found') }}</span>
                                     @endif
                                 </div>
                             </td>
@@ -192,7 +192,7 @@
                                     };
                                 @endphp
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
-                                    {{ __('orders.status.' . $order->payment_status) }}
+                                    {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -202,7 +202,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                                {{ __('orders.no_orders') }}
+                                {{ __('orders_no_orders') }}
                             </td>
                         </tr>
                     @endforelse

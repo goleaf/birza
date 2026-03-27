@@ -64,7 +64,7 @@ class Edit extends Component
 
         $seller?->update($validated);
 
-        session()->flash('success', __('profile.update_success'));
+        session()->flash('success', __('profile_update_success'));
     }
 
     public function saveCategories(): void
@@ -78,26 +78,26 @@ class Edit extends Component
                 function ($attribute, $value, $fail) {
                     $category = Category::withCount('subcategories')->find($value);
                     if (! $category) {
-                        $fail(__('validation.category.invalid'));
+                        $fail(__('validation_category_invalid'));
                         return;
                     }
 
                     if ($category->parent_category_id === null && $category->subcategories_count > 0) {
-                        $fail(__('validation.category.no_parent_categories'));
+                        $fail(__('validation_category_no_parent_categories'));
                     }
                 },
             ],
         ], [
-            'selectedCategories.required' => __('validation.category.required'),
-            'selectedCategories.array' => __('validation.category.must_be_array'),
-            'selectedCategories.*.required' => __('validation.category.selection_required'),
-            'selectedCategories.*.exists' => __('validation.category.must_exist'),
+            'selectedCategories.required' => __('validation_category_required'),
+            'selectedCategories.array' => __('validation_category_must_be_array'),
+            'selectedCategories.*.required' => __('validation_category_selection_required'),
+            'selectedCategories.*.exists' => __('validation_category_must_exist'),
         ]);
 
         $seller = Auth::guard('seller')->user();
         $seller?->categories()->sync($validated['selectedCategories']);
 
-        session()->flash('success', __('profile.categories_updated'));
+        session()->flash('success', __('profile_categories_updated'));
     }
 
     public function savePassword(): void
@@ -115,7 +115,7 @@ class Edit extends Component
 
         $this->reset(['current_password', 'password', 'password_confirmation']);
 
-        session()->flash('password_success', __('profile.password_updated'));
+        session()->flash('password_success', __('profile_password_updated'));
     }
 
     public function render()

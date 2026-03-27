@@ -1,12 +1,12 @@
 <div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">
-            {{ __('backend.categories.title') }}
+            {{ __('backend_categories_title') }}
         </h2>
         <x-button
             primary
             :href="route('backend.categories.create')"
-            :label="__('backend.categories.actions.create')"
+            :label="__('backend_categories_actions_create')"
         />
     </div>
 
@@ -16,13 +16,13 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ strtoupper(app()->getLocale()) }} {{ __('backend.categories.fields.name') }}
+                            {{ strtoupper(app()->getLocale()) }} {{ __('backend_categories_fields_name') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('common.actions') }}
+                            {{ __('common_actions') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.categories.fields.attributes') }}
+                            {{ __('backend_categories_fields_attributes') }}
                         </th>
                     </tr>
                 </thead>
@@ -32,14 +32,14 @@
                             <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $category->getTranslation('category_name', app()->getLocale()) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap font-medium">
                                 <a href="{{ route('backend.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    {{ __('common.edit') }}
+                                    {{ __('common_edit') }}
                                 </a>
                                 <x-button
                                     xs
                                     flat
                                     negative
                                     wire:click="confirmDeleteCategory({{ $category->id }})"
-                                    :label="__('common.delete')"
+                                    :label="__('common_delete')"
                                 />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -52,7 +52,7 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    {{ __('common.no_attributes') }}
+                                    {{ __('common_no_attributes') }}
                                 @endif
                             </td>
                         </tr>
@@ -66,14 +66,14 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap font-medium">
                                     <a href="{{ route('backend.categories.edit', $subcategory) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('common.edit') }}
+                                        {{ __('common_edit') }}
                                     </a>
                                     <x-button
                                         xs
                                         flat
                                         negative
                                         wire:click="confirmDeleteCategory({{ $subcategory->id }})"
-                                        :label="__('common.delete')"
+                                        :label="__('common_delete')"
                                     />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -86,7 +86,7 @@
                                             @endforeach
                                         </div>
                                     @else
-                                        {{ __('common.no_attributes') }}
+                                        {{ __('common_no_attributes') }}
                                     @endif
                                 </td>
                             </tr>

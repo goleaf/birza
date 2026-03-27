@@ -4,7 +4,7 @@
             <!-- Company Info -->
             <div>
                 <h3 class="text-lg font-bold mb-4">{{ config('app.name', 'Meat Trading Hub') }}</h3>
-                <p class="text-gray-400 text-sm">Your trusted marketplace for premium meat, poultry and fish products.</p>
+                <p class="text-gray-400 text-sm">{{ __('footer_tagline') }}</p>
                 <div class="flex space-x-4 mt-4">
                     <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-white">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@
 
             <!-- Quick Links -->
             <div>
-                <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                <h3 class="text-lg font-bold mb-4">{{ __('footer_quick_links') }}</h3>
                 <ul class="space-y-2">
                     @php
                         $guard = Auth::guard('buyer')->check()
@@ -43,34 +43,33 @@
 
                     @if ($guard)
                         <li><a href="{{ route($guard . '.dashboard') }}"
-                                class="text-gray-400 hover:text-white transition">{{ __('dashboard.title') }}</a></li>
+                                class="text-gray-400 hover:text-white transition">{{ __('dashboard_title') }}</a></li>
                         <li><a href="{{ route($guard . '.profile.edit') }}"
-                                class="text-gray-400 hover:text-white transition">{{ __('profile.edit_profile') }}</a>
+                                class="text-gray-400 hover:text-white transition">{{ __('profile_edit_profile') }}</a>
                         </li>
                         <li>
                             <form method="POST" action="{{ route($guard . '.logout') }}" class="inline">
                                 @csrf
                                 <button type="submit" class="text-gray-400 hover:text-white transition">
-                                    {{ __('auth.logout') }}
+                                    {{ __('auth_logout') }}
                                 </button>
                             </form>
                         </li>
                     @else
-                        <li><a href="{{ route('buyer.login') }}" class="text-gray-400 hover:text-white transition">Buyer
-                                Login</a></li>
+                        <li><a href="{{ route('buyer.login') }}" class="text-gray-400 hover:text-white transition">{{ __('buyer_login_2') }}</a></li>
                         <li><a href="{{ route('seller.login') }}"
-                                class="text-gray-400 hover:text-white transition">Seller Login</a></li>
+                                class="text-gray-400 hover:text-white transition">{{ __('seller_login_2') }}</a></li>
                         <li><a href="{{ route('buyer.register') }}"
-                                class="text-gray-400 hover:text-white transition">Register as Buyer</a></li>
+                                class="text-gray-400 hover:text-white transition">{{ __('welcome_buyer_register_button') }}</a></li>
                         <li><a href="{{ route('seller.register') }}"
-                                class="text-gray-400 hover:text-white transition">Register as Seller</a></li>
+                                class="text-gray-400 hover:text-white transition">{{ __('welcome_seller_register_button') }}</a></li>
                     @endif
                 </ul>
             </div>
 
             <!-- Contact -->
             <div>
-                <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                <h3 class="text-lg font-bold mb-4">{{ __('footer_contact_us') }}</h3>
                 <ul class="space-y-2 text-gray-400">
                     <li class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +106,7 @@
 
             <!-- Languages -->
             <div>
-                <h3 class="text-lg font-bold mb-4">Languages</h3>
+                <h3 class="text-lg font-bold mb-4">{{ __('footer_languages') }}</h3>
                 <div class="flex flex-wrap gap-2">
                     @foreach (config('app.locales') as $lang)
                         <a href="{{ route('language.switch', $lang) }}"
@@ -121,7 +120,7 @@
         </div>
 
         <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; {{ date('Y') }} {{ config('app.name', 'Meat Trading Hub') }}. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name', 'Meat Trading Hub') }}. {{ __('common_all_rights_reserved') }}</p>
         </div>
     </div>
 </footer>

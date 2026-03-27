@@ -44,7 +44,7 @@ class Show extends Component
 
         // Only allow simple transitions from the UI.
         if (! in_array($status, [Order::STATUS['PAID'], Order::STATUS['CANCELLED']], true)) {
-            $this->notifyError(__('common.error_occurred'));
+            $this->notifyError(__('common_error_occurred'));
             return;
         }
 
@@ -55,13 +55,13 @@ class Show extends Component
             ->exists();
 
         if (! $hasItems) {
-            $this->notifyError(__('orders.unauthorized_update'));
+            $this->notifyError(__('orders_unauthorized_update'));
             return;
         }
 
         // Only allow changing pending orders (matches current UI expectation).
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
-            $this->notifyError(__('orders.status_cannot_be_changed'));
+            $this->notifyError(__('orders_status_cannot_be_changed'));
             return;
         }
 
@@ -97,15 +97,15 @@ class Show extends Component
         $this->order->refresh();
         $this->comment = null;
 
-        $this->notifySuccess(__('orders.status_updated'));
+        $this->notifySuccess(__('orders_status_updated'));
     }
 
     public function confirmCancelOrder(): void
     {
         $this->confirmAction(
-            title: __('orders.confirm_cancel'),
-            description: __('orders.confirm_cancel'),
-            acceptLabel: __('orders.cancel_order'),
+            title: __('orders_confirm_cancel'),
+            description: __('orders_confirm_cancel'),
+            acceptLabel: __('orders_cancel_order'),
             method: 'updateStatus',
             params: Order::STATUS['CANCELLED'],
             icon: 'warning',

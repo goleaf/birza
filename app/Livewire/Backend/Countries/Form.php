@@ -55,7 +55,7 @@ class Form extends Component
         $this->country->setTranslations('country_name', $validated['country_name']);
         $this->country->save();
 
-        session()->flash('success', __('backend.common.success_message'));
+        session()->flash('success', __('backend_common_success_message'));
         $this->redirectRoute('backend.countries.index');
     }
 

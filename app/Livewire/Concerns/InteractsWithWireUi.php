@@ -26,7 +26,7 @@ trait InteractsWithWireUi
                 'method' => $method,
             ],
             'reject' => [
-                'label' => is_string($rejectLabel) && $rejectLabel !== '' ? $rejectLabel : __('common.cancel'),
+                'label' => is_string($rejectLabel) && $rejectLabel !== '' ? $rejectLabel : __('common_cancel'),
             ],
         ];
 
@@ -68,13 +68,13 @@ trait InteractsWithWireUi
     protected function confirmDelete(string $method, mixed $params): void
     {
         $this->confirmAction(
-            title: __('common.confirm_delete'),
-            description: __('common.confirm_delete'),
-            acceptLabel: __('common.delete'),
+            title: __('common_confirm_delete'),
+            description: __('common_confirm_delete'),
+            acceptLabel: __('common_delete'),
             method: $method,
             params: $params,
             icon: 'warning',
-            rejectLabel: __('common.cancel'),
+            rejectLabel: __('common_cancel'),
         );
     }
 }

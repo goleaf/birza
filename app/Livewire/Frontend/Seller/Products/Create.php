@@ -115,7 +115,7 @@ class Create extends Component
 
         $product->save();
 
-        session()->flash('success', __('messages.product_created'));
+        session()->flash('success', __('messages_product_created'));
         $this->redirectRoute('seller.products.index', navigate: true);
     }
 

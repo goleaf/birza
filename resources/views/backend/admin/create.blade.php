@@ -6,7 +6,7 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200">
                 <div class="mb-6">
-                    <h2 class="text-2xl font-bold">Create New Admin</h2>
+                    <h2 class="text-2xl font-bold">{{ __('admin_create_new_admin') }}</h2>
                 </div>
 
                 <form method="POST" action="{{ route('backend.admin.store') }}" class="space-y-6">
@@ -14,7 +14,7 @@
 
                     <!-- Name -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700">{{ __('common_name') }}</label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
@@ -25,7 +25,7 @@
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700">{{ __('common_email') }}</label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
@@ -36,7 +36,7 @@
 
                     <!-- Password -->
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700">{{ __('common_password') }}</label>
                         <input type="password" name="password" id="password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
@@ -47,7 +47,7 @@
 
                     <!-- Confirm Password -->
                     <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('common_confirm_password') }}</label>
                         <input type="password" name="password_confirmation" id="password_confirmation"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required>
@@ -55,10 +55,10 @@
 
                     <div class="flex items-center justify-between">
                         <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Create Admin
+                            {{ __('admin_create_admin') }}
                         </button>
                         <a href="{{ route('backend.admin.profile') }}" class="text-gray-600 hover:text-gray-900">
-                            Cancel
+                            {{ __('backend_common_cancel') }}
                         </a>
                     </div>
                 </form>

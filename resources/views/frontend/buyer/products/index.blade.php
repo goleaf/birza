@@ -85,13 +85,13 @@
                         <div class="space-y-4">
                             <!-- start price range -->
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700">{{ __('product.price_range') }}</label>
+                                <label class="block text-sm font-medium text-gray-700">{{ __('product_price_range') }}</label>
                                 <div class="flex items-center gap-2">
                                     <input 
                                         type="number" 
                                         name="price_min" 
                                         value="{{ request('price_min') }}"
-                                        placeholder="{{ __('product.min_price') }}"
+                                        placeholder="{{ __('product_min_price') }}"
                                         class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     >
                                     <span>-</span>
@@ -99,7 +99,7 @@
                                         type="number" 
                                         name="price_max" 
                                         value="{{ request('price_max') }}"
-                                        placeholder="{{ __('product.max_price') }}"
+                                        placeholder="{{ __('product_max_price') }}"
                                         class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     >
                                 </div>
@@ -108,13 +108,13 @@
 
                             <!-- start stock range -->
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700">{{ __('product.stock_range') }}</label>
+                                <label class="block text-sm font-medium text-gray-700">{{ __('product_stock_range') }}</label>
                                 <div class="flex items-center gap-2">
                                     <input 
                                         type="number" 
                                         name="stock_min" 
                                         value="{{ request('stock_min') }}"
-                                        placeholder="{{ __('product.min_stock') }}"
+                                        placeholder="{{ __('product_min_stock') }}"
                                         class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     >
                                     <span>-</span>
@@ -122,7 +122,7 @@
                                         type="number" 
                                         name="stock_max" 
                                         value="{{ request('stock_max') }}"
-                                        placeholder="{{ __('product.max_stock') }}"
+                                        placeholder="{{ __('product_max_stock') }}"
                                         class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     >
                                 </div>
@@ -131,13 +131,13 @@
 
                             <!-- start country select -->
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700">{{ __('product.country') }}</label>
+                                <label class="block text-sm font-medium text-gray-700">{{ __('product_country') }}</label>
                                 <select 
                                     name="country_of_origin"
                                     class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 >
                                     <option value="">
-                                        {{ __('product.select_country') }}
+                                        {{ __('product_select_country') }}
                                     </option>
                                     @foreach ($countries as $country)
                                         <option 
@@ -153,25 +153,25 @@
 
                             <!-- start organic select -->
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700">{{ __('product.organic') }}</label>
+                                <label class="block text-sm font-medium text-gray-700">{{ __('product_organic') }}</label>
                                 <select 
                                     name="is_organic"
                                     class="w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 >
                                     <option value="">
-                                        {{ __('product.organic_filter') }}
+                                        {{ __('product_organic_filter') }}
                                     </option>
                                     <option 
                                         value="1" 
                                         {{ request('is_organic') === '1' ? 'selected' : '' }}
                                     >
-                                        {{ __('common.yes') }}
+                                        {{ __('common_yes') }}
                                     </option>
                                     <option 
                                         value="0" 
                                         {{ request('is_organic') === '0' ? 'selected' : '' }}
                                     >
-                                        {{ __('common.no') }}
+                                        {{ __('common_no') }}
                                     </option>
                                 </select>
                             </div>
@@ -183,7 +183,7 @@
                                     type="submit" 
                                     class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
                                 >
-                                    {{ __('common.filter') }}
+                                    {{ __('common_filter') }}
                                 </button>
 
                                 @if (request()->anyFilled(['price_min', 'price_max', 'country_of_origin', 'is_organic', 'stock_min', 'stock_max']))
@@ -191,7 +191,7 @@
                                         href="{{ route('buyer.products.index', ['category' => request('category')]) }}"
                                         class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-center"
                                     >
-                                        {{ __('common.clear') }}
+                                        {{ __('common_clear') }}
                                     </a>
                                 @endif
                             </div>
@@ -228,7 +228,7 @@
                         <input 
                             type="text" 
                             id="live-search"
-                            placeholder="{{ __('product.search_placeholder') }}"
+                            placeholder="{{ __('product_search_placeholder') }}"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         >
                         <div 
@@ -244,7 +244,7 @@
                     @if ($products->isEmpty())
                         <!-- start empty message -->
                         <p class="text-center text-gray-500 py-8">
-                            {{ __('product.no_products_found') }}
+                            {{ __('product_no_products_found') }}
                         </p>
                         <!-- end empty message -->
                     @else
@@ -293,11 +293,11 @@
                                     <!-- start price and stock -->
                                     <div class="flex justify-between items-center mb-3">
                                         <span class="text-lg font-bold">
-                                            {{ number_format($product->price, 2) }} € / {{ __("units.$product->unit") }}
+                                            {{ number_format($product->price, 2) }} € / {{ __('units_unit_' . strtolower($product->unit)) }}
                                         </span>
                                         <span class="text-sm text-gray-600">
-                                            {{ __('product.stock') }}: {{ $product->stock }}
-                                            {{ __("units.$product->unit") }}
+                                            {{ __('product_stock') }}: {{ $product->stock }}
+                                            {{ __('units_unit_' . strtolower($product->unit)) }}
                                         </span>
                                     </div>
                                     <!-- end price and stock -->
@@ -311,7 +311,7 @@
                                             href="{{ route('buyer.products.show', $product) }}"
                                             class="text-indigo-600 hover:text-indigo-800 font-medium"
                                         >
-                                            {{ __('product.view') }} →
+                                            {{ __('product_view') }} →
                                         </a>
                                     </div>
                                     <!-- end company and view -->
@@ -441,9 +441,9 @@
 
         window.APP_LOCALE = '{{ app()->getLocale() }}';
         window.translations = {
-            categories: '{{ __("common.categories") }}',
-            products: '{{ __("common.products") }}',
-            no_results_found: '{{ __("product.no_results_found") }}'
+            categories: '{{ __("common_categories") }}',
+            products: '{{ __("common_products") }}',
+            no_results_found: '{{ __("product_no_results_found") }}'
         };
         
     </script>

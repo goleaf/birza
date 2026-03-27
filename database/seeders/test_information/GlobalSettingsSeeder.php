@@ -9,11 +9,9 @@ class GlobalSettingsSeeder extends Seeder
 {
     public function run()
     {
-        $price = rand(1, 10);
-
-        $settings = GlobalSettings::create([
-            'portal_additional_price' => $price,
-        ]);
-
+        GlobalSettings::query()->updateOrCreate(
+            ['id' => 1],
+            ['portal_additional_price' => random_int(1, 10)]
+        );
     }
 }

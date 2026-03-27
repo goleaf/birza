@@ -1,9 +1,9 @@
-<x-ui.page :title="__('backend.countries.title')">
+<x-ui.page :title="__('backend_countries_title')">
     <x-slot:actions>
         <x-button
             primary
             :href="route('backend.countries.create')"
-            :label="__('backend.countries.actions.create')"
+            :label="__('backend_countries_actions_create')"
         />
     </x-slot:actions>
 
@@ -13,16 +13,16 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.countries.fields.code') }}
+                            {{ __('backend_countries_fields_code') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.countries.fields.region') }}
+                            {{ __('backend_countries_fields_region') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend.countries.fields.country_name') }}
+                            {{ __('backend_countries_fields_country_name') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('common.actions') }}
+                            {{ __('common_actions') }}
                         </th>
                     </tr>
                 </thead>
@@ -43,14 +43,14 @@
                                         flat
                                         primary
                                         :href="route('backend.countries.edit', $country)"
-                                        :label="__('common.edit')"
+                                        :label="__('common_edit')"
                                     />
                                     <x-button
                                         xs
                                         flat
                                         negative
                                         wire:click="confirmDeleteCountry({{ $country->id }})"
-                                        :label="__('common.delete')"
+                                        :label="__('common_delete')"
                                     />
                                 </div>
                             </td>

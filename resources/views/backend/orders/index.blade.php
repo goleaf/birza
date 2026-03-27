@@ -6,7 +6,7 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders.stats_total_orders') }}</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders_stats_total_orders') }}</p>
                     <p class="text-2xl font-bold text-gray-800 mt-2">{{ $totalOrders }}</p>
                 </div>
                 <div class="bg-blue-100 rounded-full p-3">
@@ -21,7 +21,7 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders.pending_orders') }}</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders_pending_orders') }}</p>
                     <p class="text-2xl font-bold text-gray-800 mt-2">{{ $pendingOrders }}</p>
                 </div>
                 <div class="bg-yellow-100 rounded-full p-3">
@@ -36,7 +36,7 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders.stats_avg_order_value') }}</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders_stats_avg_order_value') }}</p>
                     <p class="text-2xl font-bold text-gray-800 mt-2">€{{ number_format($averageOrderValue, 2) }}</p>
                 </div>
                 <div class="bg-purple-100 rounded-full p-3">
@@ -51,7 +51,7 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders.stats_total_revenue') }}</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">{{ __('orders_stats_total_revenue') }}</p>
                     <p class="text-2xl font-bold text-gray-800 mt-2">€{{ number_format($totalRevenue, 2) }}</p>
                 </div>
                 <div class="bg-green-100 rounded-full p-3">
@@ -67,17 +67,17 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-semibold text-gray-900">{{ __('orders.order_list') }}</h1>
+            <h1 class="text-2xl font-semibold text-gray-900">{{ __('orders_order_list') }}</h1>
             
             <!-- Filters -->
             <div class="flex space-x-4">
                 <form action="{{ route('backend.orders.index') }}" method="GET" class="flex items-center space-x-4">
                     <!-- Status Filter -->
                     <select name="status" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <option value="">{{ __('orders.filter_all_status') }}</option>
+                        <option value="">{{ __('orders_filter_all_status') }}</option>
                         @foreach(\App\Models\Order::STATUS as $status)
                             <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                                {{ __('orders.status_' . strtolower($status)) }}
+                                {{ __('orders_status_3_' . strtolower($status)) }}
                             </option>
                         @endforeach
                     </select>
@@ -85,13 +85,13 @@
                     <!-- Date Range -->
                     <input type="date" name="date_from" value="{{ request('date_from') }}" 
                            class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                           placeholder="{{ __('orders.date_from') }}">
+                           placeholder="{{ __('orders_date_from') }}">
                     <input type="date" name="date_to" value="{{ request('date_to') }}"
                            class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                           placeholder="{{ __('orders.date_to') }}">
+                           placeholder="{{ __('orders_date_to') }}">
 
                     <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        {{ __('orders.filter') }}
+                        {{ __('orders_filter') }}
                     </button>
                 </form>
             </div>
@@ -103,22 +103,22 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('orders.table_order_id') }}
+                            {{ __('orders_table_order_id') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('orders.table_date') }}
+                            {{ __('orders_table_date') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('buyer.buyer') }}
+                            {{ __('buyer_buyer') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('orders.status_') }}
+                            {{ __('orders_status_3') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('orders.table_amount') }}
+                            {{ __('orders_table_amount') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('common.actions') }}
+                            {{ __('common_actions') }}
                         </th>
                     </tr>
                 </thead>
@@ -140,12 +140,12 @@
                                         </div>
                                         @if($order->buyer->trashed())
                                             <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
-                                                {{ __('common.deleted') }}
+                                                {{ __('common_deleted') }}
                                             </span>
                                         @endif
                                     </div>
                                 @else
-                                    <span class="text-gray-500">{{ __('common.not_specified') }}</span>
+                                    <span class="text-gray-500">{{ __('common_not_specified') }}</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -155,7 +155,7 @@
                                     @elseif($order->payment_status === \App\Models\Order::STATUS['CANCELLED']) bg-red-100 text-red-800
                                     @else bg-gray-100 text-gray-800
                                     @endif">
-                                    {{ __('orders.status_' . strtolower($order->payment_status)) }}
+                                    {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -164,14 +164,14 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <a href="{{ route('backend.orders.show', $order) }}" 
                                    class="text-indigo-600 hover:text-indigo-900">
-                                    {{ __('common.view') }}
+                                    {{ __('common_view') }}
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {{ __('orders.no_orders_found') }}
+                                {{ __('orders_no_orders_found') }}
                             </td>
                         </tr>
                     @endforelse

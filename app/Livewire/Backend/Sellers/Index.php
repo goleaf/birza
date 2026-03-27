@@ -21,7 +21,7 @@ class Index extends Component
     {
         Seller::query()->findOrFail($sellerId)->delete();
 
-        $this->notifySuccess(__('backend.common.delete_success'));
+        $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function render()

@@ -28,14 +28,14 @@ class Index extends Component
         $cartItem = $this->findCartItem($itemHash);
 
         if (! $cartItem) {
-            session()->flash('error', __('cart.messages.item_not_found'));
+            session()->flash('error', __('cart_messages_item_not_found'));
             return;
         }
 
         $qty = (int) ($this->quantities[$itemHash] ?? 1);
 
         if ($qty < 1) {
-            $this->addError("quantities.$itemHash", __('validation.min.numeric', ['min' => 1]));
+            $this->addError("quantities.$itemHash", __('validation_min_numeric', ['min' => 1]));
             return;
         }
 
@@ -44,24 +44,24 @@ class Index extends Component
         if (! $product) {
             LaraCart::removeItem($itemHash);
             LaraCart::update();
-            session()->flash('error', __('cart.messages.product_not_found'));
+            session()->flash('error', __('cart_messages_product_not_found'));
             return;
         }
 
         if ($qty < (int) $product->min_order_count) {
-            session()->flash('error', __('cart.messages.minimum_quantity', ['min' => $product->min_order_count]));
+            session()->flash('error', __('cart_messages_minimum_quantity', ['min' => $product->min_order_count]));
             return;
         }
 
         if ($qty > (int) $product->stock) {
-            session()->flash('error', __('cart.messages.insufficient_stock'));
+            session()->flash('error', __('cart_messages_insufficient_stock'));
             return;
         }
 
         LaraCart::updateItem($itemHash, 'qty', $qty);
         LaraCart::update();
 
-        session()->flash('success', __('cart.messages.quantity_updated'));
+        session()->flash('success', __('cart_messages_quantity_updated'));
     }
 
     public function removeItem(string $itemHash): void
@@ -69,7 +69,7 @@ class Index extends Component
         $cartItem = $this->findCartItem($itemHash);
 
         if (! $cartItem) {
-            session()->flash('error', __('cart.messages.item_not_found'));
+            session()->flash('error', __('cart_messages_item_not_found'));
             return;
         }
 
@@ -78,20 +78,20 @@ class Index extends Component
 
         unset($this->quantities[$itemHash]);
 
-        session()->flash('success', __('cart.messages.product_removed'));
+        session()->flash('success', __('cart_messages_product_removed'));
     }
 
     public function checkout(): void
     {
         if (LaraCart::count() === 0) {
-            session()->flash('error', __('cart.messages.empty_cart'));
+            session()->flash('error', __('cart_messages_empty_cart'));
             return;
         }
 
         $buyerId = Auth::guard('buyer')->id();
 
         if (! $buyerId) {
-            session()->flash('error', __('common.unauthorized'));
+            session()->flash('error', __('common_unauthorized'));
             return;
         }
 
@@ -112,7 +112,7 @@ class Index extends Component
                     $product = Product::lockForUpdate()->find($item->id);
 
                     if (! $product || $product->stock < $item->qty) {
-                        throw new \RuntimeException(__('cart.messages.stock_changed'));
+                        throw new \RuntimeException(__('cart_messages_stock_changed'));
                     }
 
                     OrderItem::create([

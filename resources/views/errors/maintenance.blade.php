@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemos priežiūra</title>
+    <title>{{ __('maintenance_system_maintenance') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -24,64 +24,64 @@
             </div>
             
             <h1 class="text-4xl font-bold text-center bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">
-                Vyksta sistemos atnaujinimas
+                {{ __('maintenance_system_update_in_progress') }}
             </h1>
 
             <div class="space-y-8">
                 <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100">
                     <p class="text-indigo-800 font-medium text-xl">
-                        Gerbiami lankytojai,
+                        {{ __('maintenance_dear_visitors') }}
                     </p>
                     <p class="text-gray-700 mt-4 text-lg">
-                        Šiuo metu atliekame svarbius sistemos atnaujinimo darbus. Diegiame naujus funkcionalumus ir optimizuojame sistemos veikimą, kad galėtume užtikrinti dar geresnę ir patogesnę naudojimosi patirtį. Atsiprašome už laikinus nepatogumus.
+                        {{ __('maintenance_update_description') }}
                     </p>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-indigo-50">
-                        <h3 class="text-xl font-semibold text-indigo-700 mb-6">Diegiami patobulinimai</h3>
+                        <h3 class="text-xl font-semibold text-indigo-700 mb-6">{{ __('maintenance_installed_improvements') }}</h3>
                         <ul class="space-y-4">
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Pagreitintas sistemos veikimas
+                                {{ __('maintenance_improved_performance') }}
                             </li>
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Sustiprintas saugumas
+                                {{ __('maintenance_enhanced_security') }}
                             </li>
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Naujos funkcijos
+                                {{ __('maintenance_new_features') }}
                             </li>
                         </ul>
                     </div>
 
                     <div class="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-indigo-50">
-                        <h3 class="text-xl font-semibold text-indigo-700 mb-6">Ką patobuliname</h3>
+                        <h3 class="text-xl font-semibold text-indigo-700 mb-6">{{ __('maintenance_what_we_improve') }}</h3>
                         <ul class="space-y-4">
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Atnaujinta vartotojo sąsaja
+                                {{ __('maintenance_updated_user_interface') }}
                             </li>
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Stabilesnis veikimas
+                                {{ __('maintenance_stabler_operation') }}
                             </li>
                             <li class="flex items-center text-gray-700 text-lg">
                                 <svg class="h-6 w-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Optimizuota sistema
+                                {{ __('maintenance_optimized_system') }}
                             </li>
                         </ul>
                     </div>
@@ -90,8 +90,8 @@
                 <div class="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white p-8 rounded-2xl shadow-xl">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="font-semibold text-2xl">Atnaujinimo trukmė</h3>
-                            <p class="opacity-90 text-lg mt-2">Stengiamės darbus užbaigti kuo greičiau. Dėkojame už kantrybę!</p>
+                            <h3 class="font-semibold text-2xl">{{ __('maintenance_update_duration') }}</h3>
+                            <p class="opacity-90 text-lg mt-2">{{ __('maintenance_update_duration_description') }}</p>
                         </div>
                         <div class="animate-pulse">
                             <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

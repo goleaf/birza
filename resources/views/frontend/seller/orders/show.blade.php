@@ -14,11 +14,11 @@
                             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                             </svg>
-                            <span class="ml-1 text-sm font-medium">{{ __('common.back_to_orders') }}</span>
+                            <span class="ml-1 text-sm font-medium">{{ __('common_back_to_orders') }}</span>
                         </a>
                         <div class="h-6 w-px bg-gray-300"></div>
                         <h1 class="text-lg font-semibold text-gray-900">
-                            {{ __('orders.order_details') }} #{{ $order->id }}
+                            {{ __('orders_order_details') }} #{{ $order->id }}
                         </h1>
                     </div>
                     <div
@@ -28,7 +28,7 @@
                         @elseif($order->payment_status === \App\Models\Order::STATUS['CANCELLED']) bg-red-100 text-red-800
                         @else bg-gray-100 text-gray-800 @endif"
                     >
-                        {{ __('orders.status_' . strtolower($order->payment_status)) }}
+                        {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
                     </div>
                 </div>
             </div>
@@ -38,15 +38,15 @@
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.placed_on') }}</h3>
+                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_placed_on') }}</h3>
                         <p class="mt-1 text-sm text-gray-900">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                     </div>
                     <div>
-                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.buyer') }}</h3>
+                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_buyer') }}</h3>
                         <p class="mt-1 text-sm text-gray-900">{{ $order->buyer->name }}</p>
                     </div>
                     <div>
-                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders.total_amount') }}</h3>
+                        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_total_amount') }}</h3>
                         <p class="mt-1 text-sm text-gray-900">{{ number_format($order->total, 2) }} €</p>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                         <x-button
                             positive
                             icon="check"
-                            :label="__('orders.confirm_order')"
+                            :label="__('orders_confirm_order')"
                             wire:click="updateStatus('{{ \App\Models\Order::STATUS['PAID'] }}')"
                             spinner="updateStatus"
                         />
@@ -68,7 +68,7 @@
                         <x-button
                             negative
                             icon="x-mark"
-                            :label="__('orders.cancel_order')"
+                            :label="__('orders_cancel_order')"
                             wire:click="confirmCancelOrder"
                             spinner="confirmCancelOrder"
                         />
@@ -78,15 +78,15 @@
                         <x-textarea
                             id="comment"
                             name="comment"
-                            :label="__('orders.comment')"
-                            :placeholder="__('orders.comment_placeholder')"
+                            :label="__('orders_comment')"
+                            :placeholder="__('orders_comment_placeholder')"
                             wire:model.defer="comment"
                             rows="3"
                         />
                     </div>
                 @else
                     <div class="text-sm text-gray-500">
-                        {{ __('orders.status_cannot_be_changed') }}
+                        {{ __('orders_status_cannot_be_changed') }}
                     </div>
                 @endif
             </div>
@@ -101,7 +101,7 @@
             <!-- start items header -->
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-semibold text-gray-900">
-                    {{ __('orders.order_items') }}
+                    {{ __('orders_order_items') }}
                 </h2>
             </div>
             <!-- end items header -->
@@ -114,16 +114,16 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                {{ __('orders.product') }}
+                                {{ __('orders_product') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                {{ __('orders.quantity') }}
+                                {{ __('orders_quantity') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                {{ __('orders.unit_price') }}
+                                {{ __('orders_unit_price') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                {{ __('orders.total') }}
+                                {{ __('orders_total') }}
                             </th>
                         </tr>
                     </thead>
@@ -174,11 +174,11 @@
                     <tfoot class="bg-gray-50">
                         <tr>
                             <td colspan="3" class="px-6 py-4 text-right text-sm font-medium text-gray-900">
-                                {{ __('orders.order_total') }}:
+                                {{ __('orders_order_total') }}:
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
                                 {{ number_format($order->order_total, 2) }} €<br>
-                                <span class="text-gray-500 font-normal">({{ __('product.price_without_vat') }})</span>
+                                <span class="text-gray-500 font-normal">({{ __('product_price_without_vat') }})</span>
                             </td>
                         </tr>
                     </tfoot>

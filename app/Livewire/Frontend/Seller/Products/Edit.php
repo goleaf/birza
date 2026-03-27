@@ -130,7 +130,7 @@ class Edit extends Component
 
         $this->product->save();
 
-        session()->flash('success', __('messages.product_updated'));
+        session()->flash('success', __('messages_product_updated'));
         $this->redirectRoute('seller.products.index', navigate: true);
     }
 

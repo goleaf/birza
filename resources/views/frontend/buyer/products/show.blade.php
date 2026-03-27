@@ -4,7 +4,7 @@
         <!-- start category breadcrumb -->
         <div class="mb-4 text-gray-600">
             <strong>
-                {{ __('product.category') }}:
+                {{ __('product_category') }}:
             </strong>
             {{ $product->category->parent->getTranslation('category_name', app()->getLocale()) }} &rarr;
             {{ $product->category->getTranslation('category_name', app()->getLocale()) }}
@@ -49,9 +49,9 @@
                 @if($product->temperature_conditions_from || $product->temperature_conditions_to)
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.temperature_conditions') }}:
+                        {{ __('product_temperature_conditions') }}:
                     </strong>
-                    {{ __('product.from') }} {{ $product->temperature_conditions_from }}°C {{ __('product.to') }} {{ $product->temperature_conditions_to }}°C
+                    {{ __('product_from') }} {{ $product->temperature_conditions_from }}°C {{ __('product_to') }} {{ $product->temperature_conditions_to }}°C
                 </p>
                 @endif
                 <!-- end temperature conditions -->
@@ -60,7 +60,7 @@
                 @if($product->use_until)
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.use_until') }}:
+                        {{ __('product_use_until') }}:
                     </strong>
                     {{ $product->use_until->format('Y-m-d') }}
                 </p>
@@ -70,7 +70,7 @@
                 <!-- start total shelf life -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.total_shelf_life') }}:
+                        {{ __('product_total_shelf_life') }}:
                     </strong>
                     {{ $product->total_shelf_life }}
                 </p>
@@ -79,7 +79,7 @@
                 <!-- start country -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.country') }}:
+                        {{ __('product_country') }}:
                     </strong>
                     {{ $product->country->getTranslation('country_name', app()->getLocale()) }}
                 </p>
@@ -88,16 +88,16 @@
                 <!-- start organic -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.is_organic') }}:
+                        {{ __('product_is_organic') }}:
                     </strong>
-                    {{ $product->is_organic ? __('common.yes') : __('common.no') }}
+                    {{ $product->is_organic ? __('common_yes') : __('common_no') }}
                 </p>
                 <!-- end organic -->
 
                 <!-- start seller -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.seller') }}:
+                        {{ __('product_seller') }}:
                     </strong>
                     {{ $product->seller->company_name }}
                 </p>
@@ -106,18 +106,18 @@
                 <!-- start stock -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.stock') }}:
+                        {{ __('product_stock') }}:
                     </strong>
-                    {{ $product->stock }} {{ __("units.$product->unit") }}
+                    {{ $product->stock }} {{ __('units_unit_' . strtolower($product->unit)) }}
                 </p>
                 <!-- end stock -->
 
                 <!-- start min order -->
                 <p class="text-gray-600 mb-4">
                     <strong class="font-bold">
-                        {{ __('product.min_order') }}:
+                        {{ __('product_min_order') }}:
                     </strong>
-                    {{ $product->min_order_price }}€ / {{ $product->min_order_count }} {{ __("units.$product->unit") }}
+                    {{ $product->min_order_price }}€ / {{ $product->min_order_count }} {{ __('units_unit_' . strtolower($product->unit)) }}
                 </p>
                 <!-- end min order -->
 
@@ -125,7 +125,7 @@
                 @if ($product->package_weight)
                     <p class="text-gray-600 mb-4">
                         <strong class="font-bold">
-                            {{ __('product.package_weight') }}:
+                            {{ __('product_package_weight') }}:
                         </strong>
                         {{ $product->formatted_package_weight }}
                     </p>
@@ -136,7 +136,7 @@
                 @if ($product->price_per_liter)
                     <p class="text-gray-600 mb-4">
                         <strong class="font-bold">
-                            {{ __('product.price_per_liter') }}:
+                            {{ __('product_price_per_liter') }}:
                         </strong>
                         {{ $product->formatted_price_per_liter }}
                     </p>
@@ -147,7 +147,7 @@
                 @if ($product->pack_type)
                     <p class="text-gray-600 mb-4">
                         <strong class="font-bold">
-                            {{ __('product.pack_type') }}:
+                            {{ __('product_pack_type') }}:
                         </strong>
                         {{ $product->pack_type }}
                     </p>
@@ -158,7 +158,7 @@
                 @if ($product->category && $product->category->attributes->count() > 0)
                     <div class="text-gray-600 mb-4">
                         <strong class="font-bold">
-                            {{ __('product.attributes') }}:
+                            {{ __('product_attributes') }}:
                         </strong>
                         <div class="mt-2 space-y-2">
                             @foreach ($product->category->attributes->where('is_active', true) as $attribute)
@@ -181,7 +181,7 @@
                                             @endforeach
                                         @else
                                             <span class="text-sm text-gray-400 italic">
-                                                {{ __('common.not_specified') }}
+                                                {{ __('common_not_specified') }}
                                             </span>
                                         @endif
                                     </div>
@@ -194,7 +194,7 @@
 
                 <!-- start description -->
                 <p class="text-gray-600 mb-4 font-bold">
-                    {{ __('product.description') }}
+                    {{ __('product_description') }}
                 </p>
                 <p class="text-gray-700 mb-4">
                     {{ $product->getTranslation('description', app()->getLocale()) }}
@@ -204,9 +204,9 @@
                 <!-- start price -->
                 <p class="text-2xl font-bold text-green-600 mb-10">
                     <strong class="font-bold">
-                        {{ __('product.price_without_vat') }}:
+                        {{ __('product_price_without_vat') }}:
                     </strong>
-                    {{ number_format($product->price, 2) }} € / {{ __("units.$product->unit") }}
+                    {{ number_format($product->price, 2) }} € / {{ __('units_unit_' . strtolower($product->unit)) }}
                 </p>
                 <!-- end price -->
 
@@ -228,7 +228,7 @@
                             class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             {{ $product->stock <= 0 ? 'disabled' : '' }}
                         >
-                            {{ $product->stock <= 0 ? __('common.out_of_stock') : __('common.add_to_cart') }}
+                            {{ $product->stock <= 0 ? __('common_out_of_stock') : __('common_add_to_cart') }}
                         </button>
                     </div>
                 </form>
@@ -245,7 +245,7 @@
                 href="{{ route('buyer.products.index') }}"
                 class="inline-block px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
             >
-                {{ __('common.back_to_products') }}
+                {{ __('common_back_to_products') }}
             </a>
         </div>
         <!-- end back button -->

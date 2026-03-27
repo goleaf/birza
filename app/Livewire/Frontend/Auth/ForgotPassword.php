@@ -40,7 +40,7 @@ class ForgotPassword extends Component
 
         if (! $user) {
             throw ValidationException::withMessages([
-                'email' => __('passwords.user'),
+                'email' => __('passwords_user'),
             ]);
         }
 
@@ -50,13 +50,13 @@ class ForgotPassword extends Component
         $user->save();
 
         $resetUrl = route("{$this->userType}.password.reset", ['hash' => $token]);
-        $message = __('emails.reset_password_body') . "\n\n" . $resetUrl;
+        $message = __('emails_reset_password_body') . "\n\n" . $resetUrl;
 
         Mail::raw($message, function ($mail) use ($user) {
-            $mail->to($user->email)->subject(__('emails.reset_password_subject'));
+            $mail->to($user->email)->subject(__('emails_reset_password_subject'));
         });
 
-        session()->flash('status', __('passwords.reset_for_email', ['email' => $user->email]));
+        session()->flash('status', __('passwords_reset_for_email', ['email' => $user->email]));
     }
 
     public function render()

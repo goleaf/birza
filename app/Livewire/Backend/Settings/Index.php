@@ -32,7 +32,7 @@ class Index extends Component
             GlobalSettings::create($validated);
         }
 
-        session()->flash('success', __('messages.settings_updated_success'));
+        session()->flash('success', __('messages_settings_updated_success'));
     }
 
     public function render()

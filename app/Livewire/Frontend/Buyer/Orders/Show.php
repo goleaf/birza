@@ -32,7 +32,7 @@ class Show extends Component
         }
 
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
-            $this->notifyError(__('orders.messages.cannot_cancel'));
+            $this->notifyError(__('orders_messages_cannot_cancel'));
             return;
         }
 
@@ -49,15 +49,15 @@ class Show extends Component
 
         $this->order->refresh()->load(['items.product', 'items.seller']);
 
-        $this->notifySuccess(__('orders.messages.cancelled_success'));
+        $this->notifySuccess(__('orders_messages_cancelled_success'));
     }
 
     public function confirmCancelOrder(): void
     {
         $this->confirmAction(
-            title: __('orders.confirm_cancel'),
-            description: __('orders.confirm_cancel'),
-            acceptLabel: __('orders.cancel_order'),
+            title: __('orders_confirm_cancel'),
+            description: __('orders_confirm_cancel'),
+            acceptLabel: __('orders_cancel_order'),
             method: 'cancelOrder',
             icon: 'warning',
         );

@@ -124,7 +124,7 @@ class Edit extends Component
 
         $this->product->attributeValues()->sync($sync);
 
-        session()->flash('success', __('messages.product_updated'));
+        session()->flash('success', __('messages_product_updated'));
         $this->redirectRoute('backend.products.index');
     }
 

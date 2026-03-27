@@ -8,16 +8,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Search -->
                         <div>
-                            <label for="search" class="block text-sm font-medium text-gray-700">{{ __('common.search') }}</label>
+                            <label for="search" class="block text-sm font-medium text-gray-700">{{ __('common_search') }}</label>
                             <input type="text" name="search" id="search" value="{{ request('search') }}" 
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
 
                         <!-- Category Filter -->
                         <div>
-                            <label for="category" class="block text-sm font-medium text-gray-700">{{ __('product.category') }}</label>
+                            <label for="category" class="block text-sm font-medium text-gray-700">{{ __('product_category') }}</label>
                             <select name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">{{ __('common.all') }}</option>
+                                <option value="">{{ __('common_all') }}</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                         {{ $category->category_name }}
@@ -28,9 +28,9 @@
 
                         <!-- Seller Filter -->
                         <div>
-                            <label for="seller" class="block text-sm font-medium text-gray-700">{{ __('product.seller') }}</label>
+                            <label for="seller" class="block text-sm font-medium text-gray-700">{{ __('product_seller') }}</label>
                             <select name="seller" id="seller" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">{{ __('common.all') }}</option>
+                                <option value="">{{ __('common_all') }}</option>
                                 @foreach($sellers as $seller)
                                     <option value="{{ $seller->id }}" {{ request('seller') == $seller->id ? 'selected' : '' }}>
                                         {{ $seller->company_name ?: $seller->name }}
@@ -41,23 +41,23 @@
 
                         <!-- Price Range -->
                         <div>
-                            <label for="min_price" class="block text-sm font-medium text-gray-700">{{ __('product.min_price') }}</label>
+                            <label for="min_price" class="block text-sm font-medium text-gray-700">{{ __('product_min_price') }}</label>
                             <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" step="0.01"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
                         <div>
-                            <label for="max_price" class="block text-sm font-medium text-gray-700">{{ __('product.max_price') }}</label>
+                            <label for="max_price" class="block text-sm font-medium text-gray-700">{{ __('product_max_price') }}</label>
                             <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" step="0.01"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
 
                         <!-- Status -->
                         <div>
-                            <label for="status" class="block text-sm font-medium text-gray-700">{{ __('common.status') }}</label>
+                            <label for="status" class="block text-sm font-medium text-gray-700">{{ __('common_status') }}</label>
                             <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">{{ __('common.all') }}</option>
-                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>{{ __('common.active') }}</option>
-                                <option value="trashed" {{ request('status') === 'trashed' ? 'selected' : '' }}>{{ __('common.trashed') }}</option>
+                                <option value="">{{ __('common_all') }}</option>
+                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>{{ __('common_active') }}</option>
+                                <option value="trashed" {{ request('status') === 'trashed' ? 'selected' : '' }}>{{ __('common_trashed') }}</option>
                             </select>
                         </div>
                     </div>
@@ -65,19 +65,19 @@
                     <!-- Sort -->
                     <div class="flex justify-between items-center mt-4">
                         <div class="flex-1 mr-4">
-                            <label for="sort" class="block text-sm font-medium text-gray-700">{{ __('common.sort_by') }}</label>
+                            <label for="sort" class="block text-sm font-medium text-gray-700">{{ __('common_sort_by') }}</label>
                             <select name="sort" id="sort" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="created_at,desc" {{ request('sort') === 'created_at,desc' ? 'selected' : '' }}>{{ __('common.newest') }}</option>
-                                <option value="created_at,asc" {{ request('sort') === 'created_at,asc' ? 'selected' : '' }}>{{ __('common.oldest') }}</option>
-                                <option value="price,asc" {{ request('sort') === 'price,asc' ? 'selected' : '' }}>{{ __('product.price_low_high') }}</option>
-                                <option value="price,desc" {{ request('sort') === 'price,desc' ? 'selected' : '' }}>{{ __('product.price_high_low') }}</option>
-                                <option value="name,asc" {{ request('sort') === 'name,asc' ? 'selected' : '' }}>{{ __('common.name_az') }}</option>
-                                <option value="name,desc" {{ request('sort') === 'name,desc' ? 'selected' : '' }}>{{ __('common.name_za') }}</option>
+                                <option value="created_at,desc" {{ request('sort') === 'created_at,desc' ? 'selected' : '' }}>{{ __('common_newest') }}</option>
+                                <option value="created_at,asc" {{ request('sort') === 'created_at,asc' ? 'selected' : '' }}>{{ __('common_oldest') }}</option>
+                                <option value="price,asc" {{ request('sort') === 'price,asc' ? 'selected' : '' }}>{{ __('product_price_low_high') }}</option>
+                                <option value="price,desc" {{ request('sort') === 'price,desc' ? 'selected' : '' }}>{{ __('product_price_high_low') }}</option>
+                                <option value="name,asc" {{ request('sort') === 'name,asc' ? 'selected' : '' }}>{{ __('common_name_az') }}</option>
+                                <option value="name,desc" {{ request('sort') === 'name,desc' ? 'selected' : '' }}>{{ __('common_name_za') }}</option>
                             </select>
                         </div>
                         <div class="flex space-x-2">
-                            <x-button type="submit" primary :label="__('common.filter')" />
-                            <x-button flat :href="route('backend.products.index')" :label="__('common.reset')" />
+                            <x-button type="submit" primary :label="__('common_filter')" />
+                            <x-button flat :href="route('backend.products.index')" :label="__('common_reset')" />
                         </div>
                     </div>
                 </form>
@@ -93,25 +93,25 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('product.image') }}
+                                        {{ __('product_image_2') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('product.name') }}
+                                        {{ __('product_name') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('product.category') }}
+                                        {{ __('product_category') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('product.seller') }}
+                                        {{ __('product_seller') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('product.price') }}
+                                        {{ __('product_price') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('common.status') }}
+                                        {{ __('common_status') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('common.actions') }}
+                                        {{ __('common_actions') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -141,11 +141,11 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             @if($product->trashed())
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                    {{ __('common.trashed') }}
+                                                    {{ __('common_trashed') }}
                                                 </span>
                                             @else
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    {{ __('common.active') }}
+                                                    {{ __('common_active') }}
                                                 </span>
                                             @endif
                                         </td>
@@ -156,26 +156,26 @@
                                                     flat
                                                     positive
                                                     wire:click="restoreProduct({{ $product->id }})"
-                                                    :label="__('common.restore')"
+                                                    :label="__('common_restore')"
                                                 />
                                                 <x-button
                                                     xs
                                                     flat
                                                     negative
                                                     wire:click="confirmForceDeleteProduct({{ $product->id }})"
-                                                    :label="__('common.force_delete')"
+                                                    :label="__('common_force_delete')"
                                                 />
                                             @else
                                                 <a href="{{ route('backend.products.edit', $product) }}" 
                                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                                    {{ __('common.edit') }}
+                                                    {{ __('common_edit') }}
                                                 </a>
                                                 <x-button
                                                     xs
                                                     flat
                                                     negative
                                                     wire:click="confirmDeleteProduct({{ $product->id }})"
-                                                    :label="__('common.delete')"
+                                                    :label="__('common_delete')"
                                                 />
                                             @endif
                                         </td>
@@ -194,7 +194,7 @@
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('products.no_products') }}</h3>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('products_no_products') }}</h3>
                     </div>
                 @endif
             </div>

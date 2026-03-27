@@ -5,22 +5,22 @@
     <thead class="bg-gray-50">
         <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.image') }}
+                {{ __('product_image_2') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.price') }}
+                {{ __('product_price') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.is_organic') }}
+                {{ __('product_is_organic') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.is_active') }}
+                {{ __('product_is_active') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.stock') }}
+                {{ __('product_stock') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ __('product.actions') }}
+                {{ __('product_actions') }}
             </th>
         </tr>
     </thead>
@@ -60,7 +60,7 @@
                     <span 
                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $product->is_organic ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}"
                     >
-                        {{ $product->is_organic ? __('common.yes') : __('common.no') }}
+                        {{ $product->is_organic ? __('common_yes') : __('common_no') }}
                     </span>
                 </td>
                 <!-- end organic cell -->
@@ -70,7 +70,7 @@
                     <span 
                         class="px-2 inline-flex text-xs leading-5 font-semibold {{ $product->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }}"
                     >
-                        {{ $product->is_active ? __('product.active') : __('product.inactive') }}
+                        {{ $product->is_active ? __('product_active') : __('product_inactive') }}
                     </span>
                 </td>
                 <!-- end active cell -->
@@ -92,7 +92,7 @@
                                 flat
                                 primary
                                 :href="route('seller.products.edit', $product)"
-                                :label="__('product.edit')"
+                                :label="__('product_edit')"
                             />
                             <!-- end edit button -->
                         @endif
@@ -105,7 +105,7 @@
                                     xs
                                     flat
                                     positive
-                                    :label="__('product.restore')"
+                                    :label="__('product_restore')"
                                     wire:click="confirmRestoreProduct({{ $product->id }})"
                                     spinner="confirmRestoreProduct"
                                 />
@@ -116,7 +116,7 @@
                                     xs
                                     flat
                                     negative
-                                    :label="__('product.soft_delete')"
+                                    :label="__('product_soft_delete')"
                                     wire:click="confirmSoftDeleteProduct({{ $product->id }})"
                                     spinner="confirmSoftDeleteProduct"
                                 />

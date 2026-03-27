@@ -5,7 +5,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <!-- start title -->
                 <h2 class="text-2xl font-bold mb-6">
-                    {{ isset($product->id) ? __('product.edit_product') : __('product.create_new_product') }}
+                    {{ isset($product->id) ? __('product_edit_product') : __('product_create_new_product') }}
                 </h2>
                 <!-- end title -->
 
@@ -16,7 +16,7 @@
                     <!-- start name field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.name') }} *
+                            {{ __('product_name') }} *
                         </label>
                         <input 
                             type="text"
@@ -34,7 +34,7 @@
                     <!-- start price field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.price') }} * <span class="text-gray-500 font-normal">({{ __('product.price_without_vat') }})</span>
+                            {{ __('product_price') }} * <span class="text-gray-500 font-normal">({{ __('product_price_without_vat') }})</span>
                         </label>
                         <input 
                             type="number" 
@@ -52,7 +52,7 @@
                     <!-- start pack type field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.pack_type') }} *
+                            {{ __('product_pack_type') }} *
                         </label>
                         <input 
                             type="text"
@@ -68,7 +68,7 @@
                     <!-- start unit field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.unit') }} *
+                            {{ __('product_unit') }} *
                         </label>
                         <select 
                             required 
@@ -79,7 +79,7 @@
                                 <option 
                                     value="{{ $unit }}" 
                                 >
-                                    {{ __("units.$unit") }}
+                                    {{ __('units_unit_' . strtolower($unit)) }}
                                 </option>
                             @endforeach
                         </select>
@@ -92,7 +92,7 @@
                     <!-- start country field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.country_of_origin') }} *
+                            {{ __('product_country_of_origin') }} *
                         </label>
                         <select 
                             required 
@@ -100,7 +100,7 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('country_of_origin') ? 'border-red-500' : '' }}"
                         >
                             <option value="">
-                                {{ __('common.select_country') }}
+                                {{ __('common_select_country') }}
                             </option>
                             @foreach ($countries as $country)
                                 <option 
@@ -119,7 +119,7 @@
                     <!-- start organic field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.is_organic') }} *
+                            {{ __('product_is_organic') }} *
                         </label>
                         <select 
                             required 
@@ -129,12 +129,12 @@
                             <option 
                                 value="0" 
                             >
-                                {{ __('common.no') }}
+                                {{ __('common_no') }}
                             </option>
                             <option 
                                 value="1" 
                             >
-                                {{ __('common.yes') }}
+                                {{ __('common_yes') }}
                             </option>
                         </select>
                         @error('is_organic')
@@ -146,7 +146,7 @@
                     <!-- start active field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.is_active') }} *
+                            {{ __('product_is_active') }} *
                         </label>
                         <select 
                             required 
@@ -156,12 +156,12 @@
                             <option 
                                 value="0" 
                             >
-                                {{ __('common.no') }}
+                                {{ __('common_no') }}
                             </option>
                             <option 
                                 value="1" 
                             >
-                                {{ __('common.yes') }}
+                                {{ __('common_yes') }}
                             </option>
                         </select>
                         @error('is_active')
@@ -173,7 +173,7 @@
                     <!-- start min order price field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.min_order_price') }}
+                            {{ __('product_min_order_price') }}
                         </label>
                         <input 
                             type="number" 
@@ -190,7 +190,7 @@
                     <!-- start min order count field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.min_order_count') }} *
+                            {{ __('product_min_order_count') }} *
                         </label>
                         <input 
                             type="number" 
@@ -207,7 +207,7 @@
                     <!-- start stock field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.stock') }} *
+                            {{ __('product_stock') }} *
                         </label>
                         <input 
                             type="number" 
@@ -224,7 +224,7 @@
                     <!-- start description field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.description') }} *
+                            {{ __('product_description') }} *
                         </label>
                         @foreach (config('app.locales') as $locale)
                             <div class="mb-4">
@@ -252,12 +252,12 @@
                     <!-- start temperature conditions fields -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.temperature_conditions') }}
+                            {{ __('product_temperature_conditions') }}
                         </label>
                         <div class="flex gap-4">
                             <div class="flex-1">
                                 <label class="block text-gray-600 text-xs mb-1">
-                                    {{ __('product.from') }}
+                                    {{ __('product_from') }}
                                 </label>
                                 <input
                                     type="number"
@@ -270,7 +270,7 @@
                             </div>
                             <div class="flex-1">
                                 <label class="block text-gray-600 text-xs mb-1">
-                                    {{ __('product.to') }}
+                                    {{ __('product_to') }}
                                 </label>
                                 <input
                                     type="number"
@@ -288,7 +288,7 @@
                     <!-- start use until field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.use_until') }}
+                            {{ __('product_use_until') }}
                         </label>
                         <input
                             type="date"
@@ -306,7 +306,7 @@
                     <!-- start total shelf life field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.total_shelf_life') }} *
+                            {{ __('product_total_shelf_life') }} *
                         </label>
                         <input
                             type="number"
@@ -325,7 +325,7 @@
                     <!-- start main image field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.main_image') }}
+                            {{ __('product_main_image') }}
                             @if (!isset($product->id) || !isset($product->product_image))
                                 *
                             @endif
@@ -337,7 +337,7 @@
                             >
                         @endif
                         <label class="block">
-                            <span class="sr-only">{{ __('product.choose_file') }}</span>
+                            <span class="sr-only">{{ __('product_choose_file') }}</span>
                             <input 
                                 type="file" 
                                 wire:model="product_image"
@@ -354,7 +354,7 @@
                     <!-- start additional image field -->
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product.additional_image') }}
+                            {{ __('product_additional_image') }}
                         </label>
                         @if (isset($product) && $product->product_additional_image)
                             <img 
@@ -363,7 +363,7 @@
                             >
                         @endif
                         <label class="block">
-                            <span class="sr-only">{{ __('product.choose_file') }}</span>
+                            <span class="sr-only">{{ __('product_choose_file') }}</span>
                             <input 
                                 type="file" 
                                 wire:model="product_additional_image"
@@ -384,13 +384,13 @@
                             wire:loading.attr="disabled"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            {{ isset($product->id) ? __('product.update') : __('product.create') }}
+                            {{ isset($product->id) ? __('product_update') : __('product_create') }}
                         </button>
                         <a 
                             href="{{ route('seller.products.index') }}" 
                             class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         >
-                            {{ __('common.cancel') }}
+                            {{ __('common_cancel') }}
                         </a>
                     </div>
                     <!-- end form buttons -->

@@ -23,7 +23,7 @@ class Show extends Component
         $this->quantity = (int) ($product->min_order_count ?? 1);
 
         if ($product->stock <= 0) {
-            session()->flash('message', __('product.messages.out_of_stock'));
+            session()->flash('message', __('product_messages_out_of_stock'));
         }
     }
 
@@ -32,19 +32,19 @@ class Show extends Component
         $product = $this->product->fresh();
 
         if (! $product || $product->trashed() || $product->is_active === false) {
-            session()->flash('message', __('cart.messages.product_not_found'));
+            session()->flash('message', __('cart_messages_product_not_found'));
             return;
         }
 
         if ((int) $product->stock === 0) {
-            session()->flash('message', __('cart.messages.out_of_stock'));
+            session()->flash('message', __('cart_messages_out_of_stock'));
             return;
         }
 
         $quantity = max(1, (int) $this->quantity);
 
         if ($quantity < (int) $product->min_order_count) {
-            session()->flash('message', __('cart.messages.minimum_quantity', [
+            session()->flash('message', __('cart_messages_minimum_quantity', [
                 'min' => $product->min_order_count,
                 'product' => $product->name,
             ]));
@@ -52,7 +52,7 @@ class Show extends Component
         }
 
         if ($quantity > (int) $product->stock) {
-            session()->flash('message', __('cart.messages.maximum_quantity', [
+            session()->flash('message', __('cart_messages_maximum_quantity', [
                 'max' => $product->stock,
                 'product' => $product->name,
             ]));
@@ -71,7 +71,7 @@ class Show extends Component
             $newQty = (int) $cartItem->qty + $quantity;
 
             if ($newQty > (int) $product->stock) {
-                session()->flash('message', __('cart.messages.maximum_total_quantity', [
+                session()->flash('message', __('cart_messages_maximum_total_quantity', [
                     'max' => $product->stock,
                     'product' => $product->name,
                 ]));
@@ -101,7 +101,7 @@ class Show extends Component
             );
         }
 
-        session()->flash('success', __('cart.messages.product_added'));
+        session()->flash('success', __('cart_messages_product_added'));
     }
 
     public function render()

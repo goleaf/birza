@@ -1,12 +1,12 @@
 <div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
-        <x-ui.card class="rounded-xl shadow-lg" :title="__('product.products_list')">
+        <x-ui.card class="rounded-xl shadow-lg" :title="__('product_products_list')">
             <x-slot:actions>
                 <x-ui.button
                     href="{{ route('seller.dashboard') }}"
                     secondary
-                    :label="__('common.back_to_dashboard')"
+                    :label="__('common_back_to_dashboard')"
                 />
             </x-slot:actions>
 
@@ -77,7 +77,7 @@
                                                             href="{{ route('seller.products.create', $subcategory) }}"
                                                             class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600 transition-colors"
                                                         >
-                                                            {{ __('product.create_product') }}
+                                                            {{ __('product_create_product') }}
                                                         </a>
                                                     </div>
                                                 </div>

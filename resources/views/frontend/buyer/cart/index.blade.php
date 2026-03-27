@@ -1,6 +1,6 @@
 <div>
     <!-- start main container -->
-    <x-ui.card class="shadow-sm sm:rounded-lg" :title="__('cart.shopping_cart')">
+    <x-ui.card class="shadow-sm sm:rounded-lg" :title="__('cart_shopping_cart')">
 
         <!-- start cart items -->
         @if (LaraCart::count() > 0)
@@ -23,7 +23,7 @@
                                 @else
                                     <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center">
                                         <span class="text-gray-500 text-xs">
-                                            {{ __('common.no_image') }}
+                                            {{ __('common_no_image') }}
                                         </span>
                                     </div>
                                 @endif
@@ -36,7 +36,7 @@
                                     class="text-xl font-bold"
                                 >
                                     <a href="{{ route('buyer.products.show', $item->id) }}" class="hover:text-blue-600">
-                                        {{ $item->name ?? __('common.unnamed_product') }}
+                                        {{ $item->name ?? __('common_unnamed_product') }}
                                     </a>
                                 </h3>
 
@@ -44,25 +44,25 @@
                                 <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
                                     @if(isset($item->price) && isset($item->options['unit']))
                                         <p>
-                                            <span class="font-medium">{{ __('product.price') }}:</span> {{ $item->price }} € / {{ $item->options['unit'] }}
+                                            <span class="font-medium">{{ __('product_price') }}:</span> {{ $item->price }} € / {{ $item->options['unit'] }}
                                         </p>
                                     @endif
 
                                     @if(isset($item->options['stock']))
                                         <p>
-                                            <span class="font-medium">{{ __('product.stock') }}:</span> {{ $item->options['stock'] }}
+                                            <span class="font-medium">{{ __('product_stock') }}:</span> {{ $item->options['stock'] }}
                                         </p>
                                     @endif
 
                                     @if(isset($item->options['min_order_count']))
                                         <p>
-                                            <span class="font-medium">{{ __('product.min_order_count') }}:</span> {{ $item->options['min_order_count'] }}
+                                            <span class="font-medium">{{ __('product_min_order_count') }}:</span> {{ $item->options['min_order_count'] }}
                                         </p>
                                     @endif
 
                                     @if(isset($item->options['package_weight']))
                                         <p>
-                                            <span class="font-medium">{{ __('product.package_weight') }}:</span> {{ $item->options['package_weight'] }}
+                                            <span class="font-medium">{{ __('product_package_weight') }}:</span> {{ $item->options['package_weight'] }}
                                         </p>
                                     @endif
 
@@ -75,19 +75,19 @@
                                                     clip-rule="evenodd" 
                                                 />
                                             </svg>
-                                            {{ __('product.organic') }}
+                                            {{ __('product_organic') }}
                                         </p>
                                     @endif
 
                                     @if(isset($item->options['country_of_origin']) && isset($countries[$item->options['country_of_origin']]))
                                         <p>
-                                            <span class="font-medium">{{ __('product.origin') }}:</span> {{ $countries[$item->options['country_of_origin']] }}
+                                            <span class="font-medium">{{ __('product_origin') }}:</span> {{ $countries[$item->options['country_of_origin']] }}
                                         </p>
                                     @endif
 
                                     @if(isset($item->options['price_per_liter']))
                                         <p>
-                                            <span class="font-medium">{{ __('product.price_per_liter') }}:</span> {{ $item->options['price_per_liter'] }} €/L
+                                            <span class="font-medium">{{ __('product_price_per_liter') }}:</span> {{ $item->options['price_per_liter'] }} €/L
                                         </p>
                                     @endif
                                 </div>
@@ -119,12 +119,12 @@
                                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <x-ui.button type="submit" sm primary :label="__('cart.update')" />
+                                    <x-ui.button type="submit" sm primary :label="__('cart_update')" />
                                 </form>
                                 <!-- end update quantity form -->
 
                                 <!-- start remove item form -->
-                                <x-ui.button type="button" sm negative wire:click="removeItem('{{ $item->getHash() }}')" :label="__('cart.remove')" />
+                                <x-ui.button type="button" sm negative wire:click="removeItem('{{ $item->getHash() }}')" :label="__('cart_remove')" />
                                 <!-- end remove item form -->
                             </div>
                             <!-- end buttons group -->
@@ -140,16 +140,16 @@
                     <div class="text-2xl font-bold mt-4">
                         <div class="flex flex-col">
                             <span>
-                                {{ __('cart.total') }}: {{ $cartTotals['totalWithVatAndPortal'] }} €
+                                {{ __('cart_total') }}: {{ $cartTotals['totalWithVatAndPortal'] }} €
                             </span>
                             <span class="text-sm text-gray-600">
-                                {{ __('cart.total_without_vat') }}: {{ $cartTotals['cartTotal'] }} €
+                                {{ __('cart_total_without_vat') }}: {{ $cartTotals['cartTotal'] }} €
                             </span>
                             <span class="text-sm text-gray-600">
-                                {{ __('cart.vat_amount') }}: {{ $cartTotals['vatAmount'] }} €
+                                {{ __('cart_vat_amount') }}: {{ $cartTotals['vatAmount'] }} €
                             </span>
                             <span class="text-sm text-gray-600">
-                                {{ __('cart.portal_additional_price') }}: {{ $cartTotals['portalPrice'] }} €
+                                {{ __('cart_portal_additional_price') }}: {{ $cartTotals['portalPrice'] }} €
                             </span>
                         </div>
                     </div>
@@ -160,9 +160,9 @@
                         <x-ui.button
                             href="{{ route('buyer.products.index') }}"
                             secondary
-                            :label="__('cart.continue_shopping')"
+                            :label="__('cart_continue_shopping')"
                         />
-                        <x-ui.button type="button" positive wire:click="checkout" :label="__('cart.checkout')" />
+                        <x-ui.button type="button" positive wire:click="checkout" :label="__('cart_checkout')" />
                     </div>
                     <!-- end action buttons -->
                 </div>
@@ -172,9 +172,9 @@
             <!-- start empty cart message -->
             <div class="text-center py-12">
                 <p class="text-gray-600 text-lg mb-6">
-                    {{ __('cart.empty_cart') }}
+                    {{ __('cart_empty_cart') }}
                 </p>
-                <x-ui.button href="{{ route('buyer.products.index') }}" primary :label="__('cart.continue_shopping')" />
+                <x-ui.button href="{{ route('buyer.products.index') }}" primary :label="__('cart_continue_shopping')" />
             </div>
             <!-- end empty cart message -->
         @endif

@@ -2,9 +2,9 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">
             @if(isset($seller))
-                {{ __('backend.sellers.edit.title') }}
+                {{ __('backend_sellers_edit_title') }}
             @else
-                {{ __('backend.sellers.create.title') }}
+                {{ __('backend_sellers_create_title') }}
             @endif
         </h2>
     </div>
@@ -16,7 +16,7 @@
                 <!-- Basic Information -->
                 <div class="space-y-4">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.name') }}</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_name') }}</label>
                         <input type="text" id="name" wire:model.defer="name"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('name')
@@ -25,7 +25,7 @@
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.email') }}</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_email') }}</label>
                         <input type="email" id="email" wire:model.defer="email"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('email')
@@ -35,7 +35,7 @@
 
                     @if(!isset($seller))
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.password') }}</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_password') }}</label>
                         <input type="password" id="password" wire:model.defer="password"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('password')
@@ -44,7 +44,7 @@
                     </div>
 
                     <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.password_confirmation') }}</label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_password_confirmation') }}</label>
                         <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
@@ -52,7 +52,7 @@
 
                     <!-- Company Information -->
                     <div>
-                        <label for="company_name" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.company_name') }}</label>
+                        <label for="company_name" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_company_name') }}</label>
                         <input type="text" id="company_name" wire:model.defer="company_name"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('company_name')
@@ -61,7 +61,7 @@
                     </div>
 
                     <div>
-                        <label for="company_code" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.company_code') }}</label>
+                        <label for="company_code" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_company_code') }}</label>
                         <input type="text" id="company_code" wire:model.defer="company_code"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('company_code')
@@ -70,7 +70,7 @@
                     </div>
 
                     <div>
-                        <label for="vat_code" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.vat_code') }}</label>
+                        <label for="vat_code" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_vat_code') }}</label>
                         <input type="text" id="vat_code" wire:model.defer="vat_code"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('vat_code')
@@ -80,7 +80,7 @@
 
                     <!-- Contact Information -->
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.address') }}</label>
+                        <label for="address" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_address') }}</label>
                         <input type="text" id="address" wire:model.defer="address"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('address')
@@ -89,7 +89,7 @@
                     </div>
 
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.phone') }}</label>
+                        <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_phone') }}</label>
                         <input type="text" id="phone" wire:model.defer="phone"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('phone')
@@ -99,7 +99,7 @@
 
                     <!-- Banking Information -->
                     <div>
-                        <label for="bank_account" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.bank_account') }}</label>
+                        <label for="bank_account" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_bank_account') }}</label>
                         <input type="text" id="bank_account" wire:model.defer="bank_account"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('bank_account')
@@ -109,7 +109,7 @@
 
                     <!-- Seller Specific Fields -->
                     <div>
-                        <label for="veterinary_certificate_number" class="block text-sm font-medium text-gray-700">{{ __('backend.sellers.fields.veterinary_certificate_number') }}</label>
+                        <label for="veterinary_certificate_number" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_veterinary_certificate_number') }}</label>
                         <input type="text" id="veterinary_certificate_number" wire:model.defer="veterinary_certificate_number"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('veterinary_certificate_number')
@@ -124,7 +124,7 @@
                                 <input type="checkbox" id="is_verified" wire:model.defer="is_verified"
                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
-                                <span class="ml-2 text-sm text-gray-600">{{ __('backend.sellers.fields.is_verified') }}</span>
+                                <span class="ml-2 text-sm text-gray-600">{{ __('backend_sellers_fields_is_verified') }}</span>
                             </label>
                         </div>
                         <div>
@@ -132,7 +132,7 @@
                                 <input type="checkbox" id="is_active" wire:model.defer="is_active"
                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
-                                <span class="ml-2 text-sm text-gray-600">{{ __('backend.sellers.fields.is_active') }}</span>
+                                <span class="ml-2 text-sm text-gray-600">{{ __('backend_sellers_fields_is_active') }}</span>
                             </label>
                         </div>
                     </div>
@@ -140,11 +140,11 @@
 
                 <div class="mt-6 flex justify-end space-x-3">
                     <a href="{{ route('backend.sellers.index') }}" class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        {{ __('backend.common.cancel') }}
+                        {{ __('backend_common_cancel') }}
                     </a>
                     <button type="submit" wire:loading.attr="disabled"
                             class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed">
-                        {{ isset($seller) ? __('backend.common.update') : __('backend.common.create') }}
+                        {{ isset($seller) ? __('backend_common_update') : __('backend_common_create') }}
                     </button>
                 </div>
             </form>

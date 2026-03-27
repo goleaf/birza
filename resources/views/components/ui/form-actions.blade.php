@@ -6,7 +6,7 @@
 ])
 
 @php
-    $cancelLabel = is_string($cancelLabel) && $cancelLabel !== '' ? $cancelLabel : __('common.cancel');
+    $cancelLabel = is_string($cancelLabel) && $cancelLabel !== '' ? $cancelLabel : __('common_cancel');
 @endphp
 
 <div {{ $attributes->class('flex items-center justify-end gap-3') }}>

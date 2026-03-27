@@ -44,7 +44,7 @@ class Form extends Component
         $attributeValue->setTranslations('value', $validated['value']);
         $attributeValue->save();
 
-        session()->flash('success', __('backend.common.success_message'));
+        session()->flash('success', __('backend_common_success_message'));
         $this->redirectRoute('backend.attributes.values.index', ['attribute' => $this->attribute->id]);
     }
 

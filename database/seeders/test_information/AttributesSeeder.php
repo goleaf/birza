@@ -6,8 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Product;
-use App\Models\ProductAttributeValue;
-use Faker\Factory;
+use Illuminate\Support\Facades\DB;
 
 class AttributesSeeder extends Seeder
 {
@@ -16,8 +15,7 @@ class AttributesSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Factory::create();
-        $products = Product::all();
+        $products = Product::query()->select('id')->get();
 
         if ($products->isEmpty()) {
             return;
@@ -165,17 +163,37 @@ class AttributesSeeder extends Seeder
             }
         }
 
-        $allAttributeValues = AttributeValue::all();
+        $allAttributeValues = AttributeValue::query()
+            ->select(['id', 'attribute_id'])
+            ->get();
+
+        if ($allAttributeValues->isEmpty()) {
+            return;
+        }
+
+        $timestamp = now()->toDateTimeString();
+        $rows = [];
+        $chunkSize = 5000;
 
         foreach ($products as $product) {
             foreach ($allAttributeValues as $attributeValue) {
-                $product->attributeValues()->attach($attributeValue->id, [
+                $rows[] = [
+                    'product_id' => $product->id,
                     'attribute_id' => $attributeValue->attribute_id,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+                    'attribute_value_id' => $attributeValue->id,
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+            }
+
+            if (count($rows) >= $chunkSize) {
+                DB::table('product_attribute_value')->insert($rows);
+                $rows = [];
             }
         }
 
+        if ($rows !== []) {
+            DB::table('product_attribute_value')->insert($rows);
+        }
     }
 }

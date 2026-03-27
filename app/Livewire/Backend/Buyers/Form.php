@@ -85,7 +85,7 @@ class Form extends Component
 
         $buyer->save();
 
-        session()->flash('success', __('backend.common.success_message'));
+        session()->flash('success', __('backend_common_success_message'));
         $this->redirectRoute('backend.buyers.index');
     }
 

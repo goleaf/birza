@@ -36,7 +36,7 @@ class ResetPassword extends Component
         $user = $modelClass::where('remember_token', $hash)->first();
 
         if (! $user || ! $user->password_reset_at || now()->diffInMinutes($user->password_reset_at) > 60) {
-            session()->flash('error', __('passwords.token'));
+            session()->flash('error', __('passwords_token'));
             $this->redirectRoute("{$this->userType}.password.request", navigate: true);
             return;
         }
@@ -61,7 +61,7 @@ class ResetPassword extends Component
             || now()->diffInMinutes($user->password_reset_at) > 60
         ) {
             throw ValidationException::withMessages([
-                'email' => __('passwords.token'),
+                'email' => __('passwords_token'),
             ]);
         }
 
@@ -70,7 +70,7 @@ class ResetPassword extends Component
         $user->remember_token = null;
         $user->save();
 
-        session()->flash('success', __('passwords.reset'));
+        session()->flash('success', __('passwords_reset'));
         $this->redirectRoute("{$this->userType}.login", navigate: true);
     }
 

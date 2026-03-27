@@ -58,7 +58,7 @@ class Form extends Component
             $this->propagateAttributesToSubcategories($category, $validated['selectedAttributes'] ?? []);
         }
 
-        session()->flash('success', __('backend.common.success_message'));
+        session()->flash('success', __('backend_common_success_message'));
         $this->redirectRoute('backend.categories.index');
     }
 

@@ -17,7 +17,7 @@ if (!function_exists('order_status_badge')) {
             '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium %s %s">%s</span>',
             $style[0],
             $style[1],
-            __('orders.status_' . $status)
+            __('orders_status_3_' . $status)
         );
     }
 }

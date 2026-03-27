@@ -2,7 +2,7 @@
 <div class="text-center">
     <!-- start title -->
     <h2 class="text-3xl font-extrabold text-gray-900 mb-8">
-        {{ __('welcome.choose_role') }}
+        {{ __('welcome_choose_role') }}
     </h2>
     <!-- end title -->
     
@@ -20,13 +20,13 @@
 
                 <!-- start buyer heading -->
                 <h3 class="text-xl font-bold text-gray-900 mb-2">
-                    {{ __('buyer.role_name') }}
+                    {{ __('buyer_role_name') }}
                 </h3>
                 <!-- end buyer heading -->
 
                 <!-- start buyer description -->
                 <p class="text-gray-600 mb-4">
-                    {{ __('buyer.role_description') }}
+                    {{ __('buyer_role_description') }}
                 </p>
                 <!-- end buyer description -->
 
@@ -37,7 +37,7 @@
                         href="{{ route('buyer.login') }}" 
                         class="block w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors"
                     >
-                        {{ __('buyer.login') }}
+                        {{ __('buyer_login_2') }}
                     </a>
                     <!-- end login button -->
 
@@ -46,7 +46,7 @@
                         href="{{ route('buyer.register') }}" 
                         class="block w-full bg-gray-100 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-200 transition-colors"
                     >
-                        {{ __('buyer.register') }}
+                        {{ __('buyer_register') }}
                     </a>
                     <!-- end register button -->
                 </div>
@@ -68,13 +68,13 @@
 
                 <!-- start seller heading -->
                 <h3 class="text-xl font-bold text-gray-900 mb-2">
-                    {{ __('seller.role_name') }}
+                    {{ __('seller_role_name') }}
                 </h3>
                 <!-- end seller heading -->
 
                 <!-- start seller description -->
                 <p class="text-gray-600 mb-4">
-                    {{ __('seller.role_description') }}
+                    {{ __('seller_role_description') }}
                 </p>
                 <!-- end seller description -->
 
@@ -85,7 +85,7 @@
                         href="{{ route('seller.login') }}" 
                         class="block w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors"
                     >
-                        {{ __('seller.login') }}
+                        {{ __('seller_login_2') }}
                     </a>
                     <!-- end login button -->
 
@@ -94,7 +94,7 @@
                         href="{{ route('seller.register') }}" 
                         class="block w-full bg-gray-100 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-200 transition-colors"
                     >
-                        {{ __('seller.register') }}
+                        {{ __('seller_register') }}
                     </a>
                     <!-- end register button -->
                 </div>

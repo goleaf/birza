@@ -8,11 +8,11 @@
             </div>
 
             <h2 class="text-2xl font-bold text-gray-800 mb-4">
-                {{ __('messages.registration_success') }}
+                {{ __('messages_registration_success') }}
             </h2>
 
             <p class="text-gray-600 mb-8">
-                {{ __('messages.verification_required') }}: <span class="font-medium">{{ $email }}</span>
+                {{ __('messages_verification_required') }}: <span class="font-medium">{{ $email }}</span>
             </p>
 
             @if (session('success'))
@@ -29,16 +29,16 @@
 
             <a href="{{ route("{$userType}.login") }}"
                class="inline-block w-full py-3 px-4 text-white font-medium bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition duration-200 hover:scale-[1.02] shadow-lg">
-                {{ __('common.sign_in') }}
+                {{ __('common_sign_in') }}
             </a>
 
             <div class="mt-6 text-sm text-gray-600">
-                <p class="mb-2">{{ __('messages.verification_sent') }}</p>
+                <p class="mb-2">{{ __('messages_verification_sent') }}</p>
                 <button type="button"
                         wire:click="resendVerification"
                         wire:loading.attr="disabled"
                         class="text-blue-600 hover:text-blue-800 font-medium transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
-                    {{ __('messages.verification_sent') }}
+                    {{ __('messages_verification_sent') }}
                 </button>
             </div>
         </div>

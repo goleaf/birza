@@ -39,7 +39,7 @@ class Credit extends Component
     public function submitCredit(): void
     {
         if (! in_array($this->selectedAction, ['add', 'deduct'], true)) {
-            $this->addError('action', __('common.error_occurred'));
+            $this->addError('action', __('common_error_occurred'));
             return;
         }
 
@@ -52,7 +52,7 @@ class Credit extends Component
         $buyer = $this->buyer->refresh();
 
         if ($this->selectedAction === 'deduct' && $validated['amount'] > $buyer->credit_balance) {
-            $this->addError('amount', __('backend.credit_insufficient_funds'));
+            $this->addError('amount', __('backend_credit_insufficient_funds'));
             return;
         }
 
@@ -86,7 +86,7 @@ class Credit extends Component
         $this->buyer->refresh();
         $this->reset(['selectedAction', 'amount', 'note', 'attachment']);
 
-        session()->flash('success', __('backend.common.success_message'));
+        session()->flash('success', __('backend_common_success_message'));
     }
 
     public function render()

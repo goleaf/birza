@@ -30,7 +30,7 @@ class Index extends Component
         $value = $this->attribute->values()->findOrFail($valueId);
         $value->delete();
 
-        $this->notifySuccess(__('backend.common.delete_success'));
+        $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function render()

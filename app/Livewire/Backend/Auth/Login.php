@@ -38,7 +38,7 @@ class Login extends Component
         $this->reset('password');
 
         throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
+            'email' => __('auth_failed'),
         ]);
     }
 

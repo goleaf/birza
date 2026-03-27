@@ -10,13 +10,13 @@
             <div>
                 <!-- start warning title -->
                 <p class="font-semibold text-amber-800 mb-3">
-                    {{ __('seller.no_categories_selected') }}
+                    {{ __('seller_no_categories_selected') }}
                 </p>
                 <!-- end warning title -->
                 
                 <!-- start help text -->
                 <p class="text-amber-700 text-sm leading-relaxed">
-                    {{ __('seller.categories_help_text') }}
+                    {{ __('seller_categories_help_text') }}
                 </p>
                 <!-- end help text -->
             </div>
@@ -27,7 +27,7 @@
                 href="{{ route('seller.profile.edit') }}#categories"
                 class="bg-gradient-to-r from-amber-400 to-amber-500 text-white font-medium py-3 px-6 rounded-xl shadow-sm"
             >
-                {{ __('seller.select_categories') }}
+                {{ __('seller_select_categories') }}
             </a>
             <!-- end select categories link -->
         </div>
@@ -41,7 +41,7 @@
         <div class="flex justify-between items-center mb-6">
             <!-- start title -->
             <h3 class="text-2xl font-bold text-gray-800">
-                {{ __('seller.your_categories') }}
+                {{ __('seller_your_categories') }}
             </h3>
             <!-- end title -->
 
@@ -50,7 +50,7 @@
                 href="{{ route('seller.profile.edit') }}#categories"
                 class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm"
             >
-                {{ __('seller.edit_categories') }}
+                {{ __('seller_edit_categories') }}
             </a>
             <!-- end edit link -->
         </div>
@@ -100,7 +100,7 @@
                                             href="{{ route('seller.products.create', ['categoryId' => $category->id]) }}"
                                             class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm"
                                         >
-                                            {{ __('seller.add_product') }}
+                                            {{ __('seller_add_product') }}
                                         </a>
                                         <!-- end add product link -->
                                     </div>

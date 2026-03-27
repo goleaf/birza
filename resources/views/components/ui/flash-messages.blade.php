@@ -23,7 +23,7 @@
 @if ($hasAny)
     <div {{ $attributes->class('space-y-3') }}>
         @if ($hasValidationErrors)
-            <x-alert negative :title="__('common.error_occurred')">
+            <x-alert negative :title="__('common_error_occurred')">
                 <ul class="list-disc list-inside space-y-1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>

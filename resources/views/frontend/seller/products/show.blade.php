@@ -54,14 +54,14 @@
                                 <div>
                                     <!-- start category -->
                                     <p class="text-gray-600">
-                                        <strong>{{ __('product.category') }}:</strong> 
+                                        <strong>{{ __('product_category') }}:</strong> 
                                         {{ $product->category->name }}
                                     </p>
                                     <!-- end category -->
 
                                     <!-- start country -->
                                     <p class="text-gray-600">
-                                        <strong>{{ __('product.country_of_origin') }}:</strong>
+                                        <strong>{{ __('product_country_of_origin') }}:</strong>
                                         {{ $product->country_of_origin }}
                                     </p>
                                     <!-- end country -->
@@ -73,7 +73,7 @@
                                     @if($product->is_organic)
                                         <!-- start organic badge -->
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                            {{ __('product.is_organic') }}
+                                            {{ __('product_is_organic') }}
                                         </span>
                                         <!-- end organic badge -->
                                     @endif
@@ -85,7 +85,7 @@
                             <!-- start description section -->
                             <div class="mt-4">
                                 <h3 class="font-bold mb-2">
-                                    {{ __('product.description') }}
+                                    {{ __('product_description') }}
                                 </h3>
                                 <p class="text-gray-700">
                                     {{ $product->description ?? '-' }}
@@ -96,7 +96,7 @@
                             <!-- start stock section -->
                             <div class="mt-4">
                                 <h3 class="font-bold mb-2">
-                                    {{ __('product.stock') }}
+                                    {{ __('product_stock') }}
                                 </h3>
                                 <p class="text-gray-700">
                                     {{ $product->stock }}

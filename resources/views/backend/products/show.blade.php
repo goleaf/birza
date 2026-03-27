@@ -3,17 +3,17 @@
         <div class="p-6 bg-white border-b border-gray-200">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">
-                    {{ __('common.product_details') }}
+                    {{ __('common_product_details') }}
                 </h2>
 
                 <div class="flex items-center gap-2">
                     <a href="{{ route('backend.products.edit', $product) }}"
                        class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
-                        {{ __('common.edit') }}
+                        {{ __('common_edit') }}
                     </a>
                     <a href="{{ route('backend.products.index') }}"
                        class="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">
-                        {{ __('common.back') }}
+                        {{ __('common_back') }}
                     </a>
                 </div>
             </div>
@@ -21,43 +21,43 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-gray-50 rounded-lg p-4">
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">
-                        {{ __('common.basic_information') }}
+                        {{ __('common_basic_information') }}
                     </h3>
                     <dl class="divide-y divide-gray-200">
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.name') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_name') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->name }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.category') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_category') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">
                                 {{ $product->category?->getTranslation('category_name', app()->getLocale()) ?? '-' }}
                             </dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.seller') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_seller') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">
                                 {{ $product->seller?->company_name ?? $product->seller?->name ?? '-' }}
                             </dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.price') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_price') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->price }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.stock') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_stock') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->stock }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.status') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_status') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">
                                 @if($product->is_active)
                                     <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                        {{ __('common.active') }}
+                                        {{ __('common_active') }}
                                     </span>
                                 @else
                                     <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-                                        {{ __('common.inactive') }}
+                                        {{ __('common_inactive') }}
                                     </span>
                                 @endif
                             </dd>
@@ -67,37 +67,37 @@
 
                 <div class="bg-gray-50 rounded-lg p-4">
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">
-                        {{ __('common.product_details') }}
+                        {{ __('common_product_details') }}
                     </h3>
                     <dl class="divide-y divide-gray-200">
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.pack_type') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_pack_type') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->pack_type ?? '-' }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.unit') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_unit') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->unit ?? '-' }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.organic') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_organic') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">
                                 @if($product->is_organic)
                                     <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                        {{ __('common.yes') }}
+                                        {{ __('common_yes') }}
                                     </span>
                                 @else
                                     <span class="inline-flex items-center rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-                                        {{ __('common.no') }}
+                                        {{ __('common_no') }}
                                     </span>
                                 @endif
                             </dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.min_order_price') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_min_order_price') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->min_order_price ?? '-' }}</dd>
                         </div>
                         <div class="py-2 flex justify-between gap-4">
-                            <dt class="text-sm font-medium text-gray-600">{{ __('common.min_order_count') }}</dt>
+                            <dt class="text-sm font-medium text-gray-600">{{ __('common_min_order_count') }}</dt>
                             <dd class="text-sm text-gray-900 text-right">{{ $product->min_order_count ?? '-' }}</dd>
                         </div>
                     </dl>
@@ -107,7 +107,7 @@
             @if($product->attributeValues->isNotEmpty())
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">
-                        {{ __('common.product_attributes') }}
+                        {{ __('common_product_attributes') }}
                     </h3>
 
                     <div class="overflow-x-auto bg-white border border-gray-200 rounded-lg">
@@ -115,10 +115,10 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('common.attribute') }}
+                                        {{ __('common_attribute') }}
                                     </th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('common.value') }}
+                                        {{ __('common_value') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -141,7 +141,7 @@
 
             <div class="mt-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-3">
-                    {{ __('common.description') }}
+                    {{ __('common_description') }}
                 </h3>
                 <div class="prose max-w-none bg-gray-50 rounded-lg p-4">
                     {!! $product->getTranslation('description', app()->getLocale()) ?? '-' !!}
@@ -151,7 +151,7 @@
             @if($product->product_image || $product->product_additional_image)
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">
-                        {{ __('common.product_images') }}
+                        {{ __('common_product_images') }}
                     </h3>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

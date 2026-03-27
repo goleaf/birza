@@ -15,19 +15,19 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers.fields.company') }}</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers_fields_company') }}</h3>
                             <p class="mt-1 text-lg font-medium text-gray-900">{{ $buyer->company_name }}</p>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers.fields.company_code') }}</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers_fields_company_code') }}</h3>
                             <p class="mt-1 text-lg font-medium text-gray-900">{{ $buyer->company_code }}</p>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers.fields.vat_code') }}</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers_fields_vat_code') }}</h3>
                             <p class="mt-1 text-lg font-medium text-gray-900">{{ $buyer->vat_code ?: '-' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers.fields.phone') }}</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('buyers_fields_phone') }}</h3>
                             <p class="mt-1 text-lg font-medium text-gray-900">{{ $buyer->phone ?: '-' }}</p>
                         </div>
                     </div>
@@ -36,14 +36,14 @@
                 <!-- Right side with credit balance -->
                 <div class="md:w-80 bg-gradient-to-br from-indigo-50 to-purple-50 p-8 flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-200">
                     <div class="text-center">
-                        <h2 class="text-sm font-medium text-indigo-600 uppercase tracking-wide">{{ __('buyers.credit.current_balance') }}</h2>
+                        <h2 class="text-sm font-medium text-indigo-600 uppercase tracking-wide">{{ __('buyers_credit_current_balance') }}</h2>
                         <div class="mt-2 flex items-baseline justify-center">
                             <span class="text-4xl font-extrabold text-indigo-600">€{{ number_format($buyer->credit_balance, 2) }}</span>
                         </div>
                         <div class="mt-4">
                             <div class="inline-flex rounded-md shadow">
                                 <a href="{{ route('backend.buyers.credit_history', $buyer) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{ __('buyers.credit.view_history') }}
+                                    {{ __('buyers_credit_view_history') }}
                                     <svg class="ml-2 -mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
@@ -61,8 +61,8 @@
         <div class="lg:col-span-1">
             <div class="bg-white rounded-xl shadow-sm">
                 <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-lg font-medium text-gray-900">{{ __('buyers.credit.manage_credit') }}</h2>
-                    <p class="mt-1 text-sm text-gray-500">{{ __('buyers.credit.manage_description') }}</p>
+                    <h2 class="text-lg font-medium text-gray-900">{{ __('buyers_credit_manage_credit') }}</h2>
+                    <p class="mt-1 text-sm text-gray-500">{{ __('buyers_credit_manage_description') }}</p>
                 </div>
 
                 <div class="p-6 space-y-6">
@@ -76,7 +76,7 @@
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                 </svg>
-                                {{ __('buyers.credit_history.credit') }}
+                                {{ __('buyers_credit_history_credit') }}
                             </span>
                         </button>
 
@@ -88,7 +88,7 @@
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                                 </svg>
-                                {{ __('buyers.credit_history.debit') }}
+                                {{ __('buyers_credit_history_debit') }}
                             </span>
                         </button>
                     </div>
@@ -102,7 +102,7 @@
                         <!-- Amount Input -->
                         <div class="space-y-2">
                             <label for="amount" class="block text-sm font-medium text-gray-700">
-                                {{ __('buyers.credit_history.amount') }}
+                                {{ __('buyers_credit_history_amount') }}
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" 
@@ -122,7 +122,7 @@
                         <!-- Note Input -->
                         <div class="space-y-2">
                             <label for="note" class="block text-sm font-medium text-gray-700">
-                                {{ __('buyers.credit_history.note') }}
+                                {{ __('buyers_credit_history_note') }}
                             </label>
                             <textarea
                                 id="note" 
@@ -138,10 +138,10 @@
                         <!-- Attachment Input -->
                         <div class="mt-4">
                             <label class="block text-sm font-medium text-gray-700 mb-1">
-                                {{ __('common.attachment') }}
+                                {{ __('common_attachment') }}
                             </label>
                             <input type="file" wire:model="attachment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                            <p class="mt-2 text-sm text-gray-500">{{ __('common.optional_upload_supporting_document') }}</p>
+                            <p class="mt-2 text-sm text-gray-500">{{ __('common_optional_upload_supporting_document') }}</p>
                             @error('attachment')
                                 <p class="text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -152,7 +152,7 @@
                                 id="submitButton"
                                 wire:loading.attr="disabled"
                                 class="w-full flex items-center justify-center px-4 py-3 text-white disabled:opacity-60 disabled:cursor-not-allowed {{ $selectedAction === 'add' ? 'bg-green-600' : 'bg-red-600' }}">
-                            {{ __('buyers.credit_history.apply') }}
+                            {{ __('buyers_credit_history_apply') }}
                         </button>
                     </form>
                 </div>
@@ -162,7 +162,7 @@
         <div class="lg:col-span-2">
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-lg font-medium text-gray-900">{{ __('buyers.credit.view_history') }}</h2>
+                    <h2 class="text-lg font-medium text-gray-900">{{ __('buyers_credit_view_history') }}</h2>
                 </div>
                 
                 <div class="overflow-x-auto">
@@ -170,22 +170,22 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.date') }}
+                                    {{ __('buyers_credit_history_date') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.type') }}
+                                    {{ __('buyers_credit_history_type') }}
                                 </th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.amount') }}
+                                    {{ __('buyers_credit_history_amount') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.note') }}
+                                    {{ __('buyers_credit_history_note') }}
                                 </th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.balance_after') }}
+                                    {{ __('buyers_credit_history_balance_after') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('buyers.credit_history.admin') }}
+                                    {{ __('buyers_credit_history_admin') }}
                                 </th>
                             </tr>
                         </thead>
@@ -198,11 +198,11 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($history->type === 'add')
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            {{ __('buyers.credit_history.credit') }}
+                                            {{ __('buyers_credit_history_credit') }}
                                         </span>
                                     @else
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            {{ __('buyers.credit_history.debit') }}
+                                            {{ __('buyers_credit_history_debit') }}
                                         </span>
                                     @endif
                                 </td>

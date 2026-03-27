@@ -6,11 +6,11 @@
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900">{{ $buyer->company_name }}</h2>
-                        <p class="mt-1 text-sm text-gray-500">{{ __('backend.buyers.orders.title') }}</p>
+                        <p class="mt-1 text-sm text-gray-500">{{ __('backend_buyers_orders_title') }}</p>
                     </div>
                     <a href="{{ route('backend.buyers.index') }}" 
                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                        {{ __('backend.common.back') }}
+                        {{ __('backend_common_back') }}
                     </a>
                 </div>
 
@@ -20,19 +20,19 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('backend.orders.order_number') }}
+                                        {{ __('backend_orders_order_number') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('backend.orders.date') }}
+                                        {{ __('backend_orders_date') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('backend.orders.total') }}
+                                        {{ __('backend_orders_total') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('backend.orders.status') }}
+                                        {{ __('backend_orders_status') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('backend.common.actions') }}
+                                        {{ __('backend_common_actions') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -54,13 +54,13 @@
                                                 @elseif($order->payment_status === 'pending') bg-yellow-100 text-yellow-800
                                                 @else bg-red-100 text-red-800
                                                 @endif">
-                                                {{ __('backend.orders.status_' . $order->payment_status) }}
+                                                {{ __('backend_orders_status_2_' . $order->payment_status) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('backend.orders.show', $order) }}" 
                                                class="text-indigo-600 hover:text-indigo-900">
-                                                {{ __('backend.common.view') }}
+                                                {{ __('backend_common_view') }}
                                             </a>
                                         </td>
                                     </tr>
@@ -77,7 +77,7 @@
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('backend.orders.no_orders') }}</h3>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('backend_orders_no_orders') }}</h3>
                     </div>
                 @endif
             </div>

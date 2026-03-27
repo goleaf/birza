@@ -54,12 +54,12 @@ class Register extends Component
             session()->regenerate();
 
             if (empty($buyer->company_name) || empty($buyer->company_code) || empty($buyer->address) || empty($buyer->phone)) {
-                session()->flash('warning', __('profile.complete_profile'));
+                session()->flash('warning', __('profile_complete_profile'));
                 $this->redirectRoute('buyer.profile.edit');
                 return;
             }
 
-            session()->flash('success', __('messages.registration_success'));
+            session()->flash('success', __('messages_registration_success'));
             $this->redirectRoute('buyer.dashboard');
             return;
         }
@@ -79,10 +79,10 @@ class Register extends Component
         ]);
 
         $verificationUrl = route('seller.verification.verify', ['hash' => $verificationToken]);
-        $verificationMessage = __('emails.verify_email_body')."\n\n".$verificationUrl;
+        $verificationMessage = __('emails_verify_email_body')."\n\n".$verificationUrl;
 
         Mail::raw($verificationMessage, function ($mail) use ($seller) {
-            $mail->to($seller->email)->subject(__('emails.verify_email_subject'));
+            $mail->to($seller->email)->subject(__('emails_verify_email_subject'));
         });
 
         session()->flash('registration_success', true);

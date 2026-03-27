@@ -26,7 +26,7 @@ class Home extends Component
             Auth::guard($guard)->logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
-            session()->flash('error', __('messages.account_deactivated'));
+            session()->flash('error', __('messages_account_deactivated'));
             $this->redirectRoute('home', navigate: true);
             return;
         }

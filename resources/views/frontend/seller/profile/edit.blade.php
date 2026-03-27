@@ -16,7 +16,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        {{ __('profile.edit_profile') }}
+                        {{ __('profile_edit_profile') }}
                     </span>
                 </button>
                 <!-- end profile tab button -->
@@ -31,7 +31,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M10 20h.01M10 16.01V16a4 4 0 014-4h3.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        {{ __('profile.product_categories') }}
+                        {{ __('profile_product_categories') }}
                     </span>
                 </button>
                 <!-- end categories tab button -->
@@ -47,7 +47,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 8z" />
                             </svg>
-                            {{ __('profile.update_password') }}
+                            {{ __('profile_update_password') }}
                         </span>
                     </button>
                     <!-- end password tab button -->
@@ -65,7 +65,7 @@
                             <!-- Update input fields with consistent styling -->
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth.name') }}
+                                    {{ __('auth_name') }}
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <input
@@ -81,9 +81,9 @@
                                 <label
                                        for="email"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.email') }}
+                                    {{ __('auth_email') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -103,9 +103,9 @@
                                 <label
                                        for="company_name"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.company_name') }}
+                                    {{ __('auth_company_name') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -125,9 +125,9 @@
                                 <label
                                        for="company_code"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.company_code') }}
+                                    {{ __('auth_company_code') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -147,7 +147,7 @@
                                 <label
                                        for="vat_code"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.vat_code') }}
+                                    {{ __('auth_vat_code') }}
                                 </label>
                                 <input
                                        type="text"
@@ -160,9 +160,9 @@
                                 <label
                                        for="address"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.address') }}
+                                    {{ __('auth_address') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -182,9 +182,9 @@
                                 <label
                                        for="phone"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.phone') }}
+                                    {{ __('auth_phone') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -206,9 +206,9 @@
                                 <label
                                        for="bank_account"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('auth.bank_account') }}
+                                    {{ __('auth_bank_account') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -228,9 +228,9 @@
                                 <label
                                        for="veterinary_certificate_number"
                                        class="block text-gray-700 text-sm font-bold mb-2">
-                                    {{ __('seller.veterinary_certificate_number') }}
+                                    {{ __('seller_veterinary_certificate_number') }}
                                     <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common.required') }}
+                                        {{ __('common_required') }}
                                     </span>
                                 </label>
                                 <input
@@ -253,7 +253,7 @@
                                     type="submit"
                                     wire:loading.attr="disabled"
                                     class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed">
-                                {{ __('profile.update_profile') }}
+                                {{ __('profile_update_profile') }}
                             </button>
                         </div>
                     </form>
@@ -325,7 +325,7 @@
                                             type="submit"
                                             wire:loading.attr="disabled"
                                             class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
-                                        {{ __('profile.update_categories') }}
+                                        {{ __('profile_update_categories') }}
                                     </button>
                                 </div>
                                 <!-- end update button -->
@@ -380,10 +380,10 @@
                                             <label
                                                    for="current_password"
                                                    class="block text-gray-700 text-sm font-bold mb-2">
-                                                {{ __('auth.current_password') }}
+                                                {{ __('auth_current_password') }}
                                                 <span
                                                       class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                                    {{ __('common.required') }}
+                                                    {{ __('common_required') }}
                                                 </span>
                                             </label>
                                             <input
@@ -404,10 +404,10 @@
                                             <label
                                                    for="password"
                                                    class="block text-gray-700 text-sm font-bold mb-2">
-                                                {{ __('auth.new_password') }}
+                                                {{ __('auth_new_password') }}
                                                 <span
                                                       class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                                    {{ __('common.required') }}
+                                                    {{ __('common_required') }}
                                                 </span>
                                             </label>
                                             <input
@@ -428,10 +428,10 @@
                                             <label
                                                    for="password_confirmation"
                                                    class="block text-gray-700 text-sm font-bold mb-2">
-                                                {{ __('auth.confirm_password') }}
+                                                {{ __('auth_confirm_password') }}
                                                 <span
                                                       class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                                    {{ __('common.required') }}
+                                                    {{ __('common_required') }}
                                                 </span>
                                             </label>
                                             <input
@@ -447,7 +447,7 @@
                                                 type="submit"
                                                 wire:loading.attr="disabled"
                                                 class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
-                                            {{ __('profile.update_password') }}
+                                            {{ __('profile_update_password') }}
                                         </button>
                                         <!-- end update button -->
                                     </div>

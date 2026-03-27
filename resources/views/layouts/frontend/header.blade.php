@@ -68,7 +68,7 @@
                                     href="{{ route('buyer.cart.index') }}"
                                     class="transition-colors {{ LaraCart::count() > 0 ? 'bg-blue-500 text-white px-3 py-1 rounded-full' : 'text-gray-700 hover:text-blue-500' }}"
                                 >
-                                    {{ __('common.cart') }} ({{ LaraCart::count() }})
+                                    {{ __('common_cart') }} ({{ LaraCart::count() }})
                                 </a>
                                 <!-- end cart link -->
                             @endif
@@ -78,7 +78,7 @@
                                 href="{{ route($guard . '.dashboard') }}"
                                 class="text-gray-700 hover:text-blue-500 transition-colors"
                             >
-                                {{ __('dashboard.title') }}
+                                {{ __('dashboard_title') }}
                             </a>
                             <!-- end dashboard link -->
 
@@ -87,7 +87,7 @@
                                 href="{{ route($guard . '.profile.edit') }}"
                                 class="text-gray-700 hover:text-blue-500 transition-colors"
                             >
-                                {{ __('profile.edit_profile') }}
+                                {{ __('profile_edit_profile') }}
                             </a>
                             <!-- end profile link -->
 
@@ -102,7 +102,7 @@
                                     type="submit" 
                                     class="text-gray-700 hover:text-red-500 transition-colors"
                                 >
-                                    {{ __('auth.logout') }}
+                                    {{ __('auth_logout') }}
                                 </button>
                             </form>
                             <!-- end logout form -->

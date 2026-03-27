@@ -1,4 +1,4 @@
-<x-ui.auth-card :title="__('common.reset_password')">
+<x-ui.auth-card :title="__('common_reset_password')">
     @if (session('error'))
         <x-alert negative :title="session('error')" class="mb-4" />
     @endif
@@ -11,7 +11,7 @@
             id="email_display"
             name="email_display"
             type="email"
-            :label="__('common.email')"
+            :label="__('common_email')"
             :value="$email"
             disabled
         />
@@ -20,7 +20,7 @@
             id="password"
             name="password"
             autocomplete="new-password"
-            :label="__('common.password')"
+            :label="__('common_password')"
             wire:model.defer="password"
         />
 
@@ -28,7 +28,7 @@
             id="password_confirmation"
             name="password_confirmation"
             autocomplete="new-password"
-            :label="__('common.confirm_password')"
+            :label="__('common_confirm_password')"
             wire:model.defer="password_confirmation"
         />
 
@@ -36,7 +36,7 @@
             type="submit"
             primary
             class="w-full"
-            :label="__('common.reset_password')"
+            :label="__('common_reset_password')"
             spinner="resetPassword"
         />
     </form>

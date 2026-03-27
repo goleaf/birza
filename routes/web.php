@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Frontend\Home as FrontendHome;
 
-Route::get('/', FrontendHome::class)->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 
 

@@ -45,7 +45,7 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/')->with('success', __('messages.logout_success'));
+            return redirect('/')->with('success', __('messages_logout_success'));
         })->name('logout');
 
         // Seller specific routes

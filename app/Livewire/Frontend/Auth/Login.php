@@ -46,7 +46,7 @@ class Login extends Component
 
         if (Auth::guard($otherGuard)->check()) {
             throw ValidationException::withMessages([
-                'login' => __('messages.messages_invalid_credentials'),
+                'login' => __('messages_messages_invalid_credentials'),
             ]);
         }
 
@@ -56,7 +56,7 @@ class Login extends Component
             $seconds = RateLimiter::availableIn($throttleKey);
 
             throw ValidationException::withMessages([
-                'email' => __('messages.too_many_login_attempts', ['seconds' => $seconds]),
+                'email' => __('messages_too_many_login_attempts', ['seconds' => $seconds]),
             ]);
         }
 
@@ -70,20 +70,20 @@ class Login extends Component
                 if (! $user?->is_verified) {
                     Auth::guard('seller')->logout();
                     throw ValidationException::withMessages([
-                        'email' => __('auth.verification_required'),
+                        'email' => __('auth_verification_required'),
                     ]);
                 }
 
                 if (! $user?->is_active) {
                     Auth::guard('seller')->logout();
                     throw ValidationException::withMessages([
-                        'email' => __('messages.account_inactive'),
+                        'email' => __('messages_account_inactive'),
                     ]);
                 }
             }
 
             if ($user && (empty($user->company_name) || empty($user->company_code) || empty($user->address) || empty($user->phone))) {
-                session()->flash('warning', __('profile.complete_profile'));
+                session()->flash('warning', __('profile_complete_profile'));
                 $this->redirectRoute("{$this->userType}.profile.edit");
                 return;
             }
@@ -97,7 +97,7 @@ class Login extends Component
         $this->reset('password');
 
         throw ValidationException::withMessages([
-            'email' => __('messages.messages_invalid_credentials'),
+            'email' => __('messages_messages_invalid_credentials'),
         ]);
     }
 
