@@ -41,7 +41,6 @@
                     </div>
                 </form>
             </div>
-        </div>
 
         <!-- Update Password -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -50,8 +49,6 @@
                     <h2 class="text-lg font-medium text-gray-900">{{ __('auth_update_password') }}</h2>
                     <p class="mt-1 text-sm text-gray-600">{{ __('auth_ensure_long_password') }}</p>
                 </div>
-                
-                <form wire:submit.prevent="savePassword" class="space-y-6">
 
                     <!-- Current Password -->
                     <div>
@@ -91,7 +88,44 @@
                     </div>
                 </form>
             </div>
-        </div>
+
+            <form wire:submit.prevent="savePassword" class="space-y-4">
+                <div class="form-control">
+                    <label for="current_password" class="label">
+                        <span class="label-text">{{ __('auth.current_password') }}</span>
+                    </label>
+                    <input type="password" id="current_password" wire:model.defer="current_password"
+                        class="input input-bordered w-full @error('current_password') input-error @enderror" required>
+                    @error('current_password')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="password" class="label">
+                        <span class="label-text">{{ __('auth.new_password') }}</span>
+                    </label>
+                    <input type="password" id="password" wire:model.defer="password"
+                        class="input input-bordered w-full @error('password') input-error @enderror" required>
+                    @error('password')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="password_confirmation" class="label">
+                        <span class="label-text">{{ __('auth.confirm_password') }}</span>
+                    </label>
+                    <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
+                        class="input input-bordered w-full" required>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" wire:loading.attr="disabled" class="btn btn-primary">
+                        {{ __('auth.update_password') }}
+                    </button>
+                </div>
+            </form>
+        </x-ui.card>
     </div>
-</div>
-</div>
+</x-backend.page>

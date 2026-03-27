@@ -62,6 +62,30 @@
                 </div>
             </div>
         </div>
+
+        <x-ui.card>
+            <h3 class="text-xl font-semibold">{{ __('backend.dashboard.recent_activity.title') }}</h3>
+            <ul class="divide-y divide-base-200">
+                @foreach ($recentActivities as $activity)
+                    <li class="py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="avatar placeholder">
+                                <div class="bg-primary/10 text-primary rounded-full w-9">
+                                    <span class="text-sm font-semibold">
+                                        {{ substr($activity->type ?? 'A', 0, 1) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium">{{ $activity->description }}</p>
+                                <p class="text-sm text-base-content/60">
+                                    {{ $activity->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </x-ui.card>
     </div>
-</div>
-</div>
+</x-backend.page>

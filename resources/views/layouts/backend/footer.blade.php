@@ -4,8 +4,8 @@
             <div class="text-gray-400 text-sm">
                 &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('common_all_rights_reserved') }}
             </div>
-            <div class="text-gray-400 text-sm">
-                Version 1.0
+            <div>
+                {{ __('backend.footer.version', ['version' => '1.0']) }}
             </div>
         </div>
     </div>

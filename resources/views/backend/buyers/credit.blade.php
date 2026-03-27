@@ -1,19 +1,9 @@
-<div>
-<div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Buyer Information Card -->
-    <div class="mb-8">
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div class="md:flex">
-                <!-- Left side with basic info -->
-                <div class="p-8 flex-1">
-                    <div class="flex items-center mb-6">
-                        <div class="ml-6">
-                            <h1 class="text-2xl font-bold text-gray-900">{{ $buyer->name }}</h1>
-                            <p class="text-gray-500">{{ $buyer->email }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<x-backend.page :title="$buyer->name" :description="$buyer->email">
+    <div class="space-y-6">
+        <x-ui.card>
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-center">
+                <div class="flex-1">
+                    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                             <h3 class="text-sm font-medium text-gray-500">{{ __('buyers_fields_company') }}</h3>
                             <p class="mt-1 text-lg font-medium text-gray-900">{{ $buyer->company_name }}</p>
@@ -53,8 +43,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </x-ui.card>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Credit Management Form -->
@@ -93,8 +82,7 @@
                         </button>
                     </div>
 
-                    <!-- Credit Form -->
-                    <form wire:submit.prevent="submitCredit" class="space-y-6 {{ $selectedAction ? '' : 'hidden' }}" enctype="multipart/form-data">
+                    <form wire:submit.prevent="submitCredit" class="space-y-4 {{ $selectedAction ? '' : 'hidden' }}" enctype="multipart/form-data">
                         @error('action')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -115,7 +103,7 @@
                                        placeholder="0.00">
                             </div>
                             @error('amount')
-                                <p class="text-sm text-red-600">{{ $message }}</p>
+                                <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -125,13 +113,13 @@
                                 {{ __('buyers_credit_history_note') }}
                             </label>
                             <textarea
-                                id="note" 
+                                id="note"
                                 wire:model.defer="note"
                                 rows="3"
-                                class="block w-full border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" 
-                                placeholder=""></textarea>
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('note') border-red-500 @enderror"
+                            ></textarea>
                             @error('note')
-                                <p class="text-sm text-red-600">{{ $message }}</p>
+                                <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -143,7 +131,7 @@
                             <input type="file" wire:model="attachment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                             <p class="mt-2 text-sm text-gray-500">{{ __('common_optional_upload_supporting_document') }}</p>
                             @error('attachment')
-                                <p class="text-sm text-red-600">{{ $message }}</p>
+                                <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -223,9 +211,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </x-ui.card>
         </div>
     </div>
-</div>
-
-</div>
+</x-backend.page>

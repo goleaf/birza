@@ -25,14 +25,31 @@
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
                             required
                         >
-                        @error('name.' . $locale)
-                            <p class="mt-1 text-sm text-red-600">
-                                {{ $message }}
-                            </p>
-                        @enderror
+                            {{ strtoupper($locale) }}
+                        </button>
+                    @endforeach
+                </div>
+
+                @foreach ($locales as $locale)
+                    <div x-show="locale === '{{ $locale }}'" x-cloak>
+                        <div class="form-control">
+                            <label for="name_{{ $locale }}" class="label">
+                                <span class="label-text">{{ strtoupper($locale) }} {{ __('backend.attributes.fields.name') }}</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="name_{{ $locale }}"
+                                wire:model.defer="name.{{ $locale }}"
+                                class="input input-bordered w-full @error('name.' . $locale) input-error @enderror"
+                                required
+                            >
+                            @error('name.' . $locale)
+                                <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                 @endforeach
-                <!-- end translatable fields -->
+            </div>
 
                 <!-- start type field -->
                 <div class="mb-4">

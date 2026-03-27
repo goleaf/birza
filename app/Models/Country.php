@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Concerns\HasJsonTranslations;
+use Illuminate\Support\Str;
 
 class Country extends Model
 {
     use HasJsonTranslations, HasFactory;
+
+    public const REGIONS = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania'];
 
     protected $table = 'countries';
 
@@ -41,7 +44,25 @@ class Country extends Model
 
     public static function getRegionOptions(): array
     {
-        return ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania'];
+        return collect(self::REGIONS)
+            ->map(fn (string $region) => [
+                'label' => __('backend.countries.regions.' . Str::lower($region)),
+                'value' => $region,
+            ])
+            ->all();
+    }
+
+    public static function getRegionValues(): array
+    {
+        return self::REGIONS;
+    }
+
+    public function getRegionLabel(): string
+    {
+        $key = 'backend.countries.regions.' . Str::lower($this->region);
+        $label = __($key);
+
+        return $label === $key ? $this->region : $label;
     }
 
     public function getFallbackLocale(): string

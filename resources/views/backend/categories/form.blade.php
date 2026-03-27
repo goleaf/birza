@@ -4,7 +4,33 @@
             <div class="p-6 bg-white border-b border-gray-200">
                 <h2 class="text-2xl font-bold mb-4">{{ isset($category) ? __('backend_categories_edit_title') : __('backend_categories_create_title') }}</h2>
 
-                <form wire:submit.prevent="save">
+<x-backend.page :title="isset($category) ? __('backend.categories.edit.title') : __('backend.categories.create.title')">
+    <x-ui.card>
+        <form wire:submit.prevent="save" class="space-y-8">
+            <div class="grid gap-6 lg:grid-cols-3">
+                <div class="space-y-6 lg:col-span-2">
+                    <x-backend.section :title="__('common.basic_information')">
+                        <div class="space-y-6">
+                            <div class="form-control">
+                                <label for="parent_category_id" class="label">
+                                    <span class="label-text">{{ __('backend.categories.fields.parent_category') }}</span>
+                                </label>
+                                <select
+                                    id="parent_category_id"
+                                    wire:model.defer="parent_category_id"
+                                    class="select select-bordered w-full @error('parent_category_id') select-error @enderror"
+                                >
+                                    <option value="">{{ __('backend.categories.select_parent') }}</option>
+                                    @foreach ($parentCategories as $cat)
+                                        <option value="{{ $cat->id }}">
+                                            {{ $cat->getTranslation('category_name', app()->getLocale()) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('parent_category_id')
+                                    <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                                @enderror
+                            </div>
 
                     <div class="mb-4">
                         <label for="parent_category_id" class="block font-medium text-gray-700 mb-1">{{ __('backend_categories_fields_parent_category') }}</label>
@@ -34,7 +60,8 @@
                                 <p class="mt-1 text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                    @endforeach
+                    </x-backend.section>
+                </div>
 
                     {{-- Attributes --}}
                     <div class="mb-4">
@@ -47,12 +74,16 @@
                             </div>
                         @endif
 
-                        <div class="grid grid-cols-2 gap-4">
-                            @foreach ($attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" value="{{ $attribute->id }}" wire:model.defer="selectedAttributes"
-                                           class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <span class="ml-2 text-gray-600">
+                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                            @foreach ($attributes->sortBy(function ($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
+                                <label class="flex items-start gap-3">
+                                    <input
+                                        type="checkbox"
+                                        value="{{ $attribute->id }}"
+                                        wire:model.defer="selectedAttributes"
+                                        class="checkbox checkbox-primary mt-1"
+                                    >
+                                    <span class="text-sm">
                                         {{ $attribute->getTranslation('name', app()->getLocale()) }}
                                         @if (!$attribute->is_active)
                                             <span class="inline-block bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">{{ __('backend_common_disabled') }}</span>
@@ -65,7 +96,7 @@
                             @endforeach
                         </div>
                         @error('attributes')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <span class="mt-1 text-sm text-error">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -80,6 +111,12 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-</div>
+
+            <x-ui.form-actions
+                :submit-label="isset($category) ? __('backend.categories.actions.update') : __('backend.categories.actions.create')"
+                :cancel-href="route('backend.categories.index')"
+                submit-target="save"
+            />
+        </form>
+    </x-ui.card>
+</x-backend.page>

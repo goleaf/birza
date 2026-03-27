@@ -12,8 +12,25 @@
             </h2>
             <!-- end title -->
 
-            <!-- start form -->
-            <form wire:submit.prevent="save">
+<x-backend.page
+    :title="(isset($attributeValue) ? __('backend.attribute_values.edit.title') : __('backend.attribute_values.create.title')) . ': ' . $attribute->getTranslation('name', app()->getLocale())"
+>
+    <x-ui.card>
+        <form wire:submit.prevent="save" class="space-y-6">
+            <div class="space-y-4" x-data="{ locale: '{{ $activeLocale }}' }">
+                <div role="tablist" class="tabs tabs-boxed">
+                    @foreach ($locales as $locale)
+                        <button
+                            type="button"
+                            role="tab"
+                            class="tab"
+                            :class="locale === '{{ $locale }}' ? 'tab-active' : ''"
+                            @click="locale = '{{ $locale }}'"
+                        >
+                            {{ strtoupper($locale) }}
+                        </button>
+                    @endforeach
+                </div>
 
                 <!-- start translatable fields -->
                 @foreach(config('app.locales') as $locale)
@@ -27,7 +44,7 @@
                         @enderror
                     </div>
                 @endforeach
-                <!-- end translatable fields -->
+            </div>
 
                 <!-- start is active checkbox -->
                 <div class="mb-4">

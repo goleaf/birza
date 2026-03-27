@@ -33,8 +33,7 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
+        </x-ui.card>
 
     <div class="bg-white shadow-sm sm:rounded-lg">
         <div class="bg-white border-b border-gray-200">
@@ -68,13 +67,39 @@
                                 <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="text-blue-600 hover:text-blue-900 ml-3">{{ __('sellers_orders_list') }}</a>
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($sellers as $seller)
+                            <tr>
+                                <td>{{ $seller->name }}</td>
+                                <td>{{ $seller->email }}</td>
+                                <td>{{ $seller->company_name }}</td>
+                                <td>{{ $seller->stock }}</td>
+                                <td>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <a href="{{ route('backend.sellers.show', $seller) }}" class="btn btn-ghost btn-xs">
+                                            {{ __('common.view') }}
+                                        </a>
+                                        <a href="{{ route('backend.sellers.edit', $seller) }}" class="btn btn-ghost btn-xs">
+                                            {{ __('common.edit') }}
+                                        </a>
+                                        <button type="button" wire:click="confirmDeleteSeller({{ $seller->id }})" class="btn btn-ghost btn-xs text-error">
+                                            {{ __('common.delete') }}
+                                        </button>
+                                        <a href="{{ route('backend.sellers.orders', $seller->id) }}" class="btn btn-ghost btn-xs">
+                                            {{ __('sellers.orders_list') }}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </x-ui.card>
+
+        <div>
+            {{ $sellers->links() }}
         </div>
     </div>
-
-    <div class="mt-4">
-        {{ $sellers->links() }}
-    </div>
-</div>
+</x-backend.page>

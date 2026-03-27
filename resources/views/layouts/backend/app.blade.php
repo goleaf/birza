@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no" data-theme="corporate">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,16 +11,16 @@
     @wireUiScripts
     @stack('head-scripts')
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 flex flex-col">
+<body class="min-h-screen bg-base-200 text-base-content">
+    <div class="flex min-h-screen flex-col">
         <header>
             @include('layouts.backend.navigation')
         </header>
 
         <!-- Page Content -->
-        <main class="flex-grow py-12">
-            <div class="w-full px-4">
-                <x-ui.flash-messages class="max-w-7xl mx-auto mt-4" />
+        <main class="flex-grow">
+            <div class="w-full px-4 pb-10 pt-6">
+                <x-ui.flash-messages class="mb-4" />
 
                 {{ $slot ?? '' }}
                 @yield('content')

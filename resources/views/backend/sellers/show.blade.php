@@ -13,7 +13,9 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-6">
+        <x-ui.card>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                     <h3 class="text-sm font-medium text-gray-500">{{ __('sellers_contact_person') }}</h3>
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->name }}</p>
@@ -35,8 +37,7 @@
                     <p class="mt-1 text-lg font-medium text-gray-900">{{ $seller->address ?: '-' }}</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </x-ui.card>
 
     <!-- Products -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
@@ -64,16 +65,21 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($products as $product)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" 
-                                             alt="{{ $product->name }}"
-                                             class="h-10 w-10 rounded-full object-cover">
-                                    @endif
-                                    <div class="ml-4">
-                                        <a href="{{ route('backend.products.show', $product) }}"
-                                           class="text-indigo-600 hover:text-indigo-900 font-medium">
+                            <th>{{ __('products.name') }}</th>
+                            <th class="text-right">{{ __('products.price') }}</th>
+                            <th class="text-right">{{ __('products.times_ordered') }}</th>
+                            <th class="text-center">{{ __('products.status') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($products as $product)
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="h-10 w-10 rounded-full object-cover">
+                                        @endif
+                                        <a href="{{ route('backend.products.show', $product) }}" class="link link-primary font-medium">
                                             {{ $product->name }}
                                         </a>
                                     </div>
@@ -153,19 +159,20 @@
                             <td class="px-6 py-4">
                                 <div class="font-medium text-gray-900">
                                     @if($order->buyer)
-                                        {{ $order->buyer->company_name }}
+                                        <div class="font-medium">{{ $order->buyer->company_name }}</div>
                                     @else
                                         <span class="text-gray-500 italic">{{ __('orders_buyer_not_found') }}</span>
                                     @endif
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="space-y-2">
-                                    @foreach($order->orderItems as $item)
-                                        <div class="flex justify-between text-sm">
-                                            <div class="font-medium text-gray-900">
-                                                {{ $item->product->name }}
-                                                <span class="text-gray-500 ml-1">×{{ $item->quantity }}</span>
+                                </td>
+                                <td>
+                                    <div class="space-y-2 text-sm">
+                                        @foreach($order->orderItems as $item)
+                                            <div class="flex justify-between">
+                                                <div class="font-medium">
+                                                    {{ $item->product->name }}
+                                                    <span class="text-base-content/60 ml-1">×{{ $item->quantity }}</span>
+                                                </div>
+                                                <div>€{{ number_format($item->total_price, 2) }}</div>
                                             </div>
                                             <div class="text-gray-900">
                                                 €{{ number_format($item->total_price, 2) }}
@@ -211,5 +218,4 @@
         </div>
 
     </div>
-</div>
-</div>
+</x-backend.page>

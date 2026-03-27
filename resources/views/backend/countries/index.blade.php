@@ -7,10 +7,10 @@
         />
     </x-slot:actions>
 
-    <x-card>
+    <x-ui.card>
         <div class="overflow-x-auto">
-            <table class="w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             {{ __('backend_countries_fields_code') }}
@@ -26,13 +26,13 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @foreach ($countries as $country)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $country->alpha2 }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $country->region }}</td>
+                            <td>{{ $country->alpha2 }}</td>
+                            <td>{{ $country->getRegionLabel() }}</td>
                             @foreach (config('app.locales') as $locale)
-                                <td class="px-6 py-4 whitespace-nowrap language-column" data-locale="{{ $locale }}" style="{{ $locale === config('app.locales')[0] ? '' : 'display: none' }}">
+                                <td class="language-column" data-locale="{{ $locale }}" style="{{ $locale === config('app.locales')[0] ? '' : 'display: none' }}">
                                     {{ $country->getTranslation('country_name', $locale) }}
                                 </td>
                             @endforeach
@@ -60,8 +60,8 @@
             </table>
         </div>
 
-        <div class="mt-4">
+        <div class="px-6 py-4">
             {{ $countries->links() }}
         </div>
-    </x-card>
-</x-ui.page>
+    </x-ui.card>
+</x-backend.page>

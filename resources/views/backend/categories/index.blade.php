@@ -8,12 +8,12 @@
             :href="route('backend.categories.create')"
             :label="__('backend_categories_actions_create')"
         />
-    </div>
+    </x-slot:actions>
 
-    <div class="bg-white shadow-sm sm:rounded-lg">
-        <div class="bg-white border-b border-gray-200">
-            <table class="w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+    <x-ui.card>
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             {{ strtoupper(app()->getLocale()) }} {{ __('backend_categories_fields_name') }}
@@ -42,11 +42,11 @@
                                     :label="__('common_delete')"
                                 />
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td>
                                 @if ($category->attributes->count() > 0)
-                                    <div class="space-x-1">
+                                    <div class="flex flex-wrap gap-1">
                                         @foreach($category->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
-                                            <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                            <span class="badge {{ $attribute->is_active ? 'badge-primary' : 'badge-error' }} badge-outline">
                                                 {{ $attribute->getTranslation('name', app()->getLocale()) }}
                                             </span>
                                         @endforeach
@@ -57,10 +57,10 @@
                             </td>
                         </tr>
                         @foreach ($category->subcategories as $subcategory)
-                            <tr class="bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <span class="text-gray-400 mr-2">└─</span>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-base-content/50">└─</span>
                                         {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
                                     </div>
                                 </td>
@@ -76,11 +76,11 @@
                                         :label="__('common_delete')"
                                     />
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td>
                                     @if ($subcategory->attributes->count() > 0)
-                                        <div class="space-x-1">
+                                        <div class="flex flex-wrap gap-1">
                                             @foreach($subcategory->attributes->sortBy(function($attribute) { return $attribute->getTranslation('name', app()->getLocale()); }) as $attribute)
-                                                <span class="inline-block {{ $attribute->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} px-2 py-1 rounded-full text-xs">
+                                                <span class="badge {{ $attribute->is_active ? 'badge-primary' : 'badge-error' }} badge-outline">
                                                     {{ $attribute->getTranslation('name', app()->getLocale()) }}
                                                 </span>
                                             @endforeach
@@ -95,5 +95,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
+    </x-ui.card>
+</x-backend.page>

@@ -9,9 +9,15 @@
         </h2>
     </div>
 
-    <div class="bg-white shadow-sm rounded-lg">
-        <div class="p-6">
-            <form wire:submit.prevent="save">
+                <div class="form-control">
+                    <label for="email" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.email') }}</span>
+                    </label>
+                    <input type="email" id="email" wire:model.defer="email" class="input input-bordered w-full @error('email') input-error @enderror">
+                    @error('email')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <!-- Basic Information -->
                 <div class="space-y-4">
@@ -39,7 +45,7 @@
                         <input type="password" id="password" wire:model.defer="password"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('password')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <span class="mt-1 text-sm text-error">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -48,7 +54,7 @@
                         <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
-                    @endif
+                @endif
 
                     <!-- Company Information -->
                     <div>
@@ -147,7 +153,74 @@
                         {{ isset($seller) ? __('backend_common_update') : __('backend_common_create') }}
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+
+                <div class="form-control">
+                    <label for="vat_code" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.vat_code') }}</span>
+                    </label>
+                    <input type="text" id="vat_code" wire:model.defer="vat_code" class="input input-bordered w-full @error('vat_code') input-error @enderror">
+                    @error('vat_code')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="address" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.address') }}</span>
+                    </label>
+                    <input type="text" id="address" wire:model.defer="address" class="input input-bordered w-full @error('address') input-error @enderror">
+                    @error('address')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="phone" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.phone') }}</span>
+                    </label>
+                    <input type="text" id="phone" wire:model.defer="phone" class="input input-bordered w-full @error('phone') input-error @enderror">
+                    @error('phone')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="bank_account" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.bank_account') }}</span>
+                    </label>
+                    <input type="text" id="bank_account" wire:model.defer="bank_account" class="input input-bordered w-full @error('bank_account') input-error @enderror">
+                    @error('bank_account')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-control">
+                    <label for="veterinary_certificate_number" class="label">
+                        <span class="label-text">{{ __('backend.sellers.fields.veterinary_certificate_number') }}</span>
+                    </label>
+                    <input type="text" id="veterinary_certificate_number" wire:model.defer="veterinary_certificate_number" class="input input-bordered w-full @error('veterinary_certificate_number') input-error @enderror">
+                    @error('veterinary_certificate_number')
+                        <span class="mt-1 text-sm text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-6">
+                <label class="flex items-center gap-3">
+                    <input type="checkbox" id="is_verified" wire:model.defer="is_verified" class="checkbox checkbox-primary">
+                    <span class="label-text">{{ __('backend.sellers.fields.is_verified') }}</span>
+                </label>
+                <label class="flex items-center gap-3">
+                    <input type="checkbox" id="is_active" wire:model.defer="is_active" class="checkbox checkbox-primary">
+                    <span class="label-text">{{ __('backend.sellers.fields.is_active') }}</span>
+                </label>
+            </div>
+
+            <x-ui.form-actions
+                :submit-label="isset($seller) ? __('backend.common.update') : __('backend.common.create')"
+                :cancel-href="route('backend.sellers.index')"
+                submit-target="save"
+            />
+        </form>
+    </x-ui.card>
+</x-backend.page>

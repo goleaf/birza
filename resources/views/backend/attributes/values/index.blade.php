@@ -14,23 +14,17 @@
     </div>
     <!-- end header -->
 
-    <!-- start table container -->
-    <div class="bg-white shadow rounded-lg">
+    <x-ui.card>
         <div class="overflow-x-auto">
-            <!-- start table -->
-            <table class="min-w-full divide-y divide-gray-200">
-                <!-- start thead -->
-                <thead class="bg-gray-50">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ strtoupper(app()->getLocale()) }}</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend_attribute_values_fields_status') }}</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('common_actions') }}</th>
                     </tr>
                 </thead>
-                <!-- end thead -->
-                
-                <!-- start tbody -->
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @foreach ($values as $value)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $value->getTranslation('value', app()->getLocale()) }}</td>
@@ -54,12 +48,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-                <!-- end tbody -->
             </table>
-            <!-- end table -->
         </div>
-    </div>
-    <!-- end table container -->
-</div>
-<!-- end main container -->
-</div>
+    </x-ui.card>
+</x-backend.page>

@@ -48,10 +48,10 @@ class CountryTest extends TestCase
     public function test_country_get_region_options(): void
     {
         $regions = Country::getRegionOptions();
+        $regionValues = array_column($regions, 'value');
 
         $this->assertIsArray($regions);
-        $this->assertContains('Europe', $regions);
-        $this->assertContains('Asia', $regions);
+        $this->assertContains('Europe', $regionValues);
+        $this->assertContains('Asia', $regionValues);
     }
 }
-

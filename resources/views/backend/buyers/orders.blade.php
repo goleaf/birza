@@ -81,7 +81,14 @@
                     </div>
                 @endif
             </div>
-        </div>
-    </div>
-</div>
-</div>
+
+            <div class="pt-4">
+                {{ $orders->links() }}
+            </div>
+        @else
+            <div class="py-12 text-center">
+                <div class="text-sm text-gray-500">{{ __('backend.orders.no_orders') }}</div>
+            </div>
+        @endif
+    </x-ui.card>
+</x-backend.page>

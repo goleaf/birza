@@ -6,8 +6,8 @@
         </div>
 
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="table table-zebra w-full">
+                <thead>
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_id') }}</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_customer') }}</th>
@@ -16,29 +16,27 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @forelse($orders as $order)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                #{{ $order->id }}
+                            <td>#{{ $order->id }}</td>
+                            <td>
+                                <div class="font-medium">{{ $order->buyer->name }}</div>
+                                <div class="text-sm text-base-content/60">{{ $order->buyer->email }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $order->buyer->name }}</div>
-                                <div class="text-sm text-gray-500">{{ $order->buyer->email }}</div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
+                            <td>
+                                <div class="text-sm">
                                     @foreach($order->items as $item)
                                         <div class="mb-1">
-                                            {{ $item->product->name }} 
-                                            <span class="text-gray-500">
+                                            {{ $item->product->name }}
+                                            <span class="text-base-content/60">
                                                 ({{ $item->quantity }} × {{ number_format($item->unit_price, 2) }} {{ $order->currency }})
                                             </span>
                                         </div>
                                     @endforeach
                                 </div>
-                            </td> 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            </td>
+                            <td class="text-sm text-base-content/60">
                                 {{ $order->created_at->format('Y-m-d H:i:s') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -58,9 +56,5 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="px-6 py-4 border-t border-gray-200">
-        </div>
-    </div>
-</div>
-</div>
+    </x-ui.card>
+</x-backend.page>

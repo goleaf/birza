@@ -14,8 +14,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </x-ui.card>
 
     <!-- Filters -->
     <div class="mb-8">
@@ -60,6 +59,65 @@
                     </button>
                 </div>
             </form>
+        </x-ui.card>
+
+        <x-ui.card>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr>
+                            <th>{{ __('backend.buyers.credit_history.table.date') }}</th>
+                            <th>{{ __('backend.buyers.credit_history.table.type') }}</th>
+                            <th class="text-right">{{ __('backend.buyers.credit_history.table.amount') }}</th>
+                            <th>{{ __('backend.buyers.credit_history.table.note') }}</th>
+                            <th class="text-right">{{ __('backend.buyers.credit_history.table.balance_after') }}</th>
+                            <th>{{ __('backend.buyers.credit_history.table.admin') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($creditHistory as $history)
+                            <tr>
+                                <td>{{ $history->created_at->format('Y-m-d H:i') }}</td>
+                                <td>
+                                    <span class="badge badge-outline {{ $history->type === 'add' ? 'badge-success' : 'badge-error' }}">
+                                        {{ $history->type === 'add' ? __('backend.buyers.credit_history.table.credit') : __('backend.buyers.credit_history.table.debit') }}
+                                    </span>
+                                </td>
+                                <td class="text-right {{ $history->type === 'add' ? 'text-success' : 'text-error' }}">
+                                    {{ $history->type === 'add' ? '+' : '-' }}€{{ number_format(abs($history->amount), 2) }}
+                                </td>
+                                <td class="max-w-xs truncate">{{ $history->note ?: '-' }}</td>
+                                <td class="text-right font-semibold">€{{ number_format($history->balance_after, 2) }}</td>
+                                <td>{{ $history->admin ? $history->admin->name : __('backend.buyers.credit_history.table.system') }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="bg-base-100">
+                                    @if($history->attachments->isNotEmpty())
+                                        <div class="text-sm">
+                                            <span class="text-base-content/60">{{ __('common.attachments') }}:</span>
+                                            @foreach($history->attachments as $attachment)
+                                                <button type="button" wire:click="downloadAttachment({{ $attachment->id }})" class="btn btn-link btn-xs">
+                                                    {{ $attachment->original_name }}
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-sm text-base-content/60">
+                                    {{ __('backend.buyers.credit_history.table.no_records') }}
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </x-ui.card>
+
+        <div>
+            {{ $creditHistory->withQueryString()->links() }}
         </div>
     </div>
 

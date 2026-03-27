@@ -1,4 +1,8 @@
-@extends('layouts.backend.app')
+<x-backend.page :title="__('backend.global_settings.edit_title')">
+    <x-ui.card>
+        <form action="{{ route('backend.global_settings.update') }}" method="POST" class="space-y-6">
+            @csrf
+            @method('PUT')
 
 @section('content')
 <div class="max-w-2xl mx-auto mt-5">
@@ -17,12 +21,6 @@
                 <input type="number" name="portal_additional_price" id="portal_additional_price" class="flex-grow border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('portal_additional_price') border-red-500 focus:ring-red-500 @enderror" value="{{ old('portal_additional_price', $globalSettings->portal_additional_price) }}" required>
                 <span class="text-gray-600">€</span>
             </div>
-            @error('portal_additional_price')
-                <p class="text-red-500 mt-1">
-                    {{ $message }}
-                </p>
-            @enderror
-        </div>
 
         <div class="text-center">
             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

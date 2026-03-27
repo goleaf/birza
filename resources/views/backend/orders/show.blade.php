@@ -11,7 +11,6 @@
                     {{ __('orders_placed_on') }}: {{ $order->created_at->format('Y-m-d H:i') }}
                 </p>
             </div>
-        </div>
 
         <!-- Order Status -->
         <div class="mb-6">
@@ -23,7 +22,6 @@
                 @endif">
                 {{ __('orders_status_3') }}: {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
             </div>
-        </div>
 
         <!-- Customer Information -->
         <div class="grid grid-cols-2 gap-6">
@@ -124,14 +122,8 @@
                                 <div class="text-gray-500">{{ __('common_not_specified') }}</div>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $item->quantity }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ number_format($item->unit_price, 2) }} €
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ number_format($item->total_price, 2) }} €
+                        <td class="whitespace-nowrap px-6 py-4 text-sm font-bold text-gray-900">
+                            {{ number_format($order->order_total, 2) }} €
                         </td>
                     </tr>
                 @endforeach
@@ -148,5 +140,4 @@
             </tfoot>
         </table>
     </div>
-</div>
-</div>
+</x-backend.page>

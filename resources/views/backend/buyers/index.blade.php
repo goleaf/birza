@@ -85,7 +85,8 @@
     </table>
   </div>
 
-  <div class="mt-4">
-    {{ $buyers->links() }}
-  </div>
-</div>
+        <div>
+            {{ $buyers->links() }}
+        </div>
+    </div>
+</x-backend.page>

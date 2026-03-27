@@ -80,21 +80,20 @@ class Form extends Component
     public function render()
     {
         $attributes = Attribute::all();
-        $categories = Category::whereNull('parent_category_id')->get();
 
-        $parentCategories = $this->category
-            ? Category::whereNull('parent_category_id')
-                ->where('id', '!=', $this->category->id)
-                ->get()
-            : $categories;
+        $parentCategories = Category::query()
+            ->whereNull('parent_category_id')
+            ->when($this->category?->id, function ($query, $categoryId) {
+                $query->whereKeyNot($categoryId);
+            })
+            ->get();
 
         return view('backend.categories.form', [
             'category' => $this->category,
             'parentCategories' => $parentCategories,
-            'categories' => $categories,
             'attributes' => $attributes,
+            'parentCategories' => $parentCategories,
         ]);
     }
 }
-
 

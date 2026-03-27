@@ -24,7 +24,6 @@
                               wire:model.defer="is_active"
                               md />
                 </div>
-            </div>
 
             <div class="space-y-6">
                 @foreach ($locales as $locale)
@@ -43,5 +42,5 @@
                                :cancel-href="route('backend.countries.index')"
                                submit-target="save" />
         </form>
-    </x-card>
-</x-ui.page>
+    </x-ui.card>
+</x-backend.page>

@@ -10,16 +10,20 @@
                 <label for="portal_additional_price" class="block text-sm font-medium text-gray-700">
                     {{ __('backend_settings_fields_portal_additional_price') }}
                 </label>
-                <div class="flex items-center space-x-2">
-                    <input type="number" step="0.01" min="0" id="portal_additional_price"
+                <div class="flex items-center gap-2">
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        id="portal_additional_price"
                         wire:model.defer="portal_additional_price"
-                        class="flex-grow border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('portal_additional_price') border-red-500 focus:ring-red-500 @enderror" required>
-                    <span class="text-gray-600">€</span>
+                        class="input input-bordered w-full @error('portal_additional_price') input-error @enderror"
+                        required
+                    >
+                    <span class="text-sm text-base-content/60">€</span>
                 </div>
                 @error('portal_additional_price')
-                    <p class="text-red-500 mt-1">
-                        {{ $message }}
-                    </p>
+                    <span class="mt-1 text-sm text-error">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -30,6 +34,5 @@
                 </button>
             </div>
         </form>
-    </div>
-</div>
-</div>
+    </x-ui.card>
+</x-backend.page>

@@ -25681,7 +25681,6 @@ namespace  {
     class Config extends \Illuminate\Support\Facades\Config {}
     class Context extends \Illuminate\Support\Facades\Context {}
     class Cookie extends \Illuminate\Support\Facades\Cookie {}
-    class Crypt extends \Illuminate\Support\Facades\Crypt {}
     class Date extends \Illuminate\Support\Facades\Date {}
     class DB extends \Illuminate\Support\Facades\DB {}
 

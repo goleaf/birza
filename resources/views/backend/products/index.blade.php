@@ -1,4 +1,9 @@
-<div>
+<x-backend.page :title="__('products.title')">
+    <x-slot:actions>
+        <a href="{{ route('backend.products.create') }}" class="btn btn-primary btn-sm">
+            {{ __('products.actions.create') }}
+        </a>
+    </x-slot:actions>
 
 
         <!-- Filters Section -->
@@ -80,17 +85,91 @@
                             <x-button flat :href="route('backend.products.index')" :label="__('common_reset')" />
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Products Table -->
-        <div class="bg-white shadow-sm rounded-lg">
-            <div class="p-6">
-                @if($products->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                    <div class="form-control">
+                        <label for="seller" class="label">
+                            <span class="label-text">{{ __('product.seller') }}</span>
+                        </label>
+                        <select name="seller" id="seller" class="select select-bordered w-full">
+                            <option value="">{{ __('common.all') }}</option>
+                            @foreach($sellers as $seller)
+                                <option value="{{ $seller->id }}" {{ request('seller') == $seller->id ? 'selected' : '' }}>
+                                    {{ $seller->company_name ?: $seller->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-control">
+                        <label for="min_price" class="label">
+                            <span class="label-text">{{ __('product.min_price') }}</span>
+                        </label>
+                        <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" step="0.01"
+                            class="input input-bordered w-full">
+                    </div>
+                    <div class="form-control">
+                        <label for="max_price" class="label">
+                            <span class="label-text">{{ __('product.max_price') }}</span>
+                        </label>
+                        <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" step="0.01"
+                            class="input input-bordered w-full">
+                    </div>
+
+                    <div class="form-control">
+                        <label for="status" class="label">
+                            <span class="label-text">{{ __('common.status') }}</span>
+                        </label>
+                        <select name="status" id="status" class="select select-bordered w-full">
+                            <option value="">{{ __('common.all') }}</option>
+                            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>{{ __('common.active') }}</option>
+                            <option value="trashed" {{ request('status') === 'trashed' ? 'selected' : '' }}>{{ __('common.trashed') }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="form-control md:col-span-2">
+                        <label for="sort" class="label">
+                            <span class="label-text">{{ __('common.sort_by') }}</span>
+                        </label>
+                        <select name="sort" id="sort" class="select select-bordered w-full">
+                            <option value="created_at,desc" {{ request('sort') === 'created_at,desc' ? 'selected' : '' }}>{{ __('common.newest') }}</option>
+                            <option value="created_at,asc" {{ request('sort') === 'created_at,asc' ? 'selected' : '' }}>{{ __('common.oldest') }}</option>
+                            <option value="price,asc" {{ request('sort') === 'price,asc' ? 'selected' : '' }}>{{ __('product.price_low_high') }}</option>
+                            <option value="price,desc" {{ request('sort') === 'price,desc' ? 'selected' : '' }}>{{ __('product.price_high_low') }}</option>
+                            <option value="name,asc" {{ request('sort') === 'name,asc' ? 'selected' : '' }}>{{ __('common.name_az') }}</option>
+                            <option value="name,desc" {{ request('sort') === 'name,desc' ? 'selected' : '' }}>{{ __('common.name_za') }}</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-wrap items-end gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            {{ __('common.filter') }}
+                        </button>
+                        <a href="{{ route('backend.products.index') }}" class="btn btn-ghost btn-sm">
+                            {{ __('common.reset') }}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </x-ui.card>
+
+        <x-ui.card>
+            @if($products->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra w-full">
+                        <thead>
+                            <tr>
+                                <th>{{ __('product.image') }}</th>
+                                <th>{{ __('product.name') }}</th>
+                                <th>{{ __('product.category') }}</th>
+                                <th>{{ __('product.seller') }}</th>
+                                <th class="text-right">{{ __('product.price') }}</th>
+                                <th class="text-center">{{ __('common.status') }}</th>
+                                <th class="text-right">{{ __('common.actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($products as $product)
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         {{ __('product_image_2') }}
@@ -178,12 +257,13 @@
                                                     :label="__('common_delete')"
                                                 />
                                             @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                     <!-- Pagination -->
                     <div class="mt-4">
@@ -200,4 +280,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-backend.page>

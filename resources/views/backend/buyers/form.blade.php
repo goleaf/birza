@@ -9,9 +9,13 @@
         </h2>
     </div>
 
-    <div class="bg-white shadow-sm rounded-lg">
-        <div class="p-6">
-            <form wire:submit.prevent="save">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.email') }}</label>
+                    <input type="email" id="email" wire:model.defer="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('email') border-red-500 @enderror">
+                    @error('email')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <!-- Basic Information -->
                 <div class="space-y-4">
@@ -39,7 +43,7 @@
                         <input type="password" id="password" wire:model.defer="password"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('password')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -48,7 +52,7 @@
                         <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
-                    @endif
+                @endif
 
                     <!-- Company Information -->
                     <div>
@@ -126,7 +130,53 @@
                         {{ isset($buyer) ? __('backend_common_update') : __('backend_common_create') }}
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+
+                <div>
+                    <label for="vat_code" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.vat_code') }}</label>
+                    <input type="text" id="vat_code" wire:model.defer="vat_code" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('vat_code') border-red-500 @enderror">
+                    @error('vat_code')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.address') }}</label>
+                    <input type="text" id="address" wire:model.defer="address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('address') border-red-500 @enderror">
+                    @error('address')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.phone') }}</label>
+                    <input type="text" id="phone" wire:model.defer="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('phone') border-red-500 @enderror">
+                    @error('phone')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="bank_account" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.bank_account') }}</label>
+                    <input type="text" id="bank_account" wire:model.defer="bank_account" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('bank_account') border-red-500 @enderror">
+                    @error('bank_account')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="credit_balance" class="block text-sm font-medium text-gray-700">{{ __('backend.buyers.fields.credit_balance') }}</label>
+                    <input type="number" step="0.01" id="credit_balance" wire:model.defer="credit_balance" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('credit_balance') border-red-500 @enderror">
+                    @error('credit_balance')
+                        <span class="mt-1 text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <x-ui.form-actions
+                :submit-label="isset($buyer) ? __('backend.common.update') : __('backend.common.create')"
+                :cancel-href="route('backend.buyers.index')"
+                submit-target="save"
+            />
+        </form>
+    </x-ui.card>
+</x-backend.page>

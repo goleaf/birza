@@ -16,6 +16,7 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -26,6 +27,7 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
 
     protected static function newFactory()

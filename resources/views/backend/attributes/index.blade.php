@@ -18,11 +18,22 @@
             </div>
             <!-- end header -->
 
-            <!-- start table container -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <!-- start table header -->
-                    <thead class="bg-gray-50">
+    <x-ui.card>
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>{{ __('backend.attributes.fields.name') }}</th>
+                        <th>{{ __('backend.attributes.fields.type') }}</th>
+                        <th>{{ __('backend.attributes.fields.values_count') }}</th>
+                        <th>{{ __('backend.attributes.fields.status') }}</th>
+                        <th>{{ __('backend.attributes.fields.is_filterable') }}</th>
+                        <th>{{ __('backend.attributes.fields.is_required') }}</th>
+                        <th class="text-right">{{ __('common.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($attributes as $attribute)
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend_attributes_fields_name') }}</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('backend_attributes_fields_type') }}</th>
@@ -79,9 +90,9 @@
             </div>
             <!-- end pagination -->
         </div>
-        <!-- end content container -->
-    </div>
-    <!-- end white container -->
-</div>
-<!-- end main container -->
-</div>
+
+        <div class="px-6 py-4">
+            {{ $attributes->links() }}
+        </div>
+    </x-ui.card>
+</x-backend.page>

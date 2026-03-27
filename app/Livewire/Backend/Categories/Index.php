@@ -26,8 +26,12 @@ class Index extends Component
 
     public function render()
     {
-        $categories = Category::with(['subcategories', 'attributes'])
+        $categories = Category::query()
             ->whereNull('parent_category_id')
+            ->with([
+                'attributes',
+                'subcategories.attributes',
+            ])
             ->get();
 
         return view('backend.categories.index', [
@@ -35,5 +39,4 @@ class Index extends Component
         ]);
     }
 }
-
 
