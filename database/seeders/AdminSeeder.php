@@ -8,14 +8,20 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
+    private const ADMIN_EMAIL = 'admin@admin.com';
+
     public function run(): void
     {
-        Admin::query()->updateOrCreate(
-            ['email' => 'admin@admin.com'],
-            [
-                'name' => 'Admin',
-                'password' => Hash::make('password'),
-            ]
-        );
+        $admin = Admin::query()->firstOrNew([
+            'email' => self::ADMIN_EMAIL,
+        ]);
+
+        $admin->name = 'Admin';
+
+        if (! $admin->exists) {
+            $admin->password = Hash::make('password');
+        }
+
+        $admin->save();
     }
 }

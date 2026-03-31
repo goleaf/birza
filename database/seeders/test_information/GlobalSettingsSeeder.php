@@ -7,11 +7,13 @@ use Illuminate\Database\Seeder;
 
 class GlobalSettingsSeeder extends Seeder
 {
-    public function run()
+    private const DEFAULT_PORTAL_ADDITIONAL_PRICE = 0;
+
+    public function run(): void
     {
         GlobalSettings::query()->updateOrCreate(
             ['id' => 1],
-            ['portal_additional_price' => random_int(1, 10)]
+            ['portal_additional_price' => self::DEFAULT_PORTAL_ADDITIONAL_PRICE]
         );
     }
 }

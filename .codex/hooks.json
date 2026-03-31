@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/get-shit-done/hooks/gsd-update-check.cjs\"",
+            "statusMessage": "Checking project-local GSD updates",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/gsd-session-start.cjs\"",
+            "statusMessage": "Loading project-local GSD context",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/gsd-prompt-router.cjs\"",
+            "statusMessage": "Routing prompt into project-local GSD defaults",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

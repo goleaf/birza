@@ -9,15 +9,22 @@ use Illuminate\Support\Str;
 
 class CountriesSeeder extends Seeder
 {
+    private const COUNTRIES_JSON_PATH = 'database/seeders/countries_json/countries_list.json';
+
+    private const EN_TRANSLATIONS_PATH = 'database/seeders/countries_json/translations/countries_en.json';
+
+    private const LT_TRANSLATIONS_PATH = 'database/seeders/countries_json/translations/countries_lt.json';
+
+    private const TRANSLATION_NAME_KEY = 'region';
+
     public function run(): void
     {
-        $countriesJsonPath = base_path('database/seeders/countries_json/countries_list.json');
-        $countriesData = json_decode(File::get($countriesJsonPath), true);
+        $countriesData = $this->loadJsonFile(base_path(self::COUNTRIES_JSON_PATH));
         $ltTranslations = $this->loadTranslationMap(
-            base_path('database/seeders/countries_json/translations/countries_lt.json')
+            base_path(self::LT_TRANSLATIONS_PATH)
         );
         $enTranslations = $this->loadTranslationMap(
-            base_path('database/seeders/countries_json/translations/countries_en.json')
+            base_path(self::EN_TRANSLATIONS_PATH)
         );
 
         $rows = [];
@@ -36,7 +43,7 @@ class CountriesSeeder extends Seeder
                 'country_name' => json_encode([
                     'lt' => $ltTranslations[$alpha2] ?? $country['name'] ?? $alpha2,
                     'en' => $enTranslations[$alpha2] ?? $country['name'] ?? $alpha2,
-                ], JSON_UNESCAPED_UNICODE),
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             ];
         }
 
@@ -51,17 +58,25 @@ class CountriesSeeder extends Seeder
         );
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function loadJsonFile(string $path): array
+    {
+        return json_decode(File::get($path), true, 512, JSON_THROW_ON_ERROR);
+    }
+
     private function loadTranslationMap(string $path): array
     {
-        $data = json_decode(File::get($path), true);
+        $data = $this->loadJsonFile($path);
         $translations = [];
 
         foreach ($data as $entry) {
-            if (empty($entry['alpha2']) || ! array_key_exists('country_name', $entry)) {
+            if (empty($entry['alpha2']) || ! array_key_exists(self::TRANSLATION_NAME_KEY, $entry)) {
                 continue;
             }
 
-            $translations[Str::lower($entry['alpha2'])] = $entry['country_name'];
+            $translations[Str::lower($entry['alpha2'])] = $entry[self::TRANSLATION_NAME_KEY];
         }
 
         return $translations;

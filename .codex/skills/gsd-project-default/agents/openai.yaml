@@ -1,0 +1,7 @@
+interface:
+  display_name: "GSD Project Default"
+  short_description: "Routes repo work into the local GSD workflow."
+  default_prompt: "Use $gsd-project-default to route this repository task into the correct local GSD workflow and tell me the next `$gsd-*` step."
+
+policy:
+  allow_implicit_invocation: true
