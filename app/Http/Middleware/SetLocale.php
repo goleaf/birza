@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class SetLocale
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
-        app()->setLocale(session('locale', app()->getLocale()));
+        $locale = session('locale');
+
+        if (! is_string($locale) || ! in_array($locale, (array) config('app.locales', []), true)) {
+            $locale = config('app.locale');
+        }
+
+        app()->setLocale($locale);
+
         return $next($request);
     }
 }

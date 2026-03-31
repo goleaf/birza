@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Frontend\Auth\ForgotPassword as FrontendForgotPassword;
 use App\Livewire\Frontend\Auth\Login as FrontendLogin;
 use App\Livewire\Frontend\Auth\Register as FrontendRegister;
@@ -14,8 +15,6 @@ use App\Livewire\Frontend\Buyer\Orders\Show as BuyerOrdersShow;
 use App\Livewire\Frontend\Buyer\Products\Index as BuyerProductsIndex;
 use App\Livewire\Frontend\Buyer\Products\Show as BuyerProductsShow;
 use App\Livewire\Frontend\Buyer\Profile\Edit as BuyerProfileEdit;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
@@ -38,14 +37,11 @@ Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
     Route::middleware('auth:buyer')->group(function () {
         Route::get('/dashboard', BuyerDashboard::class)->name('dashboard');
         Route::get('/profile', BuyerProfileEdit::class)->name('profile.edit');
-        Route::post('/logout', function (Request $request) {
-            Auth::guard('buyer')->logout();
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect('/')->with('success', __('messages_logout_success'));
-        })->name('logout');
+        Route::post('/logout', LogoutController::class)
+            ->defaults('guard', 'buyer')
+            ->defaults('redirectRoute', 'home')
+            ->defaults('flashMessage', 'messages_logout_success')
+            ->name('logout');
 
         Route::get('/products', BuyerProductsIndex::class)->name('products.index');
         Route::get('/products/{product}', BuyerProductsShow::class)->name('products.show');
@@ -54,6 +50,5 @@ Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
 
         Route::get('/orders', BuyerOrdersIndex::class)->name('orders.index');
         Route::get('/orders/{order}', BuyerOrdersShow::class)->name('orders.show');
-
     });
 });

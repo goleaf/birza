@@ -2,35 +2,26 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Actions\Auth\ResolveHomeRedirectAction;
+use App\Actions\Frontend\BuildWelcomePageDataAction;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(Request $request): View|RedirectResponse
-    {
-        foreach (['seller', 'buyer'] as $guard) {
-            if (! Auth::guard($guard)->check()) {
-                continue;
-            }
+    public function __invoke(
+        Request $request,
+        ResolveHomeRedirectAction $resolveHomeRedirectAction,
+        BuildWelcomePageDataAction $buildWelcomePageDataAction,
+    ): View|RedirectResponse {
+        $redirect = $resolveHomeRedirectAction->handle($request);
 
-            $user = Auth::guard($guard)->user();
-
-            if ($user?->is_active) {
-                return redirect()->route("$guard.dashboard");
-            }
-
-            Auth::guard($guard)->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            $request->session()->flash('error', __('messages_account_deactivated'));
-
-            return redirect()->route('home');
+        if ($redirect !== null) {
+            return $redirect;
         }
 
-        return view('frontend.welcome');
+        return view('frontend.welcome', $buildWelcomePageDataAction->handle());
     }
 }

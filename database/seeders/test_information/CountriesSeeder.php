@@ -11,13 +11,13 @@ class CountriesSeeder extends Seeder
 {
     public function run(): void
     {
-        $countriesJsonPath = base_path('database/seeders/test_information/countries_json/countries_list.json');
+        $countriesJsonPath = base_path('database/seeders/countries_json/countries_list.json');
         $countriesData = json_decode(File::get($countriesJsonPath), true);
         $ltTranslations = $this->loadTranslationMap(
-            base_path('database/seeders/test_information/countries_json/translations/countries_lt.json')
+            base_path('database/seeders/countries_json/translations/countries_lt.json')
         );
         $enTranslations = $this->loadTranslationMap(
-            base_path('database/seeders/test_information/countries_json/translations/countries_en.json')
+            base_path('database/seeders/countries_json/translations/countries_en.json')
         );
 
         $rows = [];
@@ -57,7 +57,7 @@ class CountriesSeeder extends Seeder
         $translations = [];
 
         foreach ($data as $entry) {
-            if (empty($entry['alpha2']) || !array_key_exists('country_name', $entry)) {
+            if (empty($entry['alpha2']) || ! array_key_exists('country_name', $entry)) {
                 continue;
             }
 

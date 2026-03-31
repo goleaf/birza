@@ -2,18 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Attribute;
-use App\Models\AttributeValue;
-use App\Models\Category;
-use App\Models\Country;
-use App\Models\GlobalSettings;
-use App\Models\Product;
-use App\Models\Users\Admin;
-use App\Models\Users\Buyer;
-use App\Models\Users\Seller;
-use Faker\Factory as Faker;
-use Illuminate\Database\Seeder;
+use Database\Seeders\test_information\AttributesSeeder;
+use Database\Seeders\test_information\CategorySeeder;
+use Database\Seeders\test_information\CountriesSeeder;
+use Database\Seeders\test_information\GlobalSettingsSeeder;
+use Database\Seeders\test_information\ProductAttributeSeeder;
+use Database\Seeders\test_information\ProductSeeder;
+use Database\Seeders\test_information\TestUsersSeeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -93,7 +90,7 @@ class DatabaseSeeder extends Seeder
             ['description' => 'Fresh boysenberries. Ideal for desserts and jams.'],
             ['description' => 'Tender mulberries. Great for fresh eating.'],
             ['description' => 'Fresh loganberries. Perfect for preserves.'],
-            ['description' => 'Wild cloudberries. Ideal for special desserts.']
+            ['description' => 'Wild cloudberries. Ideal for special desserts.'],
         ],
         'lt' => [
             ['description' => 'Švieži ir traškūs obuoliai iš tvarių sodų. Puikiai tinka užkandžiams.'],
@@ -148,11 +145,12 @@ class DatabaseSeeder extends Seeder
             ['description' => 'Šviežia grietinėlė. Ideali kavai ir desertams.'],
             ['description' => 'Brandintas parmezano sūris. Puikiai tinka makaronų patiekalams.'],
             ['description' => 'Šviežias rikotos sūris. Puikiai tinka lazanijai ir desertams.'],
-            ['description' => 'Kreminis grietinė. Puikiai tinka garnyrui.']
+            ['description' => 'Kreminis grietinė. Puikiai tinka garnyrui.'],
 
             // Additional categories continue with similar detailed descriptions...
-        ]
+        ],
     ];
+
     public function run(): void
     {
         DB::disableQueryLog();

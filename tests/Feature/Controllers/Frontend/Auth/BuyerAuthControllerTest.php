@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Controllers\Frontend\Auth;
 
-use Tests\TestCase;
+use App\Livewire\Frontend\Auth\Login as FrontendLogin;
+use App\Livewire\Frontend\Auth\Register as FrontendRegister;
 use App\Models\Users\Buyer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Livewire\Frontend\Auth\Login as FrontendLogin;
-use App\Livewire\Frontend\Auth\Register as FrontendRegister;
+use Tests\TestCase;
 
 class BuyerAuthControllerTest extends TestCase
 {
@@ -60,4 +60,3 @@ class BuyerAuthControllerTest extends TestCase
         $this->assertAuthenticatedAs($buyer, 'buyer');
     }
 }
-

@@ -4,7 +4,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0">
-                        <a href="/" class="flex items-center">
+                        <a href="{{ route('home') }}" class="flex items-center">
                             <svg class="w-8 h-8 text-white mr-2" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,10 +16,10 @@
                     </div>
 
                     <div class="flex items-center space-x-2">
-                        @foreach (config('app.locales') as $lang)
-                            <a href="{{ route('language.switch', $lang) }}"
-                                class="px-3 py-2 text-sm font-medium rounded-lg {{ app()->getLocale() == $lang ? 'bg-gray-700 text-white' : 'text-white hover:bg-gray-700' }}">
-                                {{ strtoupper($lang) }}
+                        @foreach ($locales as $locale)
+                            <a href="{{ route('language.switch', $locale['code']) }}"
+                                class="px-3 py-2 text-sm font-medium rounded-lg {{ $locale['isCurrent'] ? 'bg-gray-700 text-white' : 'text-white hover:bg-gray-700' }}">
+                                {{ $locale['label'] }}
                             </a>
                         @endforeach
                     </div>
@@ -188,30 +188,14 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ __('welcome_product_categories_title') }}
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?ixlib=rb-4.0.3"
-                        alt="{{ __('welcome_product_category_1_title') }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-lg font-semibold">{{ __('welcome_product_category_1_title') }}</h3>
-                    <p class="text-gray-600">{{ __('welcome_product_category_1_description') }}</p>
-                </div>
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3"
-                        alt="{{ __('welcome_product_category_2_title') }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-lg font-semibold">{{ __('welcome_product_category_2_title') }}</h3>
-                    <p class="text-gray-600">{{ __('welcome_product_category_2_description') }}</p>
-                </div>
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <img src="https://images.unsplash.com/photo-1598182198871-d3f4ab4fd181?ixlib=rb-4.0.3"
-                        alt="{{ __('welcome_product_category_3_title') }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-lg font-semibold">{{ __('welcome_product_category_3_title') }}</h3>
-                    <p class="text-gray-600">{{ __('welcome_product_category_3_description') }}</p>
-                </div>
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <img src="https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?ixlib=rb-4.0.3"
-                        alt="{{ __('welcome_product_category_4_title') }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-lg font-semibold">{{ __('welcome_product_category_4_title') }}</h3>
-                    <p class="text-gray-600">{{ __('welcome_product_category_4_description') }}</p>
-                </div>
+                @foreach ($featuredCategories as $featuredCategory)
+                    <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
+                        <img src="{{ $featuredCategory['imageUrl'] }}"
+                            alt="{{ $featuredCategory['title'] }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-lg font-semibold">{{ $featuredCategory['title'] }}</h3>
+                        <p class="text-gray-600">{{ $featuredCategory['description'] }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
 
@@ -219,56 +203,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ __('welcome_community_title') }}</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-lg font-semibold">{{ __('welcome_seller_count') }}</h3>
-                            <p class="text-3xl font-bold text-gray-600">
-                                50
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-lg font-semibold">{{ __('welcome_product_categories_count_title') }}</h3>
-                            <p class="text-3xl font-bold text-gray-600">{{ __('welcome_product_categories_count') }}
-                            </p>
+                @foreach ($communityStats as $stat)
+                    <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                                @if ($stat['icon'] === 'categories')
+                                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
+                                @else
+                                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                @endif
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold">{{ $stat['title'] }}</h3>
+                                <p class="text-3xl font-bold text-gray-600">{{ $stat['value'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-xl p-6">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-lg font-semibold">{{ __('welcome_buyer_count') }}</h3>
-                            <p class="text-3xl font-bold text-gray-600">{{ __('welcome_happy_customers_count') }}</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 

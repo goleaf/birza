@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Controllers\Frontend\Auth;
 
-use Tests\TestCase;
+use App\Livewire\Frontend\Auth\Login as FrontendLogin;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Livewire\Frontend\Auth\Login as FrontendLogin;
+use Tests\TestCase;
 
 class SellerAuthControllerTest extends TestCase
 {
@@ -47,4 +47,3 @@ class SellerAuthControllerTest extends TestCase
         $this->assertAuthenticatedAs($seller, 'seller');
     }
 }
-

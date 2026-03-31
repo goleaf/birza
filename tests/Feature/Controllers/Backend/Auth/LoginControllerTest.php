@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Controllers\Backend\Auth;
 
-use Tests\TestCase;
+use App\Livewire\Backend\Auth\Login as AdminLogin;
 use App\Models\Users\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Livewire\Backend\Auth\Login as AdminLogin;
+use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
@@ -17,6 +17,23 @@ class LoginControllerTest extends TestCase
         $response = $this->get(route('backend.login'));
 
         $response->assertStatus(200);
+    }
+
+    public function test_admin_root_redirects_guest_to_login(): void
+    {
+        $response = $this->get('/admin');
+
+        $response->assertRedirect(route('backend.login'));
+    }
+
+    public function test_admin_root_redirects_authenticated_admin_to_dashboard(): void
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->get('/admin');
+
+        $response->assertRedirect(route('backend.dashboard'));
     }
 
     public function test_login_redirects_if_already_authenticated(): void
@@ -68,4 +85,3 @@ class LoginControllerTest extends TestCase
         $this->assertGuest('admin');
     }
 }
-

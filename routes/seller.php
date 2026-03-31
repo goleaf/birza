@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Frontend\Auth\ForgotPassword as FrontendForgotPassword;
 use App\Livewire\Frontend\Auth\Login as FrontendLogin;
 use App\Livewire\Frontend\Auth\Register as FrontendRegister;
@@ -15,8 +16,6 @@ use App\Livewire\Frontend\Seller\Products\Edit as SellerProductsEdit;
 use App\Livewire\Frontend\Seller\Products\Index as SellerProductsIndex;
 use App\Livewire\Frontend\Seller\Profile\Edit as SellerProfileEdit;
 use App\Livewire\Frontend\Seller\Transactions\Index as SellerTransactionsIndex;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
@@ -39,14 +38,11 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
     Route::middleware('auth:seller')->group(function () {
         Route::get('/dashboard', SellerDashboard::class)->name('dashboard');
         Route::get('/profile', SellerProfileEdit::class)->name('profile.edit');
-        Route::post('/logout', function (Request $request) {
-            Auth::guard('seller')->logout();
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect('/')->with('success', __('messages_logout_success'));
-        })->name('logout');
+        Route::post('/logout', LogoutController::class)
+            ->defaults('guard', 'seller')
+            ->defaults('redirectRoute', 'home')
+            ->defaults('flashMessage', 'messages_logout_success')
+            ->name('logout');
 
         // Seller specific routes
         Route::get('/products', SellerProductsIndex::class)->name('products.index');
@@ -59,7 +55,5 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
 
         // Transactions
         Route::get('/transactions', SellerTransactionsIndex::class)->name('transactions.index');
-
     });
-
 });
