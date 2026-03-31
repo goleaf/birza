@@ -21,16 +21,17 @@ Upgrade the Birza platform to Livewire 4, Tailwind 4, daisyUI 5, and maryUI v2 w
 - **D-03:** maryUI becomes the primary UI system for the project.
 - **D-04:** WireUI is phased out rather than kept as a long-term parallel design system.
 - **D-05:** Mary must be introduced through a non-colliding component strategy because the repo already uses generic Blade component names and local wrappers.
+- **D-06:** Volt is explicitly out of scope for this migration; Phase 1 must stay on standard `Livewire\Component` classes and Blade views only.
 
 ### Rollout Shape
-- **D-06:** The migration is a two-step rollout.
-- **D-07:** Step 1 is the platform upgrade: Livewire 4, Tailwind 4, daisyUI 5, and maryUI installation.
-- **D-08:** Step 2 is the systematic Mary refactor across shared wrappers and feature surfaces.
+- **D-07:** The migration is a two-step rollout.
+- **D-08:** Step 1 is the platform upgrade: Livewire 4, Tailwind 4, daisyUI 5, and maryUI installation.
+- **D-09:** Step 2 is the systematic Mary refactor across shared wrappers and feature surfaces.
 
 ### the agent's Discretion
 - Exact Mary prefixing or wrapper-bridge implementation, as long as it avoids collisions with current local components.
 - Exact ordering of compatibility smoke checks inside Phase 1, as long as all role-based surfaces are covered.
-- Exact dependency cleanup timing inside Phase 1, as long as WireUI is not prematurely removed before a safe bridge exists.
+- Exact dependency cleanup timing inside Phase 1, as long as WireUI is not prematurely removed before a safe bridge exists and Volt is not introduced.
 
 </decisions>
 

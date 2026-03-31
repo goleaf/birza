@@ -22,6 +22,16 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - alpinejs (ALPINEJS) - v3
 - tailwindcss (TAILWINDCSS) - v3
 
+## Livewire Rules
+
+- Do not use Volt anywhere in this project.
+- Do not generate Volt components.
+- Do not use `Livewire\\Volt\\Component`.
+- Do not use `Volt::route()`.
+- Do not install or keep `livewire/volt`.
+- Do not suggest Volt as an option.
+- All Livewire code must use standard components based on `Livewire\\Component` with standard Blade views or native Livewire full-page/component patterns.
+
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
@@ -69,7 +79,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Tools
 
 - Laravel Boost is an MCP server with tools designed specifically for this application. Prefer Boost tools over manual alternatives like shell commands or file reads.
-- Project MCP config is checked into `.mcp.json` and `.cursor/mcp.json`; keep those in sync when MCP wiring changes.
+- Project MCP config is checked into `.mcp.json` and `.codex/config.toml`; keep those in sync when MCP wiring changes.
 - Use `database-query` to run read-only queries against the database instead of writing raw SQL in tinker.
 - Use `database-schema` to inspect table structure before writing migrations or models.
 - Use `get-absolute-url` to resolve the correct scheme, domain, and port for project URLs. Always use this before sharing a URL with the user.

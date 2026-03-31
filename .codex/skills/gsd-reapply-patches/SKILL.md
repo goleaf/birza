@@ -57,18 +57,18 @@ Check for local patches directory:
 
 ```bash
 # Global install — detect runtime config directory
-if [ -d "$HOME/.config/opencode/gsd-local-patches" ]; then
+if [ -d "$HOME/.codex/gsd-local-patches" ]; then
+  PATCHES_DIR="$HOME/.codex/gsd-local-patches"
+elif [ -d "$HOME/.config/opencode/gsd-local-patches" ]; then
   PATCHES_DIR="$HOME/.config/opencode/gsd-local-patches"
 elif [ -d "$HOME/.opencode/gsd-local-patches" ]; then
   PATCHES_DIR="$HOME/.opencode/gsd-local-patches"
-elif [ -d "$HOME/.gemini/gsd-local-patches" ]; then
-  PATCHES_DIR="$HOME/.gemini/gsd-local-patches"
 else
   PATCHES_DIR="/Users/andrejprus/Herd/birza/.codex/gsd-local-patches"
 fi
 # Local install fallback — check all runtime directories
 if [ ! -d "$PATCHES_DIR" ]; then
-  for dir in .config/opencode .opencode .gemini .claude; do
+  for dir in .codex .config/opencode .opencode .claude; do
     if [ -d "./$dir/gsd-local-patches" ]; then
       PATCHES_DIR="./$dir/gsd-local-patches"
       break

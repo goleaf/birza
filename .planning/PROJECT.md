@@ -23,6 +23,7 @@ Existing buyer, seller, and admin workflows must keep working while the UI found
 - [ ] Install maryUI v2 as the primary component library for shared Blade and Livewire UI
 - [ ] Migrate shared layouts, navigation, forms, dialogs, tables, and feedback patterns to Mary-compatible abstractions
 - [ ] Replace or retire WireUI usage so Mary becomes the dominant UI system across buyer, seller, and admin surfaces
+- [ ] Keep the Livewire 4 migration on standard `Livewire\Component` + Blade patterns only, with no Volt dependency or Volt-generated components
 - [ ] Preserve localization, multi-guard auth, cart/order flows, uploads, and admin CRUD behavior through the migration
 - [ ] Add regression coverage for upgraded platform and migrated critical screens
 
@@ -42,6 +43,7 @@ Existing buyer, seller, and admin workflows must keep working while the UI found
 ## Constraints
 
 - **Tech stack**: Keep Laravel 12, Blade, and Livewire - the upgrade should modernize within the current architecture
+- **Livewire implementation**: Use standard `Livewire\Component` classes and Blade views only - Volt is excluded from this project
 - **Compatibility**: Preserve buyer, seller, and admin flows during migration - this is a production brownfield app
 - **Localization**: Keep current `lang/` and JSON translation behavior intact - multilingual UX already exists
 - **Incremental delivery**: Mary must be phased in safely - current WireUI usage and generic Blade components create collision risk
@@ -52,6 +54,7 @@ Existing buyer, seller, and admin workflows must keep working while the UI found
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Use Livewire 4 as the upgrade target | It preserves the app's current interaction model while modernizing the framework layer | - Pending |
+| Exclude Volt from the migration | The project should stay on standard Livewire components and Blade patterns only | - Accepted |
 | Make maryUI the primary UI system | It aligns with the requested direction and fits Blade + Livewire well | - Pending |
 | Use a phased migration instead of a big-bang rewrite | The repo is brownfield and spans multiple role-based surfaces | - Pending |
 | Keep the app server-rendered | Current architecture already fits Laravel + Blade + Livewire | - Pending |
@@ -74,4 +77,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after initialization*
+*Last updated: 2026-04-01 after initialization and Livewire constraints*
