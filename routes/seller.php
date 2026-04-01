@@ -21,23 +21,23 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
     // Guest routes
     Route::middleware('guest:seller')->group(function () {
-        Route::get('/login', FrontendLogin::class)->name('login');
-        Route::get('/register', FrontendRegister::class)->name('register');
-        Route::get('/register/success', FrontendRegisterSuccess::class)->name('register.success');
+        Route::livewire('/login', FrontendLogin::class)->name('login');
+        Route::livewire('/register', FrontendRegister::class)->name('register');
+        Route::livewire('/register/success', FrontendRegisterSuccess::class)->name('register.success');
 
         // Password reset
-        Route::get('/forgot-password', FrontendForgotPassword::class)->name('password.request');
-        Route::get('/reset-password/{hash}', FrontendResetPassword::class)->name('password.reset');
+        Route::livewire('/forgot-password', FrontendForgotPassword::class)->name('password.request');
+        Route::livewire('/reset-password/{hash}', FrontendResetPassword::class)->name('password.reset');
 
         // Email verification routes
-        Route::get('/email/verify/{hash}', FrontendVerifyEmail::class)->name('verification.verify')->middleware('throttle:6,1');
-        Route::get('/email/verify', FrontendVerificationNotice::class)->name('verification.notice');
+        Route::livewire('/email/verify/{hash}', FrontendVerifyEmail::class)->name('verification.verify')->middleware('throttle:6,1');
+        Route::livewire('/email/verify', FrontendVerificationNotice::class)->name('verification.notice');
     });
 
     // Authenticated routes
     Route::middleware('auth:seller')->group(function () {
-        Route::get('/dashboard', SellerDashboard::class)->name('dashboard');
-        Route::get('/profile', SellerProfileEdit::class)->name('profile.edit');
+        Route::livewire('/dashboard', SellerDashboard::class)->name('dashboard');
+        Route::livewire('/profile', SellerProfileEdit::class)->name('profile.edit');
         Route::post('/logout', LogoutController::class)
             ->defaults('guard', 'seller')
             ->defaults('redirectRoute', 'home')
@@ -45,15 +45,15 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
             ->name('logout');
 
         // Seller specific routes
-        Route::get('/products', SellerProductsIndex::class)->name('products.index');
-        Route::get('/products/create/{categoryId}', SellerProductsCreate::class)->name('products.create');
-        Route::get('/products/{product}/edit', SellerProductsEdit::class)->name('products.edit');
+        Route::livewire('/products', SellerProductsIndex::class)->name('products.index');
+        Route::livewire('/products/create/{categoryId}', SellerProductsCreate::class)->name('products.create');
+        Route::livewire('/products/{product}/edit', SellerProductsEdit::class)->name('products.edit');
 
         // Orders
-        Route::get('/orders', SellerOrdersIndex::class)->name('orders.index');
-        Route::get('/orders/{order}', SellerOrdersShow::class)->name('orders.show');
+        Route::livewire('/orders', SellerOrdersIndex::class)->name('orders.index');
+        Route::livewire('/orders/{order}', SellerOrdersShow::class)->name('orders.show');
 
         // Transactions
-        Route::get('/transactions', SellerTransactionsIndex::class)->name('transactions.index');
+        Route::livewire('/transactions', SellerTransactionsIndex::class)->name('transactions.index');
     });
 });

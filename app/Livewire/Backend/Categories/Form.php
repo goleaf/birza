@@ -14,7 +14,9 @@ class Form extends Component
     public ?Category $category = null;
 
     public ?int $parent_category_id = null;
+
     public array $name = [];
+
     public array $selectedAttributes = [];
 
     public function mount(?Category $category = null): void
@@ -46,7 +48,7 @@ class Form extends Component
 
         $validated = $this->validate($rules);
 
-        $category = $this->category ?? new Category();
+        $category = $this->category ?? new Category;
         $category->parent_category_id = $validated['parent_category_id'] ?? null;
         $category->setTranslations('category_name', $validated['name']);
         $category->save();
@@ -79,7 +81,7 @@ class Form extends Component
 
     public function render()
     {
-        $attributes = Attribute::all();
+        $availableAttributes = Attribute::all();
 
         $parentCategories = Category::query()
             ->whereNull('parent_category_id')
@@ -91,9 +93,7 @@ class Form extends Component
         return view('backend.categories.form', [
             'category' => $this->category,
             'parentCategories' => $parentCategories,
-            'attributes' => $attributes,
-            'parentCategories' => $parentCategories,
+            'availableAttributes' => $availableAttributes,
         ]);
     }
 }
-

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Controllers\Backend;
 
-use Tests\TestCase;
-use App\Models\Users\Admin;
+use App\Livewire\Backend\Dashboard as AdminDashboard;
 use App\Models\Category;
-use App\Models\Product;
 use App\Models\Order;
-use App\Models\Activity;
+use App\Models\Product;
+use App\Models\Users\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
@@ -31,7 +31,7 @@ class DashboardControllerTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->get(route('backend.dashboard'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(AdminDashboard::class);
     }
 }
-

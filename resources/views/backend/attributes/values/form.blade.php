@@ -38,7 +38,7 @@
                         <label for="value_{{ $locale }}" class="block font-medium text-gray-700 mb-1">
                             {{ strtoupper($locale) }} {{ __('backend_attribute_values_fields_value') }}
                         </label>
-                        <input type="text" id="value_{{ $locale }}" wire:model.defer="value.{{ $locale }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                        <input type="text" id="value_{{ $locale }}" wire:model="value.{{ $locale }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         @error('value.' . $locale)
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -49,7 +49,7 @@
                 <!-- start is active checkbox -->
                 <div class="mb-4">
                     <label class="inline-flex items-center">
-                        <input type="checkbox" wire:model.defer="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="checkbox" wire:model="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <span class="ml-2">
                             {{ __('backend_attribute_values_fields_is_active') }}
                         </span>

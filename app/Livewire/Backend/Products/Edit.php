@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
@@ -20,22 +20,33 @@ class Edit extends Component
     public Product $product;
 
     public int $category_id;
+
     public float $price;
+
     public string $pack_type = '';
+
     public string $unit = '';
+
     public int $country_of_origin;
+
     public int $is_organic = 0;
+
     public int $is_active = 1;
+
     public int $stock = 0;
 
     public ?float $min_order_price = null;
+
     public ?int $min_order_count = null;
+
     public ?float $package_weight = null;
+
     public ?float $price_per_liter = null;
 
     public string $description = '';
 
     public $product_image = null;
+
     public $product_additional_image = null;
 
     public array $attributeSelections = [];
@@ -131,7 +142,7 @@ class Edit extends Component
     private function storeProductImage($imageFile, ?string $oldImage = null): string
     {
         if ($oldImage) {
-            Storage::disk('public')->delete('products/' . $oldImage);
+            Storage::disk('public')->delete('products/'.$oldImage);
         }
 
         $image = Image::make($imageFile)
@@ -141,8 +152,8 @@ class Edit extends Component
             })
             ->encode('webp', 80);
 
-        $filename = uniqid() . '.webp';
-        Storage::disk('public')->put('products/' . $filename, (string) $image);
+        $filename = uniqid().'.webp';
+        Storage::disk('public')->put('products/'.$filename, (string) $image);
 
         return $filename;
     }
@@ -152,7 +163,7 @@ class Edit extends Component
         $categories = Category::all();
         $countries = Country::active()->orderBy('alpha2')->get();
 
-        $attributes = $this->product->category->attributes()
+        $productAttributes = $this->product->category->attributes()
             ->select('attributes.id', 'attributes.name', 'attributes.type', 'attributes.is_required')
             ->with(['values' => function ($query) {
                 $query->select('id', 'attribute_id', 'value')
@@ -170,9 +181,7 @@ class Edit extends Component
             'categories' => $categories,
             'category' => $this->product->category,
             'countries' => $countries,
-            'attributes' => $attributes,
+            'productAttributes' => $productAttributes,
         ]);
     }
 }
-
-

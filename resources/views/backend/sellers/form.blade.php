@@ -13,7 +13,7 @@
                     <label for="email" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.email') }}</span>
                     </label>
-                    <input type="email" id="email" wire:model.defer="email" class="input input-bordered w-full @error('email') input-error @enderror">
+                    <input type="email" id="email" wire:model="email" class="input input-bordered w-full @error('email') input-error @enderror">
                     @error('email')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -23,7 +23,7 @@
                 <div class="space-y-4">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_name') }}</label>
-                        <input type="text" id="name" wire:model.defer="name"
+                        <input type="text" id="name" wire:model="name"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -32,7 +32,7 @@
 
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_email') }}</label>
-                        <input type="email" id="email" wire:model.defer="email"
+                        <input type="email" id="email" wire:model="email"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -42,7 +42,7 @@
                     @if(!isset($seller))
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_password') }}</label>
-                        <input type="password" id="password" wire:model.defer="password"
+                        <input type="password" id="password" wire:model="password"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('password')
                             <span class="mt-1 text-sm text-error">{{ $message }}</span>
@@ -51,7 +51,7 @@
 
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_password_confirmation') }}</label>
-                        <input type="password" id="password_confirmation" wire:model.defer="password_confirmation"
+                        <input type="password" id="password_confirmation" wire:model="password_confirmation"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                 @endif
@@ -59,7 +59,7 @@
                     <!-- Company Information -->
                     <div>
                         <label for="company_name" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_company_name') }}</label>
-                        <input type="text" id="company_name" wire:model.defer="company_name"
+                        <input type="text" id="company_name" wire:model="company_name"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('company_name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -68,7 +68,7 @@
 
                     <div>
                         <label for="company_code" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_company_code') }}</label>
-                        <input type="text" id="company_code" wire:model.defer="company_code"
+                        <input type="text" id="company_code" wire:model="company_code"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('company_code')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -77,7 +77,7 @@
 
                     <div>
                         <label for="vat_code" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_vat_code') }}</label>
-                        <input type="text" id="vat_code" wire:model.defer="vat_code"
+                        <input type="text" id="vat_code" wire:model="vat_code"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('vat_code')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -87,7 +87,7 @@
                     <!-- Contact Information -->
                     <div>
                         <label for="address" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_address') }}</label>
-                        <input type="text" id="address" wire:model.defer="address"
+                        <input type="text" id="address" wire:model="address"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('address')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -96,7 +96,7 @@
 
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_phone') }}</label>
-                        <input type="text" id="phone" wire:model.defer="phone"
+                        <input type="text" id="phone" wire:model="phone"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('phone')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -106,7 +106,7 @@
                     <!-- Banking Information -->
                     <div>
                         <label for="bank_account" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_bank_account') }}</label>
-                        <input type="text" id="bank_account" wire:model.defer="bank_account"
+                        <input type="text" id="bank_account" wire:model="bank_account"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('bank_account')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -116,7 +116,7 @@
                     <!-- Seller Specific Fields -->
                     <div>
                         <label for="veterinary_certificate_number" class="block text-sm font-medium text-gray-700">{{ __('backend_sellers_fields_veterinary_certificate_number') }}</label>
-                        <input type="text" id="veterinary_certificate_number" wire:model.defer="veterinary_certificate_number"
+                        <input type="text" id="veterinary_certificate_number" wire:model="veterinary_certificate_number"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('veterinary_certificate_number')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -127,7 +127,7 @@
                     <div class="flex space-x-4">
                         <div>
                             <label for="is_verified" class="flex items-center">
-                                <input type="checkbox" id="is_verified" wire:model.defer="is_verified"
+                                <input type="checkbox" id="is_verified" wire:model="is_verified"
                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
                                 <span class="ml-2 text-sm text-gray-600">{{ __('backend_sellers_fields_is_verified') }}</span>
@@ -135,7 +135,7 @@
                         </div>
                         <div>
                             <label for="is_active" class="flex items-center">
-                                <input type="checkbox" id="is_active" wire:model.defer="is_active"
+                                <input type="checkbox" id="is_active" wire:model="is_active"
                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
                                 <span class="ml-2 text-sm text-gray-600">{{ __('backend_sellers_fields_is_active') }}</span>
@@ -158,7 +158,7 @@
                     <label for="vat_code" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.vat_code') }}</span>
                     </label>
-                    <input type="text" id="vat_code" wire:model.defer="vat_code" class="input input-bordered w-full @error('vat_code') input-error @enderror">
+                    <input type="text" id="vat_code" wire:model="vat_code" class="input input-bordered w-full @error('vat_code') input-error @enderror">
                     @error('vat_code')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -168,7 +168,7 @@
                     <label for="address" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.address') }}</span>
                     </label>
-                    <input type="text" id="address" wire:model.defer="address" class="input input-bordered w-full @error('address') input-error @enderror">
+                    <input type="text" id="address" wire:model="address" class="input input-bordered w-full @error('address') input-error @enderror">
                     @error('address')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -178,7 +178,7 @@
                     <label for="phone" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.phone') }}</span>
                     </label>
-                    <input type="text" id="phone" wire:model.defer="phone" class="input input-bordered w-full @error('phone') input-error @enderror">
+                    <input type="text" id="phone" wire:model="phone" class="input input-bordered w-full @error('phone') input-error @enderror">
                     @error('phone')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -188,7 +188,7 @@
                     <label for="bank_account" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.bank_account') }}</span>
                     </label>
-                    <input type="text" id="bank_account" wire:model.defer="bank_account" class="input input-bordered w-full @error('bank_account') input-error @enderror">
+                    <input type="text" id="bank_account" wire:model="bank_account" class="input input-bordered w-full @error('bank_account') input-error @enderror">
                     @error('bank_account')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -198,7 +198,7 @@
                     <label for="veterinary_certificate_number" class="label">
                         <span class="label-text">{{ __('backend.sellers.fields.veterinary_certificate_number') }}</span>
                     </label>
-                    <input type="text" id="veterinary_certificate_number" wire:model.defer="veterinary_certificate_number" class="input input-bordered w-full @error('veterinary_certificate_number') input-error @enderror">
+                    <input type="text" id="veterinary_certificate_number" wire:model="veterinary_certificate_number" class="input input-bordered w-full @error('veterinary_certificate_number') input-error @enderror">
                     @error('veterinary_certificate_number')
                         <span class="mt-1 text-sm text-error">{{ $message }}</span>
                     @enderror
@@ -207,11 +207,11 @@
 
             <div class="flex flex-wrap items-center gap-6">
                 <label class="flex items-center gap-3">
-                    <input type="checkbox" id="is_verified" wire:model.defer="is_verified" class="checkbox checkbox-primary">
+                    <input type="checkbox" id="is_verified" wire:model="is_verified" class="checkbox checkbox-primary">
                     <span class="label-text">{{ __('backend.sellers.fields.is_verified') }}</span>
                 </label>
                 <label class="flex items-center gap-3">
-                    <input type="checkbox" id="is_active" wire:model.defer="is_active" class="checkbox checkbox-primary">
+                    <input type="checkbox" id="is_active" wire:model="is_active" class="checkbox checkbox-primary">
                     <span class="label-text">{{ __('backend.sellers.fields.is_active') }}</span>
                 </label>
             </div>

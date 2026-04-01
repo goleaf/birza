@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Controllers\Frontend\Buyer;
 
-use Tests\TestCase;
-use App\Models\Users\Buyer;
+use App\Livewire\Frontend\Buyer\Dashboard as BuyerDashboard;
 use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
+use App\Models\Users\Buyer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
@@ -28,7 +27,7 @@ class DashboardControllerTest extends TestCase
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.dashboard'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerDashboard::class);
     }
 }
-

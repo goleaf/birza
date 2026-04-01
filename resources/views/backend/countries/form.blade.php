@@ -7,21 +7,21 @@
                          name="alpha2"
                          maxlength="2"
                          :label="__('backend_countries_fields_alpha2')"
-                         wire:model.defer="alpha2" />
+                         wire:model="alpha2" />
 
                 <x-native-select
                                  id="region"
                                  name="region"
                                  :label="__('backend_countries_fields_region')"
                                  :options="$regionOptions"
-                                 wire:model.defer="region" />
+                                 wire:model="region" />
 
                 <div class="flex items-end">
                     <x-toggle
                               id="is_active"
                               name="is_active"
                               :label="__('backend_countries_fields_is_active')"
-                              wire:model.defer="is_active"
+                              wire:model="is_active"
                               md />
                 </div>
 
@@ -32,7 +32,7 @@
                                  :id="'country_name_' . $locale"
                                  :name="'country_name.' . $locale"
                                  :label="__('backend_countries_fields_country_name')"
-                                 wire:model.defer="country_name.{{ $locale }}" />
+                                 wire:model="country_name.{{ $locale }}" />
                     </x-card>
                 @endforeach
             </div>

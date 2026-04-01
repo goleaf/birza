@@ -13,7 +13,7 @@
                         step="0.01"
                         min="0"
                         id="portal_additional_price"
-                        wire:model.defer="portal_additional_price"
+                        wire:model="portal_additional_price"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         required
                     >

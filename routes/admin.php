@@ -36,7 +36,7 @@ Route::prefix('admin')->group(function () {
 
     // Auth Routes
     Route::middleware('guest:admin')->group(function () {
-        Route::get('login', AdminLogin::class)->name('backend.login');
+        Route::livewire('login', AdminLogin::class)->name('backend.login');
     });
 
     // Protected Routes
@@ -47,59 +47,59 @@ Route::prefix('admin')->group(function () {
             ->name('backend.logout');
 
         // Dashboard
-        Route::get('/dashboard', AdminDashboard::class)->name('backend.dashboard');
+        Route::livewire('/dashboard', AdminDashboard::class)->name('backend.dashboard');
 
         // Admin Profile Routes
-        Route::get('/profile', AdminProfile::class)->name('backend.admin.profile');
+        Route::livewire('/profile', AdminProfile::class)->name('backend.admin.profile');
 
         // Buyer Credit History Routes
-        Route::get('/buyers/{buyer}/credit-history', BuyerCreditHistory::class)->name('backend.buyers.credit_history');
+        Route::livewire('/buyers/{buyer}/credit-history', BuyerCreditHistory::class)->name('backend.buyers.credit_history');
 
         // Countries
-        Route::get('countries', CountriesIndex::class)->name('backend.countries.index');
-        Route::get('countries/create', CountryForm::class)->name('backend.countries.create');
-        Route::get('countries/{country}/edit', CountryForm::class)->name('backend.countries.edit');
+        Route::livewire('countries', CountriesIndex::class)->name('backend.countries.index');
+        Route::livewire('countries/create', CountryForm::class)->name('backend.countries.create');
+        Route::livewire('countries/{country}/edit', CountryForm::class)->name('backend.countries.edit');
 
         // Categories
-        Route::get('categories', CategoriesIndex::class)->name('backend.categories.index');
-        Route::get('categories/create', CategoryForm::class)->name('backend.categories.create');
-        Route::get('categories/{category}/edit', CategoryForm::class)->name('backend.categories.edit');
+        Route::livewire('categories', CategoriesIndex::class)->name('backend.categories.index');
+        Route::livewire('categories/create', CategoryForm::class)->name('backend.categories.create');
+        Route::livewire('categories/{category}/edit', CategoryForm::class)->name('backend.categories.edit');
 
         // Products
-        Route::get('products', ProductsIndex::class)->name('backend.products.index');
-        Route::get('products/create', ProductCreate::class)->name('backend.products.create');
-        Route::get('products/{product}', ProductShow::class)->name('backend.products.show');
-        Route::get('products/{product}/edit', ProductEdit::class)->name('backend.products.edit');
+        Route::livewire('products', ProductsIndex::class)->name('backend.products.index');
+        Route::livewire('products/create', ProductCreate::class)->name('backend.products.create');
+        Route::livewire('products/{product}', ProductShow::class)->name('backend.products.show');
+        Route::livewire('products/{product}/edit', ProductEdit::class)->name('backend.products.edit');
 
         // Attributes
-        Route::get('attributes', AttributesIndex::class)->name('backend.attributes.index');
-        Route::get('attributes/create', AttributeForm::class)->name('backend.attributes.create');
-        Route::get('attributes/{attribute}/edit', AttributeForm::class)->name('backend.attributes.edit');
+        Route::livewire('attributes', AttributesIndex::class)->name('backend.attributes.index');
+        Route::livewire('attributes/create', AttributeForm::class)->name('backend.attributes.create');
+        Route::livewire('attributes/{attribute}/edit', AttributeForm::class)->name('backend.attributes.edit');
 
         // Attribute Values
-        Route::get('attributes/{attribute}/values', AttributeValuesIndex::class)->name('backend.attributes.values.index');
-        Route::get('attributes/{attribute}/values/create', AttributeValueForm::class)->name('backend.attributes.values.create');
-        Route::get('attributes/{attribute}/values/{value}/edit', AttributeValueForm::class)->name('backend.attributes.values.edit');
+        Route::livewire('attributes/{attribute}/values', AttributeValuesIndex::class)->name('backend.attributes.values.index');
+        Route::livewire('attributes/{attribute}/values/create', AttributeValueForm::class)->name('backend.attributes.values.create');
+        Route::livewire('attributes/{attribute}/values/{value}/edit', AttributeValueForm::class)->name('backend.attributes.values.edit');
 
         // Sellers
-        Route::get('sellers', SellersIndex::class)->name('backend.sellers.index');
-        Route::get('sellers/create', SellerForm::class)->name('backend.sellers.create');
-        Route::get('sellers/{seller}', SellerShow::class)->name('backend.sellers.show');
-        Route::get('sellers/{seller}/edit', SellerForm::class)->name('backend.sellers.edit');
-        Route::get('sellers/{seller}/orders', SellerOrders::class)->name('backend.sellers.orders');
+        Route::livewire('sellers', SellersIndex::class)->name('backend.sellers.index');
+        Route::livewire('sellers/create', SellerForm::class)->name('backend.sellers.create');
+        Route::livewire('sellers/{seller}', SellerShow::class)->name('backend.sellers.show');
+        Route::livewire('sellers/{seller}/edit', SellerForm::class)->name('backend.sellers.edit');
+        Route::livewire('sellers/{seller}/orders', SellerOrders::class)->name('backend.sellers.orders');
 
         // Buyers
-        Route::get('buyers', BuyersIndex::class)->name('backend.buyers.index');
-        Route::get('buyers/create', BuyerForm::class)->name('backend.buyers.create');
-        Route::get('buyers/{buyer}/edit', BuyerForm::class)->name('backend.buyers.edit');
-        Route::get('buyers/{buyer}/orders', BuyerOrders::class)->name('backend.buyers.orders');
-        Route::get('buyers/{buyer}/credit', BuyerCredit::class)->name('backend.buyers.credit');
+        Route::livewire('buyers', BuyersIndex::class)->name('backend.buyers.index');
+        Route::livewire('buyers/create', BuyerForm::class)->name('backend.buyers.create');
+        Route::livewire('buyers/{buyer}/edit', BuyerForm::class)->name('backend.buyers.edit');
+        Route::livewire('buyers/{buyer}/orders', BuyerOrders::class)->name('backend.buyers.orders');
+        Route::livewire('buyers/{buyer}/credit', BuyerCredit::class)->name('backend.buyers.credit');
 
         // Global Settings
-        Route::get('settings', SettingsIndex::class)->name('backend.settings.index');
+        Route::livewire('settings', SettingsIndex::class)->name('backend.settings.index');
 
         // Orders
-        Route::get('orders', OrdersIndex::class)->name('backend.orders.index');
-        Route::get('orders/{order}', OrdersShow::class)->name('backend.orders.show');
+        Route::livewire('orders', OrdersIndex::class)->name('backend.orders.index');
+        Route::livewire('orders/{order}', OrdersShow::class)->name('backend.orders.show');
     });
 });

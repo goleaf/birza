@@ -3,6 +3,7 @@
 namespace Tests\Feature\Controllers\Frontend\Auth;
 
 use App\Livewire\Frontend\Auth\Login as FrontendLogin;
+use App\Livewire\Frontend\Auth\Register as FrontendRegister;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -16,14 +17,16 @@ class SellerAuthControllerTest extends TestCase
     {
         $response = $this->get(route('seller.login'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(FrontendLogin::class);
     }
 
     public function test_registration_form_displays(): void
     {
         $response = $this->get(route('seller.register'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(FrontendRegister::class);
     }
 
     public function test_seller_can_login(): void

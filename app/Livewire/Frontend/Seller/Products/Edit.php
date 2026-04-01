@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
-use App\Models\Attribute;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -158,7 +157,6 @@ class Edit extends Component
         return view('frontend.seller.products.form', [
             'product' => $this->product,
             'countries' => $this->getEuropeanCountries(),
-            'attributes' => Attribute::get(),
         ]);
     }
 
@@ -170,5 +168,4 @@ class Edit extends Component
             ->get();
     }
 }
-
 

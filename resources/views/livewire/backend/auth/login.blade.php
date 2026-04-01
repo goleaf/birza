@@ -89,7 +89,7 @@
                                 id="email"
                                 type="email"
                                 autocomplete="email"
-                                wire:model.defer="email"
+                                wire:model="email"
                                 class="block w-full rounded-2xl border border-[#d7cfbf] bg-white py-4 pl-12 pr-4 text-[#181510] shadow-sm outline-none transition focus:border-[#13261f] focus:ring-4 focus:ring-[#13261f]/10 @error('email') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                             >
                         </div>
@@ -113,7 +113,7 @@
                                 id="password"
                                 x-bind:type="showPassword ? 'text' : 'password'"
                                 autocomplete="current-password"
-                                wire:model.defer="password"
+                                wire:model="password"
                                 class="block w-full rounded-2xl border border-[#d7cfbf] bg-white py-4 pl-12 pr-14 text-[#181510] shadow-sm outline-none transition focus:border-[#13261f] focus:ring-4 focus:ring-[#13261f]/10 @error('password') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                             >
                             <button

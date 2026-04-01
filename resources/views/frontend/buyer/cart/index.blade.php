@@ -112,7 +112,7 @@
                                     <div class="flex flex-col">
                                         <input 
                                             type="number" 
-                                            wire:model.defer="quantities.{{ $item->getHash() }}"
+                                            wire:model="quantities.{{ $item->getHash() }}"
                                             class="w-20 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 {{ $errors->has('quantities.' . $item->getHash()) ? 'border-red-500' : '' }}"
                                         >
                                         @error('quantities.' . $item->getHash())

@@ -6,7 +6,7 @@
             type="email"
             autocomplete="email"
             :label="__('common_email')"
-            wire:model.defer="email"
+            wire:model="email"
         />
 
         <x-password
@@ -14,7 +14,7 @@
             name="password"
             autocomplete="current-password"
             :label="__('common_password')"
-            wire:model.defer="password"
+            wire:model="password"
         />
 
         <div class="flex items-center justify-between">

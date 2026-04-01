@@ -10,7 +10,7 @@
             type="email"
             autocomplete="email"
             :label="__('common_email')"
-            wire:model.defer="email"
+            wire:model="email"
         />
 
         <x-button

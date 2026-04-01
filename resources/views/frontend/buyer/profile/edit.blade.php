@@ -59,7 +59,7 @@
                                 <input 
                                     type="text" 
                                     id="name" 
-                                    wire:model.defer="name"
+                                    wire:model="name"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('name') border-red-500 @enderror"
                                     required
                                 >
@@ -80,7 +80,7 @@
                                 <input 
                                     type="email" 
                                     id="email" 
-                                    wire:model.defer="email"
+                                    wire:model="email"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
                                     required
                                 >
@@ -101,7 +101,7 @@
                                 <input 
                                     type="text" 
                                     id="company_name" 
-                                    wire:model.defer="company_name"
+                                    wire:model="company_name"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
                                     required
                                 >
@@ -122,7 +122,7 @@
                                 <input 
                                     type="text" 
                                     id="company_code" 
-                                    wire:model.defer="company_code"
+                                    wire:model="company_code"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_code') border-red-500 @enderror"
                                     required
                                 >
@@ -140,7 +140,7 @@
                                 <input 
                                     type="text" 
                                     id="vat_code" 
-                                    wire:model.defer="vat_code"
+                                    wire:model="vat_code"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                                 >
                             </div>
@@ -157,7 +157,7 @@
                                 <input 
                                     type="text" 
                                     id="address" 
-                                    wire:model.defer="address"
+                                    wire:model="address"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('address') border-red-500 @enderror"
                                     required
                                 >
@@ -178,7 +178,7 @@
                                 <input 
                                     type="tel" 
                                     id="phone" 
-                                    wire:model.defer="phone"
+                                    wire:model="phone"
                                     placeholder="+370" 
                                     data-mask="+370 99999999"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('phone') border-red-500 @enderror"
@@ -201,7 +201,7 @@
                                 <input 
                                     type="text" 
                                     id="bank_account" 
-                                    wire:model.defer="bank_account"
+                                    wire:model="bank_account"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('bank_account') border-red-500 @enderror"
                                     required
                                 >
@@ -280,7 +280,7 @@
                                     <input 
                                         type="password" 
                                         id="current_password"
-                                        wire:model.defer="current_password"
+                                        wire:model="current_password"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('current_password') border-red-500 @enderror"
                                         required
                                     >
@@ -304,7 +304,7 @@
                                     <input 
                                         type="password" 
                                         id="password"
-                                        wire:model.defer="password"
+                                        wire:model="password"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('password') border-red-500 @enderror"
                                         required
                                     >
@@ -328,7 +328,7 @@
                                     <input 
                                         type="password" 
                                         id="password_confirmation"
-                                        wire:model.defer="password_confirmation"
+                                        wire:model="password_confirmation"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                                         required
                                     >

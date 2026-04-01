@@ -15,7 +15,7 @@
                         </label>
                         <select
                             id="parent_category_id"
-                            wire:model.defer="parent_category_id"
+                            wire:model="parent_category_id"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         >
                             <option value="">{{ __('backend_categories_select_parent') }}</option>
@@ -38,7 +38,7 @@
                             <input
                                 type="text"
                                 id="category_name_{{ $locale }}"
-                                wire:model.defer="name.{{ $locale }}"
+                                wire:model="name.{{ $locale }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 required
                             >
@@ -56,12 +56,12 @@
                     </div>
 
                     <div class="max-h-96 space-y-3 overflow-y-auto rounded-md border border-gray-200 p-4">
-                        @foreach ($attributes->sortBy(fn ($attribute) => $attribute->getTranslation('name', app()->getLocale())) as $attribute)
+                        @foreach ($availableAttributes->sortBy(fn ($attribute) => $attribute->getTranslation('name', app()->getLocale())) as $attribute)
                             <label class="flex items-start gap-3">
                                 <input
                                     type="checkbox"
                                     value="{{ $attribute->id }}"
-                                    wire:model.defer="selectedAttributes"
+                                    wire:model="selectedAttributes"
                                     class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                                 >
                                 <span class="text-sm text-gray-700">

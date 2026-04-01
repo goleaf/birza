@@ -13,7 +13,7 @@
                         <input
                             type="text"
                             id="name"
-                            wire:model.defer="name"
+                            wire:model="name"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required
                         >
@@ -27,7 +27,7 @@
                         <input
                             type="email"
                             id="email"
-                            wire:model.defer="email"
+                            wire:model="email"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required
                         >
@@ -62,7 +62,7 @@
                         <input
                             type="password"
                             id="current_password"
-                            wire:model.defer="current_password"
+                            wire:model="current_password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required
                         >
@@ -76,7 +76,7 @@
                         <input
                             type="password"
                             id="password"
-                            wire:model.defer="password"
+                            wire:model="password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required
                         >
@@ -90,7 +90,7 @@
                         <input
                             type="password"
                             id="password_confirmation"
-                            wire:model.defer="password_confirmation"
+                            wire:model="password_confirmation"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             required
                         >

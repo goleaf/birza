@@ -80,7 +80,7 @@
                             name="comment"
                             :label="__('orders_comment')"
                             :placeholder="__('orders_comment_placeholder')"
-                            wire:model.defer="comment"
+                            wire:model="comment"
                             rows="3"
                         />
                     </div>

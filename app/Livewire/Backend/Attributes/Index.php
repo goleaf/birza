@@ -38,7 +38,7 @@ class Index extends Component
 
         if ($search !== '') {
             $locale = app()->getLocale();
-            $query->where("name->{$locale}", 'like', '%' . $search . '%');
+            $query->where("name->{$locale}", 'like', '%'.$search.'%');
         }
 
         if ($status === 'active') {
@@ -64,7 +64,7 @@ class Index extends Component
         }
 
         return view('backend.attributes.index', [
-            'attributes' => $query->orderBy('id', 'desc')->paginate(20)->withQueryString(),
+            'attributeRecords' => $query->orderBy('id', 'desc')->paginate(20)->withQueryString(),
             'filters' => [
                 'search' => $search,
                 'status' => $status,
@@ -82,4 +82,3 @@ class Index extends Component
         ]);
     }
 }
-

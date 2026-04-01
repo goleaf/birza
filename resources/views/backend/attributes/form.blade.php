@@ -21,7 +21,7 @@
                         <input 
                             type="text" 
                             id="name_{{ $locale }}" 
-                            wire:model.defer="name.{{ $locale }}"
+                            wire:model="name.{{ $locale }}"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
                             required
                         >
@@ -39,7 +39,7 @@
                             <input
                                 type="text"
                                 id="name_{{ $locale }}"
-                                wire:model.defer="name.{{ $locale }}"
+                                wire:model="name.{{ $locale }}"
                                 class="input input-bordered w-full @error('name.' . $locale) input-error @enderror"
                                 required
                             >
@@ -56,7 +56,7 @@
                     <label for="type" class="block font-medium text-gray-700 mb-1">
                         {{ __('backend_attributes_fields_type') }}
                     </label>
-                    <select id="type" wire:model.defer="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <select id="type" wire:model="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @foreach ($types as $key => $label)
                             <option value="{{ $key }}">
                                 {{ __('backend_attributes_types_' . $key) }}
@@ -74,21 +74,21 @@
                 <!-- start checkboxes -->
                 <div class="space-y-4">
                     <div class="flex items-center">
-                        <input type="checkbox" id="is_filterable" wire:model.defer="is_filterable" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="checkbox" id="is_filterable" wire:model="is_filterable" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <label for="is_filterable" class="ml-2 block text-sm text-gray-900">
                             {{ __('backend_attributes_fields_is_filterable') }}
                         </label>
                     </div>
 
                     <div class="flex items-center">
-                        <input type="checkbox" id="is_required" wire:model.defer="is_required" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="checkbox" id="is_required" wire:model="is_required" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <label for="is_required" class="ml-2 block text-sm text-gray-900">
                             {{ __('backend_attributes_fields_is_required') }}
                         </label>
                     </div>
 
                     <div class="flex items-center">
-                        <input type="checkbox" id="is_active" wire:model.defer="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="checkbox" id="is_active" wire:model="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <label for="is_active" class="ml-2 block text-sm text-gray-900">
                             {{ __('backend_attributes_fields_is_active') }}
                         </label>

@@ -16,7 +16,8 @@ class LoginControllerTest extends TestCase
     {
         $response = $this->get(route('backend.login'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(AdminLogin::class);
     }
 
     public function test_admin_root_redirects_guest_to_login(): void

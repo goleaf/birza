@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Controllers\Frontend\Buyer;
 
-use Tests\TestCase;
-use App\Models\Users\Buyer;
+use App\Livewire\Frontend\Buyer\Products\Index as BuyerProductsIndex;
+use App\Livewire\Frontend\Buyer\Products\Show as BuyerProductsShow;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\Users\Buyer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
 {
@@ -29,7 +30,8 @@ class ProductControllerTest extends TestCase
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.products.index'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerProductsIndex::class);
     }
 
     public function test_product_show_requires_authentication(): void
@@ -49,7 +51,7 @@ class ProductControllerTest extends TestCase
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.products.show', $product));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerProductsShow::class);
     }
 }
-

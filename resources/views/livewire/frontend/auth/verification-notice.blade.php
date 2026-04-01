@@ -24,7 +24,7 @@
                 <input
                     type="email"
                     id="email"
-                    wire:model.defer="email"
+                    wire:model="email"
                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
                     required
                     autofocus

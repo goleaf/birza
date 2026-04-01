@@ -103,7 +103,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
-                    @forelse ($attributes as $attribute)
+                    @forelse ($attributeRecords as $attribute)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $attribute->getTranslation('name', app()->getLocale()) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ __('backend_attributes_types_' . $attribute->type) }}</td>
@@ -157,7 +157,7 @@
         </div>
 
         <div class="px-6 py-4">
-            {{ $attributes->links() }}
+            {{ $attributeRecords->links() }}
         </div>
     </div>
 </div>

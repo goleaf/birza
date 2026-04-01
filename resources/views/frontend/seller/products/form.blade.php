@@ -21,7 +21,7 @@
                         <input 
                             type="text"
                             required 
-                            wire:model.defer="name"
+                            wire:model="name"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('name') ? 'border-red-500' : '' }}"
                         >
                         @error('name')
@@ -40,7 +40,7 @@
                             type="number" 
                             step="0.01" 
                             required 
-                            wire:model.defer="price"
+                            wire:model="price"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('price') ? 'border-red-500' : '' }}"
                         >
                         @error('price')
@@ -56,7 +56,7 @@
                         </label>
                         <input 
                             type="text"
-                            wire:model.defer="pack_type"
+                            wire:model="pack_type"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('pack_type') ? 'border-red-500' : '' }}"
                         >
                         @error('pack_type')
@@ -72,7 +72,7 @@
                         </label>
                         <select 
                             required 
-                            wire:model.defer="unit"
+                            wire:model="unit"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('unit') ? 'border-red-500' : '' }}"
                         >
                             @foreach (collect(\App\Models\Product::UNITS)->sort() as $unit)
@@ -96,7 +96,7 @@
                         </label>
                         <select 
                             required 
-                            wire:model.defer="country_of_origin"
+                            wire:model="country_of_origin"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('country_of_origin') ? 'border-red-500' : '' }}"
                         >
                             <option value="">
@@ -123,7 +123,7 @@
                         </label>
                         <select 
                             required 
-                            wire:model.defer="is_organic"
+                            wire:model="is_organic"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('is_organic') ? 'border-red-500' : '' }}"
                         >
                             <option 
@@ -150,7 +150,7 @@
                         </label>
                         <select 
                             required 
-                            wire:model.defer="is_active"
+                            wire:model="is_active"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('is_active') ? 'border-red-500' : '' }}"
                         >
                             <option 
@@ -178,7 +178,7 @@
                         <input 
                             type="number" 
                             step="0.01" 
-                            wire:model.defer="min_order_price"
+                            wire:model="min_order_price"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('min_order_price') ? 'border-red-500' : '' }}"
                         >
                         @error('min_order_price')
@@ -194,7 +194,7 @@
                         </label>
                         <input 
                             type="number" 
-                            wire:model.defer="min_order_count"
+                            wire:model="min_order_count"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('min_order_count') ? 'border-red-500' : '' }}"
                             required
                         >
@@ -212,7 +212,7 @@
                         <input 
                             type="number" 
                             required 
-                            wire:model.defer="stock"
+                            wire:model="stock"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('stock') ? 'border-red-500' : '' }}"
                         >
                         @error('stock')
@@ -234,7 +234,7 @@
                                 <textarea 
                                     rows="4" 
                                     {{ $locale == app()->getLocale() ? 'required' : '' }} 
-                                    wire:model.defer="description.{{ $locale }}"
+                                    wire:model="description.{{ $locale }}"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has("description.$locale") ? 'border-red-500' : '' }}"
                                 ></textarea>
                                 @error("description.$locale")
@@ -261,7 +261,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    wire:model.defer="temperature_conditions_from"
+                                    wire:model="temperature_conditions_from"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('temperature_conditions_from') ? 'border-red-500' : '' }}"
                                 >
                                 @error('temperature_conditions_from')
@@ -274,7 +274,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    wire:model.defer="temperature_conditions_to"
+                                    wire:model="temperature_conditions_to"
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('temperature_conditions_to') ? 'border-red-500' : '' }}"
                                 >
                                 @error('temperature_conditions_to')
@@ -292,7 +292,7 @@
                         </label>
                         <input
                             type="date"
-                            wire:model.defer="use_until"
+                            wire:model="use_until"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('use_until') ? 'border-red-500' : '' }}"
                         >
                         @error('use_until')
@@ -310,7 +310,7 @@
                         </label>
                         <input
                             type="number"
-                            wire:model.defer="total_shelf_life"
+                            wire:model="total_shelf_life"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('total_shelf_life') ? 'border-red-500' : '' }}"
                             required
                         >

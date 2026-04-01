@@ -217,7 +217,7 @@
                             <input 
                                 type="number" 
                                 id="quantity" 
-                                wire:model.defer="quantity"
+                                wire:model="quantity"
                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                                 {{ $product->stock <= 0 ? 'disabled' : '' }}
                             >

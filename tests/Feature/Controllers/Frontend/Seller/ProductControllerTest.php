@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Controllers\Frontend\Seller;
 
-use Tests\TestCase;
-use App\Models\Users\Seller;
+use App\Livewire\Frontend\Seller\Products\Index as SellerProductsIndex;
 use App\Models\Product;
+use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
 {
@@ -26,7 +27,7 @@ class ProductControllerTest extends TestCase
         $response = $this->actingAs($seller, 'seller')
             ->get(route('seller.products.index'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(SellerProductsIndex::class);
     }
 }
-

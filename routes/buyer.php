@@ -20,35 +20,35 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
     // Guest routes
     Route::middleware('guest:buyer')->group(function () {
-        Route::get('/login', FrontendLogin::class)->name('login');
-        Route::get('/register', FrontendRegister::class)->name('register');
-        Route::get('/register/success', FrontendRegisterSuccess::class)->name('register.success');
+        Route::livewire('/login', FrontendLogin::class)->name('login');
+        Route::livewire('/register', FrontendRegister::class)->name('register');
+        Route::livewire('/register/success', FrontendRegisterSuccess::class)->name('register.success');
 
         // Password reset
-        Route::get('/forgot-password', FrontendForgotPassword::class)->name('password.request');
-        Route::get('/reset-password/{hash}', FrontendResetPassword::class)->name('password.reset');
+        Route::livewire('/forgot-password', FrontendForgotPassword::class)->name('password.request');
+        Route::livewire('/reset-password/{hash}', FrontendResetPassword::class)->name('password.reset');
 
         // Email verification routes
-        Route::get('/email/verify/{hash}', FrontendVerifyEmail::class)->name('verification.verify')->middleware('throttle:6,1');
-        Route::get('/email/verify', FrontendVerificationNotice::class)->name('verification.notice');
+        Route::livewire('/email/verify/{hash}', FrontendVerifyEmail::class)->name('verification.verify')->middleware('throttle:6,1');
+        Route::livewire('/email/verify', FrontendVerificationNotice::class)->name('verification.notice');
     });
 
     // Authenticated routes
     Route::middleware('auth:buyer')->group(function () {
-        Route::get('/dashboard', BuyerDashboard::class)->name('dashboard');
-        Route::get('/profile', BuyerProfileEdit::class)->name('profile.edit');
+        Route::livewire('/dashboard', BuyerDashboard::class)->name('dashboard');
+        Route::livewire('/profile', BuyerProfileEdit::class)->name('profile.edit');
         Route::post('/logout', LogoutController::class)
             ->defaults('guard', 'buyer')
             ->defaults('redirectRoute', 'home')
             ->defaults('flashMessage', 'messages_logout_success')
             ->name('logout');
 
-        Route::get('/products', BuyerProductsIndex::class)->name('products.index');
-        Route::get('/products/{product}', BuyerProductsShow::class)->name('products.show');
+        Route::livewire('/products', BuyerProductsIndex::class)->name('products.index');
+        Route::livewire('/products/{product}', BuyerProductsShow::class)->name('products.show');
 
-        Route::get('/cart', BuyerCartIndex::class)->name('cart.index');
+        Route::livewire('/cart', BuyerCartIndex::class)->name('cart.index');
 
-        Route::get('/orders', BuyerOrdersIndex::class)->name('orders.index');
-        Route::get('/orders/{order}', BuyerOrdersShow::class)->name('orders.show');
+        Route::livewire('/orders', BuyerOrdersIndex::class)->name('orders.index');
+        Route::livewire('/orders/{order}', BuyerOrdersShow::class)->name('orders.show');
     });
 });

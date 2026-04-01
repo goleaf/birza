@@ -95,7 +95,7 @@
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" 
                                        id="amount" 
-                                       wire:model.defer="amount"
+                                       wire:model="amount"
                                        step="0.01" 
                                        min="0.01"
                                        required
@@ -114,7 +114,7 @@
                             </label>
                             <textarea
                                 id="note"
-                                wire:model.defer="note"
+                                wire:model="note"
                                 rows="3"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('note') border-red-500 @enderror"
                             ></textarea>

@@ -21,7 +21,7 @@
             name="password"
             autocomplete="new-password"
             :label="__('common_password')"
-            wire:model.defer="password"
+            wire:model="password"
         />
 
         <x-password
@@ -29,7 +29,7 @@
             name="password_confirmation"
             autocomplete="new-password"
             :label="__('common_confirm_password')"
-            wire:model.defer="password_confirmation"
+            wire:model="password_confirmation"
         />
 
         <x-button

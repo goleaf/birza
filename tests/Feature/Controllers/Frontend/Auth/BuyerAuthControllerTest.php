@@ -17,14 +17,16 @@ class BuyerAuthControllerTest extends TestCase
     {
         $response = $this->get(route('buyer.login'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(FrontendLogin::class);
     }
 
     public function test_registration_form_displays(): void
     {
         $response = $this->get(route('buyer.register'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(FrontendRegister::class);
     }
 
     public function test_buyer_can_register(): void

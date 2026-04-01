@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Controllers\Frontend\Buyer;
 
-use Tests\TestCase;
+use App\Livewire\Frontend\Buyer\Cart\Index as BuyerCartIndex;
 use App\Models\Users\Buyer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartControllerTest extends TestCase
 {
@@ -24,7 +25,7 @@ class CartControllerTest extends TestCase
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.cart.index'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerCartIndex::class);
     }
 }
-
