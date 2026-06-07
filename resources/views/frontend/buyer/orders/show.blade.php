@@ -1,40 +1,44 @@
 <div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
-        <!-- start order header -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <!-- start header content -->
-            <div class="flex justify-between items-center mb-6">
-                <!-- start left side -->
-                <div>
-                    <!-- start title -->
-                    <h1 class="text-2xl font-bold text-gray-900">
-                        {{ __('orders_order_details') }} #{{ $order->id }}
-                    </h1>
-                    <!-- end title -->
-                    
-                    <!-- start date -->
-                    <p class="text-gray-600">
-                        {{ __('orders_placed_on') }}: {{ $order->created_at }}
-                    </p>
-                    <!-- end date -->
-                </div>
-                <!-- end left side -->
-                
-                <!-- start right side -->
-                <div class="flex space-x-4">
+        <x-buyer.breadcrumbs
+            class="mb-6"
+            :items="[
+                ['label' => __('common_orders'), 'link' => route('buyer.orders.index')],
+                ['label' => '#' . $order->id],
+            ]"
+        />
+
+        <x-ui.header
+            class="mb-6"
+            :title="__('orders_order_details') . ' #' . $order->id"
+            :subtitle="__('orders_placed_on') . ': ' . $order->created_at"
+        >
+            <x-slot:actions>
+                <div class="flex flex-wrap items-center gap-4">
+                    <x-ui.badge
+                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                        :color="match (strtolower((string) $order->payment_status)) {
+                            'pending' => 'warning',
+                            'paid' => 'success',
+                            'cancelled' => 'error',
+                            default => 'neutral',
+                        }"
+                        soft
+                        class="font-medium"
+                    />
+
                     <!-- start back link -->
-                    <a 
-                        href="{{ route('buyer.orders.index') }}" 
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                        {{ __('common_back_to_orders') }}
-                    </a>
+                    <x-ui.button
+                        :href="route('buyer.orders.index')"
+                        secondary
+                        :label="__('common_back_to_orders')"
+                    />
                     <!-- end back link -->
                     
                     <!-- start cancel form -->
                     @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
-                        <x-button
+                        <x-ui.button
                             negative
                             :label="__('orders_cancel_order')"
                             wire:click="confirmCancelOrder"
@@ -43,39 +47,33 @@
                     @endif
                     <!-- end cancel form -->
                 </div>
-                <!-- end right side -->
-            </div>
-            <!-- end header content -->
+            </x-slot:actions>
+        </x-ui.header>
 
-            <!-- start order status -->
-            <div class="mb-6">
-                <!-- start status badge -->
-                <div 
-                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                    @if($order->payment_status === \App\Models\Order::STATUS['PENDING']) bg-yellow-100 text-yellow-800
-                    @elseif($order->payment_status === \App\Models\Order::STATUS['PAID']) bg-green-100 text-green-800
-                    @elseif($order->payment_status === \App\Models\Order::STATUS['CANCELLED']) bg-red-100 text-red-800
-                    @else bg-gray-100 text-gray-800
-                    @endif"
-                >
-                    {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
-                </div>
-                <!-- end status badge -->
-            </div>
-            <!-- end order status -->
-        </div>
-        <!-- end order header -->
+        <x-ui.steps
+            class="mb-6"
+            wire:model="currentOrderStep"
+            :title="__('orders_steps_title')"
+            :subtitle="__('orders_steps_subtitle')"
+            :items="$orderStepItems"
+            :panel="$orderStepPanel"
+            :steps-color="$orderStepsColor"
+        />
+
+        <x-ui.timeline
+            class="mb-6"
+            :title="__('orders_order_timeline')"
+            :subtitle="__('orders_timeline_subtitle')"
+            :items="$orderTimelineItems"
+        />
 
         <!-- start order items -->
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-            <!-- start items header -->
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">
-                    {{ __('orders_order_items') }}
-                </h2>
-            </div>
-            <!-- end items header -->
-            
+        <x-ui.card
+            class="mb-6 rounded-lg shadow-sm"
+            :title="__('orders_order_items')"
+            body-class="-mx-5 -mb-5 overflow-hidden"
+        >
+            <div class="overflow-x-auto">
             <!-- start table -->
             <table class="min-w-full divide-y divide-gray-200">
                 <!-- start table head -->
@@ -155,7 +153,8 @@
                 <!-- end table footer -->
             </table>
             <!-- end table -->
-        </div>
+            </div>
+        </x-ui.card>
         <!-- end order items -->
 
         <x-backend.confirm-modal

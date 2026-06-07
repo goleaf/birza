@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Products;
 
 use App\Models\Product;
+use App\Support\SafeMarkdown;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,10 +19,12 @@ class Show extends Component
 
     public function render()
     {
+        $description = (string) $this->product->getTranslation('description', app()->getLocale());
+
         return view('backend.products.show', [
             'product' => $this->product,
+            'descriptionHtml' => SafeMarkdown::render($description),
+            'hasDescription' => $description !== '',
         ]);
     }
 }
-
-

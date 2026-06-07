@@ -32,7 +32,7 @@
             />
         </div>
 
-        <x-button
+        <x-ui.button
             type="submit"
             primary
             class="w-full"

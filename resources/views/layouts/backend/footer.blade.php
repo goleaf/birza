@@ -5,7 +5,7 @@
                 &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('common_all_rights_reserved') }}
             </div>
             <div>
-                {{ __('backend.footer.version', ['version' => '1.0']) }}
+                {{ __('backend_footer_version', ['version' => '1.0']) }}
             </div>
         </div>
     </div>

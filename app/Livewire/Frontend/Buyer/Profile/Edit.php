@@ -8,22 +8,35 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Edit extends Component
 {
+    #[Url(as: 'tab', except: 'profile-tab')]
+    public string $selectedTab = 'profile-tab';
+
     public string $name = '';
+
     public string $email = '';
+
     public string $company_name = '';
+
     public string $company_code = '';
+
     public ?string $vat_code = null;
+
     public string $address = '';
+
     public string $phone = '';
+
     public string $bank_account = '';
 
     public string $current_password = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     public function mount(): void
@@ -39,6 +52,7 @@ class Edit extends Component
         $this->address = (string) ($buyer?->address ?? '');
         $this->phone = (string) ($buyer?->phone ?? '');
         $this->bank_account = (string) ($buyer?->bank_account ?? '');
+        $this->selectedTab = $this->normalizedSelectedTab($buyer);
     }
 
     public function saveProfile(): void
@@ -88,8 +102,27 @@ class Edit extends Component
 
         return view('frontend.buyer.profile.edit', [
             'buyer' => $buyer,
+            'canUpdatePassword' => $this->canShowPasswordTab($buyer),
         ]);
     }
+
+    private function canShowPasswordTab(?Buyer $buyer): bool
+    {
+        return filled($buyer?->company_name)
+            && filled($buyer?->address)
+            && filled($buyer?->phone);
+    }
+
+    private function normalizedSelectedTab(?Buyer $buyer): string
+    {
+        $availableTabs = ['profile-tab'];
+
+        if ($this->canShowPasswordTab($buyer)) {
+            $availableTabs[] = 'password-tab';
+        }
+
+        return in_array($this->selectedTab, $availableTabs, true)
+            ? $this->selectedTab
+            : 'profile-tab';
+    }
 }
-
-

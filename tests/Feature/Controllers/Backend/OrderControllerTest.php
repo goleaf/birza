@@ -34,6 +34,8 @@ class OrderControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(OrderIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_orders'))
             ->assertSee(__('orders_table_date'));
     }
 
@@ -65,6 +67,8 @@ class OrderControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(OrderShow::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_orders'))
             ->assertSee(__('orders_order_details').' #'.$order->id)
             ->assertSee('Aged Cheese')
             ->assertSee('Baltic Farm')

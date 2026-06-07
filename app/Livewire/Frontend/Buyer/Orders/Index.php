@@ -8,11 +8,21 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    #[Url(as: 'status')]
+    public string $status = '';
+
+    #[Url(as: 'date_from')]
+    public ?string $dateFrom = null;
+
+    #[Url(as: 'date_to')]
+    public ?string $dateTo = null;
+
     public function cancelOrder(int $orderId): void
     {
         /** @var Buyer $buyer */
@@ -24,6 +34,7 @@ class Index extends Component
 
         if ($order->payment_status !== Order::STATUS['PENDING']) {
             session()->flash('error', __('orders_messages_cannot_cancel'));
+
             return;
         }
 
@@ -41,28 +52,31 @@ class Index extends Component
         session()->flash('success', __('orders_messages_cancelled_success'));
     }
 
+    public function applyFilters(): void
+    {
+        //
+    }
+
     public function render()
     {
         /** @var Buyer $buyer */
         $buyer = Auth::guard('buyer')->user();
 
         $orderStatuses = Order::STATUS;
-        $status = request()->get('status');
-        $dateFrom = request()->get('date_from');
-        $dateTo = request()->get('date_to');
 
         $filters = [
-            'status' => $status,
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
+            'status' => $this->status,
+            'dateFrom' => $this->dateFrom,
+            'dateTo' => $this->dateTo,
         ];
 
-        $ordersData = $this->getOrdersData($buyer, $status, $dateFrom, $dateTo);
+        $ordersData = $this->getOrdersData($buyer, $this->status, $this->dateFrom, $this->dateTo);
 
         return view('frontend.buyer.orders.index', [
             'ordersData' => $ordersData,
             'filters' => $filters,
             'orderStatuses' => $orderStatuses,
+            'orderCalendarEvents' => Order::calendarEventsFrom($ordersData['all']),
         ]);
     }
 
@@ -99,5 +113,3 @@ class Index extends Component
         ];
     }
 }
-
-

@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('profile')],
+        ]"
+    />
+
     <x-mary-header
         :title="__('auth_profile_information')"
         :subtitle="__('auth_update_profile_info')"

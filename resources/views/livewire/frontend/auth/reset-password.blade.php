@@ -32,7 +32,7 @@
             wire:model="password_confirmation"
         />
 
-        <x-button
+        <x-ui.button
             type="submit"
             primary
             class="w-full"

@@ -13,7 +13,7 @@
 
 <div {{ $attributes->class("flex items-center justify-center px-4 sm:px-6 lg:px-8 {$heightClass} {$bgClass}") }}>
     <div class="w-full {{ $maxWidthClass }}">
-        <x-card class="shadow-xl">
+        <x-ui.card class="shadow-xl">
             @if (is_string($title) && $title !== '')
                 <div class="mb-6 text-center">
                     <h2 class="text-2xl font-bold text-gray-800">
@@ -28,8 +28,7 @@
             @endif
 
             {{ $slot }}
-        </x-card>
+        </x-ui.card>
     </div>
 </div>
-
 

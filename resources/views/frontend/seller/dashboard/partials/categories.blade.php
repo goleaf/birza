@@ -24,7 +24,7 @@
 
             <!-- start select categories link -->
             <a 
-                href="{{ route('seller.profile.edit') }}#categories"
+                href="{{ route('seller.profile.edit', ['tab' => 'categories-tab']) }}"
                 class="bg-gradient-to-r from-amber-400 to-amber-500 text-white font-medium py-3 px-6 rounded-xl shadow-sm"
             >
                 {{ __('seller_select_categories') }}
@@ -47,7 +47,7 @@
 
             <!-- start edit link -->
             <a 
-                href="{{ route('seller.profile.edit') }}#categories"
+                href="{{ route('seller.profile.edit', ['tab' => 'categories-tab']) }}"
                 class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm"
             >
                 {{ __('seller_edit_categories') }}

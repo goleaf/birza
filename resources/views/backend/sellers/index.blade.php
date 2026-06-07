@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_sellers')],
+        ]"
+    />
+
     <x-mary-header :title="__('sellers_title')" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-mary-input

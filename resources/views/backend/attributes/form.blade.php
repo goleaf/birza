@@ -1,6 +1,18 @@
 @php($isEditing = $attribute?->exists ?? false)
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="$isEditing
+            ? [
+                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => $attribute?->getTranslation('name', app()->getLocale()) ?? __('common_edit')],
+            ]
+            : [
+                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => __('common_create')],
+            ]"
+    />
+
     <x-mary-header
         :title="$isEditing ? __('backend_attributes_edit_title') : __('backend_attributes_create_title')"
         :subtitle="$isEditing ? ($attribute?->getTranslation('name', app()->getLocale()) ?? __('backend_attributes_title')) : __('backend_attributes_title')"

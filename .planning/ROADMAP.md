@@ -21,7 +21,7 @@ This roadmap modernizes Birza's UI platform without rewriting the product. The w
 ### Phase 1: Platform Upgrade
 **Goal**: Upgrade the platform to Livewire 4, Tailwind 4, daisyUI 5, and maryUI v2 while keeping the application bootable across all role surfaces.
 **Depends on**: Nothing (first phase)
-**Requirements**: [PLAT-01, PLAT-02, PLAT-03, MARY-01]
+**Requirements**: [PLAT-01, PLAT-02, PLAT-03, PLAT-04, MARY-01]
 **UI hint**: no
 **Canonical refs**: `.planning/research/STACK.md`, `.planning/research/PITFALLS.md`, `.planning/codebase/STACK.md`, `composer.json`, `package.json`, `resources/css/app.css`, `resources/js/app.js`, `resources/views/layouts/frontend/app.blade.php`, `resources/views/layouts/backend/app.blade.php`, `resources/views/components/ui/button.blade.php`
 **Success Criteria** (what must be TRUE):

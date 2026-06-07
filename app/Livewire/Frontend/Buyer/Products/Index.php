@@ -2,40 +2,55 @@
 
 namespace App\Livewire\Frontend\Buyer\Products;
 
+use App\Http\Filters\ProductFilter;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app', ['fullWidth' => true])]
 class Index extends Component
 {
-    public function render()
+    public function render(): View
     {
         $request = request();
 
-        $categories = Category::with(['subcategories:id,category_name,parent_category_id', 'attributes' => function ($query) {
-            $query->where('is_active', true)
-                ->where('is_filterable', true)
-                ->with(['values' => function ($q) {
-                    $q->where('is_active', true)
-                        ->orderBy('value', 'asc');
-                }]);
-        }])
+        $categories = Category::query()
+            ->select(['id', 'category_name', 'parent_category_id'])
+            ->with(['subcategories' => function ($query) {
+                $query->select(['id', 'category_name', 'parent_category_id'])
+                    ->with(['attributes' => function ($attributeQuery) {
+                        $attributeQuery
+                            ->select([
+                                'attributes.id',
+                                'attributes.name',
+                                'attributes.is_required',
+                            ])
+                            ->where('is_active', true)
+                            ->where('is_filterable', true)
+                            ->with(['values' => function ($valueQuery) {
+                                $valueQuery
+                                    ->select(['id', 'attribute_id', 'value'])
+                                    ->where('is_active', true)
+                                    ->orderBy('value');
+                            }]);
+                    }]);
+            }])
             ->whereNull('parent_category_id')
             ->get();
 
         $countries = Country::active()
+            ->select(['id', 'country_name'])
             ->where('region', 'Europe')
             ->orderBy('country_name')
             ->get();
 
-        $query = Product::active()
-            ->with(['seller', 'category', 'country'])
-            ->latest();
+        $categoryIds = [];
+        $attributeValueFilters = [];
 
-        if ($categoryId = $request->category) {
+        if ($categoryId = $request->integer('category')) {
             $category = $categories->firstWhere('id', $categoryId);
             $subcategory = null;
 
@@ -50,49 +65,50 @@ class Index extends Component
             }
 
             if ($category && ! $subcategory) {
-                $query->whereIn('category_id', $category->subcategories->pluck('id')->push($categoryId));
+                $categoryIds = $category->subcategories
+                    ->pluck('id')
+                    ->push($categoryId)
+                    ->all();
             } elseif ($subcategory) {
-                $query->where('category_id', $categoryId);
+                $categoryIds = [$categoryId];
             }
 
-            if ($filters = $request->input('filters')) {
-                foreach ($filters as $attributeId => $valueId) {
-                    if ($subcategory) {
-                        $query->whereHas('category', function ($q) use ($attributeId, $valueId) {
-                            $q->whereHas('attributes', function ($q) use ($attributeId, $valueId) {
-                                $q->where('attributes.id', $attributeId)
-                                    ->whereHas('values', function ($q) use ($valueId) {
-                                        $q->where('id', $valueId);
-                                    });
-                            });
-                        });
-                    } else {
-                        $query->whereHas('category.attributes', function ($q) use ($attributeId, $valueId) {
-                            $q->where('attributes.id', $attributeId)
-                                ->whereHas('values', function ($q) use ($valueId) {
-                                    $q->where('id', $valueId);
-                                });
-                        });
-                    }
-                }
+            if (is_array($request->input('filters'))) {
+                $attributeValueFilters = $request->input('filters');
             }
         }
 
-        if ($request->filled('price_min')) {
-            $query->where('price', '>=', $request->price_min);
-        }
+        $filter = ProductFilter::fromArray([
+            'category_ids' => $categoryIds,
+            'attribute_values' => $attributeValueFilters,
+            'min_price' => $request->filled('price_min') ? $request->float('price_min') : null,
+            'max_price' => $request->filled('price_max') ? $request->float('price_max') : null,
+            'min_stock' => $request->filled('stock_min') ? $request->integer('stock_min') : null,
+            'max_stock' => $request->filled('stock_max') ? $request->integer('stock_max') : null,
+            'is_organic' => $request->filled('is_organic') ? $request->boolean('is_organic') : null,
+            'country_of_origin' => $request->filled('country_of_origin')
+                ? $request->integer('country_of_origin')
+                : null,
+        ]);
 
-        if ($request->filled('price_max')) {
-            $query->where('price', '<=', $request->price_max);
-        }
-
-        if ($request->filled('is_organic')) {
-            $query->where('is_organic', filter_var($request->is_organic, FILTER_VALIDATE_BOOLEAN));
-        }
-
-        if ($request->filled('country_of_origin')) {
-            $query->where('country_of_origin', $request->country_of_origin);
-        }
+        $query = Product::active()
+            ->select([
+                'id',
+                'name',
+                'category_id',
+                'seller_id',
+                'price',
+                'unit',
+                'stock',
+                'product_image',
+            ])
+            ->with([
+                'seller:id,company_name',
+                'category:id,category_name,parent_category_id',
+                'category.parent:id,category_name',
+            ])
+            ->filter($filter)
+            ->latest();
 
         $products = $query->paginate(12)->withQueryString();
 
@@ -103,5 +119,3 @@ class Index extends Component
         ]);
     }
 }
-
-

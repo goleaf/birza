@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_global_settings')],
+        ]"
+    />
+
     <x-mary-header
         :title="__('backend_settings_edit_title')"
         :subtitle="__('backend_settings_theme_subtitle')"

@@ -2,424 +2,337 @@
 
     <!-- start main container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <x-buyer.breadcrumbs
+            class="mb-6"
+            :items="[
+                ['label' => __('profile')],
+            ]"
+        />
 
-        <!-- start tabs navigation -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <nav class="flex divide-x divide-gray-200 border-b border-gray-200" aria-label="Tabs">
-                <!-- start profile tab button -->
-                <button 
-                    onclick="switchTab('profile')"
-                    class="tab-button flex-1 py-4 px-4 text-center text-sm font-medium relative hover:bg-gray-50 focus:z-10 focus:outline-none transition-colors"
-                    id="profile-tab"
-                >
-                    <span class="inline-flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                        {{ __('profile_edit_profile') }}
-                    </span>
-                </button>
-                <!-- end profile tab button -->
+        <x-ui.header
+            class="mb-6"
+            :title="__('profile')"
+            :subtitle="__('profile_edit_profile')"
+        />
 
-                @if (!empty($buyer->company_name) && !empty($buyer->address) && !empty($buyer->phone))
-                    <!-- start password tab button -->
-                    <button 
-                        onclick="switchTab('password')"
-                        class="tab-button flex-1 py-4 px-4 text-center text-sm font-medium relative hover:bg-gray-50 focus:z-10 focus:outline-none transition-colors"
-                        id="password-tab"
-                    >
-                        <span class="inline-flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 8z"/>
-                            </svg>
-                            {{ __('profile_update_password') }}
-                        </span>
-                    </button>
-                    <!-- end password tab button -->
-                @endif
-            </nav>
-        </div>
-        <!-- end tabs navigation -->
-
-        <!-- start profile tab content -->
-        <div id="profile-content" class="tab-content">
-            <div class="bg-white rounded-lg shadow-sm">
-                <div class="p-8">
-                    <form wire:submit.prevent="saveProfile">
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- start name field -->
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_name') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="name" 
-                                    wire:model="name"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('name') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('name')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end name field -->
-
-                            <!-- start email field -->
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_email') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="email" 
-                                    id="email" 
-                                    wire:model="email"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('email')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end email field -->
-
-                            <!-- start company name field -->
-                            <div>
-                                <label for="company_name" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_company_name') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="company_name" 
-                                    wire:model="company_name"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('company_name')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end company name field -->
-
-                            <!-- start company code field -->
-                            <div>
-                                <label for="company_code" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_company_code') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="company_code" 
-                                    wire:model="company_code"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_code') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('company_code')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end company code field -->
-
-                            <!-- start vat code field -->
-                            <div>
-                                <label for="vat_code" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_vat_code') }}
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="vat_code" 
-                                    wire:model="vat_code"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
-                                >
-                            </div>
-                            <!-- end vat code field -->
-
-                            <!-- start address field -->
-                            <div>
-                                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_address') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="address" 
-                                    wire:model="address"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('address') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('address')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end address field -->
-
-                            <!-- start phone field -->
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_phone') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    id="phone" 
-                                    wire:model="phone"
-                                    placeholder="+370" 
-                                    data-mask="+370 99999999"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('phone') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('phone')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end phone field -->
-
-                            <!-- start bank account field -->
-                            <div>
-                                <label for="bank_account" class="block text-sm font-medium text-gray-700 mb-1">
-                                    {{ __('auth_bank_account') }}
-                                    <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                        {{ __('common_required') }}
-                                    </span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="bank_account" 
-                                    wire:model="bank_account"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('bank_account') border-red-500 @enderror"
-                                    required
-                                >
-                                @error('bank_account')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <!-- end bank account field -->
-                        </div>
-
-                        <!-- start form buttons -->
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button 
-                                type="submit"
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                                {{ __('profile_update_profile') }}
-                            </button>
-
-                            @if (!empty($buyer->company_name) && !empty($buyer->address) && !empty($buyer->phone))
-                                <a 
-                                    href="{{ route('buyer.dashboard') }}"
-                                    class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200"
-                                >
-                                    {{ __('dashboard_dashboard_title') }}
-                                </a>
-                            @endif
-                        </div>
-                        <!-- end form buttons -->
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- end profile tab content -->
-
-        <!-- start password tab content -->
-        @if (!empty($buyer->company_name) && !empty($buyer->address) && !empty($buyer->phone))
-            <div id="password-content" class="tab-content hidden">
+        <x-ui.tabs wire:model.live="selectedTab">
+            <x-mary-tab
+                name="profile-tab"
+                :label="__('profile_edit_profile')"
+                icon="o-user-circle"
+                class="!px-0 !pb-0 !pt-6"
+            >
                 <div class="bg-white rounded-lg shadow-sm">
                     <div class="p-8">
-                        <!-- start password success message -->
-                        @if (session('password_success'))
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6">
-                                {{ session('password_success') }}
-                            </div>
-                        @endif
-                        <!-- end password success message -->
+                        <form wire:submit.prevent="saveProfile">
 
-                        <!-- start password errors -->
-                        @if ($errors->updatePassword->any())
-                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
-                                <ul class="list-disc list-inside">
-                                    @foreach ($errors->updatePassword->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <!-- end password errors -->
-
-                        <!-- start password form -->
-                        <form wire:submit.prevent="savePassword" class="max-w-md mx-auto space-y-6">
-
-                            <div class="space-y-2">
-                                <!-- start current password field -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- start name field -->
                                 <div>
-                                    <label 
-                                        for="current_password" 
-                                        class="block text-gray-700 text-sm font-bold mb-2"
-                                    >
-                                        {{ __('auth_current_password') }}
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_name') }}
                                         <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
                                             {{ __('common_required') }}
                                         </span>
                                     </label>
                                     <input 
-                                        type="password" 
-                                        id="current_password"
-                                        wire:model="current_password"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('current_password') border-red-500 @enderror"
+                                        type="text" 
+                                        id="name" 
+                                        wire:model="name"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('name') border-red-500 @enderror"
                                         required
                                     >
-                                    @error('current_password')
-                                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                    @error('name')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <!-- end current password field -->
+                                <!-- end name field -->
 
-                                <!-- start new password field -->
+                                <!-- start email field -->
                                 <div>
-                                    <label 
-                                        for="password" 
-                                        class="block text-gray-700 text-sm font-bold mb-2"
-                                    >
-                                        {{ __('auth_new_password') }}
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_email') }}
                                         <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
                                             {{ __('common_required') }}
                                         </span>
                                     </label>
                                     <input 
-                                        type="password" 
-                                        id="password"
-                                        wire:model="password"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('password') border-red-500 @enderror"
+                                        type="email" 
+                                        id="email" 
+                                        wire:model="email"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('email') border-red-500 @enderror"
                                         required
                                     >
-                                    @error('password')
-                                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                    @error('email')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <!-- end new password field -->
+                                <!-- end email field -->
 
-                                <!-- start confirm password field -->
+                                <!-- start company name field -->
                                 <div>
-                                    <label 
-                                        for="password_confirmation" 
-                                        class="block text-gray-700 text-sm font-bold mb-2"
-                                    >
-                                        {{ __('auth_confirm_password') }}
+                                    <label for="company_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_company_name') }}
                                         <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
                                             {{ __('common_required') }}
                                         </span>
                                     </label>
                                     <input 
-                                        type="password" 
-                                        id="password_confirmation"
-                                        wire:model="password_confirmation"
+                                        type="text" 
+                                        id="company_name" 
+                                        wire:model="company_name"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_name') border-red-500 @enderror"
+                                        required
+                                    >
+                                    @error('company_name')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- end company name field -->
+
+                                <!-- start company code field -->
+                                <div>
+                                    <label for="company_code" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_company_code') }}
+                                        <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                            {{ __('common_required') }}
+                                        </span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="company_code" 
+                                        wire:model="company_code"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('company_code') border-red-500 @enderror"
+                                        required
+                                    >
+                                    @error('company_code')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- end company code field -->
+
+                                <!-- start vat code field -->
+                                <div>
+                                    <label for="vat_code" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_vat_code') }}
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="vat_code" 
+                                        wire:model="vat_code"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
-                                        required
                                     >
                                 </div>
-                                <!-- end confirm password field -->
+                                <!-- end vat code field -->
 
-                                <!-- start password form button -->
-                                <button 
-                                    type="submit"
-                                    wire:loading.attr="disabled"
-                                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {{ __('profile_update_password') }}
-                                </button>
-                                <!-- end password form button -->
+                                <!-- start address field -->
+                                <div>
+                                    <label for="address" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_address') }}
+                                        <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                            {{ __('common_required') }}
+                                        </span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="address" 
+                                        wire:model="address"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('address') border-red-500 @enderror"
+                                        required
+                                    >
+                                    @error('address')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- end address field -->
+
+                                <!-- start phone field -->
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_phone') }}
+                                        <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                            {{ __('common_required') }}
+                                        </span>
+                                    </label>
+                                    <input 
+                                        type="tel" 
+                                        id="phone" 
+                                        wire:model="phone"
+                                        placeholder="+370" 
+                                        data-mask="+370 99999999"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('phone') border-red-500 @enderror"
+                                        required
+                                    >
+                                    @error('phone')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- end phone field -->
+
+                                <!-- start bank account field -->
+                                <div>
+                                    <label for="bank_account" class="block text-sm font-medium text-gray-700 mb-1">
+                                        {{ __('auth_bank_account') }}
+                                        <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                            {{ __('common_required') }}
+                                        </span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="bank_account" 
+                                        wire:model="bank_account"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('bank_account') border-red-500 @enderror"
+                                        required
+                                    >
+                                    @error('bank_account')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- end bank account field -->
                             </div>
+                            <!-- start form buttons -->
+                            <div class="mt-6 flex justify-end space-x-4">
+                                <x-ui.button
+                                    type="submit"
+                                    primary
+                                    spinner="saveProfile"
+                                    :label="__('profile_update_profile')"
+                                />
+
+                                @if ($canUpdatePassword)
+                                    <x-ui.button
+                                        :href="route('buyer.dashboard')"
+                                        positive
+                                        :label="__('dashboard_dashboard_title')"
+                                    />
+                                @endif
+                            </div>
+                            <!-- end form buttons -->
                         </form>
-                        <!-- end password form -->
                     </div>
                 </div>
-            </div>
-        @endif
-        <!-- end password tab content -->
+            </x-mary-tab>
+
+            @if ($canUpdatePassword)
+                <x-mary-tab
+                    name="password-tab"
+                    :label="__('profile_update_password')"
+                    icon="o-key"
+                    class="!px-0 !pb-0 !pt-6"
+                >
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="p-8">
+                            <!-- start password success message -->
+                            @if (session('password_success'))
+                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6">
+                                    {{ session('password_success') }}
+                                </div>
+                            @endif
+                            <!-- end password success message -->
+
+                            <!-- start password errors -->
+                            @if ($errors->updatePassword->any())
+                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
+                                    <ul class="list-disc list-inside">
+                                        @foreach ($errors->updatePassword->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <!-- end password errors -->
+
+                            <!-- start password form -->
+                            <form wire:submit.prevent="savePassword" class="max-w-md mx-auto space-y-6">
+
+                                <div class="space-y-2">
+                                    <!-- start current password field -->
+                                    <div>
+                                        <label 
+                                            for="current_password" 
+                                            class="block text-gray-700 text-sm font-bold mb-2"
+                                        >
+                                            {{ __('auth_current_password') }}
+                                            <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                                {{ __('common_required') }}
+                                            </span>
+                                        </label>
+                                        <input 
+                                            type="password" 
+                                            id="current_password"
+                                            wire:model="current_password"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('current_password') border-red-500 @enderror"
+                                            required
+                                        >
+                                        @error('current_password')
+                                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <!-- end current password field -->
+
+                                    <!-- start new password field -->
+                                    <div>
+                                        <label 
+                                            for="password" 
+                                            class="block text-gray-700 text-sm font-bold mb-2"
+                                        >
+                                            {{ __('auth_new_password') }}
+                                            <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                                {{ __('common_required') }}
+                                            </span>
+                                        </label>
+                                        <input 
+                                            type="password" 
+                                            id="password"
+                                            wire:model="password"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm @error('password') border-red-500 @enderror"
+                                            required
+                                        >
+                                        @error('password')
+                                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <!-- end new password field -->
+
+                                    <!-- start confirm password field -->
+                                    <div>
+                                        <label 
+                                            for="password_confirmation" 
+                                            class="block text-gray-700 text-sm font-bold mb-2"
+                                        >
+                                            {{ __('auth_confirm_password') }}
+                                            <span class="ml-1 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                                {{ __('common_required') }}
+                                            </span>
+                                        </label>
+                                        <input 
+                                            type="password" 
+                                            id="password_confirmation"
+                                            wire:model="password_confirmation"
+                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
+                                            required
+                                        >
+                                    </div>
+                                    <!-- end confirm password field -->
+
+                                    <!-- start password form button -->
+                                    <x-ui.button
+                                        type="submit"
+                                        primary
+                                        class="w-full"
+                                        spinner="savePassword"
+                                        wire:loading.attr="disabled"
+                                        :label="__('profile_update_password')"
+                                    />
+                                    <!-- end password form button -->
+                                </div>
+                            </form>
+                            <!-- end password form -->
+                        </div>
+                    </div>
+                </x-mary-tab>
+            @endif
+        </x-ui.tabs>
     </div>
     <!-- end main container -->
-
-    <script>
-        function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-
-            // Show selected tab content
-            document.getElementById(tabName + '-content').classList.remove('hidden');
-
-            // Update tab button styles
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-blue-600', 'text-white');
-                button.classList.add('bg-gray-100', 'text-gray-700');
-            });
-
-            document.getElementById(tabName + '-tab').classList.remove('bg-gray-100', 'text-gray-700');
-            document.getElementById(tabName + '-tab').classList.add('bg-gradient-to-r', 'from-blue-500', 'to-blue-600', 'text-white');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const hash = window.location.hash;
-            const profileTab = document.getElementById('profile-tab');
-            const passwordTab = document.getElementById('password-tab');
-            const profileContent = document.getElementById('profile-content');
-            const passwordContent = document.getElementById('password-content');
-
-            function resetTabs() {
-                profileTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-blue-600', 'text-white');
-                profileTab.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-
-                if (passwordTab) {
-                    passwordTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-blue-600', 'text-white');
-                    passwordTab.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-                }
-
-                profileContent.classList.add('hidden');
-                if (passwordContent) {
-                    passwordContent.classList.add('hidden');
-                }
-            }
-
-            function showTab(tabButton, tabContent) {
-                resetTabs();
-                tabButton.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-                tabButton.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-blue-600', 'text-white');
-                tabContent.classList.remove('hidden');
-            }
-
-            // Default to profile tab
-            showTab(profileTab, profileContent);
-
-            // Check hash and show corresponding tab
-            switch (hash) {
-                case '#password':
-                    if (passwordTab && passwordContent) {
-                        showTab(passwordTab, passwordContent);
-                    }
-                    break;
-                case '#profile':
-                default:
-                    showTab(profileTab, profileContent);
-                    break;
-            }
-        });
-    </script>
-
 </div>

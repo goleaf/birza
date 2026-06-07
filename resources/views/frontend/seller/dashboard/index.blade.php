@@ -166,13 +166,18 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        {{ $item['order']->payment_status === \App\Models\Order::STATUS['PENDING'] ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $item['order']->payment_status === \App\Models\Order::STATUS['PAID'] ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $item['order']->payment_status === \App\Models\Order::STATUS['FAILED'] ? 'bg-red-100 text-red-800' : '' }}">
-                                        {{ __('orders_status_3_' . strtolower($item['order']->payment_status)) }}
-                                    </span>
+                                    <x-ui.badge
+                                        :value="__('orders_status_3_' . strtolower($item['order']->payment_status))"
+                                        :color="match (strtolower((string) $item['order']->payment_status)) {
+                                            'pending' => 'warning',
+                                            'paid' => 'success',
+                                            'failed' => 'error',
+                                            default => 'neutral',
+                                        }"
+                                        soft
+                                        sm
+                                        class="font-semibold"
+                                    />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     €{{ number_format($item['total_price'], 2) }}
@@ -224,18 +229,41 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <!-- Profile Card -->
         <div class="bg-white rounded-lg shadow-sm p-6">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold">{{ Auth::guard('seller')->user()->name }}</h3>
-                    <p class="text-gray-500 text-sm">{{ Auth::guard('seller')->user()->email }}</p>
-                </div>
-            </div>
+            <x-ui.popover position="bottom-start" class="mb-4 block">
+                <x-slot:trigger>
+                    <button type="button" class="flex w-full items-center text-left">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                            <x-ui.icon name="user-circle" class="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold">{{ Auth::guard('seller')->user()->name }}</h3>
+                            <p class="text-sm text-gray-500">{{ Auth::guard('seller')->user()->email }}</p>
+                        </div>
+                    </button>
+                </x-slot:trigger>
+
+                <x-slot:content>
+                    <div class="space-y-3">
+                        <div class="font-semibold text-gray-900">{{ __('profile_edit_profile') }}</div>
+
+                        <dl class="space-y-2 text-gray-600">
+                            <div class="flex items-start justify-between gap-3">
+                                <dt class="font-medium text-gray-500">{{ __('auth_company_name') }}</dt>
+                                <dd class="text-right">{{ Auth::guard('seller')->user()->company_name ?: __('dashboard_not_set') }}</dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-3">
+                                <dt class="font-medium text-gray-500">{{ __('auth_email') }}</dt>
+                                <dd class="text-right break-all">{{ Auth::guard('seller')->user()->email }}</dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-3">
+                                <dt class="font-medium text-gray-500">{{ __('dashboard_member_since') }}</dt>
+                                <dd class="text-right">{{ Auth::guard('seller')->user()->created_at->format('d F, Y') }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </x-slot:content>
+            </x-ui.popover>
+
             <div class="border-t pt-4">
                 <p class="flex justify-between text-sm mb-2">
                     <span class="text-gray-600">{{ __('dashboard_company') }}:</span>
@@ -287,15 +315,57 @@
             <div class="space-y-4">
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-gray-600">{{ __('dashboard_market_trend') }}</span>
-                    <span class="text-green-500 font-medium">{{ __('dashboard_bullish') }}</span>
+                    <div class="flex items-center gap-3">
+                        <x-ui.badge
+                            :value="__('dashboard_bullish')"
+                            color="success"
+                            soft
+                            sm
+                        />
+                        <x-ui.rating
+                            model="marketTrendRating"
+                            shape="circle"
+                            color="success"
+                            class="rating-sm"
+                            disabled
+                        />
+                    </div>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-gray-600">{{ __('dashboard_volatility') }}</span>
-                    <span class="text-yellow-500 font-medium">{{ __('dashboard_medium') }}</span>
+                    <div class="flex items-center gap-3">
+                        <x-ui.badge
+                            :value="__('dashboard_medium')"
+                            color="warning"
+                            soft
+                            sm
+                        />
+                        <x-ui.rating
+                            model="volatilityRating"
+                            shape="circle"
+                            color="warning"
+                            class="rating-sm"
+                            disabled
+                        />
+                    </div>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-gray-600">{{ __('dashboard_competition') }}</span>
-                    <span class="text-red-500 font-medium">{{ __('dashboard_high') }}</span>
+                    <div class="flex items-center gap-3">
+                        <x-ui.badge
+                            :value="__('dashboard_high')"
+                            color="error"
+                            soft
+                            sm
+                        />
+                        <x-ui.rating
+                            model="competitionRating"
+                            shape="circle"
+                            color="error"
+                            class="rating-sm"
+                            disabled
+                        />
+                    </div>
                 </div>
                 <div class="mt-4 pt-4 border-t">
                     <h4 class="text-sm font-medium mb-2">{{ __('dashboard_recommended_actions') }}</h4>
@@ -311,35 +381,12 @@
 
     <!-- Sales Chart -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <h3 class="text-lg font-semibold mb-4">{{ __('dashboard_monthly_sales') }}</h3>
-        <div class="h-48 flex items-end space-x-2">
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 60%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 70%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 40%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 80%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 95%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 60%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 45%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 75%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 85%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 90%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 85%"></div>
-            <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t" style="height: 95%"></div>
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">{{ __('dashboard_monthly_sales') }}</h3>
+            <p class="text-sm text-gray-500">{{ __('dashboard_monthly_sales_subtitle') }}</p>
         </div>
-        <div class="flex justify-between mt-2 text-xs text-gray-500">
-            <span>{{ __('dashboard_jan') }}</span>
-            <span>{{ __('dashboard_feb') }}</span>
-            <span>{{ __('dashboard_mar') }}</span>
-            <span>{{ __('dashboard_apr') }}</span>
-            <span>{{ __('dashboard_may') }}</span>
-            <span>{{ __('dashboard_jun') }}</span>
-            <span>{{ __('dashboard_jul') }}</span>
-            <span>{{ __('dashboard_aug') }}</span>
-            <span>{{ __('dashboard_sep') }}</span>
-            <span>{{ __('dashboard_oct') }}</span>
-            <span>{{ __('dashboard_nov') }}</span>
-            <span>{{ __('dashboard_dec') }}</span>
-        </div>
+
+        <x-ui.chart wire:model="monthlySalesChart" class="h-80 rounded-lg bg-gray-50 p-4" />
     </div>
 
     <!-- Recent Orders Table -->
@@ -398,22 +445,48 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div class="bg-white rounded-lg shadow-sm p-6">
             <h3 class="text-lg font-semibold mb-4">{{ __('dashboard_trading_performance') }}</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center">
-                    <span>{{ __('dashboard_win_rate') }}</span>
-                    <span class="text-green-500 font-bold">68%</span>
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div class="grid flex-1 gap-3">
+                    <x-ui.statistic
+                        :title="__('dashboard_profit_factor')"
+                        value="2.4"
+                        icon="chart-bar-square"
+                        color="text-info"
+                        class="shadow-sm"
+                    />
+
+                    <x-ui.statistic
+                        :title="__('dashboard_average_trade')"
+                        value="+€234.56"
+                        icon="arrow-trending-up"
+                        color="text-success"
+                        class="shadow-sm"
+                    />
+
+                    <x-ui.statistic
+                        :title="__('dashboard_drawdown')"
+                        value="-12.3%"
+                        icon="arrow-trending-down"
+                        color="text-error"
+                        class="shadow-sm"
+                    />
                 </div>
-                <div class="flex justify-between items-center">
-                    <span>{{ __('dashboard_profit_factor') }}</span>
-                    <span class="text-blue-500 font-bold">2.4</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span>{{ __('dashboard_average_trade') }}</span>
-                    <span class="text-green-500 font-bold">+€234.56</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span>{{ __('dashboard_drawdown') }}</span>
-                    <span class="text-red-500 font-bold">-12.3%</span>
+                <div class="flex flex-col items-center rounded-2xl bg-base-200/70 px-6 py-5 text-center">
+                    <x-ui.progress-radial
+                        value="68"
+                        color="success"
+                        class="font-semibold"
+                        style="--size: 5rem; --thickness: 0.45rem;"
+                    />
+                    <div class="mt-3 text-sm font-medium text-gray-900">{{ __('dashboard_win_rate') }}</div>
+                    <x-ui.rating
+                        model="winRateRating"
+                        shape="circle"
+                        color="success"
+                        class="rating-sm mt-2"
+                        disabled
+                    />
+                    <div class="text-xs text-gray-500">{{ __('dashboard_strong') }}</div>
                 </div>
             </div>
         </div>
@@ -421,26 +494,26 @@
         <div class="bg-white rounded-lg shadow-sm p-6">
             <h3 class="text-lg font-semibold mb-4">{{ __('dashboard_risk_management') }}</h3>
             <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <span>{{ __('dashboard_position_size') }}</span>
-                    <div class="w-1/2 bg-gray-200 rounded-full h-2">
-                        <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between gap-4">
+                        <span>{{ __('dashboard_position_size') }}</span>
+                        <span class="text-sm font-medium">65%</span>
                     </div>
-                    <span class="text-sm font-medium">65%</span>
+                    <x-ui.progress value="65" color="primary" class="h-2.5" />
                 </div>
-                <div class="flex items-center justify-between">
-                    <span>{{ __('dashboard_risk_level') }}</span>
-                    <div class="w-1/2 bg-gray-200 rounded-full h-2">
-                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between gap-4">
+                        <span>{{ __('dashboard_risk_level') }}</span>
+                        <span class="text-sm font-medium">45%</span>
                     </div>
-                    <span class="text-sm font-medium">45%</span>
+                    <x-ui.progress value="45" color="warning" class="h-2.5" />
                 </div>
-                <div class="flex items-center justify-between">
-                    <span>{{ __('dashboard_leverage') }}</span>
-                    <div class="w-1/2 bg-gray-200 rounded-full h-2">
-                        <div class="bg-red-500 h-2 rounded-full" style="width: 30%"></div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between gap-4">
+                        <span>{{ __('dashboard_leverage') }}</span>
+                        <span class="text-sm font-medium">30%</span>
                     </div>
-                    <span class="text-sm font-medium">30%</span>
+                    <x-ui.progress value="30" color="error" class="h-2.5" />
                 </div>
             </div>
         </div>
@@ -454,11 +527,9 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h4 class="text-sm font-medium text-gray-600 mb-2">{{ __('dashboard_bulls_vs_bears') }}</h4>
-                <div class="flex items-center">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-green-500 h-2.5 rounded-full" style="width: 65%"></div>
-                    </div>
-                    <span class="ml-2 text-sm">65%</span>
+                <div class="space-y-2">
+                    <x-ui.progress value="65" color="success" class="h-2.5" />
+                    <span class="text-sm font-medium text-gray-700">65%</span>
                 </div>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
@@ -483,28 +554,37 @@
     <div class="space-y-4">
         <div class="bg-white p-4 rounded-lg shadow">
             <h4 class="font-semibold mb-2">{{ __('dashboard_portfolio_distribution') }}</h4>
-            <div class="flex items-center">
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
-                </div>
-                <span class="ml-2">45%</span>
+            <div class="space-y-2">
+                <x-ui.progress value="45" color="primary" class="h-2.5" />
+                <span class="text-sm font-medium text-gray-700">45%</span>
             </div>
             <div class="text-sm text-gray-500 mt-1">{{ __('dashboard_portfolio_description') }}</div>
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow">
             <h4 class="font-semibold mb-2">{{ __('dashboard_risk_assessment') }}</h4>
-            <div class="flex items-center space-x-2">
-                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span class="text-sm">{{ __('dashboard_low_risk') }} (68%)</span>
-            </div>
-            <div class="flex items-center space-x-2 mt-1">
-                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <span class="text-sm">{{ __('dashboard_medium_risk') }} (24%)</span>
-            </div>
-            <div class="flex items-center space-x-2 mt-1">
-                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span class="text-sm">{{ __('dashboard_high_risk') }} (8%)</span>
+            <div class="space-y-3">
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between gap-4 text-sm">
+                        <span>{{ __('dashboard_low_risk') }}</span>
+                        <span class="font-medium">68%</span>
+                    </div>
+                    <x-ui.progress value="68" color="success" class="h-2.5" />
+                </div>
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between gap-4 text-sm">
+                        <span>{{ __('dashboard_medium_risk') }}</span>
+                        <span class="font-medium">24%</span>
+                    </div>
+                    <x-ui.progress value="24" color="warning" class="h-2.5" />
+                </div>
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between gap-4 text-sm">
+                        <span>{{ __('dashboard_high_risk') }}</span>
+                        <span class="font-medium">8%</span>
+                    </div>
+                    <x-ui.progress value="8" color="error" class="h-2.5" />
+                </div>
             </div>
         </div>
 

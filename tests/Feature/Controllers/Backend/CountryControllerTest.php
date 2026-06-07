@@ -30,6 +30,8 @@ class CountryControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_countries'))
             ->assertSee(__('common_actions'))
             ->assertSee(__('common_edit'))
             ->assertSee(__('common_delete'));
@@ -44,7 +46,9 @@ class CountryControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryForm::class)
-            ->assertSee(__('backend.countries.regions.europe'))
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_countries'))
+            ->assertSee(__('backend_countries_regions_europe'))
             ->assertSee(__('backend_countries_fields_is_active'));
     }
 
@@ -65,10 +69,12 @@ class CountryControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryForm::class)
-            ->assertSee(__('backend.countries.regions.europe'))
-            ->assertSee(__('backend.countries.regions.asia'))
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_countries'))
+            ->assertSee(__('backend_countries_regions_europe'))
+            ->assertSee(__('backend_countries_regions_asia'))
             ->assertSee(__('backend_countries_fields_is_active'))
-            ->assertDontSee('backend.countries.regions.europe');
+            ->assertDontSee('backend_countries_regions_europe');
 
         foreach (config('app.locales') as $locale) {
             $response->assertSee('data-name="country-name-'.$locale.'"', false);

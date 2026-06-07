@@ -1,6 +1,18 @@
 @php($isEditing = $category?->exists ?? false)
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="$isEditing
+            ? [
+                ['label' => __('navigation_categories'), 'link' => route('backend.categories.index')],
+                ['label' => $category->getTranslation('category_name', app()->getLocale())],
+            ]
+            : [
+                ['label' => __('navigation_categories'), 'link' => route('backend.categories.index')],
+                ['label' => __('common_create')],
+            ]"
+    />
+
     <x-mary-header
         :title="$isEditing ? __('backend_categories_edit_title') : __('backend_categories_create_title')"
         :subtitle="$isEditing ? $category->getTranslation('category_name', app()->getLocale()) : __('backend_categories_title')"

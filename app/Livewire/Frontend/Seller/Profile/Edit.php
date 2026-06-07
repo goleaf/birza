@@ -3,30 +3,45 @@
 namespace App\Livewire\Frontend\Seller\Profile;
 
 use App\Models\Category;
+use App\Models\Users\Seller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Edit extends Component
 {
+    #[Url(as: 'tab', except: 'profile-tab')]
+    public string $selectedTab = 'profile-tab';
+
     public string $name = '';
+
     public string $email = '';
+
     public string $company_name = '';
+
     public string $company_code = '';
+
     public ?string $vat_code = null;
+
     public string $address = '';
+
     public string $phone = '';
+
     public string $bank_account = '';
+
     public string $veterinary_certificate_number = '';
 
     public array $selectedCategories = [];
 
     public string $current_password = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     public function mount(): void
@@ -44,6 +59,7 @@ class Edit extends Component
         $this->veterinary_certificate_number = (string) ($seller?->veterinary_certificate_number ?? '');
 
         $this->selectedCategories = $seller?->categories->pluck('id')->all() ?? [];
+        $this->selectedTab = $this->normalizedSelectedTab($seller);
     }
 
     public function saveProfile(): void
@@ -79,6 +95,7 @@ class Edit extends Component
                     $category = Category::withCount('subcategories')->find($value);
                     if (! $category) {
                         $fail(__('validation_category_invalid'));
+
                         return;
                     }
 
@@ -126,14 +143,30 @@ class Edit extends Component
             ->whereNull('parent_category_id')
             ->get();
 
-        $attachedCategories = $seller->categories->pluck('id')->toArray();
-
         return view('frontend.seller.profile.edit', [
             'seller' => $seller,
             'categories' => $categories,
-            'attachedCategories' => $attachedCategories,
+            'canUpdatePassword' => $this->canShowPasswordTab($seller),
         ]);
     }
+
+    private function canShowPasswordTab(?Seller $seller): bool
+    {
+        return filled($seller?->company_name)
+            && filled($seller?->address)
+            && filled($seller?->phone);
+    }
+
+    private function normalizedSelectedTab(?Seller $seller): string
+    {
+        $availableTabs = ['profile-tab', 'categories-tab'];
+
+        if ($this->canShowPasswordTab($seller)) {
+            $availableTabs[] = 'password-tab';
+        }
+
+        return in_array($this->selectedTab, $availableTabs, true)
+            ? $this->selectedTab
+            : 'profile-tab';
+    }
 }
-
-

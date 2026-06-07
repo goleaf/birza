@@ -16,6 +16,8 @@ class Show extends Component
 
     public Order $order;
 
+    public int $currentOrderStep = 1;
+
     public function mount(Order $order): void
     {
         if ($order->buyer_id !== Auth::guard('buyer')->id()) {
@@ -23,6 +25,7 @@ class Show extends Component
         }
 
         $this->order = $order->load(['items.product', 'items.seller']);
+        $this->currentOrderStep = $this->order->lifecycleCurrentStep();
     }
 
     public function cancelOrder(): void
@@ -33,6 +36,7 @@ class Show extends Component
 
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
             $this->notifyError(__('orders_messages_cannot_cancel'));
+
             return;
         }
 
@@ -48,6 +52,7 @@ class Show extends Component
         });
 
         $this->order->refresh()->load(['items.product', 'items.seller']);
+        $this->currentOrderStep = $this->order->lifecycleCurrentStep();
 
         $this->notifySuccess(__('orders_messages_cancelled_success'));
     }
@@ -67,8 +72,10 @@ class Show extends Component
     {
         return view('frontend.buyer.orders.show', [
             'order' => $this->order,
+            'orderStepItems' => $this->order->lifecycleSteps(),
+            'orderStepPanel' => $this->order->lifecyclePanel(),
+            'orderStepsColor' => $this->order->lifecycleStepsColor(),
+            'orderTimelineItems' => $this->order->lifecycleTimeline(),
         ]);
     }
 }
-
-

@@ -12,7 +12,7 @@ class CodexGsdIntegrationTest extends TestCase
         $config = file_get_contents($configPath);
 
         $this->assertFileExists($configPath);
-        $this->assertStringContainsString('codex_hooks = true', $config);
+        $this->assertStringContainsString('hooks = true', $config);
         $this->assertStringContainsString(sprintf('cwd = "%s"', base_path()), $config);
         $this->assertStringContainsString('[agents.project-gsd-coordinator]', $config);
         $this->assertStringContainsString('.codex/agents/project-gsd-coordinator.toml', $config);

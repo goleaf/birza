@@ -1,39 +1,11 @@
-@php
-    $sellerDetails = [
-        [
-            'icon' => 'o-building-office-2',
-            'value' => $seller->company_name ?: __('common_not_specified'),
-            'label' => __('backend_sellers_fields_company_name'),
-        ],
-        [
-            'icon' => 'o-user',
-            'value' => $seller->name ?: __('common_not_specified'),
-            'label' => __('sellers_contact_person'),
-        ],
-        [
-            'icon' => 'o-envelope',
-            'value' => $seller->email ?: __('common_not_specified'),
-            'label' => __('sellers_email'),
-        ],
-        [
-            'icon' => 'o-identification',
-            'value' => $seller->vat_code ?: __('common_not_specified'),
-            'label' => __('sellers_vat_code'),
-        ],
-        [
-            'icon' => 'o-phone',
-            'value' => $seller->phone ?: __('common_not_specified'),
-            'label' => __('sellers_phone'),
-        ],
-        [
-            'icon' => 'o-map-pin',
-            'value' => $seller->address ?: __('common_not_specified'),
-            'label' => __('sellers_address'),
-        ],
-    ];
-@endphp
-
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+            ['label' => $seller->company_name ?: $seller->name],
+        ]"
+    />
+
     <x-mary-header
         :title="$seller->company_name ?: $seller->name"
         :subtitle="$seller->email"
@@ -163,19 +135,6 @@
 
             <x-mary-card :title="__('sellers_orders')" shadow>
                 @forelse ($recentOrders as $order)
-                    @php
-                        $statusClass = match ($order->payment_status) {
-                            $orderStatuses['PENDING'] => 'badge-warning badge-outline',
-                            $orderStatuses['PAID'] => 'badge-success badge-outline',
-                            $orderStatuses['PROCESSING'] => 'badge-info badge-outline',
-                            $orderStatuses['SHIPPED'] => 'badge-secondary badge-outline',
-                            $orderStatuses['DELIVERED'] => 'badge-success',
-                            $orderStatuses['CANCELLED'], $orderStatuses['FAILED'] => 'badge-error badge-outline',
-                            $orderStatuses['REFUNDED'] => 'badge-neutral badge-outline',
-                            default => 'badge-neutral badge-outline',
-                        };
-                    @endphp
-
                     <x-mary-list-item
                         :item="$order"
                         :link="route('backend.orders.show', $order)"
@@ -198,7 +157,7 @@
                         <x-slot:sub-value>
                             {{ $order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified') }}
                             ·
-                            {{ __('orders_items') }}: {{ $order->orderItems->count() }}
+                            {{ __('orders_items') }}: {{ $order->order_items_count }}
                         </x-slot:sub-value>
 
                         <x-slot:actions>
@@ -207,7 +166,7 @@
                             </span>
                             <x-mary-badge
                                 :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                                class="{{ $statusClass }}"
+                                class="{{ $order->payment_status_badge_class }}"
                             />
                         </x-slot:actions>
                     </x-mary-list-item>

@@ -26,6 +26,11 @@ class CartControllerTest extends TestCase
             ->get(route('buyer.cart.index'));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(BuyerCartIndex::class);
+            ->assertSeeLivewire(BuyerCartIndex::class)
+            ->assertSee(__('common_dashboard'))
+            ->assertSee(__('common_cart'))
+            ->assertSee(__('cart_shopping_cart'))
+            ->assertSee(__('cart_continue_shopping'))
+            ->assertSee('badge-primary');
     }
 }

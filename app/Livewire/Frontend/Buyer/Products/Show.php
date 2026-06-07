@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Buyer\Products;
 
 use App\Models\Product;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use LukePOLO\LaraCart\Facades\LaraCart;
@@ -11,6 +12,7 @@ use LukePOLO\LaraCart\Facades\LaraCart;
 class Show extends Component
 {
     public Product $product;
+
     public int $quantity = 1;
 
     public function mount(Product $product): void
@@ -18,6 +20,19 @@ class Show extends Component
         if ($product->trashed() || $product->is_active === false) {
             abort(404);
         }
+
+        $product->loadMissing([
+            'seller:id,name,email,company_name',
+            'country:id,country_name',
+            'category:id,category_name,parent_category_id',
+            'category.parent:id,category_name',
+            'category.attributes' => function ($query) {
+                $query
+                    ->select(['attributes.id', 'attributes.name'])
+                    ->where('is_active', true);
+            },
+            'attributeValues:id,attribute_id,value',
+        ]);
 
         $this->product = $product;
         $this->quantity = (int) ($product->min_order_count ?? 1);
@@ -33,11 +48,13 @@ class Show extends Component
 
         if (! $product || $product->trashed() || $product->is_active === false) {
             session()->flash('message', __('cart_messages_product_not_found'));
+
             return;
         }
 
         if ((int) $product->stock === 0) {
             session()->flash('message', __('cart_messages_out_of_stock'));
+
             return;
         }
 
@@ -48,6 +65,7 @@ class Show extends Component
                 'min' => $product->min_order_count,
                 'product' => $product->name,
             ]));
+
             return;
         }
 
@@ -56,6 +74,7 @@ class Show extends Component
                 'max' => $product->stock,
                 'product' => $product->name,
             ]));
+
             return;
         }
 
@@ -75,6 +94,7 @@ class Show extends Component
                     'max' => $product->stock,
                     'product' => $product->name,
                 ]));
+
                 return;
             }
 
@@ -104,13 +124,26 @@ class Show extends Component
         session()->flash('success', __('cart_messages_product_added'));
     }
 
-    public function render()
+    public function render(): View
     {
         return view('frontend.buyer.products.show', [
             'product' => $this->product,
+            'productSlides' => $this->getProductSlides($this->product),
+            'productGalleryImages' => $this->product->imageGalleryUrls(),
+            'attributeValuesByAttribute' => $this->product->attributeValues->groupBy('attribute_id'),
             'message' => session('message'),
         ]);
     }
+
+    protected function getProductSlides(Product $product): array
+    {
+        return $product->imageLibraryPreview()
+            ->map(fn (array $slide, int $index): array => [
+                'image' => (string) data_get($slide, 'url'),
+                'alt' => trim($product->name.' '.($index + 1)),
+                'lazy' => $index > 0,
+            ])
+            ->values()
+            ->all();
+    }
 }
-
-

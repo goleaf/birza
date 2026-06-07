@@ -1,4 +1,12 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+            ['label' => $attribute->getTranslation('name', app()->getLocale())],
+            ['label' => __('common_values')],
+        ]"
+    />
+
     <x-mary-header
         :title="__('backend_attribute_values_index_title')"
         :subtitle="$attribute->getTranslation('name', app()->getLocale())"

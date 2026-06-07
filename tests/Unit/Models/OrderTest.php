@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Order;
-use App\Models\Users\Buyer;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Users\Buyer;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
@@ -74,6 +74,15 @@ class OrderTest extends TestCase
         $this->assertIsFloat($order->total);
     }
 
+    public function test_order_returns_payment_status_badge_class(): void
+    {
+        $order = Order::factory()->make([
+            'payment_status' => Order::STATUS['PAID'],
+        ]);
+
+        $this->assertSame('badge-success badge-outline', $order->paymentStatusBadgeClass());
+    }
+
     public function test_order_soft_deletes(): void
     {
         $order = Order::factory()->create();
@@ -99,4 +108,3 @@ class OrderTest extends TestCase
         $this->assertCount(3, $order->products);
     }
 }
-

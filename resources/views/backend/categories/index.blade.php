@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_categories')],
+        ]"
+    />
+
     <x-mary-header :title="__('backend_categories_title')" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-mary-input

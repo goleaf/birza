@@ -38,6 +38,8 @@ class BuyerControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_buyers'))
             ->assertSee(__('common_actions'))
             ->assertSee(__('common_balance'))
             ->assertSee(__('common_orders'))
@@ -54,6 +56,8 @@ class BuyerControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_buyers'))
             ->assertSee(__('backend_buyers_fields_password'));
     }
 
@@ -66,7 +70,9 @@ class BuyerControllerTest extends TestCase
             ->get(route('backend.buyers.edit', $buyer));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(BuyerForm::class);
+            ->assertSeeLivewire(BuyerForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_buyers'));
     }
 
     public function test_buyer_orders_display_for_admin(): void
@@ -85,6 +91,9 @@ class BuyerControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerOrdersPage::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_buyers'))
+            ->assertSee(__('common_orders'))
             ->assertSee('Buyer Market')
             ->assertSee('#'.$order->id)
             ->assertSee('150.25');
@@ -110,6 +119,9 @@ class BuyerControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerCreditPage::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_buyers'))
+            ->assertSee(__('backend_buyers_credit_manage_credit'))
             ->assertSee('Credit Buyer')
             ->assertSee(__('backend_buyers_credit_note_hint'))
             ->assertSee(__('backend_buyers_credit_note_placeholder'))

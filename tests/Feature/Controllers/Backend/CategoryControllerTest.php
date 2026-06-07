@@ -32,6 +32,8 @@ class CategoryControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CategoryIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_categories'))
             ->assertSee(__('common_filter'))
             ->assertSee(__('common_actions'))
             ->assertSee(__('backend_categories_filters_structure'))
@@ -78,7 +80,9 @@ class CategoryControllerTest extends TestCase
             ->get(route('backend.categories.create'));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(CategoryForm::class);
+            ->assertSeeLivewire(CategoryForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_categories'));
     }
 
     public function test_category_edit_form_displays(): void
@@ -90,6 +94,8 @@ class CategoryControllerTest extends TestCase
             ->get(route('backend.categories.edit', $category));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(CategoryForm::class);
+            ->assertSeeLivewire(CategoryForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_categories'));
     }
 }

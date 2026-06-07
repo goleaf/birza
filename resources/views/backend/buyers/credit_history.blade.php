@@ -10,6 +10,15 @@
 @endphp
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+            ['label' => $buyer->company_name ?: $buyer->name],
+            ['label' => __('backend_buyers_credit_manage_credit'), 'link' => route('backend.buyers.credit', $buyer)],
+            ['label' => __('backend_buyers_credit_view_history')],
+        ]"
+    />
+
     <x-mary-header
         :title="$buyer->name"
         :subtitle="__('backend_buyers_credit_current_balance') . ': €' . number_format((float) $buyer->credit_balance, 2)"

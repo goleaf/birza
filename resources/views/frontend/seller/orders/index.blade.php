@@ -1,10 +1,65 @@
 <div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
+        <x-seller.breadcrumbs
+            class="mb-6"
+            :items="[
+                ['label' => __('common_orders')],
+            ]"
+        />
+
+        <x-ui.header
+            class="mb-6"
+            :title="__('orders_order_list')"
+            :subtitle="__('common_orders')"
+        >
+            <x-slot:actions>
+                <x-ui.button
+                    :href="route('seller.dashboard')"
+                    secondary
+                    :label="__('common_back_to_dashboard')"
+                />
+            </x-slot:actions>
+        </x-ui.header>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
+            <x-ui.statistic
+                :title="__('orders_total_orders')"
+                :value="(string) $ordersData['total']"
+                icon="shopping-bag"
+                color="text-primary"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('orders_pending_orders')"
+                :value="(string) $ordersData['pending']"
+                icon="clock"
+                color="text-warning"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('dashboard_total_revenue')"
+                :value="'€' . number_format((float) $ordersData['totalRevenue'], 2)"
+                icon="chart-bar-square"
+                color="text-success"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('dashboard_avg_order_value')"
+                :value="'€' . number_format((float) $ordersData['averageOrderValue'], 2)"
+                icon="banknotes"
+                color="text-info"
+                class="shadow-sm"
+            />
+        </div>
+
         <!-- start orders list -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <x-ui.card class="mb-6 rounded-lg shadow-sm">
             <!-- start filters form -->
-            <form method="GET" class="space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4">
+            <form wire:submit.prevent="applyFilters" class="space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4">
                 <!-- start status filter -->
                 <div class="w-full sm:w-48">
                     <label
@@ -15,7 +70,7 @@
                     </label>
                     <select
                         id="status"
-                        name="status"
+                        wire:model="status"
                         class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                         <option value="">
@@ -41,13 +96,13 @@
                     >
                         {{ __('common_date_from') }}
                     </label>
-                    <input
-                        type="date"
-                        name="date_from"
+                    <x-ui.datepicker
+                        wire:model="dateFrom"
                         id="date_from"
-                        value="{{ $filters['dateFrom'] }}"
-                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    >
+                        class="w-full"
+                        :label="null"
+                        clearable
+                    />
                 </div>
                 <!-- end date from filter -->
 
@@ -59,13 +114,13 @@
                     >
                         {{ __('common_date_to') }}
                     </label>
-                    <input
-                        type="date"
-                        name="date_to"
+                    <x-ui.datepicker
+                        wire:model="dateTo"
                         id="date_to"
-                        value="{{ $filters['dateTo'] }}"
-                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    >
+                        class="w-full"
+                        :label="null"
+                        clearable
+                    />
                 </div>
                 <!-- end date to filter -->
 
@@ -77,22 +132,35 @@
                     >
                         &nbsp;
                     </label>
-                    <button
+                    <x-mary-button
                         type="submit"
-                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                        class="w-full sm:w-auto btn-primary"
                         name="filter_button"
-                    >
-                        {{ __('common_filter') }}
-                    </button>
+                        :label="__('common_filter')"
+                    />
                 </div>
                 <!-- end filter button -->
             </form>
             <!-- end filters form -->
-        </div>
+        </x-ui.card>
 
-        @if ($ordersData['all']->count() > 0)
-            <!-- start table container -->
+        <x-ui.card
+            class="mb-6 rounded-lg shadow-sm"
+            :title="__('orders_calendar_title')"
+            :subtitle="__('orders_calendar_subtitle')"
+        >
             <div class="overflow-x-auto">
+                <x-ui.calendar :events="$orderCalendarEvents" />
+            </div>
+        </x-ui.card>
+
+        @if ($ordersData['all']->isNotEmpty())
+            <!-- start table container -->
+            <x-ui.card
+                class="rounded-lg shadow-sm"
+                body-class="-mx-5 -mb-5 overflow-hidden"
+            >
+                <div class="overflow-x-auto">
                 <!-- start orders table -->
                 <table class="min-w-full divide-y divide-gray-200">
                     <!-- start table header -->
@@ -119,13 +187,7 @@
 
                     <!-- start table body -->
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @php
-                            $totalAmount = 0;
-                        @endphp
                         @foreach ($ordersData['all'] as $order)
-                            @php
-                                $totalAmount += $order->order_total ?? $order->total_price;
-                            @endphp
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     #{{ $order->id }}
@@ -134,21 +196,24 @@
                                     {{ $order->created_at }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($order->order_total ?? $order->total_price, 2) }} €
+                                    {{ number_format((float) $order->seller_total, 2) }} €
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['PENDING'] ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['PAID'] ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['DELIVERED'] ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['SHIPPED'] ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['CANCELLED'] ? 'bg-red-100 text-red-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['REFUNDED'] ? 'bg-gray-100 text-gray-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['PROCESSING'] ? 'bg-gray-100 text-gray-800' : '' }}
-                                        {{ $order->payment_status === \App\Models\Order::STATUS['FAILED'] ? 'bg-gray-100 text-gray-800' : '' }}"
-                                    >
-                                        {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
-                                    </span>
+                                    <x-ui.badge
+                                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                                        :color="match (strtolower((string) $order->payment_status)) {
+                                            'pending' => 'warning',
+                                            'paid', 'delivered' => 'success',
+                                            'shipped' => 'secondary',
+                                            'cancelled', 'failed' => 'error',
+                                            'processing' => 'info',
+                                            'refunded' => 'neutral',
+                                            default => 'neutral',
+                                        }"
+                                        soft
+                                        sm
+                                        class="font-semibold"
+                                    />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                     <a
@@ -166,7 +231,7 @@
                                 {{ __('orders_total') }}:
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
-                                {{ number_format($totalAmount, 2) }} €
+                                {{ number_format((float) $ordersData['totalAmount'], 2) }} €
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -175,13 +240,16 @@
                     <!-- end table body -->
                 </table>
                 <!-- end orders table -->
-            </div>
+                </div>
+            </x-ui.card>
             <!-- end table container -->
         @else
             <!-- start no orders message -->
-            <div class="text-center py-8 text-gray-500">
-                {{ __('orders_no_orders') }}
-            </div>
+            <x-ui.card class="rounded-lg shadow-sm">
+                <div class="text-center py-8 text-gray-500">
+                    {{ __('orders_no_orders') }}
+                </div>
+            </x-ui.card>
             <!-- end no orders message -->
         @endif
     </div>

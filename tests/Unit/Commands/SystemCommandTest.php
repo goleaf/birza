@@ -2,43 +2,58 @@
 
 namespace Tests\Unit\Commands;
 
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SystemCommandTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_system_command_exists(): void
+    protected function tearDown(): void
     {
-        $this->assertTrue(
-            class_exists(\App\Console\Commands\SystemCommand::class)
-        );
+        Artisan::call('up');
+
+        parent::tearDown();
     }
 
-    public function test_system_command_signature(): void
+    public function test_close_fails_when_maintenance_secret_is_not_configured(): void
     {
-        $command = new \App\Console\Commands\SystemCommand();
-        $reflection = new \ReflectionClass($command);
-        $property = $reflection->getProperty('signature');
-        $property->setAccessible(true);
+        config()->set('app.maintenance.bypass_secret');
 
-        $this->assertStringContainsString('system', $property->getValue($command));
-        $this->assertStringContainsString('action', $property->getValue($command));
+        $exitCode = Artisan::call('system', ['action' => 'close']);
+
+        $this->assertSame(Command::FAILURE, $exitCode);
+        $this->assertFalse(app()->isDownForMaintenance());
+        $this->assertStringContainsString('MAINTENANCE_BYPASS_SECRET', Artisan::output());
     }
 
-    public function test_system_command_accepts_close_action(): void
+    public function test_close_enables_maintenance_mode_without_exposing_the_secret(): void
     {
-        $command = new \App\Console\Commands\SystemCommand();
-        
-        $this->assertTrue(method_exists($command, 'handle'));
+        $secret = 'test-maintenance-secret';
+        config()->set('app.maintenance.bypass_secret', $secret);
+
+        $exitCode = Artisan::call('system', ['action' => 'close']);
+
+        $this->assertSame(Command::SUCCESS, $exitCode);
+        $this->assertTrue(app()->isDownForMaintenance());
+        $this->assertStringNotContainsString($secret, Artisan::output());
     }
 
-    public function test_system_command_accepts_open_action(): void
+    public function test_open_disables_maintenance_mode(): void
     {
-        $command = new \App\Console\Commands\SystemCommand();
-        
-        $this->assertTrue(method_exists($command, 'handle'));
+        config()->set('app.maintenance.bypass_secret', 'test-maintenance-secret');
+        Artisan::call('system', ['action' => 'close']);
+
+        $exitCode = Artisan::call('system', ['action' => 'open']);
+
+        $this->assertSame(Command::SUCCESS, $exitCode);
+        $this->assertFalse(app()->isDownForMaintenance());
+    }
+
+    public function test_invalid_action_returns_failure(): void
+    {
+        $exitCode = Artisan::call('system', ['action' => 'restart']);
+
+        $this->assertSame(Command::FAILURE, $exitCode);
+        $this->assertFalse(app()->isDownForMaintenance());
     }
 }
-

@@ -21,13 +21,26 @@ class DashboardControllerTest extends TestCase
 
     public function test_dashboard_displays_for_authenticated_buyer(): void
     {
-        $buyer = Buyer::factory()->create();
-        Order::factory()->count(3)->create(['buyer_id' => $buyer->id]);
+        $buyer = Buyer::factory()->create([
+            'company_name' => 'Buyer Hub',
+        ]);
+        Order::factory()->count(3)->create([
+            'buyer_id' => $buyer->id,
+            'payment_status' => Order::STATUS['PENDING'],
+        ]);
 
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.dashboard'));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(BuyerDashboard::class);
+            ->assertSeeLivewire(BuyerDashboard::class)
+            ->assertSee('badge-warning')
+            ->assertSee(__('dashboard_banners'))
+            ->assertSee(__('auth_company_name'))
+            ->assertSee(__('product_search_list'))
+            ->assertSee(__('dashboard_sales_performance_subtitle'))
+            ->assertSee('chart.umd.min.js')
+            ->assertSee('<canvas x-ref="chart"></canvas>', false)
+            ->assertSee('aria-label="slides"', false);
     }
 }

@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_orders')],
+        ]"
+    />
+
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <x-mary-stat :title="__('orders_stats_total_orders')" :value="$totalOrders" icon="o-shopping-bag" color="text-primary" />
         <x-mary-stat :title="__('orders_pending_orders')" :value="$pendingOrders" icon="o-clock" color="text-warning" />

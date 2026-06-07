@@ -8,6 +8,8 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/app/livewire-tmp
+/storage/logs
 /vendor
 /lang_
 .env
@@ -22,6 +24,7 @@ auth.json
 npm-debug.log
 yarn-error.log
 *.log
+*.pem
 *.cache
 .DS_Store
 Thumbs.db

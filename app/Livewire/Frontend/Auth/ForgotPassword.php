@@ -14,11 +14,12 @@ use Livewire\Component;
 class ForgotPassword extends Component
 {
     public string $userType = 'buyer';
+
     public string $email = '';
 
-    public function mount(): void
+    public function mount(?string $userType = null): void
     {
-        $segment = request()->segment(1);
+        $segment = $userType ?? request()->segment(1);
 
         if (! in_array($segment, ['buyer', 'seller'], true)) {
             abort(404);
@@ -44,13 +45,13 @@ class ForgotPassword extends Component
             ]);
         }
 
-        $token = sha1(Str::random(40));
+        $token = Str::random(64);
         $user->remember_token = $token;
         $user->password_reset_at = now();
         $user->save();
 
         $resetUrl = route("{$this->userType}.password.reset", ['hash' => $token]);
-        $message = __('emails_reset_password_body') . "\n\n" . $resetUrl;
+        $message = __('emails_reset_password_body')."\n\n".$resetUrl;
 
         Mail::raw($message, function ($mail) use ($user) {
             $mail->to($user->email)->subject(__('emails_reset_password_subject'));
@@ -64,5 +65,3 @@ class ForgotPassword extends Component
         return view('livewire.frontend.auth.forgot-password');
     }
 }
-
-

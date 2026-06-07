@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Http\Filters\ProductFilter;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
@@ -174,40 +175,14 @@ class Index extends Component
     {
         $query = Product::query()
             ->with(['category', 'seller'])
-            ->when($this->statusFilter !== null && $this->statusFilter !== '', function ($query) {
-                if ($this->statusFilter === 'trashed') {
-                    $query->onlyTrashed();
-                } elseif ($this->statusFilter === 'active') {
-                    $query->whereNull('deleted_at');
-                }
-            })
-            ->when($this->search !== '', function ($query) {
-                $search = '%'.$this->search.'%';
-
-                $query->where(function ($builder) use ($search) {
-                    $builder->where('name', 'like', $search)
-                        ->orWhere('description', 'like', $search)
-                        ->orWhereHas('category', function ($query) use ($search) {
-                            $query->where('category_name->en', 'like', $search);
-                        })
-                        ->orWhereHas('seller', function ($query) use ($search) {
-                            $query->where('name', 'like', $search)
-                                ->orWhere('company_name', 'like', $search);
-                        });
-                });
-            })
-            ->when($this->categoryFilter !== null && $this->categoryFilter !== '', function ($query) {
-                $query->where('category_id', $this->categoryFilter);
-            })
-            ->when($this->sellerFilter !== null && $this->sellerFilter !== '', function ($query) {
-                $query->where('seller_id', $this->sellerFilter);
-            })
-            ->when($this->minPrice !== null && $this->minPrice !== '', function ($query) {
-                $query->where('price', '>=', $this->minPrice);
-            })
-            ->when($this->maxPrice !== null && $this->maxPrice !== '', function ($query) {
-                $query->where('price', '<=', $this->maxPrice);
-            })
+            ->filter(ProductFilter::fromArray([
+                'search' => $this->search,
+                'status' => $this->statusFilter,
+                'category_id' => $this->categoryFilter,
+                'seller_id' => $this->sellerFilter,
+                'min_price' => $this->minPrice,
+                'max_price' => $this->maxPrice,
+            ]))
             ->orderBy($this->sortBy['column'], $this->sortBy['direction']);
 
         $categories = Category::select('id', 'category_name', 'parent_category_id')

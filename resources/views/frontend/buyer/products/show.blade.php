@@ -1,50 +1,76 @@
 <div>
     <!-- start main container -->
-    <div class="bg-white shadow-sm sm:rounded-lg px-6 py-6">
-        <!-- start category breadcrumb -->
-        <div class="mb-4 text-gray-600">
-            <strong>
-                {{ __('product_category') }}:
-            </strong>
-            {{ $product->category->parent->getTranslation('category_name', app()->getLocale()) }} &rarr;
-            {{ $product->category->getTranslation('category_name', app()->getLocale()) }}
-        </div>
-        <!-- end category breadcrumb -->
+    <x-ui.card class="shadow-sm sm:rounded-lg" body-class="space-y-6">
+        <x-buyer.breadcrumbs
+            :items="array_filter([
+                ['label' => __('common_products'), 'link' => route('buyer.products.index')],
+                $product->category?->parent
+                    ? [
+                        'label' => $product->category->parent->getTranslation('category_name', app()->getLocale()),
+                        'link' => route('buyer.products.index', ['category' => $product->category->parent->id]),
+                    ]
+                    : null,
+                $product->category
+                    ? [
+                        'label' => $product->category->getTranslation('category_name', app()->getLocale()),
+                        'link' => route('buyer.products.index', ['category' => $product->category->id]),
+                    ]
+                    : null,
+                ['label' => $product->name],
+            ])"
+        />
+
+        <x-ui.header
+            :title="$product->name"
+            :subtitle="__('product_seller') . ': ' . $product->seller->company_name"
+        >
+            <x-slot:actions>
+                <x-ui.button
+                    :href="route('buyer.products.index')"
+                    secondary
+                    :label="__('common_back_to_products')"
+                />
+            </x-slot:actions>
+        </x-ui.header>
 
         <!-- start product grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- start images section -->
             <div class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- start main image -->
-                    <img 
-                        src="{{ Storage::url('products/' . $product->product_image) }}"
-                        alt="{{ $product->category->category_name }}" 
-                        class="w-full h-64 rounded-lg object-cover"
+                @if (count($productSlides) > 1)
+                    <x-mary-carousel
+                        :slides="$productSlides"
+                        class="!h-80 sm:!h-96"
+                    />
+                @elseif (! empty($productSlides))
+                    <img
+                        src="{{ $productSlides[0]['image'] }}"
+                        alt="{{ $productSlides[0]['alt'] }}"
+                        class="w-full h-80 rounded-lg object-cover shadow-sm sm:h-96"
                     >
-                    <!-- end main image -->
+                @else
+                    <div class="flex h-80 items-center justify-center rounded-lg bg-gray-100 text-gray-400 sm:h-96">
+                        {{ __('common_no_image') }}
+                    </div>
+                @endif
 
-                    <!-- start additional image -->
-                    @if ($product->product_additional_image)
-                        <img 
-                            src="{{ Storage::url('products/' . $product->product_additional_image) }}"
-                            alt="{{ $product->category->category_name }} additional"
-                            class="w-full h-64 rounded-lg object-cover"
-                        >
-                    @endif
-                    <!-- end additional image -->
-                </div>
+                @if (! empty($productGalleryImages))
+                    <div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+                        <div class="mb-3 text-sm font-semibold text-gray-700">
+                            {{ __('common_product_images') }}
+                        </div>
+
+                        <x-ui.image-gallery
+                            :images="$productGalleryImages"
+                            class="gap-3 [&_.carousel-item]:w-24 [&_img]:h-24 [&_img]:w-24 [&_img]:rounded-md [&_img]:object-cover"
+                        />
+                    </div>
+                @endif
             </div>
             <!-- end images section -->
 
             <!-- start product details -->
             <div>
-                <!-- start product name -->
-                <h1 class="text-3xl font-bold mb-6">
-                    {{ $product->name }}
-                </h1>
-                <!-- end product name -->
-
                 <!-- start temperature conditions -->
                 @if($product->temperature_conditions_from || $product->temperature_conditions_to)
                 <p class="text-gray-600 mb-4">
@@ -99,7 +125,39 @@
                     <strong class="font-bold">
                         {{ __('product_seller') }}:
                     </strong>
-                    {{ $product->seller->company_name }}
+                    <x-ui.popover position="bottom-start" class="inline-block align-middle">
+                        <x-slot:trigger>
+                            <button type="button" class="inline-flex items-center gap-1 font-medium text-blue-600 transition hover:text-blue-800">
+                                <span>{{ $product->seller->company_name }}</span>
+                                <x-ui.icon name="information-circle" class="h-4 w-4" />
+                            </button>
+                        </x-slot:trigger>
+
+                        <x-slot:content>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                        <x-ui.icon name="building-office-2" class="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">{{ $product->seller->company_name ?: $product->seller->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ __('product_seller') }}</div>
+                                    </div>
+                                </div>
+
+                                <dl class="space-y-2 text-gray-600">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <dt class="font-medium text-gray-500">{{ __('auth_name') }}</dt>
+                                        <dd class="text-right">{{ $product->seller->name }}</dd>
+                                    </div>
+                                    <div class="flex items-start justify-between gap-3">
+                                        <dt class="font-medium text-gray-500">{{ __('auth_email') }}</dt>
+                                        <dd class="text-right break-all">{{ $product->seller->email }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </x-slot:content>
+                    </x-ui.popover>
                 </p>
                 <!-- end seller -->
 
@@ -155,7 +213,7 @@
                 <!-- end pack type -->
 
                 <!-- start attributes -->
-                @if ($product->category && $product->category->attributes->count() > 0)
+                @if ($product->category?->attributes->isNotEmpty())
                     <div class="text-gray-600 mb-4">
                         <strong class="font-bold">
                             {{ __('product_attributes') }}:
@@ -167,23 +225,15 @@
                                         {{ $attribute->getTranslation('name', app()->getLocale()) }}:
                                     </span>
                                     <div class="flex flex-wrap gap-2">
-                                        @php
-                                            $attributeValues = $product->attributeValues->where(
-                                                'attribute_id',
-                                                $attribute->id,
-                                            );
-                                        @endphp
-                                        @if ($attributeValues->count() > 0)
-                                            @foreach ($attributeValues as $value)
-                                                <span class="text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded">
-                                                    {{ $value->value }}
-                                                </span>
-                                            @endforeach
-                                        @else
+                                        @forelse ($attributeValuesByAttribute->get($attribute->id, []) as $value)
+                                            <span class="text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded">
+                                                {{ $value->value }}
+                                            </span>
+                                        @empty
                                             <span class="text-sm text-gray-400 italic">
                                                 {{ __('common_not_specified') }}
                                             </span>
-                                        @endif
+                                        @endforelse
                                     </div>
                                 </div>
                             @endforeach
@@ -196,9 +246,15 @@
                 <p class="text-gray-600 mb-4 font-bold">
                     {{ __('product_description') }}
                 </p>
-                <p class="text-gray-700 mb-4">
-                    {{ $product->getTranslation('description', app()->getLocale()) }}
-                </p>
+                <div class="markdown-content mb-4 text-gray-700">
+                    {!! \Illuminate\Support\Str::markdown(
+                        (string) $product->getTranslation('description', app()->getLocale()),
+                        [
+                            'html_input' => 'strip',
+                            'allow_unsafe_links' => false,
+                        ],
+                    ) !!}
+                </div>
                 <!-- end description -->
 
                 <!-- start price -->
@@ -222,14 +278,14 @@
                                 {{ $product->stock <= 0 ? 'disabled' : '' }}
                             >
                         </div>
-                        <button 
+                        <x-ui.button
                             type="submit"
+                            positive
+                            spinner="addToCart"
                             wire:loading.attr="disabled"
-                            class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                            {{ $product->stock <= 0 ? 'disabled' : '' }}
-                        >
-                            {{ $product->stock <= 0 ? __('common_out_of_stock') : __('common_add_to_cart') }}
-                        </button>
+                            :label="$product->stock <= 0 ? __('common_out_of_stock') : __('common_add_to_cart')"
+                            @disabled($product->stock <= 0)
+                        />
                     </div>
                 </form>
                 <!-- end add to cart form -->
@@ -240,16 +296,15 @@
         <!-- end product grid -->
 
         <!-- start back button -->
-        <div class="mt-4">
-            <a 
-                href="{{ route('buyer.products.index') }}"
-                class="inline-block px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-            >
-                {{ __('common_back_to_products') }}
-            </a>
-        </div>
+        <x-slot:footer>
+            <x-ui.button
+                :href="route('buyer.products.index')"
+                primary
+                :label="__('common_back_to_products')"
+            />
+        </x-slot:footer>
         <!-- end back button -->
-    </div>
+    </x-ui.card>
     <!-- end main container -->
 </div>
 <!-- end section -->

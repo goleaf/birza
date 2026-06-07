@@ -1,5 +1,17 @@
 @php($isEditing = isset($product) && $product->exists)
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="$isEditing
+            ? [
+                ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+                ['label' => $name],
+            ]
+            : [
+                ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+                ['label' => __('common_create')],
+            ]"
+    />
+
     <x-mary-header
         :title="$isEditing ? __('backend_products_edit_title') : __('backend_products_create_title')"
         :subtitle="$isEditing ? $name : __('products_title')"

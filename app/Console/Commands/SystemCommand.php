@@ -6,42 +6,50 @@ use Illuminate\Console\Command;
 
 class SystemCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'system {action : The action to perform (close or open)}';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): int
     {
-        $action = $this->argument('action');
-        $secret = 'prus'; // Define your maintenance bypass secret here
+        return match ((string) $this->argument('action')) {
+            'close' => $this->closeSystem(),
+            'open' => $this->openSystem(),
+            default => $this->invalidAction(),
+        };
+    }
 
-        if ($action === 'close') {
-            $this->info('Closing the system and enabling maintenance mode...');
+    private function closeSystem(): int
+    {
+        $secret = config('app.maintenance.bypass_secret');
 
-            // Put the application into maintenance mode with a secret
-            $this->callSilent('down', [
-                '--secret' => "$secret", 
-                '--render' => "errors.maintenance",
-            ]);
+        if (! is_string($secret) || $secret === '') {
+            $this->error('Set MAINTENANCE_BYPASS_SECRET before enabling maintenance mode.');
 
-            $this->info('The system is now in maintenance mode.');
-            $this->info("Access with the secret: https://birza.prus.dev/{$secret}");
-        } elseif ($action === 'open') {
-            $this->info('Opening the system and disabling maintenance mode...');
-            $this->callSilent('up');
-            $this->info('The system is now live.');
-        } else {
-            $this->error('Invalid action. Use "close" to enable maintenance mode or "open" to disable it.');
+            return self::FAILURE;
         }
 
-        return 0;
+        $this->info('Closing the system and enabling maintenance mode...');
+        $this->callSilent('down', [
+            '--secret' => $secret,
+            '--render' => 'errors.maintenance',
+        ]);
+        $this->info('The system is now in maintenance mode.');
+
+        return self::SUCCESS;
+    }
+
+    private function openSystem(): int
+    {
+        $this->info('Opening the system and disabling maintenance mode...');
+        $this->callSilent('up');
+        $this->info('The system is now live.');
+
+        return self::SUCCESS;
+    }
+
+    private function invalidAction(): int
+    {
+        $this->error('Invalid action. Use "close" to enable maintenance mode or "open" to disable it.');
+
+        return self::FAILURE;
     }
 }

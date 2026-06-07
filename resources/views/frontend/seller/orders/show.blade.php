@@ -1,41 +1,64 @@
 <div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
-        <!-- start order header -->
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-            <!-- start header top bar -->
-            <div class="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <a 
-                            href="{{ route('seller.orders.index') }}"
-                            class="inline-flex items-center text-gray-500 hover:text-gray-700"
-                        >
-                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                            </svg>
-                            <span class="ml-1 text-sm font-medium">{{ __('common_back_to_orders') }}</span>
-                        </a>
-                        <div class="h-6 w-px bg-gray-300"></div>
-                        <h1 class="text-lg font-semibold text-gray-900">
-                            {{ __('orders_order_details') }} #{{ $order->id }}
-                        </h1>
-                    </div>
-                    <div
-                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                        @if ($order->payment_status === \App\Models\Order::STATUS['PENDING']) bg-yellow-100 text-yellow-800
-                        @elseif($order->payment_status === \App\Models\Order::STATUS['PAID']) bg-green-100 text-green-800
-                        @elseif($order->payment_status === \App\Models\Order::STATUS['CANCELLED']) bg-red-100 text-red-800
-                        @else bg-gray-100 text-gray-800 @endif"
-                    >
-                        {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
-                    </div>
-                </div>
-            </div>
-            <!-- end header top bar -->
+        <x-seller.breadcrumbs
+            class="mb-6"
+            :items="[
+                ['label' => __('common_orders'), 'link' => route('seller.orders.index')],
+                ['label' => '#' . $order->id],
+            ]"
+        />
 
+        <x-ui.header
+            class="mb-6"
+            :title="__('orders_order_details') . ' #' . $order->id"
+            :subtitle="__('orders_placed_on') . ': ' . $order->created_at->format('Y-m-d H:i')"
+        >
+            <x-slot:actions>
+                <div class="flex flex-wrap items-center gap-4">
+                    <x-ui.button
+                        :href="route('seller.orders.index')"
+                        secondary
+                        icon="arrow-left"
+                        sm
+                        :label="__('common_back_to_orders')"
+                    />
+                    <x-ui.badge
+                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                        :color="match (strtolower((string) $order->payment_status)) {
+                            'pending' => 'warning',
+                            'paid' => 'success',
+                            'cancelled' => 'error',
+                            default => 'neutral',
+                        }"
+                        soft
+                        class="font-medium"
+                    />
+                </div>
+            </x-slot:actions>
+        </x-ui.header>
+
+        <x-ui.steps
+            class="mb-6"
+            wire:model="currentOrderStep"
+            :title="__('orders_steps_title')"
+            :subtitle="__('orders_steps_subtitle')"
+            :items="$orderStepItems"
+            :panel="$orderStepPanel"
+            :steps-color="$orderStepsColor"
+        />
+
+        <x-ui.timeline
+            class="mb-6"
+            :title="__('orders_order_timeline')"
+            :subtitle="__('orders_timeline_subtitle')"
+            :items="$orderTimelineItems"
+        />
+
+        <!-- start order header -->
+        <x-ui.card class="mb-6 rounded-lg shadow-sm">
             <!-- start order info -->
-            <div class="px-6 py-4 border-b border-gray-200">
+            <div class="border-b border-gray-200 pb-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('orders_placed_on') }}</h3>
@@ -54,10 +77,10 @@
             <!-- end order info -->
 
             <!-- start status update form -->
-            <div class="px-6 py-4">
+            <div class="pt-4">
                 @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
                     <div class="flex space-x-4">
-                        <x-button
+                        <x-ui.button
                             positive
                             icon="check"
                             :label="__('orders_confirm_order')"
@@ -65,7 +88,7 @@
                             spinner="updateStatus"
                         />
 
-                        <x-button
+                        <x-ui.button
                             negative
                             icon="x-mark"
                             :label="__('orders_cancel_order')"
@@ -91,21 +114,15 @@
                 @endif
             </div>
             <!-- end status update form -->
-            </div>
-            <!-- end order status -->
-        </div>
+        </x-ui.card>
         <!-- end order header -->
 
         <!-- start order items -->
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-            <!-- start items header -->
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">
-                    {{ __('orders_order_items') }}
-                </h2>
-            </div>
-            <!-- end items header -->
-
+        <x-ui.card
+            class="mb-6 rounded-lg shadow-sm"
+            :title="__('orders_order_items')"
+            body-class="-mx-5 -mb-5 overflow-hidden"
+        >
             <!-- start table container -->
             <div class="overflow-x-auto">
                 <!-- start table -->
@@ -143,9 +160,7 @@
                                                 >
                                             @else
                                                 <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                    <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
+                                                    <x-ui.icon name="photo" class="h-6 w-6 text-gray-400" />
                                                 </div>
                                             @endif
                                         </div>
@@ -187,7 +202,7 @@
                 <!-- end table -->
             </div>
             <!-- end table container -->
-        </div>
+        </x-ui.card>
         <!-- end order items -->
 
         <x-backend.confirm-modal

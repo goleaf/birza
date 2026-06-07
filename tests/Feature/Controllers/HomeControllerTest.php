@@ -19,7 +19,15 @@ class HomeControllerTest extends TestCase
         $response->assertOk()
             ->assertViewHas('locales')
             ->assertViewHas('featuredCategories', fn (array $featuredCategories): bool => count($featuredCategories) === 4)
-            ->assertViewHas('communityStats');
+            ->assertViewHas('communityStats')
+            ->assertSee(__('welcome_buyer_login_button'))
+            ->assertSee(__('welcome_buyer_register_button'))
+            ->assertSee(__('welcome_seller_login_button'))
+            ->assertSee(__('welcome_seller_register_button'))
+            ->assertSee(__('welcome_community_title'))
+            ->assertSee(__('footer_contact_us'))
+            ->assertSee(__('main_faq_faq_title'))
+            ->assertSee('collapse-title', false);
     }
 
     public function test_home_page_displays_database_backed_community_stats(): void

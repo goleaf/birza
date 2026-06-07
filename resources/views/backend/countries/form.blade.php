@@ -1,6 +1,18 @@
 @php($isEditing = $country->exists)
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="$isEditing
+            ? [
+                ['label' => __('navigation_countries'), 'link' => route('backend.countries.index')],
+                ['label' => strtoupper($alpha2)],
+            ]
+            : [
+                ['label' => __('navigation_countries'), 'link' => route('backend.countries.index')],
+                ['label' => __('common_create')],
+            ]"
+    />
+
     <x-mary-header
         :title="$isEditing ? __('backend_countries_edit') : __('backend_countries_create')"
         :subtitle="$isEditing ? strtoupper($alpha2) : __('backend_countries_fields_region')"

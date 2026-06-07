@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
         // by mapping them to our top-level resources/views/* folders.
         View::replaceNamespace('pagination', resource_path('views/pagination'));
         View::replaceNamespace('notifications', resource_path('views/notifications'));
-        View::replaceNamespace('error-solutions', resource_path('views/error-solutions'));
 
         // Ensure Livewire's bundled Alpine boots AFTER WireUI's deferred scripts have registered directives.
         // WireUI scripts are rendered with `defer`, so we also defer Livewire's script tag.

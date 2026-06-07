@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.56.0.
+ * Generated for Laravel 12.61.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -14048,7 +14048,6 @@ namespace Illuminate\Support\Facades {
 
             }
     /**
-     * @method static \BackedEnum|(\BackedEnum|null enum(string $key, string $enumClass, \BackedEnum|null $default = null)
      * @see \Illuminate\Http\Request
      */
     class Request {
@@ -15925,10 +15924,6 @@ namespace Illuminate\Support\Facades {
          * header value is a comma+space separated list of IP addresses, the left-most
          * being the original client, and each successive proxy that passed the request
          * adding the IP address where it received the request from.
-         *
-         * If your reverse proxy uses a different header name than "X-Forwarded-For",
-         * ("Client-Ip" for instance), configure it via the $trustedHeaderSet
-         * argument of the Request::setTrustedProxies() method instead.
          *
          * @see getClientIps()
          * @see https://wikipedia.org/wiki/X-Forwarded-For
@@ -20555,6 +20550,7 @@ namespace Illuminate\Support\Facades {
          * @param array $headers
          * @param string|null $disposition
          * @return \Symfony\Component\HttpFoundation\StreamedResponse
+         * @throws UnableToRetrieveMetadata
          * @static
          */
         public static function response($path, $name = null, $headers = [], $disposition = 'inline')
@@ -20572,6 +20568,7 @@ namespace Illuminate\Support\Facades {
          * @param string|null $name
          * @param array $headers
          * @return \Symfony\Component\HttpFoundation\StreamedResponse
+         * @throws UnableToRetrieveMetadata
          * @static
          */
         public static function serve($request, $path, $name = null, $headers = [])
@@ -20588,6 +20585,7 @@ namespace Illuminate\Support\Facades {
          * @param string|null $name
          * @param array $headers
          * @return \Symfony\Component\HttpFoundation\StreamedResponse
+         * @throws UnableToRetrieveMetadata
          * @static
          */
         public static function download($path, $name = null, $headers = [])
@@ -20786,6 +20784,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $path
          * @return string|false
+         * @throws UnableToRetrieveMetadata
          * @static
          */
         public static function mimeType($path)
@@ -23946,68 +23945,6 @@ namespace Barryvdh\Debugbar\Facades {
             }
     }
 
-namespace MohamedSaid\LaravelMissingTranslations\Facades {
-    /**
-     * @see \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations
-     */
-    class LaravelMissingTranslations {
-        /**
-         * @static
-         */
-        public static function scan()
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->scan();
-        }
-
-        /**
-         * @static
-         */
-        public static function extractKeys($filePath, $functions = [])
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->extractKeys($filePath, $functions);
-        }
-
-        /**
-         * @static
-         */
-        public static function getMissingKeys($locale)
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->getMissingKeys($locale);
-        }
-
-        /**
-         * @static
-         */
-        public static function getUnusedKeys($locale)
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->getUnusedKeys($locale);
-        }
-
-        /**
-         * @static
-         */
-        public static function writeToJson($locale, $missingKeys)
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->writeToJson($locale, $missingKeys);
-        }
-
-        /**
-         * @static
-         */
-        public static function removeKeys($locale, $keys)
-        {
-            /** @var \MohamedSaid\LaravelMissingTranslations\LaravelMissingTranslations $instance */
-            return $instance->removeKeys($locale, $keys);
-        }
-
-            }
-    }
-
 namespace Intervention\Image\Facades {
     /**
      */
@@ -26472,7 +26409,7 @@ namespace  {
          * @param string $pageName
          * @param int|null $page
          * @param \Closure|int|null $total
-         * @return \Illuminate\Pagination\LengthAwarePaginator
+         * @return \Illuminate\Pagination\LengthAwarePaginator<int, TModel>
          * @throws \InvalidArgumentException
          * @static
          */
@@ -26489,7 +26426,7 @@ namespace  {
          * @param array|string $columns
          * @param string $pageName
          * @param int|null $page
-         * @return \Illuminate\Contracts\Pagination\Paginator
+         * @return \Illuminate\Pagination\Paginator<int, TModel>
          * @static
          */
         public static function simplePaginate($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -26505,7 +26442,7 @@ namespace  {
          * @param array|string $columns
          * @param string $cursorName
          * @param \Illuminate\Pagination\Cursor|string|null $cursor
-         * @return \Illuminate\Contracts\Pagination\CursorPaginator
+         * @return \Illuminate\Pagination\CursorPaginator<int, TModel>
          * @static
          */
         public static function cursorPaginate($perPage = null, $columns = [], $cursorName = 'cursor', $cursor = null)
@@ -30877,7 +30814,6 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
-    class LaravelMissingTranslations extends \MohamedSaid\LaravelMissingTranslations\Facades\LaravelMissingTranslations {}
     class Image extends \Intervention\Image\Facades\Image {}
     class Livewire extends \Livewire\Livewire {}
     class LaraCart extends \LukePOLO\LaraCart\Facades\LaraCart {}
@@ -30887,11 +30823,6 @@ namespace  {
 }
 
 
-namespace Facades\Livewire\Features\SupportFileUploads {
-    /**
-     * @mixin \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl     */
-    class GenerateSignedUploadUrl extends \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl {}
-}
 
 
 

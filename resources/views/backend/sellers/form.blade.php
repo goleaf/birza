@@ -1,6 +1,18 @@
 @php($isEditing = $seller?->exists ?? false)
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="$isEditing
+            ? [
+                ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+                ['label' => $seller->company_name ?: $seller->name ?: $email],
+            ]
+            : [
+                ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+                ['label' => __('common_create')],
+            ]"
+    />
+
     <x-mary-header
         :title="$isEditing ? __('backend_sellers_edit_title') : __('backend_sellers_create_title')"
         :subtitle="$isEditing ? $email : __('sellers_title')"

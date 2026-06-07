@@ -4,33 +4,48 @@ namespace App\Livewire\Frontend\Seller\Transactions;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    #[Url(as: 'type')]
+    public string $type = '';
+
+    #[Url(as: 'date_from')]
+    public ?string $dateFrom = null;
+
+    #[Url(as: 'date_to')]
+    public ?string $dateTo = null;
+
+    public function applyFilters(): void
+    {
+        //
+    }
+
     public function render()
     {
         $seller = Auth::guard('seller')->user();
 
         $transactions = $seller->transactions()
             ->with(['order'])
-            ->when(request()->get('type'), function ($query, $type) {
+            ->when($this->type, function ($query, $type) {
                 return $query->where('type', $type);
             })
-            ->when(request()->get('date_from'), function ($query, $date) {
+            ->when($this->dateFrom, function ($query, $date) {
                 return $query->whereDate('created_at', '>=', $date);
             })
-            ->when(request()->get('date_to'), function ($query, $date) {
+            ->when($this->dateTo, function ($query, $date) {
                 return $query->whereDate('created_at', '<=', $date);
             })
             ->latest()
             ->paginate(15);
 
         $filters = [
-            'type' => request()->get('type'),
-            'dateFrom' => request()->get('date_from'),
-            'dateTo' => request()->get('date_to'),
+            'type' => $this->type,
+            'dateFrom' => $this->dateFrom,
+            'dateTo' => $this->dateTo,
         ];
 
         $stats = [
@@ -46,5 +61,3 @@ class Index extends Component
         ]);
     }
 }
-
-

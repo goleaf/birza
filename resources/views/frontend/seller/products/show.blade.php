@@ -72,9 +72,12 @@
                                 <div>
                                     @if($product->is_organic)
                                         <!-- start organic badge -->
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                            {{ __('product_is_organic') }}
-                                        </span>
+                                        <x-ui.badge
+                                            :value="__('product_is_organic')"
+                                            color="success"
+                                            soft
+                                            class="font-medium"
+                                        />
                                         <!-- end organic badge -->
                                     @endif
                                 </div>

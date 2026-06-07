@@ -3,6 +3,13 @@
     <div class="bg-white">
         <!-- start main -->
         <main class="w-full px-4 py-8 sm:px-6 lg:px-8">
+            <x-buyer.breadcrumbs
+                class="mb-6"
+                :items="[
+                    ['label' => __('common_products')],
+                ]"
+            />
+
             <!-- start flex container -->
             <div class="flex gap-6">
                 <!-- start filters -->
@@ -12,71 +19,63 @@
                         <!-- start categories -->
                         <div class="space-y-1">
                             @foreach ($categories as $category)
-                                <!-- start category button -->
-                                <button 
-                                    type="button"
-                                    class="w-full text-left px-2 py-1 font-medium flex justify-between items-center"
-                                    onclick="toggleCategory('category-{{ $category->id }}')"
+                                <x-mary-collapse
+                                    :open="$category->id == request('category') || $category->subcategories->contains('id', request('category'))"
+                                    class="rounded-lg border border-gray-200 bg-white shadow-sm"
                                 >
-                                    {{ $category->getTranslation('category_name', app()->getLocale()) }}
-                                    <svg class="w-4 h-4 transform transition-transform" id="icon-{{ $category->id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                                </button>
-                                <!-- end category button -->
+                                    <x-slot:heading class="text-sm font-semibold text-gray-900">
+                                        {{ $category->getTranslation('category_name', app()->getLocale()) }}
+                                    </x-slot:heading>
 
-                                <!-- start subcategories -->
-                                <div 
-                                    class="px-2 py-1 bg-gray-50 hidden" 
-                                    id="category-{{ $category->id }}"
-                                    @if ($category->id == request('category') || $category->subcategories->contains('id', request('category'))) 
-                                        style="display: block;"
-                                    @endif
-                                >
-                                    @foreach ($category->subcategories as $subcategory)
-                                        <!-- start subcategory link -->
-                                        <a 
-                                            href="{{ route('buyer.products.index', ['category' => $subcategory->id]) }}"
-                                            class="block py-0.5 pl-2 hover:text-blue-600 text-sm {{ request('category') == $subcategory->id ? 'text-blue-600 font-medium' : '' }}"
-                                        >
-                                            {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
-                                        </a>
-                                        <!-- end subcategory link -->
+                                    <x-slot:content class="bg-gray-50">
+                                        <div class="space-y-3">
+                                            @foreach ($category->subcategories as $subcategory)
+                                                <!-- start subcategory link -->
+                                                <a
+                                                    href="{{ route('buyer.products.index', ['category' => $subcategory->id]) }}"
+                                                    class="block py-0.5 pl-2 text-sm hover:text-blue-600 {{ request('category') == $subcategory->id ? 'font-medium text-blue-600' : '' }}"
+                                                >
+                                                    {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
+                                                </a>
+                                                <!-- end subcategory link -->
 
-                                        @if (request('category') == $subcategory->id)
-                                            <!-- start filters -->
-                                            <div class="border-b pb-4">
-                                                @foreach ($subcategory->filterableAttributes()->get() as $attribute)
-                                                    <!-- start attribute -->
-                                                    <div class="mb-3">
-                                                        <!-- start attribute name -->
-                                                        <p class="text-sm font-medium mb-1">
-                                                            {{ $attribute->name }}
-                                                        </p>
-                                                        <!-- end attribute name -->
-                                                        
-                                                        @foreach ($attribute->values as $value)
-                                                            <!-- start checkbox label -->
-                                                            <label class="flex items-center text-sm mb-1">
-                                                                <input 
-                                                                    type="checkbox" 
-                                                                    name="filters[{{ $attribute->id }}]"
-                                                                    value="{{ $value->id }}" 
-                                                                    class="mr-2"
-                                                                    {{ request("filters.$attribute->id") == $value->id ? 'checked' : '' }}
-                                                                    {{ $attribute->is_required ? 'required' : '' }}
-                                                                >
-                                                                {{ $value->value }}
-                                                            </label>
-                                                            <!-- end checkbox label -->
+                                                @if (request('category') == $subcategory->id)
+                                                    <!-- start filters -->
+                                                    <div class="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                                                        @foreach ($subcategory->attributes as $attribute)
+                                                            <!-- start attribute -->
+                                                            <div class="mb-3">
+                                                                <!-- start attribute name -->
+                                                                <p class="mb-1 text-sm font-medium">
+                                                                    {{ $attribute->name }}
+                                                                </p>
+                                                                <!-- end attribute name -->
+
+                                                                @foreach ($attribute->values as $value)
+                                                                    <!-- start checkbox label -->
+                                                                    <label class="mb-1 flex items-center text-sm">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            name="filters[{{ $attribute->id }}]"
+                                                                            value="{{ $value->id }}"
+                                                                            class="mr-2"
+                                                                            {{ request("filters.$attribute->id") == $value->id ? 'checked' : '' }}
+                                                                            {{ $attribute->is_required ? 'required' : '' }}
+                                                                        >
+                                                                        {{ $value->value }}
+                                                                    </label>
+                                                                    <!-- end checkbox label -->
+                                                                @endforeach
+                                                            </div>
+                                                            <!-- end attribute -->
                                                         @endforeach
                                                     </div>
-                                                    <!-- end attribute -->
-                                                @endforeach
-                                            </div>
-                                            <!-- end filters -->
-                                        @endif
-                                    @endforeach
-                                </div>
-                                <!-- end subcategories -->
+                                                    <!-- end filters -->
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </x-slot:content>
+                                </x-mary-collapse>
                             @endforeach
                         </div>
                         <!-- end categories -->
@@ -198,24 +197,6 @@
                             <!-- end filter buttons -->
                         </div>
                         <!-- end additional filters -->
-
-                        <!-- start toggle script -->
-                        <script>
-                            function toggleCategory(id) {
-                                const element = document.getElementById(id);
-                                const iconId = id.replace('category-', 'icon-');
-                                const icon = document.getElementById(iconId);
-
-                                if (element.style.display === 'none' || !element.style.display) {
-                                    element.style.display = 'block';
-                                    icon.classList.add('rotate-180');
-                                } else {
-                                    element.style.display = 'none';
-                                    icon.classList.remove('rotate-180');
-                                }
-                            }
-                        </script>
-                        <!-- end toggle script -->
 
                     </form>
                     <!-- end form -->

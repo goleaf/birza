@@ -15,11 +15,12 @@ use Livewire\Component;
 class VerificationNotice extends Component
 {
     public string $userType = 'buyer';
+
     public string $email = '';
 
-    public function mount(): void
+    public function mount(?string $userType = null): void
     {
-        $segment = request()->segment(1);
+        $segment = $userType ?? request()->segment(1);
 
         if (! in_array($segment, ['buyer', 'seller'], true)) {
             abort(404);
@@ -46,23 +47,25 @@ class VerificationNotice extends Component
 
         if ($user->is_verified) {
             session()->flash('success', __('messages_email_already_verified'));
+
             return;
         }
 
-        $rateLimitKey = 'verify:'.$this->userType.':'.md5((string) $user->email);
+        $rateLimitKey = 'verify:'.$this->userType.':'.hash('sha256', Str::lower((string) $user->email));
         if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
             session()->flash('error', __('messages_verification_check'));
+
             return;
         }
 
-        $user->remember_token = sha1(Str::random(40));
+        $user->remember_token = Str::random(64);
         $user->save();
 
         $verificationUrl = route("{$this->userType}.verification.verify", [
             'hash' => $user->remember_token,
         ]);
 
-        $message = __('emails_verify_email_body') . "\n\n" . $verificationUrl;
+        $message = __('emails_verify_email_body')."\n\n".$verificationUrl;
 
         Mail::raw($message, function ($mail) use ($user) {
             $mail->to($user->email)->subject(__('emails_verify_email_subject'));
@@ -77,5 +80,3 @@ class VerificationNotice extends Component
         return view('livewire.frontend.auth.verification-notice');
     }
 }
-
-

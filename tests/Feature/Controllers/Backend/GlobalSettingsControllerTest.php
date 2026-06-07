@@ -29,6 +29,8 @@ class GlobalSettingsControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SettingsIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_global_settings'))
             ->assertSee(__('backend_settings_fields_admin_primary_color'))
             ->assertSee(__('backend_settings_fields_admin_accent_color'))
             ->assertSee(__('backend_settings_fields_admin_surface_color'))

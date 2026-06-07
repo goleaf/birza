@@ -13,7 +13,7 @@
             wire:model="email"
         />
 
-        <x-button
+        <x-ui.button
             type="submit"
             primary
             class="w-full"

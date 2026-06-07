@@ -44,10 +44,48 @@ class ProductControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_products'))
             ->assertSee(__('common_actions'))
             ->assertSee(__('common_edit'))
             ->assertSee(__('common_delete'))
             ->assertSee('!rounded-box', false);
+    }
+
+    public function test_product_index_applies_livewire_filters(): void
+    {
+        $admin = Admin::factory()->create();
+        $category = Category::factory()->create();
+        $seller = Seller::factory()->create();
+        Product::factory()->create([
+            'name' => 'Filtered produce',
+            'category_id' => $category->id,
+            'seller_id' => $seller->id,
+            'price' => 25,
+        ]);
+        Product::factory()->create([
+            'name' => 'Outside price range',
+            'category_id' => $category->id,
+            'seller_id' => $seller->id,
+            'price' => 50,
+        ]);
+        Product::factory()->create([
+            'name' => 'Different seller product',
+            'category_id' => $category->id,
+            'price' => 25,
+        ]);
+
+        $this->actingAs($admin, 'admin');
+
+        Livewire::test(ProductIndex::class)
+            ->set('search', 'produce')
+            ->set('categoryFilter', (string) $category->id)
+            ->set('sellerFilter', (string) $seller->id)
+            ->set('minPrice', '20')
+            ->set('maxPrice', '30')
+            ->assertSee('Filtered produce')
+            ->assertDontSee('Outside price range')
+            ->assertDontSee('Different seller product');
     }
 
     public function test_product_delete_confirmation_uses_mary_modal_flow(): void
@@ -89,6 +127,8 @@ class ProductControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductCreate::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_products'))
             ->assertSee('Baltic Farm')
             ->assertSee('seller@example.com')
             ->assertSee($country->getTranslation('country_name', app()->getLocale()))
@@ -134,6 +174,8 @@ class ProductControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductEdit::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_products'))
             ->assertSee('Forest Goods')
             ->assertSee('forest@example.com')
             ->assertSee($country->getTranslation('country_name', app()->getLocale()))
@@ -249,6 +291,10 @@ class ProductControllerTest extends TestCase
         $admin = Admin::factory()->create();
         $product = Product::factory()->create([
             'name' => 'Creamy Butter',
+            'description' => [
+                'en' => "# Safe description\n\n<script>alert('xss')</script>\n\n[unsafe](javascript:alert('xss'))",
+                'lt' => "# Safe description\n\n<script>alert('xss')</script>\n\n[unsafe](javascript:alert('xss'))",
+            ],
             'is_active' => false,
             'product_image' => '',
             'product_additional_image' => '',
@@ -272,6 +318,8 @@ class ProductControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductShow::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_products'))
             ->assertSee('Creamy Butter')
             ->assertSee($expectedAttributeName)
             ->assertSee($expectedAttributeValue)
@@ -279,6 +327,9 @@ class ProductControllerTest extends TestCase
             ->assertSee('2026-09-01')
             ->assertSee(__('product_total_shelf_life'))
             ->assertSee('14')
+            ->assertSee('<h1>Safe description</h1>', false)
+            ->assertDontSee("<script>alert('xss')</script>", false)
+            ->assertDontSee('href="javascript:', false)
             ->assertSee(__('backend_products_show_inactive_alert'))
             ->assertSee(__('backend_products_show_no_images_alert'));
     }

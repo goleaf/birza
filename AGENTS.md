@@ -9,11 +9,11 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4
+- php - 8.5
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
 - laravel/sanctum (SANCTUM) - v4
-- livewire/livewire (LIVEWIRE) - v3
+- livewire/livewire (LIVEWIRE) - v4
 - laravel/boost (BOOST) - v2
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
@@ -22,27 +22,12 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - alpinejs (ALPINEJS) - v3
 - tailwindcss (TAILWINDCSS) - v3
 
-## Livewire Rules
-
-- Do not use Volt anywhere in this project.
-- Do not generate Volt components.
-- Do not use `Livewire\\Volt\\Component`.
-- Do not use `Volt::route()`.
-- Do not install or keep `livewire/volt`.
-- Do not suggest Volt as an option.
-- All Livewire code must use standard components based on `Livewire\\Component` with standard Blade views or native Livewire full-page/component patterns.
-
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
-- `clean-code` — Use for general refactors and maintenance work to keep changes small, direct, and free of unnecessary abstractions or comments.
-- `testing-patterns` — Use when adding or updating tests, choosing the right test type, improving fixture setup, or tightening regression coverage.
-- `i18n-localization` — Use for any translation, locale, language-file, or hardcoded-string task.
-- `frontend-design` — Use when making visual or UX decisions for Blade and Livewire interfaces beyond simple utility-class edits.
 - `laravel-best-practices` — Apply this skill whenever writing, reviewing, or refactoring Laravel PHP code. This includes creating or modifying controllers, models, migrations, form requests, policies, jobs, scheduled commands, service classes, and Eloquent queries. Triggers for N+1 and query performance issues, caching strategies, authorization and security patterns, validation, error handling, queue and job configuration, route definitions, and architectural decisions. Also use for Laravel code reviews and refactoring existing Laravel code to follow best practices. Covers any task involving Laravel backend PHP code patterns.
-- `livewire-development` — Use for any task or question involving Livewire. Activate if user mentions Livewire, wire: directives, or Livewire-specific concepts like wire:model, wire:click, invoke this skill. Covers building new components, debugging reactivity issues, real-time form validation, loading states, migrating from Livewire 2 to 3, converting component formats (SFC/MFC/class-based), and performance optimization. Do not use for non-Livewire reactive UI (React, Vue, Alpine-only, Inertia.js) or standard Laravel forms without Livewire.
-- `tailwind-patterns` — Use for Tailwind token architecture, CSS-first patterns, and broader styling-system decisions.
+- `livewire-development` — Use for any task or question involving Livewire. Activate if user mentions Livewire, wire: directives, or Livewire-specific concepts like wire:model, wire:click, wire:sort, or islands, invoke this skill. Covers building new components, debugging reactivity issues, real-time form validation, drag-and-drop, loading states, migrating from Livewire 3 to 4, converting component formats (SFC/MFC/class-based), and performance optimization. Do not use for non-Livewire reactive UI (React, Vue, Alpine-only, Inertia.js) or standard Laravel forms without Livewire.
 - `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
 
 ## Conventions
@@ -79,7 +64,6 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Tools
 
 - Laravel Boost is an MCP server with tools designed specifically for this application. Prefer Boost tools over manual alternatives like shell commands or file reads.
-- Project MCP config is checked into `.mcp.json` and `.codex/config.toml`; keep those in sync when MCP wiring changes.
 - Use `database-query` to run read-only queries against the database instead of writing raw SQL in tinker.
 - Use `database-schema` to inspect table structure before writing migrations or models.
 - Use `get-absolute-url` to resolve the correct scheme, domain, and port for project URLs. Always use this before sharing a URL with the user.
@@ -90,7 +74,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Always use `search-docs` before making code changes. Do not skip this step. It returns version-specific docs based on installed packages automatically.
 - Pass a `packages` array to scope results when you know which packages are relevant.
 - Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
-- Do not add package names to queries because package info is already shared. Use `test resource table`, not `package-name test resource table`.
+- Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.
 
 ### Search Syntax
 
@@ -122,6 +106,13 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Use TitleCase for Enum keys: `FavoritePerson`, `BestLake`, `Monthly`.
 - Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
 - Use array shape type definitions in PHPDoc blocks.
+
+=== herd rules ===
+
+# Laravel Herd
+
+- The application is served by Laravel Herd at `https?://[kebab-case-project-dir].test`. Use the `get-absolute-url` tool to generate valid URLs. Never run commands to serve the site. It is always available.
+- Use the `herd` CLI to manage services, PHP versions, and sites (e.g. `herd sites`, `herd services:start <service>`, `herd php:list`). Run `herd list` to discover all available commands.
 
 === tests rules ===
 
@@ -169,12 +160,12 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 ## Laravel 12 Structure
 
-- In Laravel 12, middleware are no longer registered in `app\Http/Kernel.php`.
+- In Laravel 12, middleware are no longer registered in `app/Http/Kernel.php`.
 - Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
 - `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
 - `bootstrap/providers.php` contains application specific service providers.
-- The `app\Console/Kernel.php` file no longer exists; use `bootstrap/app.php` or `routes/console.php` for console configuration.
-- Console commands in `app\Console/Commands/` are automatically available and do not require manual registration.
+- The `app/Console/Kernel.php` file no longer exists; use `bootstrap/app.php` or `routes/console.php` for console configuration.
+- Console commands in `app/Console/Commands/` are automatically available and do not require manual registration.
 
 ## Database
 

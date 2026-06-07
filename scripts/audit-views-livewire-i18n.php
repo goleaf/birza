@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 $root = getcwd();
 $targets = [
-    $root . '/resources/views',
-    $root . '/app/Livewire',
+    $root.'/resources/views',
+    $root.'/app/Livewire',
 ];
 
 function hasLetters(string $text): bool
@@ -19,7 +19,7 @@ function looksLikeUserText(string $text): bool
     if ($t === '') {
         return false;
     }
-    if (!hasLetters($t)) {
+    if (! hasLetters($t)) {
         return false;
     }
     if (str_contains($t, '{{') || str_contains($t, '}}')) {
@@ -37,6 +37,7 @@ function looksLikeUserText(string $text): bool
     if ((bool) preg_match('/^[a-z0-9_.:-]+$/i', $t)) {
         return false;
     }
+
     return true;
 }
 
@@ -49,7 +50,7 @@ $untranslated = [];
 $nonStandardUsage = [];
 
 foreach ($targets as $dir) {
-    if (!is_dir($dir)) {
+    if (! is_dir($dir)) {
         continue;
     }
 
@@ -58,7 +59,7 @@ foreach ($targets as $dir) {
     );
 
     foreach ($it as $fi) {
-        if (!$fi->isFile()) {
+        if (! $fi->isFile()) {
             continue;
         }
 
@@ -66,7 +67,7 @@ foreach ($targets as $dir) {
         $isBlade = str_ends_with($path, '.blade.php');
         $isLivewirePhp = str_ends_with($path, '.php') && str_contains(str_replace('\\', '/', $path), '/app/Livewire/');
 
-        if (!$isBlade && !$isLivewirePhp) {
+        if (! $isBlade && ! $isLivewirePhp) {
             continue;
         }
 
@@ -85,11 +86,11 @@ foreach ($targets as $dir) {
         foreach ($lines as $i => $line) {
             $ln = $i + 1;
             foreach ($patterns as $pattern) {
-                if (!preg_match_all($pattern, $line, $m)) {
+                if (! preg_match_all($pattern, $line, $m)) {
                     continue;
                 }
                 foreach ($m[1] as $key) {
-                    if (!isStandardKey($key)) {
+                    if (! isStandardKey($key)) {
                         $nonStandardUsage[] = [$rel, $ln, $key];
                     }
                 }
@@ -110,17 +111,17 @@ foreach ($targets as $dir) {
                 if (preg_match_all('/>([^<]+)</u', $line, $m)) {
                     foreach ($m[1] as $segment) {
                         $text = trim($segment);
-                        if (!looksLikeUserText($text)) {
+                        if (! looksLikeUserText($text)) {
                             continue;
                         }
                         $untranslated[] = [$rel, $ln, 'blade_text', $text];
                     }
                 }
 
-                if (preg_match_all('/\b(placeholder|title|alt|aria-label|label)=("|\')([^"\']+)\2/u', $line, $m, PREG_SET_ORDER)) {
+                if (preg_match_all('/(?<!:)\b(placeholder|title|alt|aria-label|label)=("|\')([^"\']+)\2/u', $line, $m, PREG_SET_ORDER)) {
                     foreach ($m as $hit) {
                         $val = trim($hit[3]);
-                        if (!looksLikeUserText($val)) {
+                        if (! looksLikeUserText($val)) {
                             continue;
                         }
                         if (str_contains($val, '{{')) {
@@ -147,12 +148,12 @@ foreach ($targets as $dir) {
                 ];
 
                 foreach ($patterns as $p) {
-                    if (!preg_match_all($p, $line, $m, PREG_SET_ORDER)) {
+                    if (! preg_match_all($p, $line, $m, PREG_SET_ORDER)) {
                         continue;
                     }
                     foreach ($m as $hit) {
                         $text = trim(end($hit));
-                        if (!looksLikeUserText($text)) {
+                        if (! looksLikeUserText($text)) {
                             continue;
                         }
                         $untranslated[] = [$rel, $ln, 'livewire_php', $text];
@@ -188,14 +189,14 @@ foreach ($nonStandardUsage as $row) {
 usort($finalUntranslated, static fn (array $a, array $b): int => ($a[0] <=> $b[0]) ?: ($a[1] <=> $b[1]));
 usort($finalNonStandard, static fn (array $a, array $b): int => ($a[0] <=> $b[0]) ?: ($a[1] <=> $b[1]));
 
-echo 'untranslated_findings=' . count($finalUntranslated) . PHP_EOL;
+echo 'untranslated_findings='.count($finalUntranslated).PHP_EOL;
 foreach ($finalUntranslated as [$file, $line, $type, $text]) {
-    echo $file . ':' . $line . ':' . $type . ':' . $text . PHP_EOL;
+    echo $file.':'.$line.':'.$type.':'.$text.PHP_EOL;
 }
 
-echo 'non_standard_key_usage=' . count($finalNonStandard) . PHP_EOL;
+echo 'non_standard_key_usage='.count($finalNonStandard).PHP_EOL;
 foreach ($finalNonStandard as [$file, $line, $key]) {
-    echo $file . ':' . $line . ':' . $key . PHP_EOL;
+    echo $file.':'.$line.':'.$key.PHP_EOL;
 }
 
 exit(($finalUntranslated === [] && $finalNonStandard === []) ? 0 : 1);

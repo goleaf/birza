@@ -84,13 +84,13 @@ class CreditHistory extends Component
             $file = fopen('php://output', 'w');
 
             fputcsv($file, [
-                __('backend.buyers.credit_history.table.buyer'),
-                __('backend.buyers.credit_history.table.amount'),
-                __('backend.buyers.credit_history.table.type'),
-                __('backend.buyers.credit_history.table.balance_after'),
-                __('backend.buyers.credit_history.table.admin'),
-                __('backend.buyers.credit_history.table.note'),
-                __('backend.buyers.credit_history.table.date'),
+                __('backend_buyers_credit_history_table_buyer'),
+                __('backend_buyers_credit_history_table_amount'),
+                __('backend_buyers_credit_history_table_type'),
+                __('backend_buyers_credit_history_table_balance_after'),
+                __('backend_buyers_credit_history_table_admin'),
+                __('backend_buyers_credit_history_table_note'),
+                __('backend_buyers_credit_history_table_date'),
             ]);
 
             $query = BuyerCreditHistory::with(['buyer', 'admin'])
@@ -116,7 +116,7 @@ class CreditHistory extends Component
                         $record->amount,
                         $record->type,
                         $record->balance_after,
-                        $record->admin?->name ?? __('backend.buyers.credit_history.table.system'),
+                        $record->admin?->name ?? __('backend_buyers_credit_history_table_system'),
                         $record->note,
                         $record->created_at?->format('Y-m-d H:i:s'),
                     ]);

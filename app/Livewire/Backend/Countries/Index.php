@@ -100,7 +100,7 @@ class Index extends Component
         return collect(Country::getRegionValues())
             ->map(fn (string $region) => [
                 'id' => $region,
-                'name' => __('backend.countries.regions.'.strtolower($region)),
+                'name' => __('backend_countries_regions_'.strtolower($region)),
             ])
             ->values()
             ->all();

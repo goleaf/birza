@@ -63,12 +63,10 @@
                 </div>
 
                 <div class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-12 w-12 transform group-hover:translate-x-4 transition-transform duration-300"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
+                    <x-ui.icon
+                        name="arrow-right"
+                        class="h-12 w-12 transform transition-transform duration-300 group-hover:translate-x-4"
+                    />
                 </div>
             </div>
         </a>
@@ -165,52 +163,12 @@
 
                 <!-- Sales Performance Graph -->
                 <div class="bg-white p-4 rounded-lg shadow mb-6">
-                    <h4 class="text-lg font-semibold mb-4">{{ __('dashboard_sales_performance') }}</h4>
-                    <div class="h-80 bg-gray-50 rounded-lg p-4">
-                        <!-- Line Graph -->
-                        <div class="relative h-64">
-                            <div class="absolute bottom-0 left-0 right-0 h-64 flex items-end space-x-2">
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 75%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 85%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 65%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 90%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 80%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 95%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 70%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 85%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 75%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 88%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 92%"></div>
-                                <div class="w-1/12 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t"
-                                    style="height: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between mt-2 text-xs text-gray-500">
-                            <span>{{ __('common_months_jan') }}</span>
-                            <span>{{ __('common_months_feb') }}</span>
-                            <span>{{ __('common_months_mar') }}</span>
-                            <span>{{ __('common_months_apr') }}</span>
-                            <span>{{ __('common_months_may') }}</span>
-                            <span>{{ __('common_months_jun') }}</span>
-                            <span>{{ __('common_months_jul') }}</span>
-                            <span>{{ __('common_months_aug') }}</span>
-                            <span>{{ __('common_months_sep') }}</span>
-                            <span>{{ __('common_months_oct') }}</span>
-                            <span>{{ __('common_months_nov') }}</span>
-                            <span>{{ __('common_months_dec') }}</span>
-                        </div>
+                    <div class="mb-4">
+                        <h4 class="text-lg font-semibold">{{ __('dashboard_sales_performance') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('dashboard_sales_performance_subtitle') }}</p>
                     </div>
+
+                    <x-ui.chart wire:model="salesPerformanceChart" class="h-80 rounded-lg bg-gray-50 p-4" />
                 </div>
 
                 <!-- Detailed Stats -->
@@ -359,26 +317,15 @@
 
         <!-- Right side - vertical long block -->
         <div class="w-full lg:w-1/4 px-4">
-            <div class="bg-white rounded-lg shadow-lg p-6 sticky top-6">
-                <h3 class="text-xl font-semibold mb-4">{{ __('dashboard_banners') }}</h3>
-                <!-- banner 1 -->
-                <div class="bg-white rounded-lg shadow my-3">
-                    <img src="https://via.placeholder.com/300x200" alt="{{ __('dashboard_banner_1') }}"
-                        class="w-full rounded-lg mb-2">
-                </div>
-
-                <!-- banner 2 -->
-                <div class="bg-white rounded-lg shadow my-3">
-                    <img src="https://via.placeholder.com/300x200" alt="{{ __('dashboard_banner_2') }}"
-                        class="w-full rounded-lg mb-2">
-                </div>
-
-                <!-- banner 3 -->
-                <div class="bg-white rounded-lg shadow my-3">
-                    <img src="https://via.placeholder.com/300x200" alt="{{ __('dashboard_banner_3') }}"
-                        class="w-full rounded-lg mb-2">
-                </div>
-            </div>
+            <x-ui.card class="sticky top-6 shadow-lg" :title="__('dashboard_banners')">
+                <x-mary-carousel
+                    :slides="$bannerSlides"
+                    autoplay
+                    interval="5000"
+                    without-arrows
+                    class="!h-52 sm:!h-64"
+                />
+            </x-ui.card>
         </div>
     </div>
 

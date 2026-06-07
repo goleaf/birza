@@ -30,6 +30,8 @@ class AttributeControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeIndex::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_attributes'))
             ->assertSee(__('common_actions'))
             ->assertSee(__('backend_attributes_actions_add_value'))
             ->assertSee(__('common_edit'))
@@ -45,6 +47,8 @@ class AttributeControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_attributes'))
             ->assertSee(__('backend_attributes_types_select'))
             ->assertSee(__('backend_attributes_fields_is_filterable'))
             ->assertSee(__('backend_attributes_fields_is_required'))
@@ -61,6 +65,8 @@ class AttributeControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeForm::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('navigation_attributes'))
             ->assertSee(__('backend_attributes_types_boolean'))
             ->assertSee(__('backend_attributes_fields_is_active'));
     }

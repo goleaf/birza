@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasJsonTranslations;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Concerns\HasJsonTranslations;
 use Illuminate\Support\Str;
 
 class Country extends Model
 {
-    use HasJsonTranslations, HasFactory;
+    use HasFactory, HasJsonTranslations;
 
     public const REGIONS = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania'];
 
@@ -34,7 +34,7 @@ class Country extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     public function products(): HasMany
@@ -46,7 +46,7 @@ class Country extends Model
     {
         return collect(self::REGIONS)
             ->map(fn (string $region) => [
-                'label' => __('backend.countries.regions.' . Str::lower($region)),
+                'label' => __('backend_countries_regions_'.Str::lower($region)),
                 'value' => $region,
             ])
             ->all();
@@ -59,7 +59,7 @@ class Country extends Model
 
     public function getRegionLabel(): string
     {
-        $key = 'backend.countries.regions.' . Str::lower($this->region);
+        $key = 'backend_countries_regions_'.Str::lower($this->region);
         $label = __($key);
 
         return $label === $key ? $this->region : $label;
@@ -74,5 +74,4 @@ class Country extends Model
     {
         return $query->where('is_active', true);
     }
-
 }

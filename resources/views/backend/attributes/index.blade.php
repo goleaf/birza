@@ -1,4 +1,10 @@
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_attributes')],
+        ]"
+    />
+
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <x-mary-stat :title="__('backend_attributes_stats_total')" :value="$stats['total']" icon="o-squares-2x2" color="text-primary" />
         <x-mary-stat :title="__('backend_attributes_stats_active')" :value="$stats['active']" icon="o-check-badge" color="text-success" />

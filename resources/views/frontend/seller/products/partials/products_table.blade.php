@@ -41,9 +41,7 @@
                         >
                     @else
                         <div class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+                            <x-ui.icon name="photo" class="h-6 w-6 text-gray-400" />
                         </div>
                     @endif
                 </td>
@@ -57,21 +55,25 @@
 
                 <!-- start organic cell -->
                 <td class="px-6 py-4">
-                    <span 
-                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $product->is_organic ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}"
-                    >
-                        {{ $product->is_organic ? __('common_yes') : __('common_no') }}
-                    </span>
+                    <x-ui.badge
+                        :value="$product->is_organic ? __('common_yes') : __('common_no')"
+                        :color="$product->is_organic ? 'success' : 'neutral'"
+                        soft
+                        sm
+                        class="font-semibold"
+                    />
                 </td>
                 <!-- end organic cell -->
 
                 <!-- start active cell -->
                 <td class="px-6 py-4">
-                    <span 
-                        class="px-2 inline-flex text-xs leading-5 font-semibold {{ $product->is_active ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }}"
-                    >
-                        {{ $product->is_active ? __('product_active') : __('product_inactive') }}
-                    </span>
+                    <x-ui.badge
+                        :value="$product->is_active ? __('product_active') : __('product_inactive')"
+                        :color="$product->is_active ? 'info' : 'error'"
+                        soft
+                        sm
+                        class="font-semibold"
+                    />
                 </td>
                 <!-- end active cell -->
 
@@ -87,7 +89,7 @@
                     <div class="flex space-x-2">
                         @if (!$product->deleted_at)
                             <!-- start edit button -->
-                            <x-button
+                            <x-ui.button
                                 xs
                                 flat
                                 primary
@@ -101,7 +103,7 @@
                         <div class="flex space-x-2">
                             @if ($product->deleted_at)
                                 <!-- start restore button -->
-                                <x-button
+                                <x-ui.button
                                     xs
                                     flat
                                     positive
@@ -112,7 +114,7 @@
                                 <!-- end restore button -->
                             @else
                                 <!-- start delete button -->
-                                <x-button
+                                <x-ui.button
                                     xs
                                     flat
                                     negative

@@ -27,6 +27,8 @@ class AdminProfileControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AdminProfile::class)
+            ->assertSee(__('backend_dashboard_title'))
+            ->assertSee(__('profile'))
             ->assertSee(__('auth_name'))
             ->assertSee(__('auth_current_password'));
     }

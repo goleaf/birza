@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Controllers\Frontend\Seller;
 
-use Tests\TestCase;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProfileControllerTest extends TestCase
 {
@@ -24,7 +24,13 @@ class ProfileControllerTest extends TestCase
         $response = $this->actingAs($seller, 'seller')
             ->get(route('seller.profile.edit'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSee(__('common_dashboard'))
+            ->assertSee(__('profile'))
+            ->assertSee(__('profile_edit_profile'))
+            ->assertSee(__('profile_update_categories'))
+            ->assertSee('data-name="profile-tab"', false)
+            ->assertSee('data-name="categories-tab"', false)
+            ->assertSee('role="tabpanel"', false);
     }
 }
-

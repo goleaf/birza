@@ -7,3 +7,95 @@
         display: none !important;
     }
 }
+
+@layer components {
+    .order-calendar-event-pending {
+        background-color: #fef3c7 !important;
+        color: #92400e !important;
+    }
+
+    .order-calendar-event-success {
+        background-color: #d1fae5 !important;
+        color: #065f46 !important;
+    }
+
+    .order-calendar-event-info {
+        background-color: #dbeafe !important;
+        color: #1d4ed8 !important;
+    }
+
+    .order-calendar-event-shipped {
+        background-color: #e0e7ff !important;
+        color: #4338ca !important;
+    }
+
+    .order-calendar-event-error {
+        background-color: #fee2e2 !important;
+        color: #b91c1c !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar,
+    .EasyMDEContainer .CodeMirror,
+    .EasyMDEContainer .editor-preview,
+    .EasyMDEContainer .editor-preview-side {
+        @apply border-gray-300;
+    }
+
+    .EasyMDEContainer .CodeMirror,
+    .EasyMDEContainer .editor-preview,
+    .EasyMDEContainer .editor-preview-side {
+        @apply rounded-b-md bg-white text-gray-800;
+    }
+
+    .EasyMDEContainer .editor-toolbar {
+        @apply rounded-t-md bg-white;
+    }
+
+    .markdown-content {
+        @apply space-y-4 leading-7;
+    }
+
+    .markdown-content h1 {
+        @apply text-3xl font-bold text-gray-900;
+    }
+
+    .markdown-content h2 {
+        @apply text-2xl font-bold text-gray-900;
+    }
+
+    .markdown-content h3 {
+        @apply text-xl font-semibold text-gray-900;
+    }
+
+    .markdown-content p {
+        @apply text-gray-700;
+    }
+
+    .markdown-content ul {
+        @apply list-disc pl-6;
+    }
+
+    .markdown-content ol {
+        @apply list-decimal pl-6;
+    }
+
+    .markdown-content blockquote {
+        @apply border-l-4 border-gray-300 pl-4 italic text-gray-600;
+    }
+
+    .markdown-content a {
+        @apply text-blue-600 underline underline-offset-2;
+    }
+
+    .markdown-content code {
+        @apply rounded bg-gray-100 px-1.5 py-0.5 text-sm text-gray-800;
+    }
+
+    .markdown-content pre {
+        @apply overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100;
+    }
+
+    .markdown-content pre code {
+        @apply bg-transparent p-0 text-inherit;
+    }
+}

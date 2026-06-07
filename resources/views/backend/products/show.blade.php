@@ -28,6 +28,13 @@
 @endphp
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+            ['label' => $product->name],
+        ]"
+    />
+
     <x-mary-header
         :title="__('common_product_details')"
         :subtitle="$product->name"
@@ -130,9 +137,9 @@
     @endif
 
     <x-mary-card :title="__('common_description')" shadow>
-        @if ($description = $product->getTranslation('description', app()->getLocale()))
+        @if ($hasDescription)
             <div class="prose max-w-none">
-                {!! $description !!}
+                {{ $descriptionHtml }}
             </div>
         @else
             <div class="text-sm text-base-content/60">{{ __('common_not_specified') }}</div>

@@ -10,6 +10,14 @@
 @endphp
 
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+            ['label' => $seller->company_name ?: $seller->name, 'link' => route('backend.sellers.show', $seller)],
+            ['label' => __('common_orders')],
+        ]"
+    />
+
     <x-mary-header
         :title="$seller->company_name ?: $seller->name"
         :subtitle="__('sellers_orders')"

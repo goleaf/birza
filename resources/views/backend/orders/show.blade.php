@@ -1,66 +1,11 @@
-@php
-    $statusClass = match ($order->payment_status) {
-        \App\Models\Order::STATUS['PENDING'] => 'badge-warning badge-outline',
-        \App\Models\Order::STATUS['PAID'] => 'badge-success badge-outline',
-        \App\Models\Order::STATUS['PROCESSING'] => 'badge-info badge-outline',
-        \App\Models\Order::STATUS['SHIPPED'] => 'badge-secondary badge-outline',
-        \App\Models\Order::STATUS['DELIVERED'] => 'badge-success',
-        \App\Models\Order::STATUS['CANCELLED'], \App\Models\Order::STATUS['FAILED'] => 'badge-error badge-outline',
-        \App\Models\Order::STATUS['REFUNDED'] => 'badge-neutral badge-outline',
-        default => 'badge-neutral badge-outline',
-    };
-
-    $buyerDetails = $order->buyer
-        ? [
-            [
-                'icon' => 'o-building-office-2',
-                'value' => $order->buyer->company_name ?: __('common_not_specified'),
-                'label' => __('auth_company_name'),
-            ],
-            [
-                'icon' => 'o-user',
-                'value' => $order->buyer->name ?: __('common_not_specified'),
-                'label' => __('common_name'),
-            ],
-            [
-                'icon' => 'o-envelope',
-                'value' => $order->buyer->email ?: __('common_not_specified'),
-                'label' => __('common_email'),
-            ],
-            [
-                'icon' => 'o-phone',
-                'value' => $order->buyer->phone ?: __('common_not_specified'),
-                'label' => __('sellers_phone'),
-            ],
-        ]
-        : [[
-            'icon' => 'o-user',
-            'value' => __('orders_buyer_not_found'),
-            'label' => __('buyer_buyer_information'),
-        ]];
-
-    $paymentDetails = [
-        [
-            'icon' => 'o-credit-card',
-            'value' => $order->payment_method ?: __('common_not_specified'),
-            'label' => __('orders_payment_method'),
-        ],
-        [
-            'icon' => 'o-banknotes',
-            'value' => number_format((float) $order->order_total, 2) . ' €',
-            'label' => __('orders_order_total'),
-        ],
-        [
-            'icon' => 'o-calendar',
-            'value' => $order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified'),
-            'label' => __('orders_placed_on'),
-        ],
-    ];
-
-    $deletedProductCount = $order->orderItems->filter(fn ($item) => $item->product?->trashed())->count();
-@endphp
-
 <div class="space-y-6">
+    <x-backend.breadcrumbs
+        :items="[
+            ['label' => __('navigation_orders'), 'link' => route('backend.orders.index')],
+            ['label' => '#' . $order->id],
+        ]"
+    />
+
     <x-mary-header
         :title="__('orders_order_details') . ' #' . $order->id"
         :subtitle="__('orders_placed_on') . ': ' . ($order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified'))"

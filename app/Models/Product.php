@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Filters\ProductFilter;
 use App\Models\Concerns\HasJsonTranslations;
 use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
@@ -12,14 +13,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Kettasoft\Filterable\Traits\HasFilterable;
 
 class Product extends Model
 {
-    use HasFactory, HasJsonTranslations, SoftDeletes;
+    use HasFactory, HasFilterable, HasJsonTranslations, SoftDeletes;
 
     public const UNITS = ['piece', 'kg', 'l', 'pack'];
 
     protected $table = 'products';
+
+    protected string $filterable = ProductFilter::class;
 
     protected $fillable = [
         'name',
@@ -157,6 +161,15 @@ class Product extends Model
                 'path' => 'products/'.$fileName,
             ])
             ->values();
+    }
+
+    public function imageGalleryUrls(): array
+    {
+        return $this->imageLibraryPreview()
+            ->pluck('url')
+            ->filter(fn (?string $url) => filled($url))
+            ->values()
+            ->all();
     }
 
     public function syncLegacyImageColumnsFromLibrary(): void

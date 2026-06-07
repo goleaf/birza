@@ -16,8 +16,11 @@ use Livewire\Component;
 class Register extends Component
 {
     public string $userType = 'buyer';
+
     public string $email = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     public function mount(?string $userType = null): void
@@ -56,11 +59,13 @@ class Register extends Component
             if (empty($buyer->company_name) || empty($buyer->company_code) || empty($buyer->address) || empty($buyer->phone)) {
                 session()->flash('warning', __('profile_complete_profile'));
                 $this->redirectRoute('buyer.profile.edit');
+
                 return;
             }
 
             session()->flash('success', __('messages_registration_success'));
             $this->redirectRoute('buyer.dashboard');
+
             return;
         }
 
@@ -70,7 +75,7 @@ class Register extends Component
             'password' => ['required', 'string', Password::min(12)->mixedCase()->numbers()->symbols(), 'confirmed'],
         ]);
 
-        $verificationToken = sha1(Str::random(40));
+        $verificationToken = Str::random(64);
 
         $seller = Seller::create([
             'email' => strtolower($validated['email']),
@@ -96,5 +101,3 @@ class Register extends Component
         return view('livewire.frontend.auth.register');
     }
 }
-
-

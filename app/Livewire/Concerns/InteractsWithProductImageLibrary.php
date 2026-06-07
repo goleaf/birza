@@ -35,7 +35,7 @@ trait InteractsWithProductImageLibrary
     {
         if ($this->imageLibrary->isEmpty()) {
             throw ValidationException::withMessages([
-                'imageLibrary' => __('validation.required', ['attribute' => __('common_product_images')]),
+                'imageLibrary' => __('validation_required', ['attribute' => __('common_product_images')]),
             ]);
         }
     }

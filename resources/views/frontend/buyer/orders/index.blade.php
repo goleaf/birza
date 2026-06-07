@@ -1,16 +1,68 @@
 <div>
     <!-- start main container -->
     <div class="max-w-7xl mx-auto">
+        <x-buyer.breadcrumbs
+            class="mb-6"
+            :items="[
+                ['label' => __('common_orders')],
+            ]"
+        />
+
+        <x-ui.header
+            class="mb-6"
+            :title="__('orders_order_list')"
+            :subtitle="__('common_orders')"
+        >
+            <x-slot:actions>
+                <x-ui.button
+                    :href="route('buyer.dashboard')"
+                    secondary
+                    :label="__('common_back_to_dashboard')"
+                />
+            </x-slot:actions>
+        </x-ui.header>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
+            <x-ui.statistic
+                :title="__('orders_total_orders')"
+                :value="(string) $ordersData['total']"
+                icon="shopping-bag"
+                color="text-primary"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('orders_pending_orders')"
+                :value="(string) $ordersData['pending']"
+                icon="clock"
+                color="text-warning"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('orders_completed_orders')"
+                :value="(string) $ordersData['delivered']"
+                icon="check-badge"
+                color="text-success"
+                class="shadow-sm"
+            />
+
+            <x-ui.statistic
+                :title="__('orders_total_spent')"
+                :value="'€' . number_format((float) $ordersData['totalSpent'], 2)"
+                icon="banknotes"
+                color="text-info"
+                class="shadow-sm"
+            />
+        </div>
+
         <!-- start filters container -->
-        <div class="bg-white shadow rounded-lg mb-6">
-            <!-- start filters content -->
-            <div class="p-4 sm:p-6">
-                <!-- start form -->
-                <form 
-                    action="{{ route('buyer.orders.index') }}" 
-                    method="GET"
-                    class="space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4"
-                >
+        <x-ui.card class="mb-6 rounded-lg shadow">
+            <!-- start form -->
+            <form
+                wire:submit.prevent="applyFilters"
+                class="space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4"
+            >
                     <!-- start status select container -->
                     <div class="w-full sm:w-48">
                         <!-- start label -->
@@ -25,7 +77,7 @@
                         <!-- start select -->
                         <select 
                             id="status" 
-                            name="status"
+                            wire:model="status"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         >
                             <option value="">
@@ -56,13 +108,13 @@
                         <!-- end label -->
                         
                         <!-- start input -->
-                        <input 
-                            type="date" 
-                            name="date_from" 
-                            id="date_from" 
-                            value="{{ $filters['dateFrom'] }}" 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        >
+                        <x-ui.datepicker
+                            wire:model="dateFrom"
+                            id="date_from"
+                            class="w-full"
+                            :label="null"
+                            clearable
+                        />
                         <!-- end input -->
                     </div>
                     <!-- end date from container -->
@@ -79,13 +131,13 @@
                         <!-- end label -->
                         
                         <!-- start input -->
-                        <input 
-                            type="date" 
-                            name="date_to" 
+                        <x-ui.datepicker
+                            wire:model="dateTo"
                             id="date_to" 
-                            value="{{ $filters['dateTo'] }}" 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        >
+                            class="w-full"
+                            :label="null"
+                            clearable
+                        />
                         <!-- end input -->
                     </div>
                     <!-- end date to container -->
@@ -102,98 +154,37 @@
                         <!-- end label -->
                         
                         <!-- start button -->
-                        <button 
-                            type="submit" 
-                            class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" 
+                        <x-mary-button
+                            type="submit"
+                            class="w-full sm:w-auto btn-primary"
                             name="filter_button"
-                        >
-                            {{ __('common_filter') }}
-                        </button>
+                            :label="__('common_filter')"
+                        />
                         <!-- end button -->
                     </div>
                     <!-- end button container -->
-                </form>
-                <!-- end form -->
-            </div>
-            <!-- end filters content -->
-        </div>
+            </form>
+            <!-- end form -->
+        </x-ui.card>
         <!-- end filters container -->
 
-{{-- 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="bg-blue-100 rounded-full p-3">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-medium text-gray-900">{{ __('orders_total_orders') }}</h3>
-                    <p class="text-2xl font-semibold text-gray-700">{{ $ordersData['total'] }}</p>
-                </div>
+        <x-ui.card
+            class="mb-6 rounded-lg shadow"
+            :title="__('orders_calendar_title')"
+            :subtitle="__('orders_calendar_subtitle')"
+        >
+            <div class="overflow-x-auto">
+                <x-ui.calendar :events="$orderCalendarEvents" />
             </div>
-        </div>
+        </x-ui.card>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="bg-yellow-100 rounded-full p-3">
-                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-medium text-gray-900">{{ __('orders_pending_orders') }}</h3>
-                    <p class="text-2xl font-semibold text-gray-700">{{ $ordersData['pending'] }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="bg-green-100 rounded-full p-3">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-medium text-gray-900">{{ __('orders_completed_orders') }}</h3>
-                    <p class="text-2xl font-semibold text-gray-700">{{ $ordersData['delivered'] }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="bg-purple-100 rounded-full p-3">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-medium text-gray-900">{{ __('orders_total_spent') }}</h3>
-                    <p class="text-2xl font-semibold text-gray-700">€{{ number_format($ordersData['totalSpent'], 2) }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
---}}
         <!-- start orders list -->
-        <div 
-            class="bg-white shadow rounded-lg"
+        <x-ui.card
+            class="rounded-lg shadow"
+            body-class="-mx-5 -mb-5 overflow-hidden"
         >
             <!-- start overflow container -->
-            <div 
-                class="overflow-x-auto"
-            >
+            <div class="overflow-x-auto">
                 <!-- start table -->
                 <table 
                     class="min-w-full divide-y divide-gray-200"
@@ -234,19 +225,47 @@
                                     {{ number_format($order->order_total, 2) }} €
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        {{ $order->payment_status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $order->payment_status === 'paid' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $order->payment_status === 'failed' ? 'bg-red-100 text-red-800' : '' }}
-                                        {{ $order->payment_status === 'processing' ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $order->payment_status === 'shipped' ? 'bg-indigo-100 text-indigo-800' : '' }}
-                                        {{ $order->payment_status === 'delivered' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $order->payment_status === 'cancelled' ? 'bg-gray-100 text-gray-800' : '' }}
-                                        {{ $order->payment_status === 'refunded' ? 'bg-purple-100 text-purple-800' : '' }}"
-                                    >
-                                        {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
-                                    </span>
+                                    <x-ui.popover position="bottom-start" class="inline-block">
+                                        <x-slot:trigger>
+                                            <span>
+                                                <x-ui.badge
+                                                    :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                                                    :color="match (strtolower((string) $order->payment_status)) {
+                                                        'pending' => 'warning',
+                                                        'paid', 'delivered' => 'success',
+                                                        'failed' => 'error',
+                                                        'processing' => 'info',
+                                                        'shipped' => 'secondary',
+                                                        'cancelled', 'refunded' => 'neutral',
+                                                        default => 'neutral',
+                                                    }"
+                                                    soft
+                                                    sm
+                                                    class="font-semibold"
+                                                />
+                                            </span>
+                                        </x-slot:trigger>
+
+                                        <x-slot:content>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center gap-2">
+                                                    <x-ui.icon name="receipt-percent" class="h-5 w-5 text-blue-600" />
+                                                    <div class="font-semibold text-gray-900">{{ __('orders_order_details') }} #{{ $order->id }}</div>
+                                                </div>
+
+                                                <dl class="space-y-2 text-gray-600">
+                                                    <div class="flex items-start justify-between gap-3">
+                                                        <dt class="font-medium text-gray-500">{{ __('orders_placed_on') }}</dt>
+                                                        <dd class="text-right">{{ $order->created_at->format('Y-m-d H:i') }}</dd>
+                                                    </div>
+                                                    <div class="flex items-start justify-between gap-3">
+                                                        <dt class="font-medium text-gray-500">{{ __('orders_order_total') }}</dt>
+                                                        <dd class="text-right">{{ number_format($order->order_total, 2) }} €</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                        </x-slot:content>
+                                    </x-ui.popover>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <!-- start view link -->
@@ -283,7 +302,7 @@
                 <!-- end table -->
             </div>
             <!-- end overflow container -->
-        </div>
+        </x-ui.card>
         <!-- end orders list -->
     </div>
 </div>

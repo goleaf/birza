@@ -16,8 +16,12 @@ class Show extends Component
     use InteractsWithWireUi;
 
     public Order $order;
+
     public $orderItems;
+
     public ?string $comment = null;
+
+    public int $currentOrderStep = 1;
 
     public function mount(Order $order): void
     {
@@ -30,8 +34,9 @@ class Show extends Component
             abort(403, 'Unauthorized access to order');
         }
 
-        $this->order = $order;
+        $this->order = $order->load('buyer');
         $this->orderItems = $orderItems;
+        $this->currentOrderStep = $this->order->lifecycleCurrentStep();
     }
 
     public function updateStatus(string $status): void
@@ -45,6 +50,7 @@ class Show extends Component
         // Only allow simple transitions from the UI.
         if (! in_array($status, [Order::STATUS['PAID'], Order::STATUS['CANCELLED']], true)) {
             $this->notifyError(__('common_error_occurred'));
+
             return;
         }
 
@@ -56,12 +62,14 @@ class Show extends Component
 
         if (! $hasItems) {
             $this->notifyError(__('orders_unauthorized_update'));
+
             return;
         }
 
         // Only allow changing pending orders (matches current UI expectation).
         if ($this->order->payment_status !== Order::STATUS['PENDING']) {
             $this->notifyError(__('orders_status_cannot_be_changed'));
+
             return;
         }
 
@@ -82,7 +90,7 @@ class Show extends Component
                     'order_id' => $this->order->id,
                     'amount' => $totalAmount,
                     'type' => 'addition',
-                    'description' => trim("Order #{$this->order->id} confirmed - Balance added" . ($comment ? " ({$comment})" : '')),
+                    'description' => trim("Order #{$this->order->id} confirmed - Balance added".($comment ? " ({$comment})" : '')),
                 ]);
             } elseif ($status === Order::STATUS['CANCELLED']) {
                 // No balance action needed because only pending orders can be changed from this UI.
@@ -94,8 +102,9 @@ class Show extends Component
             ]);
         });
 
-        $this->order->refresh();
+        $this->order->refresh()->load('buyer');
         $this->comment = null;
+        $this->currentOrderStep = $this->order->lifecycleCurrentStep();
 
         $this->notifySuccess(__('orders_status_updated'));
     }
@@ -117,18 +126,11 @@ class Show extends Component
         return view('frontend.seller.orders.show', [
             'order' => $this->order,
             'orderItems' => $this->orderItems,
-            'timeline' => $this->getOrderTimeline($this->order),
+            'orderStepItems' => $this->order->lifecycleSteps(),
+            'orderStepPanel' => $this->order->lifecyclePanel(),
+            'orderStepsColor' => $this->order->lifecycleStepsColor(),
+            'orderTimelineItems' => $this->order->lifecycleTimeline(),
             'orderStatuses' => Order::STATUS,
         ]);
     }
-
-    protected function getOrderTimeline(Order $order): array
-    {
-        return [
-            'created_at' => $order->created_at,
-            'updated_at' => $order->updated_at,
-        ];
-    }
 }
-
-

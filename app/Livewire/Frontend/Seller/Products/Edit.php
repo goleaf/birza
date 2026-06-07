@@ -20,23 +20,39 @@ class Edit extends Component
     public Product $product;
 
     public int $category_id;
+
     public string $name = '';
+
     public ?float $price = null;
+
     public string $pack_type = '';
+
     public string $unit = '';
+
     public ?int $country_of_origin = null;
+
     public int $is_organic = 0;
+
     public int $is_active = 1;
+
     public ?float $min_order_price = null;
+
     public int $min_order_count = 1;
+
     public int $stock = 1;
+
     public array $description = [];
+
     public ?int $temperature_conditions_from = null;
+
     public ?int $temperature_conditions_to = null;
+
     public ?string $use_until = null;
+
     public ?int $total_shelf_life = null;
 
     public $product_image = null;
+
     public $product_additional_image = null;
 
     public function mount(Product $product): void
@@ -136,7 +152,7 @@ class Edit extends Component
     private function storeProductImage($imageFile, ?string $oldImage = null): string
     {
         if ($oldImage) {
-            Storage::disk('public')->delete('products/' . $oldImage);
+            Storage::disk('public')->delete('products/'.$oldImage);
         }
 
         $image = Image::make($imageFile)
@@ -146,8 +162,8 @@ class Edit extends Component
             })
             ->encode('webp', 80);
 
-        $filename = uniqid() . '.webp';
-        Storage::disk('public')->put('products/' . $filename, (string) $image);
+        $filename = uniqid().'.webp';
+        Storage::disk('public')->put('products/'.$filename, (string) $image);
 
         return $filename;
     }
@@ -156,6 +172,7 @@ class Edit extends Component
     {
         return view('frontend.seller.products.form', [
             'product' => $this->product,
+            'productGalleryImages' => $this->product->imageGalleryUrls(),
             'countries' => $this->getEuropeanCountries(),
         ]);
     }
@@ -168,4 +185,3 @@ class Edit extends Component
             ->get();
     }
 }
-

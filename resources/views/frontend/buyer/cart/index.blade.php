@@ -1,11 +1,28 @@
 <div>
     <!-- start main container -->
-    <x-ui.card class="shadow-sm sm:rounded-lg" :title="__('cart_shopping_cart')">
+    <div class="space-y-6">
+        <x-buyer.breadcrumbs
+            :items="[
+                ['label' => __('common_cart')],
+            ]"
+        />
 
-        <!-- start cart items -->
-        @if (LaraCart::count() > 0)
-            <div class="space-y-6">
-                @foreach (LaraCart::getItems() as $item)
+        <x-ui.header :title="__('cart_shopping_cart')" :subtitle="__('common_cart')">
+            <x-slot:actions>
+                <x-ui.button
+                    href="{{ route('buyer.products.index') }}"
+                    secondary
+                    :label="__('cart_continue_shopping')"
+                />
+            </x-slot:actions>
+        </x-ui.header>
+
+        <x-ui.card class="shadow-sm sm:rounded-lg">
+
+            <!-- start cart items -->
+            @if (LaraCart::count() > 0)
+                <div class="space-y-6">
+                    @foreach (LaraCart::getItems() as $item)
                     <!-- start cart item -->
                     <div class="flex items-start justify-between border rounded-lg p-6">
                         <!-- start item left side -->
@@ -68,13 +85,7 @@
 
                                     @if(isset($item->options['is_organic']) && $item->options['is_organic'])
                                         <p class="text-green-600 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path 
-                                                    fill-rule="evenodd"
-                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                    clip-rule="evenodd" 
-                                                />
-                                            </svg>
+                                            <x-ui.icon name="check-circle" class="mr-1 h-4 w-4" />
                                             {{ __('product_organic') }}
                                         </p>
                                     @endif
@@ -134,8 +145,8 @@
                     <!-- end cart item -->
                 @endforeach
 
-                <!-- start cart footer -->
-                <div class="mt-8 flex justify-between items-center border-t b-6 pt-6">
+                    <!-- start cart footer -->
+                    <div class="mt-8 flex justify-between items-center border-t b-6 pt-6">
                     <!-- start total amounts -->
                     <div class="text-2xl font-bold mt-4">
                         <div class="flex flex-col">
@@ -165,21 +176,21 @@
                         <x-ui.button type="button" positive wire:click="checkout" :label="__('cart_checkout')" />
                     </div>
                     <!-- end action buttons -->
+                    </div>
+                    <!-- end cart footer -->
                 </div>
-                <!-- end cart footer -->
-            </div>
-        @else
-            <!-- start empty cart message -->
-            <div class="text-center py-12">
-                <p class="text-gray-600 text-lg mb-6">
-                    {{ __('cart_empty_cart') }}
-                </p>
-                <x-ui.button href="{{ route('buyer.products.index') }}" primary :label="__('cart_continue_shopping')" />
-            </div>
-            <!-- end empty cart message -->
-        @endif
-        <!-- end cart items -->
-    </x-ui.card>
-    <!-- end main container -->
+            @else
+                <!-- start empty cart message -->
+                <div class="text-center py-12">
+                    <p class="text-gray-600 text-lg mb-6">
+                        {{ __('cart_empty_cart') }}
+                    </p>
+                    <x-ui.button href="{{ route('buyer.products.index') }}" primary :label="__('cart_continue_shopping')" />
+                </div>
+                <!-- end empty cart message -->
+            @endif
+            <!-- end cart items -->
+        </x-ui.card>
+    </div>
 </div>
 <!-- end section -->

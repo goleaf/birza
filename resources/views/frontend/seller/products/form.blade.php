@@ -1,14 +1,34 @@
+@php
+    $isEditing = isset($product->id);
+@endphp
+
 <div>
         <!-- start main container -->
         <div class="container mx-auto px-4 py-8">
-            <!-- start form container -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <!-- start title -->
-                <h2 class="text-2xl font-bold mb-6">
-                    {{ isset($product->id) ? __('product_edit_product') : __('product_create_new_product') }}
-                </h2>
-                <!-- end title -->
+            <x-seller.breadcrumbs
+                class="mb-6"
+                :items="[
+                    ['label' => __('common_products'), 'link' => route('seller.products.index')],
+                    ['label' => $isEditing ? $product->name : __('common_create')],
+                ]"
+            />
 
+            <x-ui.header
+                class="mb-6"
+                :title="$isEditing ? __('product_edit_product') : __('product_create_new_product')"
+                :subtitle="$isEditing ? $product->name : __('product_products_list')"
+            >
+                <x-slot:actions>
+                    <x-ui.button
+                        :href="route('seller.products.index')"
+                        secondary
+                        :label="__('common_back_to_products')"
+                    />
+                </x-slot:actions>
+            </x-ui.header>
+
+            <!-- start form container -->
+            <x-ui.card class="rounded-lg shadow-lg">
                 <!-- start form -->
                 <form wire:submit.prevent="save" enctype="multipart/form-data">
                     <input type="hidden" wire:model="category_id">
@@ -231,13 +251,42 @@
                                 <label class="block text-gray-600 text-xs mb-1">
                                     {{ strtoupper($locale) }}{{ $locale == app()->getLocale() ? ' *' : '' }}
                                 </label>
-                                <textarea 
-                                    rows="4" 
-                                    {{ $locale == app()->getLocale() ? 'required' : '' }} 
-                                    wire:model="description.{{ $locale }}"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has("description.$locale") ? 'border-red-500' : '' }}"
-                                ></textarea>
-                                @error("description.$locale")
+                                @php
+                                    $markdownModel = 'description.' . $locale;
+                                    $markdownIsRequired = $locale == app()->getLocale();
+                                    $markdownHasError = $errors->has($markdownModel);
+                                    $markdownConfig = [
+                                        'toolbar' => [
+                                            'heading',
+                                            'bold',
+                                            'italic',
+                                            '|',
+                                            'quote',
+                                            'unordered-list',
+                                            'ordered-list',
+                                            '|',
+                                            'link',
+                                            'upload-image',
+                                            '|',
+                                            'preview',
+                                            'side-by-side',
+                                        ],
+                                        'minHeight' => '180px',
+                                    ];
+                                    $markdownEditorClass = $markdownHasError
+                                        ? '[&_.editor-toolbar]:!border-red-500 [&_.CodeMirror]:!border-red-500'
+                                        : '';
+                                @endphp
+                                <x-ui.markdown-editor
+                                    wire:model="{{ $markdownModel }}"
+                                    :label="null"
+                                    :hint="null"
+                                    class="{{ $markdownEditorClass }}"
+                                    :required="$markdownIsRequired"
+                                    folder="markdown/products"
+                                    :config="$markdownConfig"
+                                />
+                                @error($markdownModel)
                                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -290,11 +339,12 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             {{ __('product_use_until') }}
                         </label>
-                        <input
-                            type="date"
+                        <x-ui.datepicker
                             wire:model="use_until"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('use_until') ? 'border-red-500' : '' }}"
-                        >
+                            class="w-full {{ $errors->has('use_until') ? '[&_label]:!border-red-500' : '' }}"
+                            :label="null"
+                            clearable
+                        />
                         @error('use_until')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
@@ -323,6 +373,18 @@
 
 
                     <!-- start main image field -->
+                    @if (! empty($productGalleryImages))
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ __('common_product_images') }}
+                            </label>
+                            <x-ui.image-gallery
+                                :images="$productGalleryImages"
+                                class="gap-3 rounded-lg border border-gray-200 bg-white p-3 [&_.carousel-item]:w-24 [&_img]:h-24 [&_img]:w-24 [&_img]:rounded-md [&_img]:object-cover"
+                            />
+                        </div>
+                    @endif
+
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             {{ __('product_main_image') }}
@@ -330,12 +392,6 @@
                                 *
                             @endif
                         </label>
-                        @if (isset($product) && $product->product_image)
-                            <img 
-                                src="{{ asset('storage/products/' . $product->product_image) }}" 
-                                class="max-w-xs mb-2"
-                            >
-                        @endif
                         <label class="block">
                             <span class="sr-only">{{ __('product_choose_file') }}</span>
                             <input 
@@ -356,12 +412,6 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             {{ __('product_additional_image') }}
                         </label>
-                        @if (isset($product) && $product->product_additional_image)
-                            <img 
-                                src="{{ asset('storage/products/' . $product->product_additional_image) }}" 
-                                class="max-w-xs mb-2"
-                            >
-                        @endif
                         <label class="block">
                             <span class="sr-only">{{ __('product_choose_file') }}</span>
                             <input 
@@ -379,24 +429,23 @@
 
                     <!-- start form buttons -->
                     <div class="flex items-center justify-between">
-                        <button 
-                            type="submit" 
+                        <x-ui.button
+                            type="submit"
+                            primary
+                            spinner="save"
                             wire:loading.attr="disabled"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-60 disabled:cursor-not-allowed"
-                        >
-                            {{ isset($product->id) ? __('product_update') : __('product_create') }}
-                        </button>
-                        <a 
-                            href="{{ route('seller.products.index') }}" 
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        >
-                            {{ __('common_cancel') }}
-                        </a>
+                            :label="$isEditing ? __('product_update') : __('product_create')"
+                        />
+                        <x-ui.button
+                            :href="route('seller.products.index')"
+                            secondary
+                            :label="__('common_cancel')"
+                        />
                     </div>
                     <!-- end form buttons -->
                 </form>
                 <!-- end form -->
-            </div>
+            </x-ui.card>
             <!-- end form container -->
         </div>
         <!-- end main container -->
