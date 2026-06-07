@@ -4,6 +4,13 @@
 
 ## Tech Debt
 
+**Database structure needs cleanup before new marketplace features:**
+- Files: `.planning/codebase/DATABASE-STRUCTURE-AUDIT.md`, `database/migrations/*`, `app/Models/*`, `app/Models/Users/*`, `database/factories/*`, `database/seeders/*`
+- Issue: the live schema has separate role-specific user tables, no physical roles/permissions tables, overlapping product-attribute pivots, split cart storage, split product image storage, missing domain tables for favorites/reviews/messages/addresses/notifications, and several weak constraints.
+- Why: marketplace behavior was added incrementally around Livewire screens and separate auth guards without a consolidated domain model pass.
+- Impact: new features can land on the wrong persistence path, duplicate data, or rely on unconstrained status/relationship state.
+- Fix approach: use the database audit as the pre-feature checklist; decide user/role strategy, normalize addresses/images/cart/order status, consolidate attribute pivots, and add missing constraints/indexes with additive migrations.
+
 **Order domain mixes checkout, payment, fulfillment, and seller settlement in one record:**
 - Files: `app/Livewire/Frontend/Buyer/Cart/Index.php`, `app/Livewire/Frontend/Seller/Orders/Show.php`, `app/Livewire/Frontend/Seller/Orders/Index.php`, `app/Livewire/Frontend/Seller/Dashboard.php`, `app/Models/Order.php`, `database/migrations/2024_03_20_000009_create_orders_table.php`, `database/migrations/2024_12_18_074617_create_order_item_table.php`
 - Issue: one `orders` row can contain `order_items` from multiple sellers, but `status` and `payment_status` live only on the parent order and seller-facing screens mutate them globally.
