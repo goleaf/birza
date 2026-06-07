@@ -7,6 +7,7 @@ use App\Actions\Images\ReplaceImageAction;
 use App\Actions\Images\SyncProductImageLibraryAction;
 use App\Actions\Images\UploadImageAction;
 use App\Actions\Images\ValidateImageUploadAction;
+use App\Enums\OrderPaymentStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -243,7 +244,7 @@ class ProductImagePipelineTest extends TestCase
             'name' => 'History-safe product',
         ]);
         $order = Order::factory()->for($buyer, 'buyer')->create([
-            'payment_status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
         ]);
         $image = ProductImage::factory()->for($product)->create([
             'is_primary' => true,
