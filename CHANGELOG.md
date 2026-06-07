@@ -10,6 +10,8 @@ Release notes live in [docs/releases](docs/releases/README.md).
 
 ### Added
 
+- Added a complete root README with project overview, setup, roles, demo accounts, commands, testing, storage, localization, roadmap, known issues, and production notes.
+
 - Added release management documentation, release-note rules, release checklist, semantic versioning guidance, and git tag instructions.
 - Added a reusable release notes template for future major project blocks.
 - Added an initial `0.1.0` baseline release note for the current active-development state.
