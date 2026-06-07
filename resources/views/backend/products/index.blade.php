@@ -43,7 +43,7 @@
         >
             @scope('cell_image', $product)
                 <x-mary-avatar
-                    :image="$product->product_image ? Storage::url('products/' . $product->product_image) : ''"
+                    :image="$product->imageUrl('thumb')"
                     :alt="$product->name"
                     :placeholder="strtoupper(substr((string) $product->name, 0, 2))"
                     class="!w-14 !rounded-box"

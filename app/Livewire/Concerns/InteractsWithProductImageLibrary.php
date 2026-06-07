@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Concerns;
 
+use App\Actions\Images\SyncProductImageLibraryAction;
+use App\Actions\Images\ValidateImageUploadAction;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
@@ -22,12 +24,12 @@ trait InteractsWithProductImageLibrary
     }
 
     /**
-     * @return array<string, array<int, string>>
+     * @return array<string, array<int, mixed>>
      */
     protected function productImageLibraryRules(): array
     {
         return [
-            'imageFiles.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:15048'],
+            'imageFiles.*' => app(ValidateImageUploadAction::class)->rules('product'),
         ];
     }
 
@@ -40,31 +42,6 @@ trait InteractsWithProductImageLibrary
         }
     }
 
-    protected function pendingProductImageFileNames(): Collection
-    {
-        return $this->imageLibrary
-            ->map(function (array $media): ?string {
-                $path = $media['path'] ?? null;
-
-                if (is_string($path) && $path !== '') {
-                    return basename($path);
-                }
-
-                $uuid = $media['uuid'] ?? null;
-                $url = $media['url'] ?? null;
-
-                if (! is_string($uuid) || ! is_string($url)) {
-                    return null;
-                }
-
-                $extension = str($url)->before('?')->afterLast('.')->toString();
-
-                return $extension !== '' ? $uuid.'.'.$extension : null;
-            })
-            ->filter()
-            ->values();
-    }
-
     protected function syncProductImageLibrary(Product $product): void
     {
         if (($product->image_library === null || $product->image_library->isEmpty())
@@ -72,15 +49,9 @@ trait InteractsWithProductImageLibrary
             $product->image_library = $product->imageLibraryPreview();
         }
 
-        $this->syncMedia(
-            model: $product,
-            library: 'imageLibrary',
-            files: 'imageFiles',
-            storage_subpath: 'products',
-            model_field: 'image_library',
-        );
+        app(SyncProductImageLibraryAction::class)->handle($product, $this->imageLibrary, $this->imageFiles);
 
-        $product->syncLegacyImageColumnsFromLibrary();
-        $product->save();
+        $this->imageFiles = [];
+        $this->imageLibrary = $product->fresh()?->imageLibraryPreview() ?? collect();
     }
 }

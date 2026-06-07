@@ -82,7 +82,9 @@ class Index extends Component
             $query->where('seller_id', $seller->id);
         })
             ->with(['products' => function ($query) use ($seller) {
-                $query->withTrashed()->where('seller_id', $seller->id);
+                $query->withTrashed()
+                    ->where('seller_id', $seller->id)
+                    ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order');
             }])
             ->whereNull('parent_category_id')
             ->orWhereHas('subcategories', function ($query) use ($seller) {
@@ -91,10 +93,10 @@ class Index extends Component
                 });
             })
             ->with(['subcategories.products' => function ($query) use ($seller) {
-                $query->withTrashed()->where('seller_id', $seller->id);
+                $query->withTrashed()
+                    ->where('seller_id', $seller->id)
+                    ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order');
             }])
             ->get();
     }
 }
-
-

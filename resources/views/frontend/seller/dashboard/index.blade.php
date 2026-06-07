@@ -154,7 +154,14 @@
                         @foreach ($ordersData['recent'] as $item)
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center">
-                                    <img src="{{ Storage::url('products/' . $item['product']->product_image) }}" alt="{{ $item['product']->name }}" class="w-10 h-10 mr-3 rounded object-cover">
+                                    <img
+                                        src="{{ $item['product']?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product')) }}"
+                                        alt="{{ $item['product']?->name ?? __('common_unnamed_product') }}"
+                                        class="w-10 h-10 mr-3 rounded object-cover"
+                                        loading="lazy"
+                                        width="160"
+                                        height="160"
+                                    >
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

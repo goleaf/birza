@@ -103,6 +103,7 @@ class Index extends Component
                 'product_image',
             ])
             ->with([
+                'primaryImage:id,product_id,disk,path,variants,is_primary,sort_order',
                 'seller:id,company_name',
                 'category:id,category_name,parent_category_id',
                 'category.parent:id,category_name',

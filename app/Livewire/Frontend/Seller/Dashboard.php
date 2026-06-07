@@ -67,7 +67,7 @@ class Dashboard extends Component
         $orderItems = OrderItem::with([
             'order',
             'order.buyer',
-            'product',
+            'product.primaryImage',
         ])
             ->where('seller_id', $seller->id)
             ->latest()

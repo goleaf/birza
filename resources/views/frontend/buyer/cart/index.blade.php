@@ -29,12 +29,13 @@
                         <div class="flex space-x-6">
                             <!-- start image container -->
                             <div class="w-32 h-32">
-                                @if (isset($item->options['image']) && $item->options['image'])
+                                @if (isset($item->options['image_url']) && $item->options['image_url'])
                                     <a href="{{ route('buyer.products.show', $item->id) }}">
                                         <img 
-                                            src="{{ Storage::url('products/' . $item->options['image']) }}"
+                                            src="{{ $item->options['image_url'] }}"
                                             alt="{{ $item->name }}" 
                                             class="w-32 h-32 object-cover rounded-lg"
+                                            loading="lazy"
                                         >
                                     </a>
                                 @else

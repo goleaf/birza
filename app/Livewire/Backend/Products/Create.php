@@ -106,7 +106,6 @@ class Create extends Component
         $validated = $this->validate();
 
         $product = new Product;
-        $pendingImageFileNames = $this->pendingProductImageFileNames();
         $product->fill([
             'category_id' => $validated['category_id'],
             'seller_id' => $validated['seller_id'],
@@ -126,8 +125,8 @@ class Create extends Component
             'total_shelf_life' => $validated['total_shelf_life'] ?? null,
             'package_weight' => $validated['package_weight'] ?? null,
             'price_per_liter' => $validated['price_per_liter'] ?? null,
-            'product_image' => $pendingImageFileNames->get(0),
-            'product_additional_image' => $pendingImageFileNames->get(1),
+            'product_image' => '',
+            'product_additional_image' => null,
         ]);
 
         $product->setTranslation('description', app()->getLocale(), $validated['description']);

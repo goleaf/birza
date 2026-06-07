@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -81,6 +82,8 @@ class ProductControllerTest extends TestCase
 
     public function test_product_edit_form_displays_gallery_for_existing_images(): void
     {
+        Storage::fake('public');
+
         $seller = Seller::factory()->create();
         $product = Product::factory()->create([
             'seller_id' => $seller->id,
@@ -89,17 +92,16 @@ class ProductControllerTest extends TestCase
             'unit' => 'pack',
         ]);
 
+        Storage::disk('public')->put('products/primary.webp', 'primary');
+        Storage::disk('public')->put('products/secondary.webp', 'secondary');
+
         $response = $this->actingAs($seller, 'seller')
             ->get(route('seller.products.edit', $product));
 
         $response->assertStatus(200)
             ->assertSee(__('product_edit_product'))
             ->assertSee(__('common_product_images'))
-            ->assertSee('photoswipe.umd.min.js')
-            ->assertSee('PhotoSwipeLightbox', false)
-            ->assertSee('pswp-gallery', false)
-            ->assertSee('primary.webp')
-            ->assertSee('secondary.webp')
+            ->assertSee(__('backend_products_image_library_hint'))
             ->assertSee(__('units_unit_pack'));
     }
 

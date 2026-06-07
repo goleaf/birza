@@ -174,7 +174,7 @@ class Index extends Component
     public function render()
     {
         $query = Product::query()
-            ->with(['category', 'seller'])
+            ->with(['category', 'seller', 'primaryImage'])
             ->filter(ProductFilter::fromArray([
                 'search' => $this->search,
                 'status' => $this->statusFilter,

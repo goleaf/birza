@@ -91,7 +91,7 @@
                     >
                         <x-slot:avatar>
                             <x-mary-avatar
-                                :image="$product->product_image ? \Illuminate\Support\Facades\Storage::url('products/' . $product->product_image) : ''"
+                                :image="$product->imageUrl('thumb')"
                                 :alt="$product->name"
                                 :placeholder="strtoupper(substr((string) $product->name, 0, 2))"
                                 class="!w-11"

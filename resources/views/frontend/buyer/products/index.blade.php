@@ -255,9 +255,12 @@
                                     <!-- start product image -->
                                     <a href="{{ route('buyer.products.show', $product) }}">
                                         <img 
-                                            src="{{ Storage::url('products/' . $product->product_image) }}"
-                                            alt="{{ $product->category->category_name }}"
+                                            src="{{ $product->imageUrl('small') }}"
+                                            alt="{{ $product->name }}"
                                             class="w-full h-48 object-cover rounded mb-3"
+                                            loading="lazy"
+                                            width="320"
+                                            height="240"
                                         >
                                     </a>
                                     <!-- end product image -->
@@ -383,7 +386,7 @@
                     row.className = 'flex items-center';
 
                     const img = document.createElement('img');
-                    img.src = `/storage/products/${item.product_image}`;
+                    img.src = item.image_url || '{{ asset((string) config('images.fallbacks.product')) }}';
                     img.className = 'w-10 h-10 object-cover rounded mr-3';
                     img.alt = item.name || '';
 

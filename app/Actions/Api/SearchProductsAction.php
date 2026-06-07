@@ -13,7 +13,7 @@ class SearchProductsAction
     /**
      * @return array{
      *     categories: array<int, array{id: int, category_name: string}>,
-     *     products: array<int, array{id: int, name: string, price: string, product_image: ?string}>
+     *     products: array<int, array{id: int, name: string, price: string, product_image: ?string, image_url: string}>
      * }
      */
     public function handle(string $query, string $locale): array
@@ -43,7 +43,7 @@ class SearchProductsAction
         return Category::query()
             ->select(['id', 'parent_category_id', 'category_name', 'order'])
             ->whereNotNull('parent_category_id')
-            ->where(fn (Builder $query) => $this->whereTranslatedLike($query, 'category_name', $pattern, $locale))
+            ->where(fn ($query) => $this->whereTranslatedLike($query, 'category_name', $pattern, $locale))
             ->with(['parent' => fn ($query) => $query->select(['id', 'category_name'])])
             ->orderBy('order')
             ->orderBy('id')
@@ -61,14 +61,15 @@ class SearchProductsAction
     }
 
     /**
-     * @return array<int, array{id: int, name: string, price: string, product_image: ?string}>
+     * @return array<int, array{id: int, name: string, price: string, product_image: ?string, image_url: string}>
      */
     private function matchingProducts(string $pattern, string $locale): array
     {
         return Product::query()
             ->select(['id', 'name', 'price', 'product_image'])
+            ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order')
             ->active()
-            ->where(function (Builder $query) use ($pattern, $locale): void {
+            ->where(function ($query) use ($pattern, $locale): void {
                 $query->whereLike('name', $pattern);
 
                 foreach ($this->searchLocales($locale) as $searchLocale) {
@@ -83,6 +84,7 @@ class SearchProductsAction
                 'name' => (string) $product->name,
                 'price' => number_format((float) $product->price, 2),
                 'product_image' => $product->product_image,
+                'image_url' => $product->imageUrl('thumb'),
             ])
             ->all();
     }

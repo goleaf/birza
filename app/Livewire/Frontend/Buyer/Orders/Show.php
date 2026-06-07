@@ -24,7 +24,7 @@ class Show extends Component
             abort(403);
         }
 
-        $this->order = $order->load(['orderItems.product', 'orderItems.seller']);
+        $this->order = $order->load(['orderItems.product.primaryImage', 'orderItems.seller']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
     }
 
@@ -51,7 +51,7 @@ class Show extends Component
             }
         });
 
-        $this->order->refresh()->load(['orderItems.product', 'orderItems.seller']);
+        $this->order->refresh()->load(['orderItems.product.primaryImage', 'orderItems.seller']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
 
         $this->notifySuccess(__('orders_messages_cancelled_success'));

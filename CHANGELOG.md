@@ -19,6 +19,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 - Added a query index audit documenting the real query evidence behind each new index and fields intentionally left unindexed.
 - Added a foreign key constraint audit documenting cascade, restrict, and `nullOnDelete()` decisions across relationship fields.
 - Added a database structure audit covering the live SQLite schema, migrations, models, relationships, factories, seeders, missing domain tables, missing fields, missing indexes, missing foreign keys, and pre-feature hardening priorities.
+- Added a reusable image pipeline for product uploads, variants, validation, gallery ordering, safe replacement, deletion, fallbacks, seed images, and pipeline documentation.
 
 ### Changed
 
@@ -26,6 +27,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 - Moved Laravel Debugbar to development-only dependencies and disabled it outside local opt-in environments.
 - Standardized Eloquent relationship models for users, buyer and seller profiles, products, orders, carts, reviews, notifications, images, and addresses.
 - Added a strict `OrderStatus` enum as the single source for order lifecycle values, model casts, filters, badges, helper output, and order flow tests.
+- Standardized product image display to use generated variants and configured fallbacks instead of hardcoded public paths.
 
 ### Fixed
 

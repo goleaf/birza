@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Kettasoft\Filterable\Traits\HasFilterable;
 
@@ -166,6 +168,13 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
+    public function primaryImage(): HasOne
+    {
+        return $this->hasOne(ProductImage::class)
+            ->where('is_primary', true)
+            ->orderBy('sort_order');
+    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
@@ -203,22 +212,41 @@ class Product extends Model
 
     public function imageLibraryPreview(): Collection
     {
+        $images = $this->productImageRecords();
+
+        if ($images->isNotEmpty()) {
+            return $images
+                ->map(fn (ProductImage $image): array => $image->toLibraryItem('medium'))
+                ->values();
+        }
+
         if ($this->image_library instanceof Collection && $this->image_library->isNotEmpty()) {
-            return $this->image_library->values();
+            return $this->image_library
+                ->map(fn (array $image): array => $this->normalizeLibraryImage($image))
+                ->values();
         }
 
         return collect([$this->product_image, $this->product_additional_image])
             ->filter(fn (?string $fileName) => filled($fileName))
             ->map(fn (string $fileName) => [
                 'uuid' => $fileName,
-                'url' => Storage::disk('public')->url('products/'.$fileName),
-                'path' => 'products/'.$fileName,
+                'url' => $this->storageUrlForPath($this->normalizeImagePath($fileName)),
+                'path' => $this->normalizeImagePath($fileName),
             ])
             ->values();
     }
 
-    public function imageGalleryUrls(): array
+    public function imageGalleryUrls(string $variant = 'large'): array
     {
+        $images = $this->productImageRecords();
+
+        if ($images->isNotEmpty()) {
+            return $images
+                ->map(fn (ProductImage $image): string => $image->url($variant))
+                ->values()
+                ->all();
+        }
+
         return $this->imageLibraryPreview()
             ->pluck('url')
             ->filter(fn (?string $url) => filled($url))
@@ -226,16 +254,52 @@ class Product extends Model
             ->all();
     }
 
+    public function imageUrl(string $variant = 'medium'): string
+    {
+        $image = $this->primaryImageRecord();
+
+        if ($image instanceof ProductImage) {
+            return $image->url($variant);
+        }
+
+        $legacyPath = $this->normalizeImagePath($this->product_image);
+
+        if (filled($legacyPath)) {
+            return $this->storageUrlForPath($legacyPath);
+        }
+
+        return $this->fallbackImageUrl();
+    }
+
+    public function fallbackImageUrl(): string
+    {
+        return asset((string) config('images.fallbacks.product', 'images/admin-product-placeholder.svg'));
+    }
+
     public function syncLegacyImageColumnsFromLibrary(): void
     {
         $imageFiles = collect($this->image_library ?? [])
             ->pluck('path')
-            ->map(fn (?string $path) => $path ? basename($path) : null)
+            ->map(fn (?string $path) => $path ? $this->normalizeImagePath($path) : null)
             ->filter()
             ->values();
 
-        $this->product_image = $imageFiles->get(0);
+        $this->product_image = $imageFiles->get(0, '');
         $this->product_additional_image = $imageFiles->get(1);
+    }
+
+    public function syncLegacyImageColumnsFromImages(): void
+    {
+        $imageFiles = $this->productImageRecords()
+            ->map(fn (ProductImage $image): ?string => $image->variantPath('medium'))
+            ->filter()
+            ->values();
+
+        $this->product_image = $imageFiles->get(0, '');
+        $this->product_additional_image = $imageFiles->get(1);
+        $this->image_library = $this->productImageRecords()
+            ->map(fn (ProductImage $image): array => $image->toLibraryItem('medium'))
+            ->values();
     }
 
     public function deleteStoredImages(): void
@@ -245,8 +309,9 @@ class Product extends Model
             ->merge(
                 collect([$this->product_image, $this->product_additional_image])
                     ->filter()
-                    ->map(fn (string $fileName) => 'products/'.$fileName)
+                    ->map(fn (string $fileName) => $this->normalizeImagePath($fileName))
             )
+            ->merge($this->productImageRecords()->flatMap->storedPaths())
             ->filter()
             ->unique()
             ->values()
@@ -265,5 +330,86 @@ class Product extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    private function primaryImageRecord(): ?ProductImage
+    {
+        if ($this->relationLoaded('primaryImage')) {
+            $primaryImage = $this->getRelation('primaryImage');
+
+            return $primaryImage instanceof ProductImage ? $primaryImage : null;
+        }
+
+        $images = $this->productImageRecords();
+
+        return $images->firstWhere('is_primary', true) ?? $images->first();
+    }
+
+    /**
+     * @return Collection<int, ProductImage>
+     */
+    private function productImageRecords(): Collection
+    {
+        if ($this->relationLoaded('images')) {
+            return $this->images->sortBy('sort_order')->values();
+        }
+
+        if (! $this->exists || ! Schema::hasTable('product_images')) {
+            return collect();
+        }
+
+        return $this->images()->get();
+    }
+
+    /**
+     * @param  array<string, mixed>  $image
+     * @return array{uuid: string, url: string, path: ?string}
+     */
+    private function normalizeLibraryImage(array $image): array
+    {
+        $path = $this->normalizeImagePath($image['path'] ?? null);
+
+        return [
+            'uuid' => (string) ($image['uuid'] ?? $path ?? ''),
+            'url' => $path ? $this->storageUrlForPath($path) : $this->fallbackImageUrl(),
+            'path' => $path,
+        ];
+    }
+
+    private function normalizeImagePath(?string $path): ?string
+    {
+        if (! is_string($path) || $path === '') {
+            return null;
+        }
+
+        $path = str($path)
+            ->replaceStart('/storage/', '')
+            ->replaceStart('storage/', '')
+            ->replaceStart('public/', '')
+            ->trim('/')
+            ->toString();
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return str_contains($path, '/') ? $path : 'products/'.$path;
+    }
+
+    private function storageUrlForPath(?string $path): string
+    {
+        if (! is_string($path) || $path === '') {
+            return $this->fallbackImageUrl();
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        if (! Storage::disk('public')->exists($path)) {
+            return $this->fallbackImageUrl();
+        }
+
+        return Storage::disk('public')->url($path);
     }
 }

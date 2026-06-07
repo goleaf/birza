@@ -33,17 +33,14 @@
             <tr>
                 <!-- start image cell -->
                 <td class="px-6 py-4 whitespace-nowrap">
-                    @if ($product->product_image)
-                        <img 
-                            src="{{ Storage::url('products/' . $product->product_image) }}" 
-                            alt="{{ $product->name }}"
-                            class="h-10 w-10 rounded-lg object-cover"
-                        >
-                    @else
-                        <div class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
-                            <x-ui.icon name="photo" class="h-6 w-6 text-gray-400" />
-                        </div>
-                    @endif
+                    <img
+                        src="{{ $product->imageUrl('thumb') }}"
+                        alt="{{ $product->name }}"
+                        class="h-10 w-10 rounded-lg object-cover"
+                        loading="lazy"
+                        width="160"
+                        height="160"
+                    >
                 </td>
                 <!-- end image cell -->
 

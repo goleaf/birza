@@ -2,13 +2,12 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Facades\Image;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -16,6 +15,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.frontend.app')]
 class Create extends Component
 {
+    use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
     public Category $selectedCategory;
@@ -52,16 +52,13 @@ class Create extends Component
 
     public ?int $total_shelf_life = null;
 
-    public $product_image = null;
-
-    public $product_additional_image = null;
-
     public function mount(Category $categoryId): void
     {
         $this->selectedCategory = $categoryId->load('subcategories');
 
         $this->category_id = $this->selectedCategory->id;
         $this->unit = Product::defaultUnit();
+        $this->initializeProductImageLibrary();
 
         foreach (config('app.locales') as $locale) {
             $this->description[$locale] = '';
@@ -70,7 +67,9 @@ class Create extends Component
 
     public function save(): void
     {
-        $rules = [
+        $this->ensureProductImageLibraryIsPresent();
+
+        $rules = array_merge([
             'category_id' => ['required', 'integer', Rule::exists('categories', 'id')],
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
@@ -86,9 +85,7 @@ class Create extends Component
             'temperature_conditions_to' => ['nullable', 'integer'],
             'use_until' => ['nullable', 'date'],
             'total_shelf_life' => ['required', 'integer'],
-            'product_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:15048'],
-            'product_additional_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:15048'],
-        ];
+        ], $this->productImageLibraryRules());
 
         $currentLocale = app()->getLocale();
         foreach (config('app.locales') as $locale) {
@@ -119,39 +116,17 @@ class Create extends Component
             'temperature_conditions_to' => $validated['temperature_conditions_to'] ?? null,
             'use_until' => $validated['use_until'] ?? null,
             'total_shelf_life' => $validated['total_shelf_life'],
+            'product_image' => '',
+            'product_additional_image' => null,
         ]);
 
         $product->setTranslations('description', $validated['description']);
 
-        $product->product_image = $this->storeProductImage($this->product_image);
-
-        if ($this->product_additional_image) {
-            $product->product_additional_image = $this->storeProductImage($this->product_additional_image);
-        }
-
         $product->save();
+        $this->syncProductImageLibrary($product);
 
         session()->flash('success', __('messages_product_created'));
         $this->redirectRoute('seller.products.index', navigate: true);
-    }
-
-    private function storeProductImage($imageFile, ?string $oldImage = null): string
-    {
-        if ($oldImage) {
-            Storage::disk('public')->delete('products/'.$oldImage);
-        }
-
-        $image = Image::make($imageFile)
-            ->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })
-            ->encode('webp', 80);
-
-        $filename = uniqid().'.webp';
-        Storage::disk('public')->put('products/'.$filename, (string) $image);
-
-        return $filename;
     }
 
     public function render()
@@ -160,7 +135,6 @@ class Create extends Component
 
         return view('frontend.seller.products.form', [
             'product' => null,
-            'productGalleryImages' => [],
             'selectedCategory' => $this->selectedCategory,
             'countries' => $countries,
             'subcategories' => $this->selectedCategory->subcategories,

@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\Users\Seller;
 use App\Models\Country;
+use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Schema;
 
 class ProductFactory extends Factory
 {
@@ -14,6 +16,8 @@ class ProductFactory extends Factory
 
     public function definition(): array
     {
+        $imagePath = 'images/products/factory/'.$this->faker->uuid().'/medium.svg';
+
         return [
             'name' => $this->faker->words(3, true),
             'category_id' => Category::factory(),
@@ -25,8 +29,11 @@ class ProductFactory extends Factory
             'unit' => $this->faker->randomElement(Product::UNITS),
             'is_organic' => $this->faker->boolean(),
             'country_of_origin' => Country::factory(),
-            'product_image' => $this->faker->uuid() . '.webp',
-            'product_additional_image' => $this->faker->uuid() . '.webp',
+            'product_image' => $imagePath,
+            'product_additional_image' => null,
+            'image_library' => [
+                ['uuid' => $this->faker->uuid(), 'path' => $imagePath],
+            ],
             'description' => [
                 'en' => $this->faker->paragraph(),
                 'lt' => $this->faker->paragraph(),
@@ -55,5 +62,45 @@ class ProductFactory extends Factory
             'is_active' => false,
         ]);
     }
-}
 
+    public function withoutImages(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'product_image' => '',
+            'product_additional_image' => null,
+            'image_library' => [],
+        ]);
+    }
+
+    public function withLegacyImages(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'product_image' => 'products/placeholders/'.$this->faker->uuid().'.webp',
+            'product_additional_image' => 'products/placeholders/'.$this->faker->uuid().'.webp',
+        ]);
+    }
+
+    public function withImages(int $count = 1): static
+    {
+        return $this->afterCreating(function (Product $product) use ($count): void {
+            if (! Schema::hasTable('product_images')) {
+                return;
+            }
+
+            $images = collect(range(0, max(1, $count) - 1))
+                ->map(fn (int $index): ProductImage => ProductImage::factory()
+                    ->forProductPath($product, $index)
+                    ->create())
+                ->values();
+
+            $product->forceFill([
+                'product_image' => $images->first()?->variantPath('medium') ?? '',
+                'product_additional_image' => $images->get(1)?->variantPath('medium'),
+                'image_library' => $images
+                    ->map(fn (ProductImage $image): array => $image->toLibraryItem('medium'))
+                    ->values()
+                    ->all(),
+            ])->save();
+        });
+    }
+}

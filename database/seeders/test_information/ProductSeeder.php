@@ -2,11 +2,13 @@
 
 namespace Database\Seeders\test_information;
 
+use App\Actions\Images\SyncProductImageLibraryAction;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Users\Seller;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -14,9 +16,13 @@ use RuntimeException;
 
 class ProductSeeder extends Seeder
 {
-    private const PRODUCT_DIRECTORY = 'public/products';
-
     private const PRODUCTS_PER_SUBCATEGORY = 10;
+
+    private const GALLERY_IMAGE_SLOT = 1;
+
+    private const IMAGE_PRODUCTS_PER_SUBCATEGORY = 3;
+
+    private const IMAGE_SUBCATEGORY_LIMIT = 3;
 
     /**
      * @var array{en: array<int, string>, lt: array<int, string>}
@@ -74,10 +80,8 @@ class ProductSeeder extends Seeder
             throw new RuntimeException('Sellers, categories, and European countries must exist before seeding products.');
         }
 
-        Storage::makeDirectory(self::PRODUCT_DIRECTORY);
-
-        foreach ($subcategories as $subcategory) {
-            $this->seedProductsForSubcategory($subcategory, $sellers, $countries);
+        foreach ($subcategories as $index => $subcategory) {
+            $this->seedProductsForSubcategory($subcategory, $sellers, $countries, (int) $index);
         }
     }
 
@@ -88,7 +92,8 @@ class ProductSeeder extends Seeder
     private function seedProductsForSubcategory(
         Category $subcategory,
         Collection $sellers,
-        Collection $countries
+        Collection $countries,
+        int $subcategoryIndex
     ): void {
         for ($slot = 0; $slot < self::PRODUCTS_PER_SUBCATEGORY; $slot++) {
             $productName = $this->productName($subcategory, $slot);
@@ -101,13 +106,8 @@ class ProductSeeder extends Seeder
             $unit = Product::UNITS[$slot % count(Product::UNITS)];
             $stock = 20 + (($subcategory->id + $slot) % 80);
             $price = round(4.5 + (($subcategory->id % 11) * 0.7) + ($slot * 0.45), 2);
-            $imagePath = $this->imagePath($subcategory, $slot);
 
-            if (! Storage::exists($imagePath)) {
-                $this->generateImage($imagePath, $this->colorFor($subcategory->id, $slot));
-            }
-
-            $product->fill([
+            $product->forceFill([
                 'name' => $productName,
                 'category_id' => $subcategory->id,
                 'seller_id' => $seller?->id,
@@ -118,7 +118,7 @@ class ProductSeeder extends Seeder
                 'unit' => $unit,
                 'is_organic' => $slot % 3 === 0,
                 'country_of_origin' => $country?->id,
-                'product_image' => basename($imagePath),
+                'product_image' => '',
                 'product_additional_image' => null,
                 'is_active' => true,
                 'package_weight' => round(0.5 + ($slot * 0.15), 3),
@@ -137,6 +137,7 @@ class ProductSeeder extends Seeder
             }
 
             $product->save();
+            $this->syncSeedImages($product, $subcategory, $slot, $subcategoryIndex);
         }
     }
 
@@ -145,9 +146,35 @@ class ProductSeeder extends Seeder
         return sprintf('Seed product %d-%02d', $subcategory->id, $slot + 1);
     }
 
-    private function imagePath(Category $subcategory, int $slot): string
+    private function syncSeedImages(Product $product, Category $subcategory, int $slot, int $subcategoryIndex): void
     {
-        return sprintf('%s/seed-product-%d-%02d.webp', self::PRODUCT_DIRECTORY, $subcategory->id, $slot + 1);
+        if ($subcategoryIndex >= self::IMAGE_SUBCATEGORY_LIMIT || $slot === 0 || $slot >= self::IMAGE_PRODUCTS_PER_SUBCATEGORY) {
+            app(SyncProductImageLibraryAction::class)->handle($product, collect());
+
+            return;
+        }
+
+        $temporaryPaths = [];
+        $files = [];
+        $library = collect();
+        $imageCount = $slot === self::GALLERY_IMAGE_SLOT ? 2 : 1;
+
+        try {
+            for ($imageIndex = 0; $imageIndex < $imageCount; $imageIndex++) {
+                [$file, $path] = $this->seedImageUpload($subcategory, $slot, $imageIndex);
+
+                $temporaryPaths[] = $path;
+                $files[$imageIndex] = $file;
+                $library->push([
+                    'uuid' => sprintf('seed-product-%d-%02d-%d', $subcategory->id, $slot + 1, $imageIndex + 1),
+                    'url' => 'seed://product-image',
+                ]);
+            }
+
+            app(SyncProductImageLibraryAction::class)->handle($product, $library, $files);
+        } finally {
+            Storage::disk('local')->delete($temporaryPaths);
+        }
     }
 
     private function colorFor(int $subcategoryId, int $slot): string
@@ -168,10 +195,31 @@ class ProductSeeder extends Seeder
         ];
     }
 
-    private function generateImage(string $path, string $color): void
+    /**
+     * @return array{0: UploadedFile, 1: string}
+     */
+    private function seedImageUpload(Category $subcategory, int $slot, int $imageIndex): array
     {
-        $image = Image::canvas(500, 500, $color)->encode('webp', 80);
+        $path = sprintf(
+            'seed-images/products/seed-product-%d-%02d-%d.webp',
+            $subcategory->id,
+            $slot + 1,
+            $imageIndex + 1,
+        );
+        $color = $this->colorFor($subcategory->id, $slot + $imageIndex);
+        $image = (string) Image::canvas(640, 480, $color)->encode('webp', 82);
 
-        Storage::put($path, $image);
+        Storage::disk('local')->put($path, $image);
+
+        return [
+            new UploadedFile(
+                Storage::disk('local')->path($path),
+                basename($path),
+                'image/webp',
+                null,
+                true,
+            ),
+            $path,
+        ];
     }
 }

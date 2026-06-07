@@ -25,7 +25,7 @@ class Show extends Component
 
     public function mount(Order $order): void
     {
-        $orderItems = OrderItem::with(['order', 'product'])
+        $orderItems = OrderItem::with(['order', 'product.primaryImage'])
             ->where('seller_id', Auth::guard('seller')->id())
             ->where('order_id', $order->id)
             ->get();

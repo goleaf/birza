@@ -32,6 +32,7 @@ class Show extends Component
                     ->where('is_active', true);
             },
             'attributeValues:id,attribute_id,value',
+            'images',
         ]);
 
         $this->product = $product;
@@ -107,6 +108,7 @@ class Show extends Component
                 $product->price,
                 [
                     'image' => $product->product_image,
+                    'image_url' => $product->imageUrl('thumb'),
                     'unit' => $product->unit,
                     'seller_id' => $product->seller_id,
                     'category_id' => $product->category_id,
@@ -129,7 +131,7 @@ class Show extends Component
         return view('frontend.buyer.products.show', [
             'product' => $this->product,
             'productSlides' => $this->getProductSlides($this->product),
-            'productGalleryImages' => $this->product->imageGalleryUrls(),
+            'productGalleryImages' => $this->product->imageGalleryUrls('small'),
             'attributeValuesByAttribute' => $this->product->attributeValues->groupBy('attribute_id'),
             'message' => session('message'),
         ]);
@@ -137,9 +139,9 @@ class Show extends Component
 
     protected function getProductSlides(Product $product): array
     {
-        return $product->imageLibraryPreview()
-            ->map(fn (array $slide, int $index): array => [
-                'image' => (string) data_get($slide, 'url'),
+        return collect($product->imageGalleryUrls('large'))
+            ->map(fn (string $url, int $index): array => [
+                'image' => $url,
                 'alt' => trim($product->name.' '.($index + 1)),
                 'lazy' => $index > 0,
             ])

@@ -107,7 +107,7 @@
             <x-mary-list-item :item="$item" :no-separator="$loop->last">
                 <x-slot:avatar>
                     <x-mary-avatar
-                        :image="$item->product?->product_image ? \Illuminate\Support\Facades\Storage::url('products/' . $item->product->product_image) : ''"
+                        :image="$item->product?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product'))"
                         :alt="$item->product?->name ?: __('common_not_specified')"
                         :placeholder="strtoupper(substr((string) ($item->product?->name ?: __('common_not_specified')), 0, 2))"
                         class="!w-11"

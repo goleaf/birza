@@ -22,7 +22,10 @@ class Show extends Component
     {
         $products = $this->seller->products()
             ->select('id', 'name', 'price', 'is_active', 'product_image', 'category_id')
-            ->with('category:id,category_name')
+            ->with([
+                'category:id,category_name',
+                'primaryImage:id,product_id,disk,path,variants,is_primary,sort_order',
+            ])
             ->withCount('orderItems')
             ->latest()
             ->paginate(10);

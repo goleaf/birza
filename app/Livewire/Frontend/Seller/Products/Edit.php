@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Country;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Facades\Image;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,6 +14,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.frontend.app')]
 class Edit extends Component
 {
+    use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
     public Product $product;
@@ -51,17 +51,13 @@ class Edit extends Component
 
     public ?int $total_shelf_life = null;
 
-    public $product_image = null;
-
-    public $product_additional_image = null;
-
     public function mount(Product $product): void
     {
         if ($product->seller_id !== Auth::guard('seller')->id()) {
             abort(403);
         }
 
-        $this->product = $product;
+        $this->product = $product->load('images');
 
         $this->category_id = (int) $product->category_id;
         $this->name = (string) ($product->name ?? '');
@@ -82,11 +78,15 @@ class Edit extends Component
         foreach (config('app.locales') as $locale) {
             $this->description[$locale] = (string) ($product->getTranslation('description', $locale) ?? '');
         }
+
+        $this->initializeProductImageLibrary($this->product);
     }
 
     public function save(): void
     {
-        $rules = [
+        $this->ensureProductImageLibraryIsPresent();
+
+        $rules = array_merge([
             'category_id' => ['required', 'integer', Rule::exists('categories', 'id')],
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
@@ -102,9 +102,7 @@ class Edit extends Component
             'temperature_conditions_to' => ['nullable', 'integer'],
             'use_until' => ['nullable', 'date'],
             'total_shelf_life' => ['required', 'integer'],
-            'product_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:15048'],
-            'product_additional_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:15048'],
-        ];
+        ], $this->productImageLibraryRules());
 
         $currentLocale = app()->getLocale();
         foreach (config('app.locales') as $locale) {
@@ -135,44 +133,17 @@ class Edit extends Component
 
         $this->product->setTranslations('description', $validated['description']);
 
-        if ($this->product_image) {
-            $this->product->product_image = $this->storeProductImage($this->product_image, $this->product->product_image);
-        }
-
-        if ($this->product_additional_image) {
-            $this->product->product_additional_image = $this->storeProductImage($this->product_additional_image, $this->product->product_additional_image);
-        }
-
         $this->product->save();
+        $this->syncProductImageLibrary($this->product);
 
         session()->flash('success', __('messages_product_updated'));
         $this->redirectRoute('seller.products.index', navigate: true);
-    }
-
-    private function storeProductImage($imageFile, ?string $oldImage = null): string
-    {
-        if ($oldImage) {
-            Storage::disk('public')->delete('products/'.$oldImage);
-        }
-
-        $image = Image::make($imageFile)
-            ->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })
-            ->encode('webp', 80);
-
-        $filename = uniqid().'.webp';
-        Storage::disk('public')->put('products/'.$filename, (string) $image);
-
-        return $filename;
     }
 
     public function render()
     {
         return view('frontend.seller.products.form', [
             'product' => $this->product,
-            'productGalleryImages' => $this->product->imageGalleryUrls(),
             'countries' => $this->getEuropeanCountries(),
             'unitOptions' => Product::unitOptions(),
         ]);

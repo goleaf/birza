@@ -14,7 +14,7 @@ class Show extends Component
 
     public function mount(Order $order): void
     {
-        $this->order = $order->load(['buyer', 'orderItems.product', 'orderItems.seller']);
+        $this->order = $order->load(['buyer', 'orderItems.product.primaryImage', 'orderItems.seller']);
     }
 
     public function render(): View

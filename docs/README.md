@@ -15,3 +15,4 @@ This folder contains project-owned documentation for Birza.
 - [Eloquent relationship map](eloquent-relationship-map-2026-06-07.md)
 - [Foreign key constraint audit](foreign-key-constraint-audit-2026-06-07.md)
 - [Query index audit](query-index-audit-2026-06-07.md)
+- [Image pipeline](image-pipeline.md)

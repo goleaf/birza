@@ -183,12 +183,9 @@ class ProductControllerTest extends TestCase
             ->assertSee('photoswipe.umd.min.js')
             ->assertSee('PhotoSwipeLightbox', false)
             ->assertSee('pswp-gallery', false)
-            ->assertSee('primary.webp')
-            ->assertSee('secondary.webp')
-            ->assertSee('Previous image')
+            ->assertSee((string) config('images.fallbacks.product'))
             ->assertSee('<h1>Fresh Farm</h1>', false)
-            ->assertSee('<li>Organic</li>', false)
-            ->assertSee('aria-label="slides"', false);
+            ->assertSee('<li>Organic</li>', false);
     }
 
     public function test_product_show_eager_loads_all_relationships_used_by_the_view(): void

@@ -372,60 +372,26 @@
 
 
 
-                    <!-- start main image field -->
-                    @if (! empty($productGalleryImages))
-                        <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">
-                                {{ __('common_product_images') }}
-                            </label>
-                            <x-ui.image-gallery
-                                :images="$productGalleryImages"
-                                class="gap-3 rounded-lg border border-gray-200 bg-white p-3 [&_.carousel-item]:w-24 [&_img]:h-24 [&_img]:w-24 [&_img]:rounded-md [&_img]:object-cover"
-                            />
-                        </div>
-                    @endif
-
-                    <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product_main_image') }}
-                            @if (!isset($product->id) || !isset($product->product_image))
-                                *
-                            @endif
-                        </label>
-                        <label class="block">
-                            <span class="sr-only">{{ __('product_choose_file') }}</span>
-                            <input 
-                                type="file" 
-                                wire:model="product_image"
-                                accept="image/*" 
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('product_image') ? 'border-red-500' : '' }}"
-                            >
-                        </label>
-                        @error('product_image')
-                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                        @enderror
+                    <!-- start images field -->
+                    <div class="mb-6 rounded-lg border border-gray-200 bg-white p-4">
+                        <x-mary-image-library
+                            :label="__('common_product_images')"
+                            :hint="__('backend_products_image_library_hint')"
+                            wire:model="imageFiles"
+                            wire:library="imageLibrary"
+                            :preview="$imageLibrary"
+                            accept="image/png, image/jpeg, image/webp"
+                            :change-text="__('common_edit')"
+                            :crop-text="__('common_crop')"
+                            :remove-text="__('common_remove')"
+                            :crop-title-text="__('common_crop_image')"
+                            :crop-cancel-text="__('backend_common_cancel')"
+                            :crop-save-text="__('common_crop')"
+                            :add-files-text="__('common_add_images')"
+                            required
+                        />
                     </div>
-                    <!-- end main image field -->
-
-                    <!-- start additional image field -->
-                    <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('product_additional_image') }}
-                        </label>
-                        <label class="block">
-                            <span class="sr-only">{{ __('product_choose_file') }}</span>
-                            <input 
-                                type="file" 
-                                wire:model="product_additional_image"
-                                accept="image/*" 
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('product_additional_image') ? 'border-red-500' : '' }}"
-                            >
-                        </label>
-                        @error('product_additional_image')
-                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <!-- end additional image field -->
+                    <!-- end images field -->
 
                     <!-- start form buttons -->
                     <div class="flex items-center justify-between">

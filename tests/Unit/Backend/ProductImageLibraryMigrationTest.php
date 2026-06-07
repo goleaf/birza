@@ -13,7 +13,7 @@ class ProductImageLibraryMigrationTest extends TestCase
     {
         Storage::fake('public');
 
-        $product = new Product([
+        $product = (new Product)->forceFill([
             'product_image' => 'primary.webp',
             'product_additional_image' => 'secondary.webp',
         ]);
@@ -36,7 +36,7 @@ class ProductImageLibraryMigrationTest extends TestCase
 
         $product->syncLegacyImageColumnsFromLibrary();
 
-        $this->assertSame('first.webp', $product->product_image);
-        $this->assertSame('second.webp', $product->product_additional_image);
+        $this->assertSame('products/first.webp', $product->product_image);
+        $this->assertSame('products/second.webp', $product->product_additional_image);
     }
 }

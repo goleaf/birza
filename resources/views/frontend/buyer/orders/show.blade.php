@@ -107,7 +107,14 @@
                                 <div class="flex items-center">
                                     <!-- start product image -->
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <img src="{{ Storage::url('products/' . $item->product->product_image) }}" class="h-10 w-10 rounded-full object-cover">
+                                        <img
+                                            src="{{ $item->product?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product')) }}"
+                                            alt="{{ $item->product?->name ?? __('common_unnamed_product') }}"
+                                            class="h-10 w-10 rounded-full object-cover"
+                                            loading="lazy"
+                                            width="160"
+                                            height="160"
+                                        >
                                     </div>
                                     <!-- end product image -->
                                     

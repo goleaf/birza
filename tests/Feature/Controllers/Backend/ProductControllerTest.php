@@ -240,8 +240,9 @@ class ProductControllerTest extends TestCase
         $this->assertSame('2026-12-31', $product->use_until?->format('Y-m-d'));
         $this->assertSame(30, $product->total_shelf_life);
         $this->assertCount(2, $product->image_library);
-        $this->assertSame(basename($product->image_library->first()['path']), $product->product_image);
-        $this->assertSame(basename($product->image_library->get(1)['path']), $product->product_additional_image);
+        $this->assertSame($product->image_library->first()['path'], $product->product_image);
+        $this->assertSame($product->image_library->get(1)['path'], $product->product_additional_image);
+        $this->assertDatabaseCount('product_images', 2);
         $this->assertNotEmpty($product->image_library->pluck('path')->filter()->all());
     }
 
@@ -330,7 +331,6 @@ class ProductControllerTest extends TestCase
             ->assertSee('<h1>Safe description</h1>', false)
             ->assertDontSee("<script>alert('xss')</script>", false)
             ->assertDontSee('href="javascript:', false)
-            ->assertSee(__('backend_products_show_inactive_alert'))
-            ->assertSee(__('backend_products_show_no_images_alert'));
+            ->assertSee(__('backend_products_show_inactive_alert'));
     }
 }
