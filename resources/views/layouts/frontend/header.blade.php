@@ -96,14 +96,18 @@
                         <!-- start navigation -->
                         <nav class="flex space-x-3">
                             @if ($guard == 'buyer')
-                                @php($cartItemsCount = LaraCart::count())
                                 <!-- start cart link -->
                                 <a 
                                     href="{{ route('buyer.cart.index') }}"
                                     class="inline-flex items-center gap-2 transition-colors {{ $cartItemsCount > 0 ? 'text-blue-600' : 'text-gray-700 hover:text-blue-500' }}"
                                 >
                                     {{ __('common_cart') }}
-                                    <x-ui.badge :value="(string) $cartItemsCount" color="primary" sm />
+                                    <x-ui.badge
+                                        :value="(string) $cartItemsCount"
+                                        color="primary"
+                                        sm
+                                        aria-label="{{ __('common_cart') }} {{ $cartItemsCount }}"
+                                    />
                                 </a>
                                 <!-- end cart link -->
                             @endif

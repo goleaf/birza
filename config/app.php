@@ -5,6 +5,7 @@ use App\Providers\AuthServiceProvider;
 use App\Providers\EventServiceProvider;
 use App\Providers\GlobalSettingsServiceProvider;
 use App\Providers\UserGuardServiceProvider;
+use App\Providers\ViewServiceProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -52,6 +53,7 @@ return [
         EventServiceProvider::class,
         IdeHelperServiceProvider::class,
         UserGuardServiceProvider::class,
+        ViewServiceProvider::class,
         GlobalSettingsServiceProvider::class,
         FilterableServiceProvider::class,
 

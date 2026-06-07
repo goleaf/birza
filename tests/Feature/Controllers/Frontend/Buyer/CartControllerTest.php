@@ -74,6 +74,8 @@ class CartControllerTest extends TestCase
                 ->assertSee($product->name)
                 ->assertSee('wire:key="cart-item-'.$cartItem->getHash().'"', false)
                 ->assertDontSee(__('cart_empty_cart'));
+
+            $response->assertSee('aria-label="'.__('common_cart').' 2"', false);
         } finally {
             LaraCart::destroyCart();
         }
