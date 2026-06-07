@@ -86,6 +86,14 @@ Briefly describe what changed and why this release exists.
 - Result:
 - Coverage gaps:
 
+## Documentation Notes
+
+- README updated:
+- Docs updated:
+- Changelog updated:
+- Screenshots updated:
+- Links checked:
+
 ## Deployment Notes
 
 - Required commands:
@@ -122,3 +130,5 @@ Briefly describe what changed and why this release exists.
 - [ ] Mobile/responsive layout checked if UI changed.
 - [ ] Security-sensitive routes checked.
 - [ ] Logs checked for new errors.
+- [ ] README/docs/changelog updated.
+- [ ] Release tag created only after verification.

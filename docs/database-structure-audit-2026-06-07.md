@@ -80,7 +80,7 @@ No refactors or schema changes were made.
 | Notifications | No Laravel `notifications` table found. Notifications are currently mail/view/UI notification code, not persisted database notifications. |
 | Images | No normalized `images` table. Product images live in `products.product_image`, `products.product_additional_image`, and `products.image_library` JSON. Credit attachment files live in `credit_attachments`. |
 | Addresses | No normalized `addresses` table. Buyer/seller addresses are single nullable strings. Orders do not store shipping/billing address snapshots. |
-| Statuses | No `statuses` table and no PHP enum casts. `Order::STATUS` string constants drive `orders.status` and `orders.payment_status`. |
+| Statuses | No `statuses` lookup table. `App\Enums\OrderStatus` now centrally defines and casts order lifecycle values for `orders.status` and `orders.payment_status`; buyer credit type and seller transaction type remain plain strings. |
 
 ## Existing Model Relationships
 
@@ -300,10 +300,10 @@ The live schema has many core commerce constraints, but these are missing or wea
    `Order::product()` expects `product_id`, and `Order::country()` expects `country_of_origin`; neither column exists on `orders`.
 
 7. Order status is duplicated.
-   Both `orders.status` and `orders.payment_status` exist and are populated with the same `Order::STATUS` values in checkout. This blurs lifecycle status and payment status.
+   Both `orders.status` and `orders.payment_status` exist and are populated with the same `OrderStatus` enum values in checkout. This still blurs lifecycle status and payment status even though the allowed PHP values are centralized.
 
 8. Statuses are unconstrained strings.
-   There are no database constraints or PHP enum casts for order status, buyer credit type, or seller transaction type.
+   Order status now has PHP enum casts, but there are still no database constraints for order status, buyer credit type, or seller transaction type.
 
 9. Category soft delete columns are not active in the model.
    The table has `deleted_at`, but `Category` does not use `SoftDeletes`, and it disables timestamps despite timestamp columns existing.
@@ -341,7 +341,7 @@ The live schema has many core commerce constraints, but these are missing or wea
    Pick one source of truth for product attributes and values, then remove or migrate away from duplicate pivot tables.
 
 4. Normalize order lifecycle.
-   Separate payment status from fulfillment status, add enum casts or constraints, and decide whether a status lookup table is needed.
+   Separate payment status from fulfillment status, add database constraints if needed, and decide whether a status lookup table is needed.
 
 5. Add order snapshots.
    Orders and order items should preserve buyer/company/address/tax/product/seller details as they existed at checkout.
@@ -371,8 +371,7 @@ The live schema has many core commerce constraints, but these are missing or wea
 
 1. Account/role decision and stale user cleanup.
 2. Product attribute pivot consolidation.
-3. Status enum/constraint cleanup for orders and transactions.
+3. Status database constraint cleanup for orders and transaction type enum cleanup.
 4. Order and order item snapshot fields.
 5. Address and image normalization.
 6. Favorites, reviews, messages, and database notifications.
-

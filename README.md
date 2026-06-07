@@ -371,13 +371,9 @@ See [docs/performance.md](docs/performance.md).
 
 ## Screenshots
 
-Existing screenshot files:
+No committed UI screenshots were found during the documentation audit.
 
-- [Wishlist catalog desktop](wishlist-catalog-desktop.png)
-- [Wishlist catalog mobile](wishlist-catalog-mobile.png)
-- [Wishlist product detail desktop](wishlist-product-detail-desktop.png)
-
-TODO: add screenshots under `docs/screenshots/` for the homepage, catalog, product detail, cart, checkout, buyer dashboard, seller dashboard, admin dashboard, admin product management, and order status pages.
+TODO: add screenshots under `docs/screenshots/` for the homepage, catalog, product detail, cart, checkout, buyer dashboard, seller dashboard, admin dashboard, admin product management, and order status pages. Do not add broken image links before the files exist.
 
 ## Roadmap
 

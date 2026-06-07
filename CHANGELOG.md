@@ -10,6 +10,8 @@ Release notes live in [docs/releases](docs/releases/README.md).
 
 ### Added
 
+- Added a documentation audit report and dedicated installation, environment, roles, architecture, database, frontend, seeders, security, roadmap, developer workflow, production, and screenshots documentation surfaces.
+- Added local-safe `.env.example` defaults for Birza, SQLite, log mail, Sanctum placeholders, foreign keys, and production-safe Debugbar disabling.
 - Added a unified audit log system for critical marketplace actions, including audit log schema/model/service/policy, sanitized JSON payloads, seller product audits, buyer checkout audits, order status audits, admin moderation reasons, buyer credit/settings audits, admin audit pages, entity history panels, demo audit seeding, documentation, and tests.
 - Added centralized marketplace authorization policies, global access gates, verified-account middleware, an admin action audit trail, security documentation, and focused policy/security tests.
 - Added a session-backed product comparison system for guests and authenticated buyers, including catalog/detail compare controls, a responsive side-by-side comparison page, public-product safety checks, translations, tests, seed data, and release notes.
