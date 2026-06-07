@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\OrderItem;
+use App\Models\Concerns\HasJsonTranslations;
 use App\Models\Users\Seller;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Concerns\HasJsonTranslations;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
-    use HasJsonTranslations, SoftDeletes, HasFactory;
+    use HasFactory, HasJsonTranslations, SoftDeletes;
 
     public const UNITS = ['piece', 'kg', 'l', 'pack'];
 
     protected $table = 'products';
+
     protected $fillable = [
         'name',
         'category_id',
@@ -32,6 +34,7 @@ class Product extends Model
         'country_of_origin',
         'product_image',
         'product_additional_image',
+        'image_library',
         'description',
         'is_active',
         'package_weight',
@@ -40,7 +43,7 @@ class Product extends Model
         'temperature_conditions_from',
         'temperature_conditions_to',
         'use_until',
-        'total_shelf_life'
+        'total_shelf_life',
     ];
 
     public $translatable = ['description'];
@@ -51,6 +54,7 @@ class Product extends Model
         'category_id' => 'integer',
         'is_organic' => 'boolean',
         'is_active' => 'boolean',
+        'image_library' => AsCollection::class,
         'price' => 'decimal:2',
         'min_order_price' => 'decimal:2',
         'min_order_count' => 'integer',
@@ -61,7 +65,7 @@ class Product extends Model
         'temperature_conditions_from' => 'integer',
         'temperature_conditions_to' => 'integer',
         'use_until' => 'date',
-        'total_shelf_life' => 'integer'
+        'total_shelf_life' => 'integer',
     ];
 
     protected static function booted()
@@ -122,7 +126,7 @@ class Product extends Model
     public function getCategoryAttributes()
     {
         return $this->category?->attributes()
-            ->with(['values' => function($query) {
+            ->with(['values' => function ($query) {
                 $query->active();
             }])
             ->active()
@@ -131,12 +135,59 @@ class Product extends Model
 
     public function getFormattedPackageWeightAttribute(): ?string
     {
-        return $this->package_weight ? number_format($this->package_weight, 3) . ' kg' : null;
+        return $this->package_weight ? number_format($this->package_weight, 3).' kg' : null;
     }
 
     public function getFormattedPricePerLiterAttribute(): ?string
     {
-        return $this->price_per_liter ? number_format($this->price_per_liter, 2) . ' €/L' : null;
+        return $this->price_per_liter ? number_format($this->price_per_liter, 2).' €/L' : null;
+    }
+
+    public function imageLibraryPreview(): Collection
+    {
+        if ($this->image_library instanceof Collection && $this->image_library->isNotEmpty()) {
+            return $this->image_library->values();
+        }
+
+        return collect([$this->product_image, $this->product_additional_image])
+            ->filter(fn (?string $fileName) => filled($fileName))
+            ->map(fn (string $fileName) => [
+                'uuid' => $fileName,
+                'url' => Storage::disk('public')->url('products/'.$fileName),
+                'path' => 'products/'.$fileName,
+            ])
+            ->values();
+    }
+
+    public function syncLegacyImageColumnsFromLibrary(): void
+    {
+        $imageFiles = collect($this->image_library ?? [])
+            ->pluck('path')
+            ->map(fn (?string $path) => $path ? basename($path) : null)
+            ->filter()
+            ->values();
+
+        $this->product_image = $imageFiles->get(0);
+        $this->product_additional_image = $imageFiles->get(1);
+    }
+
+    public function deleteStoredImages(): void
+    {
+        $paths = collect($this->image_library ?? [])
+            ->pluck('path')
+            ->merge(
+                collect([$this->product_image, $this->product_additional_image])
+                    ->filter()
+                    ->map(fn (string $fileName) => 'products/'.$fileName)
+            )
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        if ($paths !== []) {
+            Storage::disk('public')->delete($paths);
+        }
     }
 
     public function getKey(): mixed
@@ -144,7 +195,7 @@ class Product extends Model
         return $this->getAttribute($this->getKeyName());
     }
 
-    public function orderItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }

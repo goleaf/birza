@@ -1,7 +1,5 @@
 <div class="space-y-6">
-    <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold">{{ __('backend_dashboard_title') }}</h2>
-    </div>
+    <x-mary-header :title="__('backend_dashboard_title')" separator />
 
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div class="rounded-lg bg-blue-100 p-4">
@@ -18,28 +16,32 @@
         </div>
     </div>
 
-    <div class="overflow-hidden rounded-lg bg-white shadow-sm">
-        <div class="p-6">
-            <h3 class="mb-4 text-xl font-bold">{{ __('backend_dashboard_recent_activity_title') }}</h3>
-            <ul class="divide-y divide-gray-200">
-                @forelse ($recentActivities as $activity)
-                    <li class="py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-                                <span class="text-sm font-medium leading-none text-blue-600">
-                                    {{ substr($activity->type ?? 'A', 0, 1) }}
-                                </span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900">{{ $activity->description }}</p>
-                                <p class="text-sm text-gray-500">{{ $activity->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                    </li>
-                @empty
-                    <li class="py-4 text-sm text-gray-500">{{ __('common_no_results') }}</li>
-                @endforelse
-            </ul>
-        </div>
-    </div>
+    <x-mary-card :title="__('backend_dashboard_recent_activity_title')" shadow>
+        @forelse ($recentActivities as $activity)
+            <x-mary-list-item :item="$activity" @class(['rounded-xl'])>
+                <x-slot:avatar>
+                    <x-mary-avatar
+                        :placeholder="strtoupper(substr((string) ($activity->type ?? 'A'), 0, 1))"
+                        :alt="$activity->description ?? __('backend_dashboard_activity_item', ['id' => $activity->id])"
+                        class="!w-11"
+                    />
+                </x-slot:avatar>
+
+                <x-slot:value>
+                    {{ $activity->description ?? __('backend_dashboard_activity_item', ['id' => $activity->id]) }}
+                </x-slot:value>
+
+                <x-slot:sub-value>
+                    {{ $activity->created_at?->diffForHumans() ?? __('common_not_specified') }}
+                </x-slot:sub-value>
+            </x-mary-list-item>
+        @empty
+            <x-mary-alert
+                :title="__('backend_dashboard_recent_activity_empty')"
+                icon="o-exclamation-triangle"
+                class="alert-info alert-soft"
+                shadow
+            />
+        @endforelse
+    </x-mary-card>
 </div>

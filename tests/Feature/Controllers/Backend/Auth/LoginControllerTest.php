@@ -17,7 +17,12 @@ class LoginControllerTest extends TestCase
         $response = $this->get(route('backend.login'));
 
         $response->assertStatus(200)
-            ->assertSeeLivewire(AdminLogin::class);
+            ->assertSeeLivewire(AdminLogin::class)
+            ->assertSee(__('backend_auth_portal_title'))
+            ->assertSee(__('backend_auth_portal_badge'))
+            ->assertSee(__('common_email_address'))
+            ->assertSee(__('common_password'))
+            ->assertDontSee(__('backend_spotlight_open'));
     }
 
     public function test_admin_root_redirects_guest_to_login(): void

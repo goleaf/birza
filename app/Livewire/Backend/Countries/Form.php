@@ -13,19 +13,34 @@ class Form extends Component
     public Country $country;
 
     public string $alpha2 = '';
+
     public string $region = '';
+
+    public string $selectedTranslationTab = '';
+
     public bool $is_active = true;
+
+    /**
+     * @var array<string, string>
+     */
     public array $country_name = [];
+
+    /**
+     * @var list<string>
+     */
+    public array $locales = [];
 
     public function mount(?Country $country = null): void
     {
-        $this->country = $country ?? new Country();
+        $this->country = $country ?? new Country;
+        $this->locales = $this->configuredLocales();
 
         $this->alpha2 = (string) ($this->country->alpha2 ?? '');
         $this->region = (string) ($this->country->region ?? '');
         $this->is_active = (bool) ($this->country->is_active ?? true);
+        $this->selectedTranslationTab = 'country-name-'.($this->locales[0] ?? config('app.locale'));
 
-        foreach (config('app.locales') as $locale) {
+        foreach ($this->locales as $locale) {
             $this->country_name[$locale] = (string) ($this->country->getTranslation('country_name', $locale) ?? '');
         }
     }
@@ -40,7 +55,7 @@ class Form extends Component
             'is_active' => ['sometimes', 'boolean'],
         ];
 
-        foreach (config('app.locales') as $locale) {
+        foreach ($this->locales as $locale) {
             $rules["country_name.$locale"] = ['required', 'string', 'max:255'];
         }
 
@@ -64,8 +79,15 @@ class Form extends Component
         return view('backend.countries.form', [
             'country' => $this->country,
             'regionOptions' => Country::getRegionOptions(),
-            'locales' => config('app.locales'),
+            'locales' => $this->locales,
         ]);
     }
-}
 
+    /**
+     * @return list<string>
+     */
+    private function configuredLocales(): array
+    {
+        return array_values((array) config('app.locales', [config('app.locale')]));
+    }
+}

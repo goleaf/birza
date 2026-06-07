@@ -19,21 +19,25 @@ class Orders extends Component
 
     public function render()
     {
-        $orders = Order::whereHas('orderItems.product', function ($query) {
-            $query->where('seller_id', $this->seller->id);
-        })
+        $orders = Order::query()
+            ->select(['orders.id', 'orders.buyer_id', 'orders.payment_status', 'orders.created_at', 'orders.order_total'])
+            ->whereHas('orderItems', function ($query) {
+                $query->where('seller_id', $this->seller->id);
+            })
             ->with([
-                'orderItems.product',
-                'buyer',
+                'buyer:id,name,email,company_name',
+                'orderItems' => function ($query) {
+                    $query->select(['id', 'order_id', 'product_id', 'quantity', 'unit_price', 'total_price', 'seller_id'])
+                        ->where('seller_id', $this->seller->id)
+                        ->with('product:id,name');
+                },
             ])
+            ->latest('orders.created_at')
             ->get();
 
         return view('backend.sellers.orders', [
             'orders' => $orders,
             'seller' => $this->seller,
-            'orderStatuses' => Order::STATUS,
         ]);
     }
 }
-
-

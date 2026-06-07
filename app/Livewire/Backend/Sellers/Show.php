@@ -20,7 +20,8 @@ class Show extends Component
     public function render()
     {
         $products = $this->seller->products()
-            ->select('id', 'name', 'price', 'is_active', 'product_image')
+            ->select('id', 'name', 'price', 'is_active', 'product_image', 'category_id')
+            ->with('category:id,category_name')
             ->withCount('orderItems')
             ->latest()
             ->paginate(10);
@@ -28,7 +29,8 @@ class Show extends Component
         $orders = $this->seller->orders()
             ->with([
                 'buyer',
-                'orderItems',
+                'orderItems.product',
+                'orderItems.seller',
             ])
             ->orderBy('orders.created_at', 'desc')
             ->get();
@@ -41,5 +43,3 @@ class Show extends Component
         ]);
     }
 }
-
-

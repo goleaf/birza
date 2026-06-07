@@ -25068,6 +25068,21 @@ namespace LukePOLO\LaraCart\Facades {
             }
     }
 
+namespace Mary\Facades {
+    /**
+     */
+    class Mary {
+        /**
+         * @static
+         */
+        public static function hello()
+        {
+            return \Mary\Mary::hello();
+        }
+
+            }
+    }
+
 namespace Spatie\LaravelIgnition\Facades {
     /**
      * @see \Spatie\FlareClient\Flare
@@ -30866,6 +30881,7 @@ namespace  {
     class Image extends \Intervention\Image\Facades\Image {}
     class Livewire extends \Livewire\Livewire {}
     class LaraCart extends \LukePOLO\LaraCart\Facades\LaraCart {}
+    class Mary extends \Mary\Facades\Mary {}
     class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
     class WireUi extends \WireUi\Facades\WireUi {}
 }

@@ -7,18 +7,46 @@ use App\Models\CreditAttachment;
 use App\Models\Users\Buyer;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 #[Layout('layouts.backend.app')]
 class CreditHistory extends Component
 {
+    use WithPagination;
+
     public Buyer $buyer;
+
+    #[Url(as: 'type', except: '')]
+    public string $typeFilter = '';
+
+    #[Url(as: 'date_from', except: '')]
+    public string $dateFrom = '';
+
+    #[Url(as: 'date_to', except: '')]
+    public string $dateTo = '';
+
+    public bool $drawer = false;
 
     public function mount(Buyer $buyer): void
     {
         $this->buyer = $buyer;
+    }
+
+    public function applyFilters(): void
+    {
+        $this->drawer = false;
+        $this->resetPage();
+    }
+
+    public function clear(): void
+    {
+        $this->reset('typeFilter', 'dateFrom', 'dateTo');
+        $this->drawer = false;
+        $this->resetPage();
     }
 
     public function downloadAttachment(int $attachmentId)
@@ -43,9 +71,9 @@ class CreditHistory extends Component
     {
         $buyerId = $this->buyer->id;
 
-        $type = request('type');
-        $dateFrom = request('date_from');
-        $dateTo = request('date_to');
+        $type = $this->typeFilter;
+        $dateFrom = $this->dateFrom;
+        $dateTo = $this->dateTo;
 
         $headers = [
             'Content-Type' => 'text/csv',
@@ -103,24 +131,30 @@ class CreditHistory extends Component
 
     public function render()
     {
-        $query = $this->buyer->creditHistory()->with(['admin', 'attachments']);
+        $query = $this->buyer->creditHistory()->with([
+            'admin:id,name',
+            'attachments:id,credit_history_id,original_name,file_path',
+        ]);
 
-        if (request('type')) {
-            $query->where('type', request('type'));
+        if ($this->typeFilter !== '') {
+            $query->where('type', $this->typeFilter);
         }
 
-        if (request('date_from')) {
-            $query->whereDate('created_at', '>=', request('date_from'));
+        if ($this->dateFrom !== '') {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
         }
 
-        if (request('date_to')) {
-            $query->whereDate('created_at', '<=', request('date_to'));
+        if ($this->dateTo !== '') {
+            $query->whereDate('created_at', '<=', $this->dateTo);
         }
 
         return view('backend.buyers.credit_history', [
             'buyer' => $this->buyer,
             'creditHistory' => $query->latest('created_at')->paginate(15)->withQueryString(),
+            'typeOptions' => [
+                ['id' => 'add', 'name' => __('backend_buyers_credit_history_table_credit')],
+                ['id' => 'deduct', 'name' => __('backend_buyers_credit_history_table_debit')],
+            ],
         ]);
     }
 }
-

@@ -8,6 +8,21 @@ trait InteractsWithWireUi
 {
     use WireUiActions;
 
+    public bool $confirmModal = false;
+
+    public string $confirmModalTitle = '';
+
+    public string $confirmModalDescription = '';
+
+    public string $confirmModalMethod = '';
+
+    public string $confirmModalAcceptLabel = '';
+
+    /**
+     * @var array<int, mixed>
+     */
+    public array $confirmModalParams = [];
+
     protected function confirmAction(
         string $title,
         ?string $description,
@@ -17,24 +32,37 @@ trait InteractsWithWireUi
         string $icon = 'question',
         ?string $rejectLabel = null,
     ): void {
-        $confirm = [
-            'title' => $title,
-            'description' => (is_string($description) && $description !== '') ? $description : $title,
-            'icon' => $icon,
-            'accept' => [
-                'label' => $acceptLabel,
-                'method' => $method,
-            ],
-            'reject' => [
-                'label' => is_string($rejectLabel) && $rejectLabel !== '' ? $rejectLabel : __('common_cancel'),
-            ],
-        ];
+        $this->confirmModalTitle = $title;
+        $this->confirmModalDescription = (is_string($description) && $description !== '') ? $description : $title;
+        $this->confirmModalMethod = $method;
+        $this->confirmModalAcceptLabel = $acceptLabel;
+        $this->confirmModalParams = $params === null ? [] : (is_array($params) ? array_values($params) : [$params]);
+        $this->confirmModal = true;
+    }
 
-        if ($params !== null) {
-            $confirm['accept']['params'] = $params;
+    public function closeConfirmModal(): void
+    {
+        $this->confirmModal = false;
+        $this->confirmModalTitle = '';
+        $this->confirmModalDescription = '';
+        $this->confirmModalMethod = '';
+        $this->confirmModalAcceptLabel = '';
+        $this->confirmModalParams = [];
+    }
+
+    public function runConfirmedAction(): void
+    {
+        $method = $this->confirmModalMethod;
+        $params = $this->confirmModalParams;
+
+        if ($method === '' || ! method_exists($this, $method)) {
+            $this->closeConfirmModal();
+
+            return;
         }
 
-        $this->notification()->confirm($confirm);
+        $this->{$method}(...$params);
+        $this->closeConfirmModal();
     }
 
     protected function notifySuccess(string $title, ?string $description = null): void
@@ -78,5 +106,3 @@ trait InteractsWithWireUi
         );
     }
 }
-
-

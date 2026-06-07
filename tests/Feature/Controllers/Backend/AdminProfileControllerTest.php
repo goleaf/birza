@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Controllers\Backend;
 
-use Tests\TestCase;
+use App\Livewire\Backend\Admin\Profile as AdminProfile;
 use App\Models\Users\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminProfileControllerTest extends TestCase
 {
@@ -24,7 +25,9 @@ class AdminProfileControllerTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->get(route('backend.admin.profile'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSeeLivewire(AdminProfile::class)
+            ->assertSee(__('auth_name'))
+            ->assertSee(__('auth_current_password'));
     }
 }
-

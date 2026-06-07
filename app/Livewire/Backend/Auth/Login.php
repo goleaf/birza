@@ -5,13 +5,17 @@ namespace App\Livewire\Backend\Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.backend.app')]
+#[Layout('layouts.backend.auth')]
+#[Title('Admin Login')]
 class Login extends Component
 {
     public string $email = '';
+
     public string $password = '';
+
     public bool $remember = false;
 
     public function mount(): void
@@ -32,6 +36,7 @@ class Login extends Component
             session()->regenerate();
 
             $this->redirectIntended(route('backend.dashboard'));
+
             return;
         }
 
@@ -47,5 +52,3 @@ class Login extends Component
         return view('livewire.backend.auth.login');
     }
 }
-
-

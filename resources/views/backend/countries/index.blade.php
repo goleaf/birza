@@ -1,67 +1,128 @@
-<x-ui.page :title="__('backend_countries_title')">
-    <x-slot:actions>
-        <x-button
-            primary
-            :href="route('backend.countries.create')"
-            :label="__('backend_countries_actions_create')"
-        />
-    </x-slot:actions>
+<div class="space-y-6">
+    <x-mary-header :title="__('backend_countries_title')" separator progress-indicator>
+        <x-slot:middle class="!justify-end">
+            <x-mary-input
+                :placeholder="__('common_search')"
+                wire:model.live.debounce.300ms="search"
+                icon="o-magnifying-glass"
+                clearable
+            />
+        </x-slot:middle>
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_filter')"
+                icon="o-funnel"
+                responsive
+                @click="$wire.drawer = true"
+            />
+            <x-mary-button
+                :label="__('backend_countries_actions_create')"
+                icon="o-plus"
+                :link="route('backend.countries.create')"
+                class="btn-primary"
+            />
+        </x-slot:actions>
+    </x-mary-header>
 
-    <x-ui.card>
-        <div class="overflow-x-auto">
-            <table class="table table-zebra w-full">
-                <thead>
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend_countries_fields_code') }}
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend_countries_fields_region') }}
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('backend_countries_fields_country_name') }}
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {{ __('common_actions') }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($countries as $country)
-                        <tr>
-                            <td>{{ $country->alpha2 }}</td>
-                            <td>{{ $country->getRegionLabel() }}</td>
-                            @foreach (config('app.locales') as $locale)
-                                <td class="language-column" data-locale="{{ $locale }}" style="{{ $locale === config('app.locales')[0] ? '' : 'display: none' }}">
-                                    {{ $country->getTranslation('country_name', $locale) }}
-                                </td>
-                            @endforeach
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center gap-2">
-                                    <x-button
-                                        xs
-                                        flat
-                                        primary
-                                        :href="route('backend.countries.edit', $country)"
-                                        :label="__('common_edit')"
-                                    />
-                                    <x-button
-                                        xs
-                                        flat
-                                        negative
-                                        wire:click="confirmDeleteCountry({{ $country->id }})"
-                                        :label="__('common_delete')"
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <x-mary-card shadow>
+        <x-mary-table
+            :headers="$headers"
+            :rows="$countries"
+            :sort-by="$sortBy"
+            with-pagination
+            per-page="perPage"
+            :per-page-values="[10, 15, 25, 50]"
+            striped
+            show-empty-text
+        >
+            @scope('cell_region', $country)
+                {{ $country->getRegionLabel() }}
+            @endscope
+
+            @scope('cell_country_name', $country)
+                {{ $country->getTranslation('country_name', app()->getLocale()) }}
+            @endscope
+
+            @scope('cell_active', $country)
+                <x-mary-badge
+                    :value="$country->is_active ? __('common_active') : __('common_inactive')"
+                    class="{{ $country->is_active ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                />
+            @endscope
+
+            @scope('actions', $country)
+                <x-backend.action-dropdown menu-class="!w-44">
+                    <x-mary-menu-item
+                        :title="__('common_edit')"
+                        :link="route('backend.countries.edit', $country)"
+                        icon="o-pencil-square"
+                    />
+                    <x-mary-menu-separator />
+                    <x-mary-menu-item
+                        :title="__('common_delete')"
+                        icon="o-trash"
+                        class="text-error"
+                        wire:click.stop="confirmDeleteCountry({{ $country->id }})"
+                        spinner
+                    />
+                </x-backend.action-dropdown>
+            @endscope
+        </x-mary-table>
+    </x-mary-card>
+
+    <x-mary-drawer
+        wire:model="drawer"
+        :title="__('common_filter')"
+        right
+        separator
+        with-close-button
+        class="w-full max-w-md"
+    >
+        <div class="space-y-4">
+            <x-mary-input
+                :label="__('common_search')"
+                wire:model.live.debounce.300ms="search"
+                icon="o-magnifying-glass"
+                clearable
+            />
+
+            <x-mary-select
+                :label="__('backend_countries_fields_region')"
+                wire:model.live="regionFilter"
+                :options="$regionOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-globe-europe-africa"
+                :placeholder="__('common_all')"
+                placeholder-value=""
+            />
+
+            <x-mary-select
+                :label="__('common_status')"
+                wire:model.live="activeFilter"
+                :options="$activeOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-check-badge"
+                :placeholder="__('common_all')"
+                placeholder-value=""
+            />
         </div>
 
-        <div class="px-6 py-4">
-            {{ $countries->links() }}
-        </div>
-    </x-ui.card>
-</x-backend.page>
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_reset')"
+                icon="o-arrow-path"
+                wire:click="clear"
+                spinner
+            />
+        </x-slot:actions>
+    </x-mary-drawer>
+
+    <x-backend.confirm-modal
+        wire:model="confirmModal"
+        :title="$confirmModalTitle"
+        :description="$confirmModalDescription"
+        :confirm-label="$confirmModalAcceptLabel"
+    />
+</div>

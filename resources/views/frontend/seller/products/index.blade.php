@@ -100,6 +100,13 @@
     </div>
     <!-- end main container -->
 
+    <x-backend.confirm-modal
+        wire:model="confirmModal"
+        :title="$confirmModalTitle"
+        :description="$confirmModalDescription"
+        :confirm-label="$confirmModalAcceptLabel"
+    />
+
     <!-- start toggle script -->
     <script>
         function toggleCategory(categoryId, arrowId) {

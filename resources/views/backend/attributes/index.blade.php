@@ -1,163 +1,176 @@
 <div class="space-y-6">
-    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-            <h1 class="text-2xl font-bold">{{ __('backend_attributes_title') }}</h1>
-        </div>
-
-        <x-button
-            primary
-            :href="route('backend.attributes.create')"
-            :label="__('backend_attributes_actions_create')"
-        />
-    </div>
-
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div class="rounded-lg bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">{{ __('backend_attributes_stats_total') }}</div>
-            <div class="mt-2 text-2xl font-semibold">{{ $stats['total'] }}</div>
-        </div>
-        <div class="rounded-lg bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">{{ __('backend_attributes_stats_active') }}</div>
-            <div class="mt-2 text-2xl font-semibold">{{ $stats['active'] }}</div>
-        </div>
-        <div class="rounded-lg bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">{{ __('backend_attributes_stats_filterable') }}</div>
-            <div class="mt-2 text-2xl font-semibold">{{ $stats['filterable'] }}</div>
-        </div>
-        <div class="rounded-lg bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">{{ __('backend_attributes_stats_required') }}</div>
-            <div class="mt-2 text-2xl font-semibold">{{ $stats['required'] }}</div>
-        </div>
+        <x-mary-stat :title="__('backend_attributes_stats_total')" :value="$stats['total']" icon="o-squares-2x2" color="text-primary" />
+        <x-mary-stat :title="__('backend_attributes_stats_active')" :value="$stats['active']" icon="o-check-badge" color="text-success" />
+        <x-mary-stat :title="__('backend_attributes_stats_filterable')" :value="$stats['filterable']" icon="o-funnel" color="text-info" />
+        <x-mary-stat :title="__('backend_attributes_stats_required')" :value="$stats['required']" icon="o-exclamation-circle" color="text-warning" />
     </div>
 
-    <div class="rounded-lg bg-white p-4 shadow-sm">
-        <form action="{{ route('backend.attributes.index') }}" method="GET" class="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            <div class="xl:col-span-2">
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ $filters['search'] }}"
-                    placeholder="{{ __('common_search') }}"
-                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-            </div>
+    <x-mary-header :title="__('backend_attributes_title')" separator progress-indicator>
+        <x-slot:middle class="!justify-end">
+            <x-mary-input
+                :placeholder="__('common_search')"
+                wire:model.live.debounce.300ms="search"
+                icon="o-magnifying-glass"
+                clearable
+            />
+        </x-slot:middle>
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_filter')"
+                icon="o-funnel"
+                responsive
+                @click="$wire.drawer = true"
+            />
+            <x-mary-button
+                :label="__('backend_attributes_actions_create')"
+                icon="o-plus"
+                :link="route('backend.attributes.create')"
+                class="btn-primary"
+            />
+        </x-slot:actions>
+    </x-mary-header>
 
-            <div>
-                <select name="status" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">{{ __('backend_attributes_filters_all_statuses') }}</option>
-                    <option value="active" {{ $filters['status'] === 'active' ? 'selected' : '' }}>{{ __('common_active') }}</option>
-                    <option value="inactive" {{ $filters['status'] === 'inactive' ? 'selected' : '' }}>{{ __('common_inactive') }}</option>
-                </select>
-            </div>
+    <x-mary-card shadow>
+        <x-mary-table
+            :headers="$headers"
+            :rows="$attributeRecords"
+            :sort-by="$sortBy"
+            with-pagination
+            per-page="perPage"
+            :per-page-values="[10, 20, 50]"
+            striped
+            show-empty-text
+        >
+            @scope('cell_name', $attribute)
+                {{ $attribute->getTranslation('name', app()->getLocale()) }}
+            @endscope
 
-            <div>
-                <select name="type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">{{ __('backend_attributes_filters_all_types') }}</option>
-                    @foreach ($types as $typeKey => $typeLabel)
-                        <option value="{{ $typeKey }}" {{ $filters['type'] === $typeKey ? 'selected' : '' }}>
-                            {{ __('backend_attributes_types_' . $typeKey) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            @scope('cell_type', $attribute)
+                {{ __('backend_attributes_types_' . $attribute->type) }}
+            @endscope
 
-            <div class="flex gap-3">
-                <button type="submit" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
-                    {{ __('common_filter') }}
-                </button>
-                <a href="{{ route('backend.attributes.index') }}" class="inline-flex items-center justify-center rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300">
-                    {{ __('common_reset') }}
-                </a>
-            </div>
+            @scope('cell_active', $attribute)
+                <x-mary-badge
+                    :value="$attribute->is_active ? __('common_active') : __('common_inactive')"
+                    class="{{ $attribute->is_active ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                />
+            @endscope
 
-            <div>
-                <select name="filterable" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">{{ __('backend_attributes_fields_is_filterable') }}</option>
-                    <option value="1" {{ $filters['filterable'] === '1' ? 'selected' : '' }}>{{ __('common_yes') }}</option>
-                    <option value="0" {{ $filters['filterable'] === '0' ? 'selected' : '' }}>{{ __('common_no') }}</option>
-                </select>
-            </div>
+            @scope('cell_filterable', $attribute)
+                <x-mary-badge
+                    :value="$attribute->is_filterable ? __('common_yes') : __('common_no')"
+                    class="{{ $attribute->is_filterable ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                />
+            @endscope
 
-            <div>
-                <select name="required" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">{{ __('backend_attributes_fields_is_required') }}</option>
-                    <option value="1" {{ $filters['required'] === '1' ? 'selected' : '' }}>{{ __('common_yes') }}</option>
-                    <option value="0" {{ $filters['required'] === '0' ? 'selected' : '' }}>{{ __('common_no') }}</option>
-                </select>
-            </div>
-        </form>
-    </div>
+            @scope('cell_required', $attribute)
+                <x-mary-badge
+                    :value="$attribute->is_required ? __('common_yes') : __('common_no')"
+                    class="{{ $attribute->is_required ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                />
+            @endscope
 
-    <div class="overflow-hidden rounded-lg bg-white shadow-sm">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_name') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_type') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_values_count') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_status') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_is_filterable') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_attributes_fields_is_required') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('common_actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
-                    @forelse ($attributeRecords as $attribute)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $attribute->getTranslation('name', app()->getLocale()) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ __('backend_attributes_types_' . $attribute->type) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('backend.attributes.values.index', $attribute) }}" class="text-indigo-600 hover:text-indigo-900">
-                                    {{ $attribute->values_count ?? $attribute->values->count() }}
-                                </a>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {{ $attribute->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $attribute->is_active ? __('common_active') : __('common_inactive') }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {{ $attribute->is_filterable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $attribute->is_filterable ? __('common_yes') : __('common_no') }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {{ $attribute->is_required ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $attribute->is_required ? __('common_yes') : __('common_no') }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end gap-3">
-                                    <a href="{{ route('backend.attributes.values.create', $attribute) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('backend_attributes_actions_add_value') }}
-                                    </a>
-                                    <a href="{{ route('backend.attributes.edit', $attribute) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        {{ __('common_edit') }}
-                                    </a>
-                                    <x-button
-                                        xs
-                                        flat
-                                        negative
-                                        wire:click="confirmDeleteAttribute({{ $attribute->id }})"
-                                        :label="__('common_delete')"
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500">
-                                {{ __('common_no_results') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            @scope('actions', $attribute)
+                <x-backend.action-dropdown>
+                    <x-mary-menu-item
+                        :title="__('backend_attributes_actions_add_value')"
+                        :link="route('backend.attributes.values.create', $attribute)"
+                        icon="o-plus"
+                    />
+                    <x-mary-menu-item
+                        :title="__('common_edit')"
+                        :link="route('backend.attributes.edit', $attribute)"
+                        icon="o-pencil-square"
+                    />
+                    <x-mary-menu-separator />
+                    <x-mary-menu-item
+                        :title="__('common_delete')"
+                        icon="o-trash"
+                        class="text-error"
+                        wire:click.stop="confirmDeleteAttribute({{ $attribute->id }})"
+                        spinner
+                    />
+                </x-backend.action-dropdown>
+            @endscope
+        </x-mary-table>
+    </x-mary-card>
+
+    <x-mary-drawer
+        wire:model="drawer"
+        :title="__('common_filter')"
+        right
+        separator
+        with-close-button
+        class="w-full max-w-md"
+    >
+        <div class="space-y-4">
+            <x-mary-input
+                :label="__('common_search')"
+                wire:model.live.debounce.300ms="search"
+                icon="o-magnifying-glass"
+                clearable
+            />
+
+            <x-mary-select
+                :label="__('common_status')"
+                wire:model.live="statusFilter"
+                :options="$statusOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-check-badge"
+                :placeholder="__('backend_attributes_filters_all_statuses')"
+                placeholder-value=""
+            />
+
+            <x-mary-select
+                :label="__('backend_attributes_fields_type')"
+                wire:model.live="typeFilter"
+                :options="$typeOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-queue-list"
+                :placeholder="__('backend_attributes_filters_all_types')"
+                placeholder-value=""
+            />
+
+            <x-mary-select
+                :label="__('backend_attributes_fields_is_filterable')"
+                wire:model.live="filterableFilter"
+                :options="$filterableOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-funnel"
+                :placeholder="__('backend_attributes_fields_is_filterable')"
+                placeholder-value=""
+            />
+
+            <x-mary-select
+                :label="__('backend_attributes_fields_is_required')"
+                wire:model.live="requiredFilter"
+                :options="$requiredOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-exclamation-circle"
+                :placeholder="__('backend_attributes_fields_is_required')"
+                placeholder-value=""
+            />
         </div>
 
-        <div class="px-6 py-4">
-            {{ $attributeRecords->links() }}
-        </div>
-    </div>
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_reset')"
+                icon="o-arrow-path"
+                wire:click="clear"
+                spinner
+            />
+        </x-slot:actions>
+    </x-mary-drawer>
+
+    <x-backend.confirm-modal
+        wire:model="confirmModal"
+        :title="$confirmModalTitle"
+        :description="$confirmModalDescription"
+        :confirm-label="$confirmModalAcceptLabel"
+    />
 </div>

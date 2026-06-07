@@ -21,7 +21,8 @@ class Orders extends Component
     {
         $request = request();
 
-        $query = Order::with(['items.product', 'items.seller'])
+        $query = Order::query()
+            ->select(['id', 'buyer_id', 'order_total', 'payment_status', 'created_at'])
             ->where('buyer_id', $this->buyer->id);
 
         if ($request->filled('status')) {
@@ -42,5 +43,3 @@ class Orders extends Component
         ]);
     }
 }
-
-

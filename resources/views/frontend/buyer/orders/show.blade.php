@@ -157,6 +157,13 @@
             <!-- end table -->
         </div>
         <!-- end order items -->
+
+        <x-backend.confirm-modal
+            wire:model="confirmModal"
+            :title="$confirmModalTitle"
+            :description="$confirmModalDescription"
+            :confirm-label="$confirmModalAcceptLabel"
+        />
     </div>
     <!-- end main container -->
 </div>

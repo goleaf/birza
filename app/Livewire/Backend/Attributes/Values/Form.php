@@ -11,9 +11,11 @@ use Livewire\Component;
 class Form extends Component
 {
     public Attribute $attribute;
+
     public ?AttributeValue $attributeValue = null;
 
-    public array $value = [];
+    public array $translations = [];
+
     public bool $is_active = true;
 
     public function mount(Attribute $attribute, ?AttributeValue $value = null): void
@@ -22,7 +24,7 @@ class Form extends Component
         $this->attributeValue = $value;
 
         foreach (config('app.locales') as $locale) {
-            $this->value[$locale] = (string) ($value?->getTranslation('value', $locale) ?? '');
+            $this->translations[$locale] = (string) ($value?->getTranslation('value', $locale) ?? '');
         }
 
         $this->is_active = (bool) ($value?->is_active ?? true);
@@ -31,17 +33,17 @@ class Form extends Component
     public function save(): void
     {
         $rules = [
-            'value' => ['required', 'array'],
-            'value.*' => ['required', 'string', 'max:255'],
+            'translations' => ['required', 'array'],
+            'translations.*' => ['required', 'string', 'max:255'],
             'is_active' => ['sometimes', 'boolean'],
         ];
 
         $validated = $this->validate($rules);
 
-        $attributeValue = $this->attributeValue ?? new AttributeValue();
+        $attributeValue = $this->attributeValue ?? new AttributeValue;
         $attributeValue->attribute_id = $this->attribute->id;
         $attributeValue->is_active = (bool) ($validated['is_active'] ?? false);
-        $attributeValue->setTranslations('value', $validated['value']);
+        $attributeValue->setTranslations('value', $validated['translations']);
         $attributeValue->save();
 
         session()->flash('success', __('backend_common_success_message'));
@@ -56,5 +58,3 @@ class Form extends Component
         ]);
     }
 }
-
-

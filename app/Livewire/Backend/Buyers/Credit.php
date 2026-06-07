@@ -18,8 +18,11 @@ class Credit extends Component
     public Buyer $buyer;
 
     public ?string $selectedAction = null; // 'add'|'deduct'
+
     public ?float $amount = null;
+
     public ?string $note = null;
+
     public $attachment = null;
 
     public function mount(Buyer $buyer): void
@@ -40,6 +43,7 @@ class Credit extends Component
     {
         if (! in_array($this->selectedAction, ['add', 'deduct'], true)) {
             $this->addError('action', __('common_error_occurred'));
+
             return;
         }
 
@@ -53,6 +57,7 @@ class Credit extends Component
 
         if ($this->selectedAction === 'deduct' && $validated['amount'] > $buyer->credit_balance) {
             $this->addError('amount', __('backend_credit_insufficient_funds'));
+
             return;
         }
 
@@ -102,5 +107,3 @@ class Credit extends Component
         ]);
     }
 }
-
-

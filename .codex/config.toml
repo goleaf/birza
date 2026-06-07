@@ -22,6 +22,9 @@ cwd = "/Users/andrejprus/Herd/birza"
 startup_timeout_sec = 20
 tool_timeout_sec = 120
 
+[mcp_servers.laravel-boost.tools.search-docs]
+approval_mode = "approve"
+
 [agents]
 max_threads = 8
 max_depth = 2

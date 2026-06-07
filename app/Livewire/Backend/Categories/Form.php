@@ -81,19 +81,37 @@ class Form extends Component
 
     public function render()
     {
-        $availableAttributes = Attribute::all();
+        $availableAttributes = Attribute::query()
+            ->select(['id', 'name', 'is_active'])
+            ->orderBy('name->en')
+            ->get();
 
         $parentCategories = Category::query()
+            ->select(['id', 'category_name'])
             ->whereNull('parent_category_id')
             ->when($this->category?->id, function ($query, $categoryId) {
                 $query->whereKeyNot($categoryId);
             })
+            ->orderBy('category_name->en')
             ->get();
 
         return view('backend.categories.form', [
+            'attributeOptions' => $availableAttributes
+                ->map(fn (Attribute $attribute) => [
+                    'id' => $attribute->id,
+                    'name' => $attribute->getTranslation('name', app()->getLocale()),
+                    'status' => $attribute->is_active ? __('common_active') : __('common_inactive'),
+                ])
+                ->values()
+                ->all(),
             'category' => $this->category,
-            'parentCategories' => $parentCategories,
-            'availableAttributes' => $availableAttributes,
+            'parentCategoryOptions' => $parentCategories
+                ->map(fn (Category $category) => [
+                    'id' => $category->id,
+                    'name' => $category->getTranslation('category_name', app()->getLocale()),
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 }

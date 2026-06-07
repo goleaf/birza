@@ -1,201 +1,305 @@
-<div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-    <div class="rounded-lg bg-white shadow-sm">
-        <div class="border-b border-gray-200 p-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-bold text-gray-800">
-                    {{ isset($product) ? __('backend_products_edit_title') : __('backend_products_create_title') }}
-                </h2>
-            </div>
-        </div>
+@php($isEditing = isset($product) && $product->exists)
+<div class="space-y-6">
+    <x-mary-header
+        :title="$isEditing ? __('backend_products_edit_title') : __('backend_products_create_title')"
+        :subtitle="$isEditing ? $name : __('products_title')"
+        separator
+        progress-indicator
+    />
 
-        <form wire:submit.prevent="save" enctype="multipart/form-data" class="space-y-6 p-6">
-            <div class="rounded-lg bg-gray-50 p-6 shadow-sm">
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div>
-                        <label for="category_id" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_category') }}
-                        </label>
-                        <select
-                            id="category_id"
-                            wire:model="category_id"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        >
-                            <option value="">{{ __('common_select_option') }}</option>
-                            @foreach ($categories->whereNull('parent_category_id') as $cat)
-                                <option value="{{ $cat->id }}">
-                                    {{ $cat->getTranslation('category_name', app()->getLocale()) }}
-                                </option>
-                                @foreach ($cat->subcategories()->orderBy('category_name->en')->get() as $subcategory)
-                                    <option value="{{ $subcategory->id }}">
-                                        -- {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
-                                    </option>
-                                @endforeach
-                            @endforeach
-                        </select>
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
+        <x-mary-form wire:submit="save" enctype="multipart/form-data" class="gap-6">
+            <x-mary-card :title="__('product_name')" :subtitle="__('backend_products_fields_category')" shadow>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <x-mary-input :label="__('product_name')" wire:model="name" required />
+
+                    <x-mary-choices-offline
+                        :label="__('product_seller')"
+                        wire:model="seller_id"
+                        :options="$sellerOptions"
+                        option-value="id"
+                        option-label="name"
+                        option-sub-label="sub_label"
+                        icon="o-user"
+                        :placeholder="__('common_select_option')"
+                        single
+                        searchable
+                        required
+                    />
+
+                    <x-mary-choices-offline
+                        :label="__('backend_products_fields_category')"
+                        wire:model.live="category_id"
+                        :options="$categoryOptions"
+                        option-value="id"
+                        option-label="name"
+                        icon="o-tag"
+                        :placeholder="__('common_select_option')"
+                        single
+                        searchable
+                        required
+                    />
+
+                    <x-mary-choices-offline
+                        :label="__('backend_products_fields_country_of_origin')"
+                        wire:model="country_of_origin"
+                        :options="$countryOptions"
+                        option-value="id"
+                        option-label="name"
+                        option-sub-label="sub_label"
+                        icon="o-globe-europe-africa"
+                        :placeholder="__('common_select_country')"
+                        single
+                        searchable
+                        required
+                    />
+
+                    <x-mary-input
+                        :label="__('backend_products_fields_price')"
+                        wire:model="price"
+                        type="number"
+                        step="0.01"
+                        prefix="€"
+                        required
+                    />
+
+                    <x-mary-input
+                        :label="__('backend_products_fields_pack_type')"
+                        wire:model="pack_type"
+                        required
+                    />
+
+                    <div class="md:col-span-2">
+                        <x-mary-radio
+                            :label="__('backend_products_fields_unit')"
+                            wire:model="unit"
+                            :options="$unitOptions"
+                            option-value="id"
+                            option-label="name"
+                            inline
+                            required
+                        />
                     </div>
 
-                    <div>
-                        <label for="price" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_price') }}
-                        </label>
-                        <input type="number" step="0.01" id="price" wire:model="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
+                    <x-mary-input
+                        :label="__('backend_products_fields_stock')"
+                        wire:model="stock"
+                        type="number"
+                        min="0"
+                        required
+                    />
+                </div>
+            </x-mary-card>
 
-                    <div>
-                        <label for="pack_type" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_pack_type') }}
-                        </label>
-                        <input type="text" id="pack_type" wire:model="pack_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
+            <x-mary-card :title="__('backend_products_fields_description')" :subtitle="__('backend_products_fields_pack_type')" shadow>
+                <x-mary-textarea
+                    :label="__('backend_products_fields_description')"
+                    :hint="__('backend_products_description_hint')"
+                    :placeholder="__('backend_products_description_placeholder')"
+                    wire:model="description"
+                    rows="7"
+                    required
+                />
+            </x-mary-card>
 
-                    <div>
-                        <label for="unit" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_unit') }}
-                        </label>
-                        <select id="unit" wire:model="unit" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            @foreach (App\Models\Product::UNITS as $unitOption)
-                                <option value="{{ $unitOption }}">{{ __('units_unit_' . strtolower($unitOption)) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            <x-mary-card :title="__('backend_products_fields_min_order_price')" :subtitle="__('backend_products_fields_is_active')" shadow>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <x-mary-input
+                        :label="__('backend_products_fields_min_order_price')"
+                        wire:model="min_order_price"
+                        type="number"
+                        step="0.01"
+                        prefix="€"
+                    />
 
-                    <div>
-                        <label for="country_of_origin" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_country_of_origin') }}
-                        </label>
-                        <select id="country_of_origin" wire:model="country_of_origin" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="">{{ __('common_select_country') }}</option>
-                            @foreach ($countries as $country)
-                                <option value="{{ $country->id }}">
-                                    {{ $country->getTranslation('country_name', app()->getLocale()) }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <x-mary-input
+                        :label="__('backend_products_fields_min_order_count')"
+                        wire:model="min_order_count"
+                        type="number"
+                        min="1"
+                        required
+                    />
 
-                    <div>
-                        <label for="is_organic" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_is_organic') }}
-                        </label>
-                        <select id="is_organic" wire:model="is_organic" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="0">{{ __('common_no') }}</option>
-                            <option value="1">{{ __('common_yes') }}</option>
-                        </select>
-                    </div>
+                    <x-mary-input
+                        :label="__('backend_products_fields_package_weight')"
+                        wire:model="package_weight"
+                        type="number"
+                        step="0.001"
+                    />
 
-                    <div>
-                        <label for="is_active" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_is_active') }}
-                        </label>
-                        <select id="is_active" wire:model="is_active" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="1">{{ __('product_active') }}</option>
-                            <option value="0">{{ __('product_inactive') }}</option>
-                        </select>
-                    </div>
+                    <x-mary-input
+                        :label="__('backend_products_fields_price_per_liter')"
+                        wire:model="price_per_liter"
+                        type="number"
+                        step="0.01"
+                        prefix="€"
+                    />
 
-                    <div>
-                        <label for="stock" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_stock') }}
-                        </label>
-                        <input type="number" id="stock" wire:model="stock" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <div class="space-y-3 pt-2 md:col-span-2">
+                        <x-mary-toggle
+                            :label="__('backend_products_fields_is_organic')"
+                            wire:model="is_organic"
+                            right
+                        />
+
+                        <x-mary-toggle
+                            :label="__('backend_products_fields_is_active')"
+                            wire:model="is_active"
+                            right
+                        />
                     </div>
                 </div>
-            </div>
+            </x-mary-card>
 
-            <div class="rounded-lg bg-gray-50 p-6 shadow-sm">
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div>
-                        <label for="min_order_price" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_min_order_price') }}
-                        </label>
-                        <input type="number" step="0.01" id="min_order_price" wire:model="min_order_price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <x-mary-card :title="__('product_temperature_conditions')" :subtitle="__('product_use_until')" shadow>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div class="space-y-3">
+                        <x-mary-input
+                            :label="__('product_from')"
+                            wire:model.live.change="temperature_conditions_from"
+                            type="number"
+                            suffix="°C"
+                        />
+
+                        <div class="flex items-center justify-between gap-3 text-xs text-base-content/60">
+                            <span>{{ __('backend_products_temperature_range_hint') }}</span>
+                            <x-mary-badge
+                                :value="$temperature_conditions_from !== null ? $temperature_conditions_from . '°C' : __('common_not_specified')"
+                                class="badge-primary badge-outline"
+                            />
+                        </div>
+
+                        <x-mary-range
+                            wire:model.live.change="temperature_conditions_from"
+                            min="-40"
+                            max="40"
+                            step="1"
+                            class="range-primary range-sm"
+                            omit-error
+                        />
                     </div>
 
-                    <div>
-                        <label for="min_order_count" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_min_order_count') }}
-                        </label>
-                        <input type="number" id="min_order_count" wire:model="min_order_count" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <div class="space-y-3">
+                        <x-mary-input
+                            :label="__('product_to')"
+                            wire:model.live.change="temperature_conditions_to"
+                            type="number"
+                            suffix="°C"
+                        />
+
+                        <div class="flex items-center justify-between gap-3 text-xs text-base-content/60">
+                            <span>{{ __('backend_products_temperature_range_hint') }}</span>
+                            <x-mary-badge
+                                :value="$temperature_conditions_to !== null ? $temperature_conditions_to . '°C' : __('common_not_specified')"
+                                class="badge-secondary badge-outline"
+                            />
+                        </div>
+
+                        <x-mary-range
+                            wire:model.live.change="temperature_conditions_to"
+                            min="-40"
+                            max="40"
+                            step="1"
+                            class="range-secondary range-sm"
+                            omit-error
+                        />
                     </div>
 
-                    <div>
-                        <label for="package_weight" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_package_weight') }}
-                        </label>
-                        <input type="number" step="0.001" id="package_weight" wire:model="package_weight" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
+                    <x-mary-datetime
+                        :label="__('product_use_until')"
+                        wire:model="use_until"
+                        icon="o-calendar-days"
+                    />
 
-                    <div>
-                        <label for="price_per_liter" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_price_per_liter') }}
-                        </label>
-                        <input type="number" step="0.01" id="price_per_liter" wire:model="price_per_liter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <div class="space-y-3">
+                        <x-mary-input
+                            :label="__('product_total_shelf_life')"
+                            wire:model.live.change="total_shelf_life"
+                            type="number"
+                            min="0"
+                            suffix="d"
+                            required
+                        />
+
+                        <div class="flex items-center justify-between gap-3 text-xs text-base-content/60">
+                            <span>{{ __('backend_products_shelf_life_range_hint') }}</span>
+                            <x-mary-badge
+                                :value="$total_shelf_life !== null ? $total_shelf_life . 'd' : __('common_not_specified')"
+                                class="badge-accent badge-outline"
+                            />
+                        </div>
+
+                        <x-mary-range
+                            wire:model.live.change="total_shelf_life"
+                            min="0"
+                            max="365"
+                            step="1"
+                            class="range-accent range-sm"
+                            omit-error
+                        />
                     </div>
                 </div>
-            </div>
+            </x-mary-card>
 
-            <div class="rounded-lg bg-gray-50 p-6 shadow-sm">
-                <label for="description" class="mb-1 block text-sm font-medium text-gray-700">
-                    {{ __('backend_products_fields_description') }}
-                </label>
-                <textarea id="description" wire:model="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-            </div>
+            <x-slot:actions>
+                <x-mary-button
+                    :label="__('backend_common_cancel')"
+                    :link="route('backend.products.index')"
+                />
+                <x-mary-button
+                    :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"
+                    icon="o-paper-airplane"
+                    spinner="save"
+                    type="submit"
+                    class="btn-primary"
+                />
+            </x-slot:actions>
+        </x-mary-form>
 
-            <div class="rounded-lg bg-gray-50 p-6 shadow-sm">
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div>
-                        <label for="product_image" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_product_image') }}
-                        </label>
-                        @if (isset($product) && $product->product_image)
-                            <img src="{{ Storage::url('products/' . $product->product_image) }}" alt="{{ __('backend_products_fields_product_image') }}" class="mb-2 w-32 rounded">
-                        @endif
-                        <input type="file" id="product_image" wire:model="product_image" class="mt-1 block w-full">
-                    </div>
+        <div class="space-y-6">
+            <x-mary-card :title="__('common_product_images')" :subtitle="__('backend_products_image_library_hint')" shadow>
+                <x-mary-image-library
+                    :label="__('common_product_images')"
+                    :hint="__('backend_products_image_library_hint')"
+                    wire:model="imageFiles"
+                    wire:library="imageLibrary"
+                    :preview="$imageLibrary"
+                    accept="image/png, image/jpeg, image/webp"
+                    :change-text="__('common_edit')"
+                    :crop-text="__('common_crop')"
+                    :remove-text="__('common_remove')"
+                    :crop-title-text="__('common_crop_image')"
+                    :crop-cancel-text="__('backend_common_cancel')"
+                    :crop-save-text="__('common_crop')"
+                    :add-files-text="__('common_add_images')"
+                />
+            </x-mary-card>
 
-                    <div>
-                        <label for="product_additional_image" class="mb-1 block text-sm font-medium text-gray-700">
-                            {{ __('backend_products_fields_product_additional_image') }}
-                        </label>
-                        @if (isset($product) && $product->product_additional_image)
-                            <img src="{{ Storage::url('products/' . $product->product_additional_image) }}" alt="{{ __('backend_products_fields_product_additional_image') }}" class="mb-2 w-32 rounded">
-                        @endif
-                        <input type="file" id="product_additional_image" wire:model="product_additional_image" class="mt-1 block w-full">
-                    </div>
-                </div>
-            </div>
-
-            @if ($productAttributes && $productAttributes->count() > 0)
-                <div class="rounded-lg bg-gray-50 p-6 shadow-sm">
-                    <h3 class="mb-4 text-lg font-medium text-gray-900">{{ __('product_attributes') }}</h3>
-                    <div class="space-y-6">
+            @if ($productAttributes->isNotEmpty())
+                <x-mary-card :title="__('product_attributes')" :subtitle="__('backend_products_fields_category')" shadow>
+                    <div class="space-y-4">
                         @foreach ($productAttributes as $attribute)
-                            <div>
-                                <label class="mb-1 block text-sm font-medium text-gray-700">
-                                    {{ $attribute->getTranslation('name', app()->getLocale()) }}
-                                </label>
-                                <select wire:model="attributeSelections.{{ $attribute->id }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="">{{ __('common_select_option') }}</option>
-                                    @foreach ($attribute->values as $value)
-                                        <option value="{{ $value->id }}">
-                                            {{ $value->getTranslation('value', app()->getLocale()) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <x-mary-choices-offline
+                                :label="$attribute->getTranslation('name', app()->getLocale())"
+                                wire:model="attributeSelections.{{ $attribute->id }}"
+                                :options="$attribute->values->map(fn ($value) => [
+                                        'id' => $value->id,
+                                        'name' => $value->getTranslation('value', app()->getLocale()),
+                                    ])
+                                    ->values()
+                                    ->all()"
+                                option-value="id"
+                                option-label="name"
+                                icon="o-adjustments-horizontal"
+                                :placeholder="__('common_select_option')"
+                                single
+                                searchable
+                                clearable
+                            />
                         @endforeach
                     </div>
-                </div>
+                </x-mary-card>
             @endif
-
-            <div class="flex justify-end space-x-3">
-                <a href="{{ route('backend.products.index') }}" class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                    {{ __('backend_common_cancel') }}
-                </a>
-                <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
-                    {{ isset($product) ? __('backend_common_update') : __('backend_common_create') }}
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>

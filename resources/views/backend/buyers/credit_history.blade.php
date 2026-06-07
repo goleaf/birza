@@ -1,135 +1,159 @@
+@php
+    $headers = [
+        ['key' => 'created_at', 'label' => __('backend_buyers_credit_history_table_date'), 'class' => 'w-40'],
+        ['key' => 'type', 'label' => __('backend_buyers_credit_history_table_type'), 'class' => 'w-28'],
+        ['key' => 'amount', 'label' => __('backend_buyers_credit_history_table_amount'), 'class' => 'text-right w-36'],
+        ['key' => 'note', 'label' => __('backend_buyers_credit_history_table_note')],
+        ['key' => 'balance_after', 'label' => __('backend_buyers_credit_history_table_balance_after'), 'class' => 'text-right w-40'],
+        ['key' => 'admin_name', 'label' => __('backend_buyers_credit_history_table_admin'), 'class' => 'w-40'],
+    ];
+@endphp
+
 <div class="space-y-6">
-    <div class="overflow-hidden rounded-xl bg-white shadow-sm">
-        <div class="p-8">
-            <h1 class="text-2xl font-bold text-gray-900">{{ $buyer->name }}</h1>
-            <div class="mt-2">
-                <span class="text-2xl font-bold text-indigo-600">€{{ number_format($buyer->credit_balance, 2) }}</span>
-                <span class="ml-2 text-sm text-gray-500">{{ __('backend_buyers_credit_current_balance') }}</span>
+    <x-mary-header
+        :title="$buyer->name"
+        :subtitle="__('backend_buyers_credit_current_balance') . ': €' . number_format((float) $buyer->credit_balance, 2)"
+        separator
+        progress-indicator
+    >
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_back')"
+                :link="route('backend.buyers.credit', $buyer)"
+            />
+            <x-mary-button
+                :label="__('common_filter')"
+                icon="o-funnel"
+                responsive
+                @click="$wire.drawer = true"
+            />
+            <x-mary-button
+                :label="__('backend_common_export_csv')"
+                icon="o-arrow-down-tray"
+                wire:click="exportCsv"
+                spinner="exportCsv"
+            />
+        </x-slot:actions>
+    </x-mary-header>
+
+    <x-mary-card shadow>
+        <x-mary-table
+            :headers="$headers"
+            :rows="$creditHistory"
+            striped
+            no-hover
+            with-pagination
+            show-empty-text
+            :empty-text="__('backend_buyers_credit_history_table_no_records')"
+        >
+            @scope('cell_created_at', $history)
+                {{ $history->created_at?->format('Y-m-d H:i') ?? __('common_not_specified') }}
+            @endscope
+
+            @scope('cell_type', $history)
+                @php($isCredit = in_array($history->type, ['add', 'credit'], true))
+
+                <x-mary-badge
+                    :value="$isCredit ? __('backend_buyers_credit_history_table_credit') : __('backend_buyers_credit_history_table_debit')"
+                    class="{{ $isCredit ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                />
+            @endscope
+
+            @scope('cell_amount', $history)
+                @php($isCredit = in_array($history->type, ['add', 'credit'], true))
+
+                <div class="text-right font-medium {{ $isCredit ? 'text-success' : 'text-error' }}">
+                    {{ $isCredit ? '+' : '-' }}€{{ number_format(abs((float) $history->amount), 2) }}
+                </div>
+            @endscope
+
+            @scope('cell_note', $history)
+                <div class="space-y-2">
+                    <div class="max-w-xl truncate text-sm text-base-content/70">
+                        {{ $history->note ?: '—' }}
+                    </div>
+
+                    @if ($history->attachments->isNotEmpty())
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($history->attachments as $attachment)
+                                <button
+                                    type="button"
+                                    wire:click="downloadAttachment({{ $attachment->id }})"
+                                    class="text-sm font-medium text-primary hover:text-primary/80"
+                                >
+                                    {{ $attachment->original_name }}
+                                </button>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @endscope
+
+            @scope('cell_balance_after', $history)
+                <div class="text-right font-semibold">
+                    €{{ number_format((float) $history->balance_after, 2) }}
+                </div>
+            @endscope
+
+            @scope('cell_admin_name', $history)
+                {{ $history->admin?->name ?: __('backend_buyers_credit_history_table_system') }}
+            @endscope
+        </x-mary-table>
+    </x-mary-card>
+
+    <x-mary-drawer
+        wire:model="drawer"
+        :title="__('common_filter')"
+        right
+        separator
+        with-close-button
+        close-on-escape
+        class="w-full max-w-md"
+    >
+        <x-mary-form wire:submit="applyFilters" no-separator class="gap-4">
+            <div class="space-y-4">
+                <x-mary-select
+                    :label="__('backend_buyers_credit_history_filter_type')"
+                    wire:model="typeFilter"
+                    :options="$typeOptions"
+                    option-value="id"
+                    option-label="name"
+                    icon="o-arrows-right-left"
+                    :placeholder="__('backend_buyers_credit_history_filter_all_types')"
+                    placeholder-value=""
+                />
+
+                <x-mary-datetime
+                    :label="__('backend_buyers_credit_history_filter_date_from')"
+                    wire:model="dateFrom"
+                    icon="o-calendar-days"
+                />
+
+                <x-mary-datetime
+                    :label="__('backend_buyers_credit_history_filter_date_to')"
+                    wire:model="dateTo"
+                    icon="o-calendar-days"
+                />
             </div>
-        </div>
-    </div>
 
-    <div class="rounded-xl bg-white p-6 shadow-sm">
-        <form method="GET" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div>
-                <label for="type" class="block text-sm font-medium text-gray-700">{{ __('backend_buyers_credit_history_filter_type') }}</label>
-                <select
-                    name="type"
-                    id="type"
-                    class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                >
-                    <option value="">{{ __('backend_buyers_credit_history_filter_all_types') }}</option>
-                    <option value="add" {{ request('type') === 'add' ? 'selected' : '' }}>{{ __('backend_buyers_credit_history_table_credit') }}</option>
-                    <option value="deduct" {{ request('type') === 'deduct' ? 'selected' : '' }}>{{ __('backend_buyers_credit_history_table_debit') }}</option>
-                </select>
-            </div>
+            <x-slot:actions>
+                @if ($typeFilter !== '' || $dateFrom !== '' || $dateTo !== '')
+                    <x-mary-button
+                        :label="__('common_reset')"
+                        icon="o-arrow-path"
+                        wire:click="clear"
+                        spinner="clear"
+                    />
+                @endif
 
-            <div>
-                <label for="date_from" class="block text-sm font-medium text-gray-700">{{ __('backend_buyers_credit_history_filter_date_from') }}</label>
-                <input
-                    type="date"
-                    name="date_from"
-                    id="date_from"
-                    value="{{ request('date_from') }}"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-            </div>
-
-            <div>
-                <label for="date_to" class="block text-sm font-medium text-gray-700">{{ __('backend_buyers_credit_history_filter_date_to') }}</label>
-                <input
-                    type="date"
-                    name="date_to"
-                    id="date_to"
-                    value="{{ request('date_to') }}"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-            </div>
-
-            <div class="flex items-end gap-3">
-                <button type="submit" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
-                    {{ __('backend_buyers_credit_history_filter_apply') }}
-                </button>
-
-                <button
-                    type="button"
-                    wire:click="exportCsv"
-                    class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                    {{ __('backend_common_export_csv') }}
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <div class="overflow-hidden rounded-xl bg-white shadow-sm">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_date') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_type') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_amount') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_note') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_balance_after') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('backend_buyers_credit_history_table_admin') }}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
-                    @forelse ($creditHistory as $history)
-                        <tr>
-                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900">{{ $history->created_at->format('Y-m-d H:i') }}</td>
-                            <td class="whitespace-nowrap px-6 py-4">
-                                @if ($history->type === 'add')
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                        {{ __('backend_buyers_credit_history_table_credit') }}
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-                                        {{ __('backend_buyers_credit_history_table_debit') }}
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm {{ $history->type === 'add' ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $history->type === 'add' ? '+' : '-' }}€{{ number_format(abs($history->amount), 2) }}
-                            </td>
-                            <td class="max-w-xs px-6 py-4 text-sm text-gray-500">{{ $history->note ?: '-' }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-gray-900">€{{ number_format($history->balance_after, 2) }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                {{ $history->admin ? $history->admin->name : __('backend_buyers_credit_history_table_system') }}
-                            </td>
-                        </tr>
-                        @if ($history->attachments->isNotEmpty())
-                            <tr>
-                                <td colspan="6" class="bg-gray-50 px-6 py-4">
-                                    <div class="text-sm">
-                                        <span class="text-gray-600">{{ __('common_attachments') }}:</span>
-                                        @foreach ($history->attachments as $attachment)
-                                            <button
-                                                type="button"
-                                                wire:click="downloadAttachment({{ $attachment->id }})"
-                                                class="ml-2 text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                {{ $attachment->original_name }}
-                                            </button>
-                                        @endforeach
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif
-                    @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                                {{ __('backend_buyers_credit_history_table_no_records') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div>
-        {{ $creditHistory->withQueryString()->links() }}
-    </div>
+                <x-mary-button
+                    :label="__('backend_buyers_credit_history_filter_apply')"
+                    icon="o-funnel"
+                    type="submit"
+                    class="btn-primary"
+                    spinner="applyFilters"
+                />
+            </x-slot:actions>
+        </x-mary-form>
+    </x-mary-drawer>
 </div>

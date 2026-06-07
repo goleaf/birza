@@ -13,9 +13,13 @@ class Form extends Component
     public ?Attribute $attribute = null;
 
     public array $name = [];
+
     public string $type = 'select';
+
     public bool $is_filterable = false;
+
     public bool $is_required = false;
+
     public bool $is_active = true;
 
     public function mount(?Attribute $attribute = null): void
@@ -45,7 +49,7 @@ class Form extends Component
 
         $validated = $this->validate($rules);
 
-        $attribute = $this->attribute ?? new Attribute();
+        $attribute = $this->attribute ?? new Attribute;
 
         $attribute->type = $validated['type'];
         $attribute->is_active = (bool) ($validated['is_active'] ?? false);
@@ -71,9 +75,14 @@ class Form extends Component
     {
         return view('backend.attributes.form', [
             'attribute' => $this->attribute,
-            'types' => Attribute::TYPES,
+            'locales' => config('app.locales'),
+            'typeOptions' => collect(Attribute::TYPES)
+                ->map(fn (string $label, string $type) => [
+                    'id' => $type,
+                    'name' => __('backend_attributes_types_'.$type),
+                ])
+                ->values()
+                ->all(),
         ]);
     }
 }
-
-

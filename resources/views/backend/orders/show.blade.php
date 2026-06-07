@@ -1,143 +1,202 @@
-<div>
-<div class="max-w-7xl mx-auto">
-    <!-- Order Header -->
-    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">
-                    {{ __('orders_order_details') }} #{{ $order->id }}
-                </h1>
-                <p class="text-gray-600">
-                    {{ __('orders_placed_on') }}: {{ $order->created_at->format('Y-m-d H:i') }}
-                </p>
-            </div>
+@php
+    $statusClass = match ($order->payment_status) {
+        \App\Models\Order::STATUS['PENDING'] => 'badge-warning badge-outline',
+        \App\Models\Order::STATUS['PAID'] => 'badge-success badge-outline',
+        \App\Models\Order::STATUS['PROCESSING'] => 'badge-info badge-outline',
+        \App\Models\Order::STATUS['SHIPPED'] => 'badge-secondary badge-outline',
+        \App\Models\Order::STATUS['DELIVERED'] => 'badge-success',
+        \App\Models\Order::STATUS['CANCELLED'], \App\Models\Order::STATUS['FAILED'] => 'badge-error badge-outline',
+        \App\Models\Order::STATUS['REFUNDED'] => 'badge-neutral badge-outline',
+        default => 'badge-neutral badge-outline',
+    };
 
-        <!-- Order Status -->
-        <div class="mb-6">
-            <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                @if($order->payment_status === \App\Models\Order::STATUS['PENDING']) bg-yellow-100 text-yellow-800
-                @elseif($order->payment_status === \App\Models\Order::STATUS['PAID']) bg-green-100 text-green-800
-                @elseif($order->payment_status === \App\Models\Order::STATUS['CANCELLED']) bg-red-100 text-red-800
-                @else bg-gray-100 text-gray-800
-                @endif">
-                {{ __('orders_status_3') }}: {{ __('orders_status_3_' . strtolower($order->payment_status)) }}
-            </div>
+    $buyerDetails = $order->buyer
+        ? [
+            [
+                'icon' => 'o-building-office-2',
+                'value' => $order->buyer->company_name ?: __('common_not_specified'),
+                'label' => __('auth_company_name'),
+            ],
+            [
+                'icon' => 'o-user',
+                'value' => $order->buyer->name ?: __('common_not_specified'),
+                'label' => __('common_name'),
+            ],
+            [
+                'icon' => 'o-envelope',
+                'value' => $order->buyer->email ?: __('common_not_specified'),
+                'label' => __('common_email'),
+            ],
+            [
+                'icon' => 'o-phone',
+                'value' => $order->buyer->phone ?: __('common_not_specified'),
+                'label' => __('sellers_phone'),
+            ],
+        ]
+        : [[
+            'icon' => 'o-user',
+            'value' => __('orders_buyer_not_found'),
+            'label' => __('buyer_buyer_information'),
+        ]];
 
-        <!-- Customer Information -->
-        <div class="grid grid-cols-2 gap-6">
-            <div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-3">{{ __('buyer_buyer_information') }}</h2>
-                <div class="text-sm text-gray-600">
-                    @if($order->buyer)
-                        <p class="font-medium text-gray-900">{{ $order->buyer->name }}</p>
-                        <p>{{ $order->buyer->email }}</p>
-                        <p>{{ $order->buyer->company_name }}</p>
-                        <p>{{ $order->buyer->address }}</p>
-                        <p>{{ $order->buyer->phone }}</p>
-                        @if($order->buyer->trashed())
-                            <span class="text-red-500 text-xs mt-1">({{ __('common_deleted') }})</span>
-                        @endif
-                    @else
-                        <p class="text-gray-500">{{ __('common_not_specified') }}</p>
+    $paymentDetails = [
+        [
+            'icon' => 'o-credit-card',
+            'value' => $order->payment_method ?: __('common_not_specified'),
+            'label' => __('orders_payment_method'),
+        ],
+        [
+            'icon' => 'o-banknotes',
+            'value' => number_format((float) $order->order_total, 2) . ' €',
+            'label' => __('orders_order_total'),
+        ],
+        [
+            'icon' => 'o-calendar',
+            'value' => $order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified'),
+            'label' => __('orders_placed_on'),
+        ],
+    ];
+
+    $deletedProductCount = $order->orderItems->filter(fn ($item) => $item->product?->trashed())->count();
+@endphp
+
+<div class="space-y-6">
+    <x-mary-header
+        :title="__('orders_order_details') . ' #' . $order->id"
+        :subtitle="__('orders_placed_on') . ': ' . ($order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified'))"
+        separator
+        progress-indicator
+    >
+        <x-slot:actions>
+            <x-mary-badge
+                :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                class="{{ $statusClass }}"
+            />
+            <x-mary-button
+                :label="__('common_back')"
+                :link="route('backend.orders.index')"
+            />
+        </x-slot:actions>
+    </x-mary-header>
+
+    @if ($order->buyer?->trashed())
+        <x-mary-alert
+            :title="__('common_deleted')"
+            :description="__('backend_orders_show_deleted_buyer_alert')"
+            icon="o-exclamation-triangle"
+            class="alert-warning alert-soft"
+            shadow
+        />
+    @endif
+
+    @if ($deletedProductCount > 0)
+        <x-mary-alert
+            :title="__('common_deleted')"
+            :description="__('backend_orders_show_deleted_products_alert', ['count' => $deletedProductCount])"
+            icon="o-exclamation-triangle"
+            class="alert-info alert-outline"
+            shadow
+        />
+    @endif
+
+    <div class="grid gap-6 xl:grid-cols-2">
+        <x-mary-card :title="__('buyer_buyer_information')" shadow>
+            @foreach ($buyerDetails as $detail)
+                <x-mary-list-item
+                    :item="$detail"
+                    value="value"
+                    sub-value="label"
+                    no-hover
+                    :no-separator="$loop->last"
+                >
+                    <x-slot:avatar>
+                        <div class="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <x-mary-icon :name="$detail['icon']" class="h-5 w-5" />
+                        </div>
+                    </x-slot:avatar>
+                </x-mary-list-item>
+            @endforeach
+        </x-mary-card>
+
+        <x-mary-card :title="__('orders_payment_information')" shadow>
+            @foreach ($paymentDetails as $detail)
+                <x-mary-list-item
+                    :item="$detail"
+                    value="value"
+                    sub-value="label"
+                    no-hover
+                >
+                    <x-slot:avatar>
+                        <div class="flex h-11 w-11 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+                            <x-mary-icon :name="$detail['icon']" class="h-5 w-5" />
+                        </div>
+                    </x-slot:avatar>
+                </x-mary-list-item>
+            @endforeach
+
+            <x-mary-list-item
+                :item="['value' => __('orders_status_3_' . strtolower($order->payment_status)), 'label' => __('orders_status_3')]"
+                value="value"
+                sub-value="label"
+                no-hover
+                no-separator
+            >
+                <x-slot:avatar>
+                    <div class="flex h-11 w-11 items-center justify-center rounded-full bg-accent/10 text-accent">
+                        <x-mary-icon name="o-check-badge" class="h-5 w-5" />
+                    </div>
+                </x-slot:avatar>
+
+                <x-slot:actions>
+                    <x-mary-badge
+                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
+                        class="{{ $statusClass }}"
+                    />
+                </x-slot:actions>
+            </x-mary-list-item>
+        </x-mary-card>
+    </div>
+
+    <x-mary-card :title="__('orders_order_items')" shadow>
+        @forelse ($order->orderItems as $item)
+            <x-mary-list-item :item="$item" :no-separator="$loop->last">
+                <x-slot:avatar>
+                    <x-mary-avatar
+                        :image="$item->product?->product_image ? \Illuminate\Support\Facades\Storage::url('products/' . $item->product->product_image) : ''"
+                        :alt="$item->product?->name ?: __('common_not_specified')"
+                        :placeholder="strtoupper(substr((string) ($item->product?->name ?: __('common_not_specified')), 0, 2))"
+                        class="!w-11"
+                    />
+                </x-slot:avatar>
+
+                <x-slot:value>
+                    {{ $item->product?->name ?: __('common_not_specified') }}
+
+                    @if ($item->product?->trashed())
+                        <span class="text-xs text-error">({{ __('common_deleted') }})</span>
                     @endif
-                </div>
-            </div>
-            <div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-3">{{ __('orders_payment_information') }}</h2>
-                <div class="text-sm text-gray-600">
-                    <p><span class="font-medium">{{ __('orders_payment_method') }}:</span> {{ $order->payment_method ?: __('common_not_specified') }}</p>
-                    <p><span class="font-medium">{{ __('orders_status_3') }}:</span> {{ __('orders_status_3_' . strtolower($order->payment_status)) }}</p>
-                    <p><span class="font-medium">{{ __('orders_order_total') }}:</span> {{ number_format($order->order_total, 2) }} €</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                </x-slot:value>
 
-    <!-- Order Items -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">
-                {{ __('orders_order_items') }}
-            </h2>
-        </div>
-        
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('orders_product') }}
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('orders_seller') }}
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('orders_quantity') }}
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('orders_unit_price') }}
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('orders_table_amount') }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($order->orderItems as $item)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                @if($item->product)
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img src="{{ Storage::url('products/' . $item->product->product_image) }}" 
-                                             class="h-10 w-10 rounded-full object-cover"
-                                             alt="{{ $item->product->name }}">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ $item->product->name }}
-                                            @if($item->product->trashed())
-                                                <span class="text-red-500 text-xs">({{ __('common_deleted') }})</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="ml-4">
-                                        <div class="text-sm text-gray-500">{{ __('common_not_specified') }}</div>
-                                    </div>
-                                @endif
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @if($item->seller)
-                                <div>
-                                    <a href="{{ route('backend.sellers.show', $item->seller) }}" 
-                                       class="text-indigo-600 hover:text-indigo-900">
-                                        {{ $item->seller->company_name }}
-                                    </a>
-                                    @if($item->seller->trashed())
-                                        <span class="text-red-500 text-xs">({{ __('common_deleted') }})</span>
-                                    @endif
-                                </div>
-                            @else
-                                <div class="text-gray-500">{{ __('common_not_specified') }}</div>
-                            @endif
-                        </td>
-                        <td class="whitespace-nowrap px-6 py-4 text-sm font-bold text-gray-900">
-                            {{ number_format($order->order_total, 2) }} €
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-            <tfoot class="bg-gray-50">
-                <tr>
-                    <td colspan="4" class="px-6 py-4 text-right text-sm font-medium text-gray-900">
-                        {{ __('orders_order_total') }}:
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
-                        {{ number_format($order->order_total, 2) }} €
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-</x-backend.page>
+                <x-slot:sub-value>
+                    {{ $item->seller?->company_name ?: $item->seller?->name ?: __('common_not_specified') }}
+                    ·
+                    {{ __('orders_quantity') }}: {{ $item->quantity }}
+                    ·
+                    {{ __('orders_unit_price') }}: {{ number_format((float) $item->unit_price, 2) }} €
+                </x-slot:sub-value>
+
+                <x-slot:actions>
+                    <span class="whitespace-nowrap text-sm font-semibold">
+                        {{ number_format((float) $item->total_price, 2) }} €
+                    </span>
+                </x-slot:actions>
+            </x-mary-list-item>
+        @empty
+            <x-mary-alert
+                :title="__('orders_no_orders')"
+                icon="o-exclamation-triangle"
+                class="alert-info alert-soft"
+            />
+        @endforelse
+    </x-mary-card>
+</div>
