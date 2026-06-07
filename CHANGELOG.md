@@ -11,6 +11,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 ### Added
 
 - Added a complete root README with project overview, setup, roles, demo accounts, commands, testing, storage, localization, roadmap, known issues, and production notes.
+- Added a marketplace feature test suite covering authentication, cross-role access, catalog visibility, seller product ownership, cart, checkout, order status workflow, audit logging, image uploads, product questions, product reports, stock alerts, wishlists, seller discounts, promo codes, performance budgets, and multilingual behavior.
 
 - Added release management documentation, release-note rules, release checklist, semantic versioning guidance, and git tag instructions.
 - Added a reusable release notes template for future major project blocks.
