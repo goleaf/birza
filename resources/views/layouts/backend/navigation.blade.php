@@ -96,6 +96,12 @@
                         :link="route('backend.settings.index')"
                         icon="o-cog-6-tooth"
                     />
+
+                    <x-mary-menu-item
+                        :title="__('audit_logs.navigation')"
+                        :link="route('backend.audit.index')"
+                        icon="o-clipboard-document-check"
+                    />
                 </x-mary-menu>
             </div>
 
@@ -221,6 +227,12 @@
                     :title="__('navigation_global_settings')"
                     :link="route('backend.settings.index')"
                     icon="o-cog-6-tooth"
+                />
+
+                <x-mary-menu-item
+                    :title="__('audit_logs.navigation')"
+                    :link="route('backend.audit.index')"
+                    icon="o-clipboard-document-check"
                 />
             </x-mary-menu>
         </div>

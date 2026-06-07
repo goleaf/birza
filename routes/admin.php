@@ -7,6 +7,8 @@ use App\Livewire\Backend\Attributes\Form as AttributeForm;
 use App\Livewire\Backend\Attributes\Index as AttributesIndex;
 use App\Livewire\Backend\Attributes\Values\Form as AttributeValueForm;
 use App\Livewire\Backend\Attributes\Values\Index as AttributeValuesIndex;
+use App\Livewire\Backend\AuditLogs\Index as AuditLogsIndex;
+use App\Livewire\Backend\AuditLogs\Show as AuditLogsShow;
 use App\Livewire\Backend\Auth\Login as AdminLogin;
 use App\Livewire\Backend\Buyers\Credit as BuyerCredit;
 use App\Livewire\Backend\Buyers\CreditHistory as BuyerCreditHistory;
@@ -97,6 +99,10 @@ Route::prefix('admin')->group(function () {
 
         // Global Settings
         Route::livewire('settings', SettingsIndex::class)->name('backend.settings.index');
+
+        // Audit Trail
+        Route::livewire('audit', AuditLogsIndex::class)->name('backend.audit.index');
+        Route::livewire('audit/{auditLog}', AuditLogsShow::class)->name('backend.audit.show');
 
         // Orders
         Route::livewire('orders', OrdersIndex::class)->name('backend.orders.index');
