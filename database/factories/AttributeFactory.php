@@ -29,5 +29,39 @@ class AttributeFactory extends Factory
             'is_active' => true,
         ]);
     }
-}
 
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+
+    public function filterable(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_filterable' => true,
+        ]);
+    }
+
+    public function notFilterable(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_filterable' => false,
+        ]);
+    }
+
+    public function required(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_required' => true,
+        ]);
+    }
+
+    public function optional(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_required' => false,
+        ]);
+    }
+}

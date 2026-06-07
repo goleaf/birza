@@ -19,5 +19,23 @@ class AdminFactory extends Factory
             'is_active' => true,
         ];
     }
-}
 
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => true,
+        ]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+
+    public function blocked(): static
+    {
+        return $this->inactive();
+    }
+}

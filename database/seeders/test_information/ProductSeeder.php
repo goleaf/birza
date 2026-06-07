@@ -154,6 +154,10 @@ class ProductSeeder extends Seeder
             return;
         }
 
+        if ($product->images()->exists()) {
+            return;
+        }
+
         $temporaryPaths = [];
         $files = [];
         $library = collect();

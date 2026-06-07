@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Review;
 use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Schema;
@@ -41,7 +42,7 @@ class ProductFactory extends Factory
             'is_active' => true,
             'package_weight' => $this->faker->randomFloat(3, 0.1, 50),
             'price_per_liter' => $this->faker->randomFloat(2, 1, 100),
-            'stock' => $this->faker->numberBetween(0, 1000),
+            'stock' => $this->faker->numberBetween(10, 1000),
             'temperature_conditions_from' => $this->faker->numberBetween(-20, 20),
             'temperature_conditions_to' => $this->faker->numberBetween(0, 30),
             'use_until' => $this->faker->dateTimeBetween('now', '+1 year'),
@@ -63,6 +64,61 @@ class ProductFactory extends Factory
         ]);
     }
 
+    public function published(): static
+    {
+        return $this->active();
+    }
+
+    public function outOfStock(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'stock' => 0,
+        ]);
+    }
+
+    public function lowStock(int $quantity = 2): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'stock' => max(1, $quantity),
+        ]);
+    }
+
+    public function minimumPrice(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'price' => 0.01,
+            'min_order_price' => 0.01,
+            'min_order_count' => 1,
+        ]);
+    }
+
+    public function highPrice(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'price' => 99999.99,
+            'min_order_price' => 99999.99,
+        ]);
+    }
+
+    public function longTitle(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'name' => 'Very long demo marketplace product title for layout wrapping validation across catalog cards and product details',
+        ]);
+    }
+
+    public function longDescription(): static
+    {
+        $description = $this->faker->paragraphs(8, true);
+
+        return $this->state(fn (array $attributes): array => [
+            'description' => [
+                'en' => $description,
+                'lt' => $description,
+            ],
+        ]);
+    }
+
     public function withoutImages(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -74,7 +130,7 @@ class ProductFactory extends Factory
 
     public function withLegacyImages(): static
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn (array $attributes) => [
             'product_image' => 'products/placeholders/'.$this->faker->uuid().'.webp',
             'product_additional_image' => 'products/placeholders/'.$this->faker->uuid().'.webp',
         ]);
@@ -93,14 +149,43 @@ class ProductFactory extends Factory
                     ->create())
                 ->values();
 
+            $library = $images
+                ->map(fn (ProductImage $image): array => $image->toLibraryItem('medium'))
+                ->values()
+                ->all();
+
             $product->forceFill([
-                'product_image' => $images->first()?->variantPath('medium') ?? '',
+                'product_image' => $images->first()?->variantPath('medium') ?? $product->product_image,
                 'product_additional_image' => $images->get(1)?->variantPath('medium'),
-                'image_library' => $images
-                    ->map(fn (ProductImage $image): array => $image->toLibraryItem('medium'))
-                    ->values()
-                    ->all(),
+                'image_library' => $library,
             ])->save();
+        });
+    }
+
+    public function withGallery(int $count = 3): static
+    {
+        return $this->withImages(max(2, $count));
+    }
+
+    public function withReviews(int $count = 3): static
+    {
+        return $this->afterCreating(function (Product $product) use ($count): void {
+            if (! Schema::hasTable('reviews')) {
+                return;
+            }
+
+            Review::factory()
+                ->count($count)
+                ->approved()
+                ->for($product)
+                ->create();
+        });
+    }
+
+    public function softDeleted(): static
+    {
+        return $this->afterCreating(function (Product $product): void {
+            $product->delete();
         });
     }
 }

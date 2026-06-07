@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductAttributeValueFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductAttributeValue extends Model
 {
+    /** @use HasFactory<ProductAttributeValueFactory> */
+    use HasFactory;
+
     protected $table = 'product_attribute_value';
 
     protected $fillable = [

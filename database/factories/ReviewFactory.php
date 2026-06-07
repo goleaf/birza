@@ -28,4 +28,46 @@ class ReviewFactory extends Factory
             'is_approved' => $this->faker->boolean(),
         ];
     }
+
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_approved' => true,
+        ]);
+    }
+
+    public function rejected(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_approved' => false,
+        ]);
+    }
+
+    public function withoutComment(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'body' => null,
+        ]);
+    }
+
+    public function fiveStars(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'rating' => 5,
+        ]);
+    }
+
+    public function oneStar(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'rating' => 1,
+        ]);
+    }
+
+    public function softDeleted(): static
+    {
+        return $this->afterCreating(function (Review $review): void {
+            $review->delete();
+        });
+    }
 }

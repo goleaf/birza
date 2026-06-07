@@ -31,4 +31,35 @@ class AddressFactory extends Factory
             'is_default' => false,
         ];
     }
+
+    public function default(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_default' => true,
+        ]);
+    }
+
+    public function billing(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'label' => 'billing',
+        ]);
+    }
+
+    public function shipping(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'label' => 'shipping',
+        ]);
+    }
+
+    public function lithuanian(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'city' => $this->faker->randomElement(['Vilnius', 'Kaunas', 'Klaipeda', 'Siauliai']),
+            'postal_code' => 'LT-'.$this->faker->numberBetween(10000, 99999),
+            'country_code' => 'LT',
+            'phone' => '+3706'.$this->faker->numerify('#######'),
+        ]);
+    }
 }

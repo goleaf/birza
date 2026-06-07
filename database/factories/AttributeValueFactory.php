@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\AttributeValue;
 use App\Models\Attribute;
+use App\Models\AttributeValue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttributeValueFactory extends Factory
@@ -28,5 +28,11 @@ class AttributeValueFactory extends Factory
             'is_active' => true,
         ]);
     }
-}
 
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+}

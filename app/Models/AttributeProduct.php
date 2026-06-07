@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\AttributeProductFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AttributeProduct extends Model
 {
+    /** @use HasFactory<AttributeProductFactory> */
+    use HasFactory;
+
     protected $table = 'attribute_product';
 
     public $timestamps = false;

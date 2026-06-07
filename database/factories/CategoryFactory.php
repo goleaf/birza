@@ -24,5 +24,37 @@ class CategoryFactory extends Factory
             ],
         ];
     }
-}
 
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => true,
+        ]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+
+    public function topLevel(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'parent_category_id' => null,
+        ]);
+    }
+
+    public function subcategory(?Category $parent = null): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'parent_category_id' => $parent?->id ?? Category::factory(),
+        ]);
+    }
+
+    public function empty(): static
+    {
+        return $this;
+    }
+}

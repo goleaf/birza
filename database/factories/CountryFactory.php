@@ -16,7 +16,7 @@ class CountryFactory extends Factory
             'region' => $this->faker->randomElement(Country::getRegionValues()),
             'is_active' => true,
             'country_name' => [
-                'en' => $this->faker->country(),
+                'en' => $this->faker->unique()->country(),
                 'lt' => $this->faker->country(),
             ],
             'description' => [
@@ -30,6 +30,13 @@ class CountryFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_active' => true,
+        ]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
         ]);
     }
 }
