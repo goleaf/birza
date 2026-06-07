@@ -95,11 +95,11 @@
                             wire:model="unit"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('unit') ? 'border-red-500' : '' }}"
                         >
-                            @foreach (collect(\App\Models\Product::UNITS)->sort() as $unit)
+                            @foreach ($unitOptions as $unitOption)
                                 <option 
-                                    value="{{ $unit }}" 
+                                    value="{{ $unitOption['id'] }}" 
                                 >
-                                    {{ __('units_unit_' . strtolower($unit)) }}
+                                    {{ $unitOption['name'] }}
                                 </option>
                             @endforeach
                         </select>

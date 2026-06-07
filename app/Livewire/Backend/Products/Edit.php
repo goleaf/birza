@@ -103,7 +103,7 @@ class Edit extends Component
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
             'pack_type' => ['required', 'string', 'max:255'],
-            'unit' => ['required', 'string', Rule::in(Product::UNITS)],
+            'unit' => ['required', 'string', Rule::in(Product::unitValues())],
             'country_of_origin' => ['required', 'integer', Rule::exists('countries', 'id')],
             'is_organic' => ['boolean'],
             'is_active' => ['boolean'],
@@ -245,14 +245,7 @@ class Edit extends Component
             ])
                 ->values()
                 ->all(),
-            'unitOptions' => collect(Product::UNITS)
-                ->sort()
-                ->map(fn (string $unit) => [
-                    'id' => $unit,
-                    'name' => __('units_unit_'.strtolower($unit)),
-                ])
-                ->values()
-                ->all(),
+            'unitOptions' => Product::unitOptions(),
         ]);
     }
 }

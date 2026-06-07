@@ -102,6 +102,36 @@ class Product extends Model
         $this->attributeValues()->sync($attributeValueIds);
     }
 
+    /**
+     * @return list<string>
+     */
+    public static function unitValues(): array
+    {
+        return collect(self::UNITS)
+            ->sort()
+            ->values()
+            ->all();
+    }
+
+    public static function defaultUnit(): string
+    {
+        return self::unitValues()[0] ?? 'kg';
+    }
+
+    /**
+     * @return list<array{id: string, name: string}>
+     */
+    public static function unitOptions(): array
+    {
+        return collect(self::unitValues())
+            ->map(fn (string $unit): array => [
+                'id' => $unit,
+                'name' => __('units_unit_'.strtolower($unit)),
+            ])
+            ->values()
+            ->all();
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

@@ -2,14 +2,15 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Users\Seller;
-use App\Models\Country;
 use App\Models\AttributeValue;
+use App\Models\Category;
+use App\Models\Country;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
@@ -117,12 +118,12 @@ class ProductTest extends TestCase
 
         $attributes = $product->getCategoryAttributes();
 
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $attributes);
+        $this->assertInstanceOf(Collection::class, $attributes);
     }
 
     public function test_product_fillable_attributes(): void
     {
-        $product = new Product();
+        $product = new Product;
         $fillable = $product->getFillable();
 
         $this->assertContains('name', $fillable);
@@ -156,5 +157,16 @@ class ProductTest extends TestCase
         $this->assertEquals('English description', $product->getTranslation('description', 'en'));
         $this->assertEquals('Lietuviškas aprašymas', $product->getTranslation('description', 'lt'));
     }
-}
 
+    public function test_product_unit_options_are_sorted_and_translated(): void
+    {
+        $this->assertSame(['kg', 'l', 'pack', 'piece'], Product::unitValues());
+        $this->assertSame('kg', Product::defaultUnit());
+        $this->assertSame([
+            ['id' => 'kg', 'name' => __('units_unit_kg')],
+            ['id' => 'l', 'name' => __('units_unit_l')],
+            ['id' => 'pack', 'name' => __('units_unit_pack')],
+            ['id' => 'piece', 'name' => __('units_unit_piece')],
+        ], Product::unitOptions());
+    }
+}

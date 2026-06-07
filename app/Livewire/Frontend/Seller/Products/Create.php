@@ -61,7 +61,7 @@ class Create extends Component
         $this->selectedCategory = $categoryId->load('subcategories');
 
         $this->category_id = $this->selectedCategory->id;
-        $this->unit = collect(Product::UNITS)->sort()->first() ?? 'kg';
+        $this->unit = Product::defaultUnit();
 
         foreach (config('app.locales') as $locale) {
             $this->description[$locale] = '';
@@ -75,7 +75,7 @@ class Create extends Component
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
             'pack_type' => ['required', 'string', 'max:255'],
-            'unit' => ['required', Rule::in(Product::UNITS)],
+            'unit' => ['required', Rule::in(Product::unitValues())],
             'country_of_origin' => ['required', 'integer', Rule::exists('countries', 'id')],
             'is_organic' => ['required', Rule::in([0, 1, '0', '1'])],
             'is_active' => ['required', Rule::in([0, 1, '0', '1'])],
@@ -164,6 +164,7 @@ class Create extends Component
             'selectedCategory' => $this->selectedCategory,
             'countries' => $countries,
             'subcategories' => $this->selectedCategory->subcategories,
+            'unitOptions' => Product::unitOptions(),
         ]);
     }
 

@@ -75,6 +75,7 @@ class ProductControllerTest extends TestCase
             ->assertSee('new EasyMDE', false)
             ->assertSee('flatpickr.min.css')
             ->assertSee('flatpickr($refs.input', false)
+            ->assertSee(__('units_unit_kg'))
             ->assertSee(__('common_back_to_products'));
     }
 
@@ -85,6 +86,7 @@ class ProductControllerTest extends TestCase
             'seller_id' => $seller->id,
             'product_image' => 'primary.webp',
             'product_additional_image' => 'secondary.webp',
+            'unit' => 'pack',
         ]);
 
         $response = $this->actingAs($seller, 'seller')
@@ -97,7 +99,8 @@ class ProductControllerTest extends TestCase
             ->assertSee('PhotoSwipeLightbox', false)
             ->assertSee('pswp-gallery', false)
             ->assertSee('primary.webp')
-            ->assertSee('secondary.webp');
+            ->assertSee('secondary.webp')
+            ->assertSee(__('units_unit_pack'));
     }
 
     public function test_product_soft_delete_confirmation_uses_modal_flow(): void

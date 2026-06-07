@@ -67,7 +67,7 @@ class Edit extends Component
         $this->name = (string) ($product->name ?? '');
         $this->price = $product->price !== null ? (float) $product->price : null;
         $this->pack_type = (string) ($product->pack_type ?? '');
-        $this->unit = (string) ($product->unit ?? (collect(Product::UNITS)->sort()->first() ?? 'kg'));
+        $this->unit = (string) ($product->unit ?? Product::defaultUnit());
         $this->country_of_origin = $product->country_of_origin ? (int) $product->country_of_origin : null;
         $this->is_organic = (int) $product->is_organic;
         $this->is_active = (int) $product->is_active;
@@ -91,7 +91,7 @@ class Edit extends Component
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
             'pack_type' => ['required', 'string', 'max:255'],
-            'unit' => ['required', Rule::in(Product::UNITS)],
+            'unit' => ['required', Rule::in(Product::unitValues())],
             'country_of_origin' => ['required', 'integer', Rule::exists('countries', 'id')],
             'is_organic' => ['required', Rule::in([0, 1, '0', '1'])],
             'is_active' => ['required', Rule::in([0, 1, '0', '1'])],
@@ -174,6 +174,7 @@ class Edit extends Component
             'product' => $this->product,
             'productGalleryImages' => $this->product->imageGalleryUrls(),
             'countries' => $this->getEuropeanCountries(),
+            'unitOptions' => Product::unitOptions(),
         ]);
     }
 
