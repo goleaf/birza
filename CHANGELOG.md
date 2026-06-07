@@ -48,6 +48,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 
 ### Changed
 
+- Standardized role architecture around explicit public, buyer, seller, and admin areas; added the `MarketplaceRole` enum, `buyer.access`, `seller.access`, and `admin.access` middleware aliases, moved admin route names to `admin.*`, and documented gates versus policies.
 - Standardized order lifecycle labels, payment labels, product status labels, seller reset email copy, order status notifications, and order workflow messages on translatable dot-based keys.
 - Updated locale switching to replace invalid locales with the fallback locale and apply the selected locale to Laravel and Carbon on every web request.
 - Hardened foreign key delete behavior for buyer credit history, category trees, and review history, and added the missing credit-history admin constraint.
@@ -71,6 +72,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 
 ### Security
 
+- Hardened role-based Livewire and notification access by authorizing admin dashboard/profile screens, backend CRUD/detail components, order status changes, product question moderation, notification ownership, and notification mark-read actions on the backend.
 - Added append-only audit logging for sensitive product, order, account, credit, and settings actions with actor role, entity, reason, IP address, user agent, sanitized old/new values, and admin-only visibility.
 - Hardened buyer, seller, and admin route groups with area gates and verified-account checks; added backend policy checks to critical Livewire product/order/settings/credit actions; removed dangerous ownership, status, verification, balance, and order-total fields from normal mass assignment; and added admin audit records for destructive/status-sensitive admin actions.
 - Cart and checkout no longer trust frontend or session item prices during final order creation.

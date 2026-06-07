@@ -5,16 +5,22 @@ namespace App\Livewire\Backend\Buyers;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Users\Buyer;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.backend.app')]
 class Orders extends Component
 {
+    use AuthorizesRequests;
+
     public Buyer $buyer;
 
     public function mount(Buyer $buyer): void
     {
+        $this->authorize('view', $buyer);
+        $this->authorize('viewAny', Order::class);
+
         $this->buyer = $buyer;
     }
 

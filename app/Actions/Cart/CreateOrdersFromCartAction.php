@@ -3,12 +3,14 @@
 namespace App\Actions\Cart;
 
 use App\Actions\Notifications\SendMarketplaceNotificationAction;
+use App\Actions\Orders\CreateOrderEventAction;
 use App\Actions\Notifications\SendStockThresholdNotificationAction;
 use App\Actions\ProductBundles\CalculateBundlePriceAction;
 use App\Actions\ProductBundles\RecordProductBundleAuditLogsAction;
 use App\Actions\ProductBundles\ValidateBundleAvailabilityAction;
 use App\Actions\Promotions\RecordPromoCodeRedemptionAction;
 use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderEventType;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatusActorRole;
 use App\Models\Cart;
@@ -40,6 +42,7 @@ class CreateOrdersFromCartAction
         private readonly CalculateBundlePriceAction $calculateBundlePriceAction,
         private readonly ValidateBundleAvailabilityAction $validateBundleAvailabilityAction,
         private readonly RecordProductBundleAuditLogsAction $recordProductBundleAuditLogsAction,
+        private readonly CreateOrderEventAction $createOrderEventAction,
     ) {}
 
     /**
@@ -135,6 +138,19 @@ class CreateOrdersFromCartAction
                         'reason' => null,
                         'note' => __('orders.messages.created_successfully'),
                     ]);
+
+                    $this->createOrderEventAction->handle(
+                        order: $order,
+                        eventType: OrderEventType::Created,
+                        actor: $buyer,
+                        newStatus: OrderStatus::Pending,
+                        publicNote: __('orders.messages.created_successfully'),
+                        metadata: [
+                            'source' => 'checkout',
+                            'seller_id' => $sellerId,
+                        ],
+                        createdAt: $order->created_at,
+                    );
 
                     $sellerLines->each(function (array $preparedItem) use ($order, $pricing): void {
                         /** @var Product $product */

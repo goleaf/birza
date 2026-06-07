@@ -3,10 +3,20 @@
 namespace App\Policies;
 
 use App\Models\Notification;
+use App\Models\Users\Admin;
+use App\Models\Users\Buyer;
+use App\Models\Users\Seller;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class NotificationPolicy
 {
+    public function viewAny(Authenticatable $actor): bool
+    {
+        return $actor instanceof Admin
+            || $actor instanceof Buyer
+            || $actor instanceof Seller;
+    }
+
     public function view(Authenticatable $actor, Notification $notification): bool
     {
         return $this->ownsNotification($actor, $notification);

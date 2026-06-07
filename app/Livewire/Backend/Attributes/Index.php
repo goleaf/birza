@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Attributes;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Attribute;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -13,6 +14,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithMaryTableSorting;
     use InteractsWithWireUi;
     use WithPagination;
@@ -49,6 +51,8 @@ class Index extends Component
 
     public function mount(): void
     {
+        $this->authorize('viewAny', Attribute::class);
+
         $this->sortBy = $this->sortByFromString($this->sort, ['id', 'type', 'values_count'], 'id');
         $this->sort = $this->sortString($this->sortBy);
     }
@@ -60,7 +64,11 @@ class Index extends Component
 
     public function deleteAttribute(int $attributeId): void
     {
-        Attribute::query()->findOrFail($attributeId)->delete();
+        $attribute = Attribute::query()->findOrFail($attributeId);
+
+        $this->authorize('delete', $attribute);
+
+        $attribute->delete();
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }

@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Countries;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Country;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -13,6 +14,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithMaryTableSorting;
     use InteractsWithWireUi;
     use WithPagination;
@@ -43,6 +45,8 @@ class Index extends Component
 
     public function mount(): void
     {
+        $this->authorize('viewAny', Country::class);
+
         $this->sortBy = $this->sortByFromString($this->sort, ['alpha2', 'region'], 'alpha2', 'asc');
         $this->sort = $this->sortString($this->sortBy);
     }
@@ -54,7 +58,11 @@ class Index extends Component
 
     public function deleteCountry(int $countryId): void
     {
-        Country::query()->findOrFail($countryId)->delete();
+        $country = Country::query()->findOrFail($countryId);
+
+        $this->authorize('delete', $country);
+
+        $country->delete();
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }

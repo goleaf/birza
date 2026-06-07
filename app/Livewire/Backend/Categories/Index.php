@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Categories;
 
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -12,6 +13,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithWireUi;
     use WithPagination;
 
@@ -28,6 +30,11 @@ class Index extends Component
 
     public int $perPage = 15;
 
+    public function mount(): void
+    {
+        $this->authorize('viewAny', Category::class);
+    }
+
     public function confirmDeleteCategory(int $categoryId): void
     {
         $this->confirmDelete(method: 'deleteCategory', params: $categoryId);
@@ -35,7 +42,11 @@ class Index extends Component
 
     public function deleteCategory(int $categoryId): void
     {
-        Category::query()->findOrFail($categoryId)->delete();
+        $category = Category::query()->findOrFail($categoryId);
+
+        $this->authorize('delete', $category);
+
+        $category->delete();
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }

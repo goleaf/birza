@@ -9,6 +9,7 @@ use App\Enums\ProductQuestionStatus;
 use App\Models\ProductQuestion;
 use App\Models\Users\Admin;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -17,6 +18,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public string $status = 'pending';
@@ -26,6 +28,11 @@ class Index extends Component
      */
     public array $reasons = [];
 
+    public function mount(): void
+    {
+        $this->authorize('viewAny', ProductQuestion::class);
+    }
+
     public function updatedStatus(): void
     {
         $this->resetPage();
@@ -33,8 +40,12 @@ class Index extends Component
 
     public function approve(int $questionId, ApproveProductQuestionAction $action): void
     {
+        $question = $this->question($questionId);
+
+        $this->authorize('approve', $question);
+
         $action->handle(
-            productQuestion: $this->question($questionId),
+            productQuestion: $question,
             admin: $this->admin(),
             reason: $this->reasons[$questionId] ?? null,
         );
@@ -46,8 +57,12 @@ class Index extends Component
     {
         $this->validateReason($questionId);
 
+        $question = $this->question($questionId);
+
+        $this->authorize('reject', $question);
+
         $action->handle(
-            productQuestion: $this->question($questionId),
+            productQuestion: $question,
             admin: $this->admin(),
             reason: $this->reasons[$questionId] ?? null,
         );
@@ -59,8 +74,12 @@ class Index extends Component
     {
         $this->validateReason($questionId);
 
+        $question = $this->question($questionId);
+
+        $this->authorize('hide', $question);
+
         $action->handle(
-            productQuestion: $this->question($questionId),
+            productQuestion: $question,
             actor: $this->admin(),
             reason: $this->reasons[$questionId] ?? null,
             source: 'admin_product_questions',

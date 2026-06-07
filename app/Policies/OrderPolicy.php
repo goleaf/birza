@@ -70,4 +70,42 @@ class OrderPolicy
     {
         return $this->isAdmin($actor);
     }
+
+    public function viewTimeline(Authenticatable $actor, Order $order): bool
+    {
+        return $this->view($actor, $order);
+    }
+
+    public function viewInternalTimeline(Authenticatable $actor, Order $order): bool
+    {
+        return $this->isAdmin($actor);
+    }
+
+    public function addShippingUpdate(Authenticatable $actor, Order $order): bool
+    {
+        return $this->isSeller($actor)
+            && $this->isActive($actor)
+            && $order->isManageableBy($actor, OrderStatusActorRole::Seller)
+            && $order->canReceiveShippingUpdate();
+    }
+
+    public function addTrackingNumber(Authenticatable $actor, Order $order): bool
+    {
+        return $this->addShippingUpdate($actor, $order);
+    }
+
+    public function markAsShipped(Authenticatable $actor, Order $order): bool
+    {
+        return $this->changeStatus($actor, $order, OrderStatus::Shipped);
+    }
+
+    public function markAsDelivered(Authenticatable $actor, Order $order): bool
+    {
+        return $this->changeStatus($actor, $order, OrderStatus::Delivered);
+    }
+
+    public function addInternalNote(Authenticatable $actor, Order $order): bool
+    {
+        return $this->isAdmin($actor);
+    }
 }

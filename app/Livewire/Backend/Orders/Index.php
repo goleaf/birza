@@ -6,6 +6,7 @@ use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Models\Order;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -14,6 +15,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithMaryTableSorting;
     use WithPagination;
 
@@ -43,6 +45,8 @@ class Index extends Component
 
     public function mount(): void
     {
+        $this->authorize('viewAny', Order::class);
+
         $this->sortBy = $this->sortByFromString($this->sort, ['created_at', 'order_total', 'id'], 'created_at');
         $this->sort = $this->sortString($this->sortBy);
     }

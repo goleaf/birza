@@ -10,6 +10,7 @@ use App\Models\AuditLog;
 use App\Models\Order;
 use App\Support\LocaleFormatter;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -18,6 +19,7 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Show extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithWireUi;
 
     public Order $order;
@@ -30,6 +32,8 @@ class Show extends Component
 
     public function mount(Order $order): void
     {
+        $this->authorize('view', $order);
+
         $this->order = $order->load(['buyer', 'orderItems.product.primaryImage', 'orderItems.seller', 'orderBundles.items.product.primaryImage', 'statusHistory']);
         $this->nextStatus = $this->statusOptions()[0]['id'] ?? null;
     }
@@ -46,9 +50,13 @@ class Show extends Component
             'statusNote' => __('orders.status.note'),
         ]);
 
+        $nextStatus = OrderStatus::from($validated['nextStatus']);
+
+        $this->authorize('changeStatus', [$this->order, $nextStatus]);
+
         $changeOrderStatusAction->handle(
             order: $this->order,
-            nextStatus: OrderStatus::from($validated['nextStatus']),
+            nextStatus: $nextStatus,
             actor: Auth::guard('admin')->user(),
             reason: $validated['statusReason'],
             note: $validated['statusNote'] ?? null,

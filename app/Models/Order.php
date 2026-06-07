@@ -35,6 +35,11 @@ class Order extends Model
         'shipping_address_snapshot',
         'billing_address_snapshot',
         'delivery_method',
+        'tracking_number',
+        'carrier_name',
+        'estimated_delivery_date',
+        'shipped_at',
+        'delivered_at',
     ];
 
     /**
@@ -51,6 +56,9 @@ class Order extends Model
             'buyer_id' => 'integer',
             'payment_status' => OrderPaymentStatus::class,
             'status' => OrderStatus::class,
+            'estimated_delivery_date' => 'date',
+            'shipped_at' => 'datetime',
+            'delivered_at' => 'datetime',
         ];
     }
 
@@ -127,6 +135,16 @@ class Order extends Model
     public function statusHistory(): HasMany
     {
         return $this->hasMany(OrderStatusHistory::class)->latest('created_at');
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(OrderEvent::class)->oldest('created_at');
+    }
+
+    public function publicEvents(): HasMany
+    {
+        return $this->events()->publicVisible();
     }
 
     public function conversations(): HasMany
@@ -223,7 +241,7 @@ class Order extends Model
 
     public function scopeWithFullDetails(Builder $query): Builder
     {
-        return $query->with(['buyer', 'orderBundles.items.product', 'orderItems.product', 'orderItems.seller', 'statusHistory']);
+        return $query->with(['buyer', 'orderBundles.items.product', 'orderItems.product', 'orderItems.seller', 'statusHistory', 'events']);
     }
 
     public function lifecycleStatus(): OrderStatus
@@ -264,6 +282,24 @@ class Order extends Model
     public function canBeCancelled(): bool
     {
         return $this->lifecycleStatus()->canTransitionTo(OrderStatus::Cancelled);
+    }
+
+    public function hasTrackingDetails(): bool
+    {
+        return filled($this->tracking_number)
+            || filled($this->carrier_name)
+            || $this->estimated_delivery_date !== null
+            || $this->shipped_at !== null
+            || $this->delivered_at !== null;
+    }
+
+    public function canReceiveShippingUpdate(): bool
+    {
+        return in_array($this->lifecycleStatus(), [
+            OrderStatus::Accepted,
+            OrderStatus::Processing,
+            OrderStatus::Shipped,
+        ], true);
     }
 
     /**

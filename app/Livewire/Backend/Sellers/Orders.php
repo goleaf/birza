@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Sellers;
 
 use App\Models\Order;
 use App\Models\Users\Seller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Orders extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public Seller $seller;
@@ -20,6 +22,9 @@ class Orders extends Component
     public function mount($seller): void
     {
         $this->seller = $seller instanceof Seller ? $seller : Seller::findOrFail($seller);
+
+        $this->authorize('view', $this->seller);
+        $this->authorize('viewAny', Order::class);
     }
 
     public function render()

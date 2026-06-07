@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Notifications;
 use App\Actions\Notifications\MarkAllNotificationsReadAction;
 use App\Enums\MarketplaceRole;
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class MarkAllNotificationsReadController extends Controller
 {
@@ -19,6 +21,8 @@ class MarkAllNotificationsReadController extends Controller
         $notifiable = Auth::guard($guard)->user();
 
         abort_if(! $notifiable, 403);
+
+        Gate::forUser($notifiable)->authorize('viewAny', Notification::class);
 
         $markAllNotificationsRead->handle($notifiable);
 

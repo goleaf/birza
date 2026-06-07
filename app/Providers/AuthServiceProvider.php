@@ -140,6 +140,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manageSystemSettings', fn (Authenticatable $actor): bool => $actor instanceof Admin
             && (bool) $actor->is_active);
 
+        Gate::define('viewAdminDashboard', fn (Authenticatable $actor): bool => $actor instanceof Admin
+            && (bool) $actor->is_active);
+
         Gate::define('viewAnalytics', fn (Authenticatable $actor): bool => $actor instanceof Admin
             && (bool) $actor->is_active);
 

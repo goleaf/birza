@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Countries;
 
 use App\Models\Country;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -10,6 +11,8 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Form extends Component
 {
+    use AuthorizesRequests;
+
     public Country $country;
 
     public string $alpha2 = '';
@@ -32,6 +35,8 @@ class Form extends Component
 
     public function mount(?Country $country = null): void
     {
+        $this->authorize($country instanceof Country ? 'update' : 'create', $country ?? Country::class);
+
         $this->country = $country ?? new Country;
         $this->locales = $this->configuredLocales();
 
@@ -47,6 +52,8 @@ class Form extends Component
 
     public function save(): void
     {
+        $this->authorize($this->country->exists ? 'update' : 'create', $this->country->exists ? $this->country : Country::class);
+
         $countryId = $this->country->exists ? $this->country->id : null;
 
         $rules = [

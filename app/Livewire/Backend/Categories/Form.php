@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Categories;
 
 use App\Models\Attribute;
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -11,6 +12,8 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Form extends Component
 {
+    use AuthorizesRequests;
+
     public ?Category $category = null;
 
     public ?int $parent_category_id = null;
@@ -21,6 +24,8 @@ class Form extends Component
 
     public function mount(?Category $category = null): void
     {
+        $this->authorize($category instanceof Category ? 'update' : 'create', $category ?? Category::class);
+
         $this->category = $category;
 
         $this->parent_category_id = $category?->parent_category_id;
@@ -36,6 +41,8 @@ class Form extends Component
 
     public function save(): void
     {
+        $this->authorize($this->category instanceof Category ? 'update' : 'create', $this->category ?? Category::class);
+
         $rules = [
             'parent_category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')],
             'selectedAttributes' => ['nullable', 'array'],

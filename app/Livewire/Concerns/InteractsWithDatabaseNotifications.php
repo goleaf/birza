@@ -39,12 +39,20 @@ trait InteractsWithDatabaseNotifications
 
     public function markAllAsRead(): void
     {
-        app(MarkAllNotificationsReadAction::class)->handle($this->notifiable());
+        $notifiable = $this->notifiable();
+
+        Gate::forUser($notifiable)->authorize('viewAny', Notification::class);
+
+        app(MarkAllNotificationsReadAction::class)->handle($notifiable);
     }
 
     protected function notificationRows(): LengthAwarePaginator
     {
-        $query = $this->notifiable()
+        $notifiable = $this->notifiable();
+
+        Gate::forUser($notifiable)->authorize('viewAny', Notification::class);
+
+        $query = $notifiable
             ->notifications()
             ->select(['id', 'type', 'notifiable_type', 'notifiable_id', 'data', 'read_at', 'created_at'])
             ->latest();
@@ -62,6 +70,10 @@ trait InteractsWithDatabaseNotifications
 
     protected function unreadNotificationCount(): int
     {
-        return $this->notifiable()->unreadNotifications()->count();
+        $notifiable = $this->notifiable();
+
+        Gate::forUser($notifiable)->authorize('viewAny', Notification::class);
+
+        return $notifiable->unreadNotifications()->count();
     }
 }

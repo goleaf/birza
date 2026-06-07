@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Users\Admin;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -16,6 +17,11 @@ use Livewire\Component;
 #[Layout('layouts.backend.app')]
 class Dashboard extends Component
 {
+    public function mount(): void
+    {
+        Gate::authorize('viewAdminDashboard');
+    }
+
     public function render(): View
     {
         /** @var Admin|null $admin */

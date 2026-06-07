@@ -5,16 +5,21 @@ namespace App\Livewire\Backend\Products;
 use App\Models\AuditLog;
 use App\Models\Product;
 use App\Support\SafeMarkdown;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.backend.app')]
 class Show extends Component
 {
+    use AuthorizesRequests;
+
     public Product $product;
 
     public function mount(Product $product): void
     {
+        $this->authorize('view', $product);
+
         $this->product = $product->load(['category', 'seller', 'attributeValues.attribute', 'images']);
     }
 

@@ -40,7 +40,7 @@ Cannot:
 - access buyer, seller, or admin dashboards
 - checkout as an authenticated buyer
 - manage products or orders
-- view private notifications
+- view private conversations or notifications
 
 ## Buyer
 
@@ -63,6 +63,8 @@ Can:
 - apply valid promo codes
 - view own orders and order details
 - change allowed buyer-side order statuses
+- start private conversations from active products and own orders
+- send and read messages in own buyer-seller conversations
 - manage own wishlists and wishlist items
 - create and cancel own stock alerts
 - ask product questions
@@ -72,7 +74,7 @@ Can:
 Cannot:
 
 - manage seller products, discounts, promo codes, or seller transactions
-- see another buyer's orders, carts, wishlists, or notifications
+- see another buyer's orders, carts, wishlists, conversations, or notifications
 - answer seller product questions
 - access admin pages
 
@@ -98,12 +100,16 @@ Can:
 - answer or hide questions for own products
 - view own seller orders and order details
 - change allowed seller-side order statuses
+- reply to buyer conversations for own products and seller order items
+- start/open order conversations only for orders containing own seller items
 - view own transactions
 - view and mark own notifications
 
 Cannot:
 
 - manage another seller's products, discounts, promo codes, or order items
+- view another seller's conversations
+- message random buyers without an existing conversation or seller-owned order
 - view reporter private identity for product reports
 - use buyer cart/checkout as the seller guard
 - access admin pages
@@ -126,6 +132,7 @@ Can:
 - manage buyers, sellers, buyer credit, and settings
 - view and manage orders according to policies
 - moderate product reports and product questions
+- view private buyer-seller messages only through the audited moderation pages when policy allows it
 - view admin notifications
 - view audit logs
 - perform dangerous/status-sensitive actions with audit reasons where implemented

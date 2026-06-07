@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Attributes\Values;
 
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Attribute;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -12,6 +13,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithWireUi;
     use WithPagination;
 
@@ -29,6 +31,8 @@ class Index extends Component
 
     public function mount(Attribute $attribute): void
     {
+        $this->authorize('view', $attribute);
+
         $this->attribute = $attribute;
     }
 
@@ -40,6 +44,9 @@ class Index extends Component
     public function deleteValue(int $valueId): void
     {
         $value = $this->attribute->values()->findOrFail($valueId);
+
+        $this->authorize('delete', $value);
+
         $value->delete();
 
         $this->notifySuccess(__('backend_common_delete_success'));

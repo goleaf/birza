@@ -5,16 +5,21 @@ namespace App\Livewire\Backend\Sellers;
 use App\Models\AuditLog;
 use App\Models\Users\Seller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.backend.app')]
 class Show extends Component
 {
+    use AuthorizesRequests;
+
     public Seller $seller;
 
     public function mount(Seller $seller): void
     {
+        $this->authorize('view', $seller);
+
         $this->seller = $seller;
     }
 

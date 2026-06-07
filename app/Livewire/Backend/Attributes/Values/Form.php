@@ -4,12 +4,15 @@ namespace App\Livewire\Backend\Attributes\Values;
 
 use App\Models\Attribute;
 use App\Models\AttributeValue;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.backend.app')]
 class Form extends Component
 {
+    use AuthorizesRequests;
+
     public Attribute $attribute;
 
     public ?AttributeValue $attributeValue = null;
@@ -20,6 +23,9 @@ class Form extends Component
 
     public function mount(Attribute $attribute, ?AttributeValue $value = null): void
     {
+        $this->authorize('view', $attribute);
+        $this->authorize($value instanceof AttributeValue ? 'update' : 'create', $value ?? AttributeValue::class);
+
         $this->attribute = $attribute;
         $this->attributeValue = $value;
 
@@ -32,6 +38,9 @@ class Form extends Component
 
     public function save(): void
     {
+        $this->authorize('view', $this->attribute);
+        $this->authorize($this->attributeValue instanceof AttributeValue ? 'update' : 'create', $this->attributeValue ?? AttributeValue::class);
+
         $rules = [
             'translations' => ['required', 'array'],
             'translations.*' => ['required', 'string', 'max:255'],

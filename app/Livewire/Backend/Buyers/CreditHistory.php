@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Buyers;
 use App\Models\BuyerCreditHistory;
 use App\Models\CreditAttachment;
 use App\Models\Users\Buyer;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 #[Layout('layouts.backend.app')]
 class CreditHistory extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public Buyer $buyer;
@@ -33,6 +35,9 @@ class CreditHistory extends Component
 
     public function mount(Buyer $buyer): void
     {
+        $this->authorize('view', $buyer);
+        $this->authorize('viewAny', BuyerCreditHistory::class);
+
         $this->buyer = $buyer;
     }
 
@@ -57,6 +62,8 @@ class CreditHistory extends Component
             })
             ->firstOrFail();
 
+        $this->authorize('view', $attachment);
+
         if (! Storage::disk('public')->exists($attachment->file_path)) {
             abort(404);
         }
@@ -69,6 +76,9 @@ class CreditHistory extends Component
 
     public function exportCsv(): StreamedResponse
     {
+        $this->authorize('view', $this->buyer);
+        $this->authorize('viewAny', BuyerCreditHistory::class);
+
         $buyerId = $this->buyer->id;
 
         $type = $this->typeFilter;

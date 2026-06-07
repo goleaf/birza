@@ -175,7 +175,7 @@ These accounts are seeded for local development only.
 
 ## Roles And Access
 
-Roles are implemented through separate guards and user tables rather than a shared roles table.
+Roles are implemented through separate guards and user tables rather than a shared roles table. `App\Enums\MarketplaceRole` is the shared source for role names, guard names, dashboard routes, login routes, and notification-capable guards.
 
 | Role | Route area | Dashboard | Summary |
 | --- | --- | --- | --- |
@@ -183,6 +183,20 @@ Roles are implemented through separate guards and user tables rather than a shar
 | Buyer | `/buyer` | `/buyer/dashboard` | Can manage own profile, cart, checkout, orders, product/order conversations with sellers, wishlists, stock alerts, notifications, and product interactions. Cannot manage seller products or admin data. |
 | Seller | `/seller` | `/seller/dashboard` | Can manage own profile, products, discounts, promo codes, product questions, product/order conversations with buyers, orders, transactions, and notifications. Cannot manage another seller's products or access admin tools. |
 | Admin | `/admin` | `/admin/dashboard` | Can manage platform data according to policies, gates, middleware, and audit rules. Message moderation is read-only and audited. Dangerous actions should be audited. |
+
+Buyer and seller abilities can belong to the same base `users` record when both profile rows exist; the demo `buyer-seller@example.com` account covers this path. Admin accounts stay in the `admin` guard and admin route names use the `admin.*` prefix.
+
+Private route groups must use the role guard, account-state middleware, and the role access middleware alias:
+
+| Area | Route file | Middleware contract |
+| --- | --- | --- |
+| Buyer | `routes/buyer.php` | `auth:buyer`, `active.account:buyer`, `verified.account:buyer`, `buyer.access` |
+| Seller | `routes/seller.php` | `auth:seller`, `active.account:seller`, `verified.account:seller`, `seller.access` |
+| Admin | `routes/admin.php` | `auth:admin`, `active.account:admin`, `admin.access` |
+
+Use gates only for global abilities such as `accessBuyerCabinet`, `accessSellerCabinet`, `accessAdminPanel`, `viewAdminDashboard`, `manageSystemSettings`, and `viewAnalytics`. Use policies for model-specific ownership and dangerous actions. Livewire private screens must authorize on `mount()` and authorize again before mutating, deleting, uploading, changing status, exporting, or marking notifications.
+
+To add a role-protected page: put the route in the matching route file with prefix/name group intact, mount it with the matching buyer/seller/admin layout, add or reuse the relevant policy/gate, hide navigation through backend authorization checks, and add a feature or Livewire test for both allowed and forbidden access.
 
 See [docs/roles.md](docs/roles.md) and [docs/security.md](docs/security.md).
 
