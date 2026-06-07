@@ -84,6 +84,7 @@ None yet.
 | 260607-rel | Standardize Eloquent relationship models and document the canonical relationship map | 2026-06-07 | this commit | [260607-rel-standardize-eloquent-relationships](./quick/260607-rel-standardize-eloquent-relationships/) |
 | 260607-dba | Analyze current database structure and document gaps | 2026-06-07 | this commit | [260607-dba-analyze-current-database-structure](./quick/260607-dba-analyze-current-database-structure/) |
 | 260607-fks | Harden missing and dangerous foreign key constraints | 2026-06-07 | this commit | [260607-fks-harden-foreign-key-constraints](./quick/260607-fks-harden-foreign-key-constraints/) |
+| 260607-idx | Add query-driven indexes for common filters and relationship loads | 2026-06-07 | this commit | [260607-idx-add-query-driven-indexes](./quick/260607-idx-add-query-driven-indexes/) |
 
 ## Session
 

@@ -15,6 +15,8 @@ Release notes live in [docs/releases](docs/releases/README.md).
 - Added release management documentation, release-note rules, release checklist, semantic versioning guidance, and git tag instructions.
 - Added a reusable release notes template for future major project blocks.
 - Added an initial `0.1.0` baseline release note for the current active-development state.
+- Added query-driven composite indexes for common order, seller, buyer, category, country, transaction, credit-history, and attribute-value filters.
+- Added a query index audit documenting the real query evidence behind each new index and fields intentionally left unindexed.
 - Added a foreign key constraint audit documenting cascade, restrict, and `nullOnDelete()` decisions across relationship fields.
 - Added a database structure audit covering the live SQLite schema, migrations, models, relationships, factories, seeders, missing domain tables, missing fields, missing indexes, missing foreign keys, and pre-feature hardening priorities.
 
