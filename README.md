@@ -1,65 +1,77 @@
 # Birza
 
-Birza is a Laravel marketplace platform for food and grocery trading. It has separate public, buyer, seller, and admin surfaces: buyers browse localized products, manage a cart, and place orders; sellers manage their product catalog and order work; admins manage marketplace data such as buyers, sellers, products, categories, attributes, countries, orders, buyer credit, and global settings.
+Birza is a Laravel marketplace platform with public, buyer, seller, and admin areas. It is a server-rendered Laravel application built with Blade, Livewire, Eloquent, Vite, Tailwind CSS, and separate authentication guards for admins, buyers, and sellers.
 
-The project is a server-rendered Laravel application. It uses Blade and Livewire for interactive screens, Eloquent models for data access, Vite and Tailwind for frontend assets, and separate authentication guards for buyers, sellers, and admins.
+The project currently supports localized product browsing, seller-managed products, database-backed carts, checkout, orders, notifications, product images, reviews, wishlists, product questions, product reports, seller discounts, promo codes, audit logs, and custom admin management screens. Payment provider integration, production deployment automation, full screenshots, and marketplace messaging are still planned work.
 
-## Main Features
+## Main Areas
 
-Current features verified from the repository:
+- Public marketplace: home page, language switching, public product catalog, product detail pages, comparison, product questions, and product reports.
+- Buyer area: buyer auth, profile, dashboard, cart, checkout, orders, wishlists, stock alerts, and notifications.
+- Seller area: seller auth, profile, dashboard, products, discounts, promo codes, product questions, orders, transactions, and notifications.
+- Admin area: admin login, dashboard, products, categories, countries, attributes, buyers, sellers, orders, product questions, product reports, settings, notifications, and audit logs.
 
-- Public home page and language switcher.
-- Buyer authentication, registration, email verification, password reset, dashboard, profile, product catalog, product details, cart, checkout, and order pages.
-- Seller authentication, registration, email verification, password reset, dashboard, profile, product management, order pages, and transaction pages.
-- Admin login, dashboard, profile, catalog management, product management, category management, attribute/value management, country management, buyer management, seller management, buyer credit management, order management, and global settings.
-- Product catalog with categories, subcategories, attributes, countries of origin, price/stock/organic filters, pagination, and a small product search API.
-- Cart and checkout using LaraCart session state, stock checks, VAT/portal fee calculation, order and order item creation, and stock decrementing.
-- Order dashboards and order lifecycle UI. Order status enum/history work exists in the current development tree, but should still be verified through migrations and tests before treating it as production-final.
-- Product images through legacy product image fields, product image records where available, public storage URLs, generated seed images, and a fallback product placeholder.
-- Multilingual interface with Lithuanian and English JSON translations.
-- Role-based access through separate guards and user tables for buyers, sellers, and admins.
-- Factories, seeders, and PHPUnit tests for core marketplace areas.
+## Current Features
 
-Not currently verified as complete production features:
+- Product catalog with categories, attributes, countries of origin, price/stock/organic filters, pagination, and a throttled product search API.
+- Seller product management with ownership checks, moderation notifications, image uploads, and low-stock notifications.
+- Database-backed carts and cart items, including guest cart support, buyer cart merging, backend price recalculation, seller discounts, promo codes, order snapshots, and stock decrementing.
+- Orders, order items, order bundles, order status history, buyer/seller/admin order views, and translatable order/payment status labels.
+- Marketplace notifications through Laravel database notifications and queued mail-capable notification classes.
+- Product wishlists, product stock alerts, product reports, product questions and answers, reviews, discounts, promo codes, bundles, and audit logs.
+- Multilingual UI for Lithuanian and English through JSON translation files and translated database content where models support it.
+- PHPUnit feature/unit coverage for role access, auth, catalog, cart, checkout, orders, images, notifications, translations, factories, seeders, security, and performance query budgets.
+
+## Planned Or Incomplete
 
 - Real payment gateway integration. Checkout currently simulates successful payment.
-- Favorites and marketplace messaging.
-- Full production deployment automation.
-- Complete screenshot documentation.
+- Marketplace messaging and disputes.
+- Complete production deployment automation.
+- Full screenshot set for every major page.
+- Final UI consolidation. maryUI is active, while WireUI, daisyUI, and Flowbite remain during migration.
+- Final confirmation of all release tags and GitHub releases. No local git tags or GitHub releases were found during the 2026-06-07 documentation audit.
 
 ## Technology Stack
 
-- PHP `^8.3`; local inspection used PHP `8.5.5` through Laravel Herd.
+Backend:
+
+- PHP `^8.3`; local audit used PHP `8.5.5`.
 - Laravel `12.61.1`.
 - Livewire `4.3.1`.
-- Laravel Sanctum `4.x`.
-- Blade templates, no React/Vue/Inertia app.
-- Eloquent models and factories.
-- SQLite for the current local database; MySQL is also configured in `.env.example`.
-- Vite `8.x`.
-- Tailwind CSS `3.x`.
-- maryUI `2.x` with `x-mary-*` prefix.
-- WireUI, daisyUI, and Flowbite are still installed while the UI stack is being modernized.
-- LaraCart for cart session handling.
-- Intervention Image for generated and processed images.
-- PHPUnit `11.x`.
-- Laravel Boost / MCP for schema inspection and project-aware documentation lookup.
+- Laravel Sanctum `4.3.2`.
+- Laravel Boost `2.4.9` and Laravel MCP `0.7.2`.
+- Eloquent models, model factories, policies, actions, services, observers, and notifications.
+- SQLite for local development; MySQL/PostgreSQL/SQL Server connection stubs remain available through Laravel config.
+
+Frontend:
+
+- Blade templates only. No React, Vue, Inertia, or SPA frontend.
+- Vite `8.0.16`.
+- Tailwind CSS `3.4.19`.
+- Alpine.js `3.15.3`.
+- maryUI `2.8.3` with `x-mary-*` prefix.
+- WireUI `2.6.0`, daisyUI `4.12.24`, and Flowbite `2.5.2` are still installed during the UI modernization period.
+
+Development and testing:
+
+- PHPUnit `11.5.55`.
+- Laravel Pint `1.29.1`.
+- Intervention Image `2.7.2`.
+- Kettasoft Filterable `2.15.0`.
+- Laravel Debugbar `3.16.5`, local opt-in only.
 
 ## System Requirements
 
 - PHP 8.3 or newer.
 - Composer 2.
-- Node.js and npm. Local inspection used Node `22.22.2` and npm `10.9.7`.
-- SQLite with `pdo_sqlite`, or MySQL with `pdo_mysql`.
-- PHP extensions commonly required by Laravel, file uploads, and image handling, including `openssl`, `mbstring`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`, and GD or Imagick for Intervention Image.
-- A local web environment. This repository is configured for Laravel Herd at `https://birza.test`.
-- Mailpit or another SMTP sink if you want to test email flows locally.
-
-No Docker Compose, Sail scaffold, or Valet-specific project files are present. `laravel/sail` is installed as a dev dependency, but the repository does not currently include Sail runtime files.
+- Node.js and npm. Node 22 and npm 10 were used during the audit; Node 20+ is a reasonable local recommendation.
+- SQLite with `pdo_sqlite`, or another configured Laravel-supported database.
+- Required PHP extensions normally needed by Laravel and this app: `openssl`, `mbstring`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`, `pdo`, `pdo_sqlite` or `pdo_mysql`, and GD or Imagick for image work.
+- Git.
+- Writable `storage/` and `bootstrap/cache/`.
+- Laravel Herd is the preferred local environment for this repo at `https://birza.test`. `php artisan serve` also works for simple local serving.
 
 ## Installation
-
-Clone the repository and install dependencies:
 
 ```bash
 git clone <repository-url> birza
@@ -68,91 +80,55 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
-```
-
-For the simplest local SQLite setup, edit `.env`:
-
-```env
-APP_NAME=Birza
-APP_ENV=local
-APP_DEBUG=true
-APP_URL=https://birza.test
-
-DB_CONNECTION=sqlite
-DB_DATABASE=birza.sqlite
-```
-
-Create the SQLite database file if it does not exist:
-
-```bash
 touch database/birza.sqlite
-```
-
-Run migrations, seeders, and storage linking:
-
-```bash
-php artisan migrate --seed
+php artisan migrate
+php artisan db:seed
 php artisan storage:link
-```
-
-Start frontend assets in development:
-
-```bash
 npm run dev
 ```
 
-With Laravel Herd, the app is available at:
+With Herd, open:
 
 ```text
 https://birza.test
 ```
 
-If you are not using Herd, you can run Laravel's built-in server:
+Without Herd, run:
 
 ```bash
 php artisan serve
 ```
 
-For non-HTTPS local serving, also set:
+For a complete local reset, use:
 
-```env
-APP_URL=http://127.0.0.1:8000
-SESSION_SECURE_COOKIE=false
+```bash
+php artisan migrate:fresh --seed
 ```
 
-## Environment Variables
+`migrate:fresh --seed` deletes local data. Do not use it in production.
 
-Important variables from `.env.example` and current configuration:
+See [docs/installation.md](docs/installation.md) for zero-install details and troubleshooting.
 
-| Variable | Local value | Notes |
+## Environment Setup
+
+Important local defaults from `.env.example`:
+
+| Variable | Default | Notes |
 | --- | --- | --- |
-| `APP_NAME` | `Birza` recommended | Application name used by Laravel and mail. |
+| `APP_NAME` | `Birza` | App and mail name. |
 | `APP_ENV` | `local` | Use `production` in production. |
-| `APP_KEY` | generated | Create with `php artisan key:generate`; never commit real keys. |
-| `APP_DEBUG` | `true` local, `false` production | Must be `false` in production. |
-| `APP_URL` | `https://birza.test` | Herd URL for this project. |
-| `MAINTENANCE_BYPASS_SECRET` | empty local | Required before using `php artisan system close`. |
-| `CORS_ALLOWED_ORIGINS` | `${APP_URL}` | Comma-separated allowed origins. |
-| `DB_CONNECTION` | `sqlite` local | `.env.example` currently shows MySQL; local repo uses SQLite. |
-| `DB_DATABASE` | `birza.sqlite` for SQLite | Maps to `database/birza.sqlite`. |
-| `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD` | MySQL only | Required if using MySQL instead of SQLite. |
-| `CACHE_DRIVER` | `file` | File cache is the example default. |
-| `FILESYSTEM_DISK` | `local` | Public product assets still use the configured `public` disk where code asks for it. |
-| `QUEUE_CONNECTION` | `sync` | No separate worker is needed for the default local setup. |
-| `SESSION_DRIVER` | `file` | Tests use array sessions from `phpunit.xml`. |
-| `SESSION_ENCRYPT` | `true` | Encrypts session payloads. |
-| `SESSION_SECURE_COOKIE` | `true` for HTTPS | Set `false` only for plain HTTP local development. |
-| `MAIL_MAILER` | `smtp` | Local example targets Mailpit. |
-| `MAIL_HOST` | `mailpit` | Change for your local or production SMTP server. |
-| `MAIL_PORT` | `1025` | Mailpit default. |
-| `MAIL_FROM_ADDRESS` | `hello@example.com` | Replace for production. |
-| `BROADCAST_DRIVER` | `log` | Pusher keys are present but not required for the current local setup. |
-| `PUSHER_*` and `VITE_PUSHER_*` | empty/example | Only needed if realtime broadcasting is enabled. |
-| `AWS_*` | empty/example | Only needed for S3. |
-| `DEBUGBAR_ENABLED` | `false` recommended | Supported by `config/debugbar.php`; keep disabled in production. |
-| `VAT_RATE` | optional | `config/app.php` defaults to `0.21` if unset. |
+| `APP_DEBUG` | `true` | Use `false` in production. |
+| `APP_URL` | `https://birza.test` | Herd URL. |
+| `DB_CONNECTION` | `sqlite` | Local default. |
+| `DB_DATABASE` | `birza.sqlite` | Resolved under `database/`. |
+| `FILESYSTEM_DISK` | `local` | Product image code uses the `public` disk where needed. |
+| `QUEUE_CONNECTION` | `sync` | No worker required locally. |
+| `MAIL_MAILER` | `log` | Safe local default. |
+| `DEBUGBAR_ENABLED` | `false` | Local opt-in only. |
+| `MARKETPLACE_LOW_STOCK_THRESHOLD` | `5` | Seller low-stock alert threshold. |
+| `MARKETPLACE_ALLOW_GUEST_PRODUCT_REPORTS` | `true` | Allows guest product reports with email. |
 
-Production-safe debug values:
+Production-safe values:
 
 ```env
 APP_ENV=production
@@ -160,144 +136,67 @@ APP_DEBUG=false
 DEBUGBAR_ENABLED=false
 ```
 
-## Database Setup
+See [docs/environment.md](docs/environment.md) for the full environment guide.
 
-The current local database connection is SQLite and uses:
+## Demo Accounts
 
-```env
-DB_CONNECTION=sqlite
-DB_DATABASE=birza.sqlite
-```
+These accounts are seeded for local development only.
 
-Useful commands:
-
-```bash
-php artisan migrate
-php artisan migrate:status
-php artisan migrate:fresh --seed
-php artisan db:seed
-```
-
-Use `migrate:fresh --seed` only when you are okay with deleting local data.
-
-The live local database inspected for this README had older migrations already run and several newest development migrations pending, including relationship/media/status hardening work. A fresh setup should run all migrations from disk.
-
-## Migrations
-
-Migrations cover:
-
-- Authentication support tables: password reset tokens, failed jobs, Sanctum personal access tokens.
-- Admins, buyers, sellers, and a newer generic users/profile relationship direction.
-- Countries, categories, attributes, attribute values, product/category/attribute pivots.
-- Products, product fields, product filters, product images, and image-library fields.
-- Carts and cart items.
-- Orders, order items, payment fields, order statuses, and order status history.
-- Buyer credit history and credit attachments.
-- Seller transactions.
-- Activities, cache tables, reviews, notifications, addresses, global settings, and admin theme settings.
-
-Inspect migration state with:
-
-```bash
-php artisan migrate:status --no-interaction
-```
-
-## Seeders
-
-`DatabaseSeeder` currently calls these seeders:
-
-- `CountriesSeeder`
-- `CategorySeeder`
-- `GlobalSettingsSeeder`
-- `TestUsersSeeder`
-- `ProductSeeder`
-- `AttributesSeeder`
-- `ProductAttributeSeeder`
-- `AdminSeeder`
-
-Run the full demo seed:
-
-```bash
-php artisan db:seed
-```
-
-Run a specific seeder:
-
-```bash
-php artisan db:seed --class=AdminSeeder
-php artisan db:seed --class='Database\Seeders\test_information\TestUsersSeeder'
-```
-
-`ProductSeeder` generates WebP product images under `storage/app/public/products` when missing. `CategorySeeder`, `CountriesSeeder`, and product descriptions seed Lithuanian and English content.
-
-## Demo/Test Accounts
-
-These accounts are created by seeders for local development only.
-
-| Role | Email | Password | Seeder |
+| Role | Email | Password | Purpose |
 | --- | --- | --- | --- |
-| Admin | `admin@admin.com` | `password` | `AdminSeeder` |
-| Buyer 1 | `buyer1@birza.lt` | `password123` | `TestUsersSeeder` |
-| Buyer 2-10 | `buyer2@birza.lt` to `buyer10@birza.lt` | `password123` | `TestUsersSeeder` |
-| Seller 1 | `seller1@birza.lt` | `password123` | `TestUsersSeeder` |
-| Seller 2-10 | `seller2@birza.lt` to `seller10@birza.lt` | `password123` | `TestUsersSeeder` |
+| Admin | `admin@example.com` | `password` | Demo admin dashboard. |
+| Admin | `admin@admin.com` | `password` | Minimal legacy admin. |
+| Buyer | `buyer@example.com` | `password` | Main buyer dashboard, cart, orders, wishlist, notifications. |
+| Buyer | `demo-empty-buyer@example.com` | `password` | Empty-state buyer. |
+| Buyer | `demo-cart-buyer@example.com` | `password` | Buyer with seeded cart. |
+| Buyer | `demo-orders-buyer@example.com` | `password` | Buyer with seeded orders. |
+| Seller | `seller@example.com` | `password` | Main seller dashboard and products. |
+| Seller | `demo-seller-one@example.com` | `password` | Seller with demo catalog/promotions. |
+| Seller | `demo-seller-two@example.com` | `password` | Second seller for multi-seller flows. |
+| Seller | `seller-empty@example.com` | `password` | Empty-state seller. |
+| Buyer and seller | `buyer-seller@example.com` | `password` | Shared user with both buyer and seller profiles. |
+| Test buyers | `buyer1@birza.lt` to `buyer10@birza.lt` | `password123` | Legacy/test-information seeders. |
+| Test sellers | `seller1@birza.lt` to `seller10@birza.lt` | `password123` | Legacy/test-information seeders. |
 
-Buyer, seller, and admin models cast passwords as `hashed`, so seeder password strings are hashed when persisted.
+## Roles And Access
 
-## User Roles
+Roles are implemented through separate guards and user tables rather than a shared roles table.
 
-Roles are implemented as separate guards and user tables, not a shared roles table.
-
-| Role | Access | Can do | Cannot do |
+| Role | Route area | Dashboard | Summary |
 | --- | --- | --- | --- |
-| Guest | Public home, language switching, buyer/seller login and registration, public product search API. | Choose buyer or seller flow, register, request password resets, verify email links. | Access buyer, seller, or admin dashboards. |
-| Buyer | `auth:buyer` routes under `/buyer`. | View dashboard, edit profile, browse catalog, filter products, view product details, manage cart, checkout, view orders. | Manage seller products, seller transactions, admin CRUD/settings. |
-| Seller | `auth:seller` routes under `/seller`. | View dashboard, edit profile/categories, manage own products, view seller orders, view transactions. | Use buyer cart/checkout, manage other sellers' products, access admin tools. |
-| Admin | `auth:admin` routes under `/admin`. | Use backend dashboard, manage buyers, sellers, buyer credit, countries, categories, products, attributes, attribute values, orders, settings, and admin profile. | Use buyer/seller dashboards as those guards unless separately logged in. |
+| Guest | `/`, `/buyer/login`, `/seller/login`, `/admin/login`, public catalog routes | None | Can browse public marketplace pages, switch language, compare products, ask public questions, and report active products when guest reports are enabled. |
+| Buyer | `/buyer` | `/buyer/dashboard` | Can manage own profile, cart, checkout, orders, wishlists, stock alerts, notifications, and product interactions. Cannot manage seller products or admin data. |
+| Seller | `/seller` | `/seller/dashboard` | Can manage own profile, products, discounts, promo codes, product questions, orders, transactions, and notifications. Cannot manage another seller's products or access admin tools. |
+| Admin | `/admin` | `/admin/dashboard` | Can manage platform data according to policies, gates, middleware, and audit rules. Dangerous actions should be audited. |
 
-## Local Development Commands
+See [docs/roles.md](docs/roles.md) and [docs/security.md](docs/security.md).
 
-Common commands:
+## Project Structure
 
-```bash
-php artisan optimize:clear
-php artisan config:clear
-php artisan route:list --except-vendor
-php artisan migrate:fresh --seed
-php artisan storage:link
-php artisan test --compact
-```
+| Path | Purpose |
+| --- | --- |
+| `app/Actions` | Single-purpose business operations for carts, orders, images, notifications, reports, products, promotions, stock alerts, and wishlists. |
+| `app/Enums` | Domain enums such as order and moderation status values. |
+| `app/Http/Controllers` | Thin HTTP controllers for public/API/auth/notification entry points. |
+| `app/Http/Middleware` | Locale, active account, verified account, auth redirect, and signature middleware. |
+| `app/Livewire` | Route-mounted buyer, seller, admin, auth, notification, product, cart, and order screens. |
+| `app/Models` | Eloquent marketplace models and scopes. |
+| `app/Policies` | Role and ownership authorization rules. |
+| `app/Services` | Shared services such as audit logging. |
+| `app/Observers` | Model observers for side effects. |
+| `app/Support` | Support DTOs/helpers such as image results and locale formatting. |
+| `config` | Laravel, auth, Livewire, maryUI, WireUI, Debugbar, queue, mail, image, marketplace, and notification config. |
+| `database/migrations` | Schema migrations. |
+| `database/factories` | Factories for tests and seeders. |
+| `database/seeders` | Minimal, demo, and legacy test-information seeders. |
+| `docs` | Project documentation and release notes. |
+| `lang` | Lithuanian and English JSON translations plus keyed PHP translation files. |
+| `resources/views` | Blade layouts, components, Livewire views, emails, notifications, pagination, and errors. |
+| `resources/css`, `resources/js` | Vite entrypoints. |
+| `routes` | Public, API, buyer, seller, admin, console, and channel routes. |
+| `tests` | PHPUnit feature and unit tests. |
 
-Development server commands:
-
-```bash
-npm run dev
-php artisan serve
-```
-
-Herd users normally do not need `php artisan serve`; use `https://birza.test`.
-
-Project-specific or notable commands:
-
-```bash
-composer all
-php artisan refresh
-php artisan system close
-php artisan system open
-php artisan filterable:list
-php artisan filterable:inspect
-php artisan debugbar:clear
-```
-
-Notes:
-
-- `composer all` installs Composer dependencies, generates an app key, links storage, and clears caches.
-- `php artisan refresh` is destructive/local-only: it clears caches, runs `migrate:fresh --seed`, creates storage directories, adjusts storage permissions, cleans generated storage files, runs IDE helper commands, and optimizes/clears caches.
-- `php artisan system close` requires `MAINTENANCE_BYPASS_SECRET` and enables maintenance mode with `resources/views/errors/maintenance.blade.php`.
-
-## Frontend Build Commands
-
-Install and run assets:
+## Frontend Development
 
 ```bash
 npm install
@@ -305,18 +204,99 @@ npm run dev
 npm run build
 ```
 
-Frontend setup:
+- Vite entrypoints are `resources/css/app.css` and `resources/js/app.js`.
+- Tailwind scans local Blade views plus maryUI and WireUI package component paths.
+- maryUI is the intended primary component system.
+- WireUI, daisyUI, and Flowbite remain installed during migration and should not be expanded for new component categories without a clear reason.
+- Livewire owns interactivity; do not add React/Vue/Inertia.
+- Keep visible text translatable.
 
-- Vite entry points are `resources/css/app.css` and `resources/js/app.js`.
-- Tailwind scans Blade views plus maryUI and WireUI package component paths.
-- Tailwind plugins include Flowbite, typography, aspect-ratio, and daisyUI.
-- daisyUI themes currently include `corporate` and `light`.
-- maryUI is configured with the `mary-` component prefix in `config/mary.php`.
-- Livewire injects its scripts/styles through layouts; `resources/js/app.js` intentionally does not start a second Alpine instance.
+See [docs/frontend.md](docs/frontend.md) and [docs/frontend-stack-compatibility-2026-06-07.md](docs/frontend-stack-compatibility-2026-06-07.md).
 
-## Testing Commands
+## Storage And Images
 
-The project uses PHPUnit.
+Run:
+
+```bash
+php artisan storage:link
+```
+
+Storage conventions:
+
+- Public uploads are served through `public/storage`.
+- Product image records live in `product_images`.
+- Product images are stored on the `public` disk under relative paths.
+- Legacy product image fields still exist for compatibility.
+- Product fallback image: `public/images/admin-product-placeholder.svg`.
+- Do not store absolute local server paths in the database.
+- Use the image actions under `app/Actions/Images` and helpers such as `Product::imageUrl()` and `Product::imageGalleryUrls()`.
+
+See [docs/image-pipeline.md](docs/image-pipeline.md).
+
+## Queue Setup
+
+Local default:
+
+```env
+QUEUE_CONNECTION=sync
+```
+
+With `sync`, no queue worker is required. Marketplace notification classes are queueable and use `afterCommit()`, so production environments that switch to an async driver should run a supervised worker:
+
+```bash
+php artisan queue:work
+```
+
+If the database queue driver is selected later, add the jobs table before using it. The current repo has `failed_jobs` but no `jobs` table migration documented as active.
+
+## Mail Setup
+
+Local default:
+
+```env
+MAIL_MAILER=log
+```
+
+Mailpit can be used locally by switching to:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+```
+
+The app uses mail-capable notifications for registration/verification/password reset and selected marketplace notifications. Never commit real SMTP credentials.
+
+## Multilingual Setup
+
+Configured locales:
+
+- `lt`: default locale.
+- `en`: fallback locale.
+
+Files:
+
+- `lang/lt.json`
+- `lang/en.json`
+- `lang/lt/*.php`
+- `lang/en/*.php`
+
+Rules:
+
+- Keep JSON translation key sets identical.
+- Use dot-based keys for new text, such as `ui.actions.save`, `orders.status.pending`, `products.fields.title`, and `notifications.orders.created.title`.
+- Use `__('key')` in Blade, Livewire, actions, notifications, and emails.
+- Database content with translation helpers should seed every configured locale.
+
+Useful check:
+
+```bash
+php artisan test --compact tests/Feature/Translations/TranslationFilesTest.php
+```
+
+See [docs/translations.md](docs/translations.md).
+
+## Testing
 
 Run all tests:
 
@@ -324,265 +304,148 @@ Run all tests:
 php artisan test --compact
 ```
 
-Run feature tests:
+Run focused suites:
 
 ```bash
 php artisan test --compact tests/Feature
-```
-
-Run unit tests:
-
-```bash
 php artisan test --compact tests/Unit
+php artisan test --compact tests/Feature/Marketplace
+php artisan test --compact tests/Feature/Seeders
+php artisan test --compact tests/Feature/Factories/ModelFactoriesTest.php
 ```
 
-Run one test file:
+Run one test:
 
 ```bash
-php artisan test --compact tests/Feature/Controllers/Frontend/Buyer/CartControllerTest.php
+php artisan test --compact --filter=test_authenticated_buyer_can_add_active_product_to_cart
 ```
 
-Run a filtered test:
+There is no `composer test` script configured; use `php artisan test`.
+
+See [docs/testing.md](docs/testing.md).
+
+## Database And Seeders
+
+Commands:
 
 ```bash
-php artisan test --compact --filter=test_supported_json_translation_files_have_identical_keys
+php artisan migrate
+php artisan db:seed
+php artisan migrate:fresh --seed
+php artisan migrate:status --no-interaction
 ```
 
-Livewire components are tested from PHPUnit using Livewire testing helpers in the existing feature test suite.
+Seeder layers:
 
-There is no `composer test` script configured in `composer.json`; use `php artisan test`.
+- `MinimalSeeder`: production-safe required records.
+- `DemoScenarioSeeder`: local/testing demo marketplace data, only outside production.
+- `AuditLogSeeder`: demo audit rows, called by `DatabaseSeeder` outside production.
 
-## Storage And Image Setup
+See [docs/database.md](docs/database.md), [docs/seeders.md](docs/seeders.md), and [docs/demo-seeding.md](docs/demo-seeding.md).
 
-Required command:
+## Security Notes
 
-```bash
-php artisan storage:link
-```
+- Guard-specific routes protect buyer, seller, and admin areas.
+- Policies own model-level authorization.
+- Livewire actions must authorize before loading private data and again before mutations.
+- Buyer data is private to the buyer.
+- Seller product/order data is private to the owning seller.
+- Admin sensitive actions should require a reason and write audit logs.
+- Debugbar must not be enabled in production.
+- `APP_DEBUG=false` in production.
+- File uploads must use Laravel Storage and the shared image validation/actions.
 
-Storage conventions observed in the project:
+See [docs/security.md](docs/security.md) and [docs/audit-log-system.md](docs/audit-log-system.md).
 
-- Public storage link: `public/storage` -> `storage/app/public`.
-- Seeded product images: `storage/app/public/products`.
-- Legacy product image columns normalize filenames to the `products/` public-disk path.
-- Current image-pipeline work uses public-disk product image records and variant paths where available.
-- Product fallback image: `public/images/admin-product-placeholder.svg`.
-- Buyer credit attachments are uploaded to `storage/app/public/credit-attachments`.
-- Livewire temporary uploads use `storage/app/livewire-tmp` unless `LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK` is configured.
-- `scripts/clean-storage.php` delegates to OS-specific cleanup scripts.
+## Performance Notes
 
-## Queue Setup
+- Paginate large lists.
+- Eager-load relationships used by Blade/Livewire loops.
+- Use database aggregates such as `withCount`, `withExists`, and `sum()` instead of loading full collections for counters.
+- Use selected columns for large lists.
+- Cache stable reference data only; do not leak private user data through shared cache keys.
+- Add indexes for frequently filtered/sorted columns.
+- Keep Debugbar local-only.
 
-Default queue configuration:
-
-```env
-QUEUE_CONNECTION=sync
-```
-
-With `sync`, no queue worker is required. If you change to `database`, `redis`, `sqs`, or another async queue driver, run a worker in production:
-
-```bash
-php artisan queue:work
-```
-
-No `app/Jobs` directory was present during this README audit, but notifications and mail flows should still be reviewed if queueing is introduced.
-
-## Mail Setup
-
-`.env.example` targets SMTP/Mailpit:
-
-```env
-MAIL_MAILER=smtp
-MAIL_HOST=mailpit
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="hello@example.com"
-MAIL_FROM_NAME="${APP_NAME}"
-```
-
-The app sends email for buyer/seller registration, verification, password reset, and order status notifications. For local work, use Mailpit or switch to:
-
-```env
-MAIL_MAILER=log
-```
-
-For production, configure a real SMTP, SES, Mailgun, or Postmark transport and never commit mail credentials.
-
-## Multilingual Setup
-
-Supported locales are configured in `config/app.php`:
-
-```php
-'locale' => 'lt',
-'locales' => ['lt', 'en'],
-'fallback_locale' => 'en',
-```
-
-Translation files:
-
-- `lang/lt.json`
-- `lang/en.json`
-
-Language switching route:
-
-```text
-GET /language/{locale}
-```
-
-Translation conventions:
-
-- Keep `lang/lt.json` and `lang/en.json` key sets identical.
-- Core newer keys use dot notation such as `orders.status.pending` and `ui.actions.save`.
-- Older underscore keys still exist and should not be removed unless all usages are migrated.
-- Use `__('key')` in Blade, Livewire, notifications, and controllers.
-- Category, country, product description, attribute, and attribute value data can store per-locale JSON translations through model translation helpers.
-- Add a locale by updating `config/app.php`, adding `lang/{locale}.json`, seeding translated data where needed, and extending translation tests.
-
-Useful translation checks:
-
-```bash
-php artisan test --compact tests/Feature/Translations/TranslationFilesTest.php
-php scripts/validate-json-translations.php
-```
+See [docs/performance.md](docs/performance.md).
 
 ## Screenshots
 
-No screenshots directory was found during this README audit.
+Existing screenshot files:
 
-TODO: add screenshots for:
+- [Wishlist catalog desktop](wishlist-catalog-desktop.png)
+- [Wishlist catalog mobile](wishlist-catalog-mobile.png)
+- [Wishlist product detail desktop](wishlist-product-detail-desktop.png)
 
-- Homepage.
-- Product catalog.
-- Product detail page.
-- Cart.
-- Checkout.
-- Buyer dashboard.
-- Seller dashboard.
-- Admin dashboard.
-- Admin product management.
-- Order detail/status pages.
-
-Do not add broken image links to this README. Add screenshot files first, then link them.
-
-## Project Structure
-
-Important folders and files:
-
-| Path | Purpose |
-| --- | --- |
-| `app/Actions` | Single-purpose business actions for API search, auth/logout redirects, cart operations, frontend page data, image pipeline work, and order status changes. |
-| `app/Console/Commands` | Custom Artisan commands such as `refresh` and `system`. |
-| `app/Enums` | Domain enums, including order status/payment status work in the current development tree. |
-| `app/Helpers` | Project helper files autoloaded by Composer, including order status helpers. |
-| `app/Http/Controllers` | Thin route controllers for public, API, auth/logout, and admin landing flows. |
-| `app/Http/Middleware` | Custom middleware such as locale handling and auth redirects. |
-| `app/Http/Requests` | Form request validation for API and frontend requests. |
-| `app/Livewire` | Buyer, seller, admin, and auth Livewire components. |
-| `app/Models` | Eloquent models for marketplace entities. |
-| `app/Policies` | Authorization policies. |
-| `app/Providers` | Application, auth, event, route, user guard, view, and global settings providers. |
-| `app/Support` | Support classes such as locale formatting, markdown safety, spotlight, and image result DTOs. |
-| `config` | Laravel and package configuration, including auth guards, filesystems, Livewire, maryUI, WireUI, Debugbar, queue, mail, and image config. |
-| `database/migrations` | Database schema migrations. |
-| `database/factories` | Model factories for tests and seed data. |
-| `database/seeders` | Demo/test seeders and country JSON data. |
-| `docs` | Project-owned technical audits and documentation. |
-| `lang` | JSON translation files for Lithuanian and English. |
-| `public` | Web entrypoints, built assets, robots file, and public fallback images. |
-| `resources/css` | Tailwind/Vite CSS entrypoint. |
-| `resources/js` | Vite JavaScript entrypoint. |
-| `resources/views` | Blade layouts, components, Livewire views, frontend pages, backend pages, emails, notifications, pagination, and errors. |
-| `routes` | Public, API, buyer, seller, admin, console, and broadcast route files. |
-| `scripts` | Translation and storage utility scripts. |
-| `storage` | Local generated files, logs, framework cache/session/view files, public uploads, and Livewire temp uploads. |
-| `tests` | PHPUnit feature and unit tests. |
-
-## Documentation Files
-
-Project documentation lives in:
-
-- `CHANGELOG.md`
-- `docs/database-structure-audit-2026-06-07.md`
-- `docs/eloquent-relationship-map-2026-06-07.md`
-- `docs/`
-- `.planning/` for local GSD planning state
-- `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` for agent/project instructions
-
-Some additional docs may exist in active local work. Commit them before linking them from this README.
+TODO: add screenshots under `docs/screenshots/` for the homepage, catalog, product detail, cart, checkout, buyer dashboard, seller dashboard, admin dashboard, admin product management, and order status pages.
 
 ## Roadmap
 
-### Phase 1 - Stabilize Roles And Access Control
+The practical documentation roadmap is in [docs/roadmap.md](docs/roadmap.md). Current priorities are:
 
-Confirm guest, buyer, seller, and admin access rules, route guards, policies, redirects, and authorization tests. This matters because the marketplace uses separate user tables and guards instead of one shared roles table.
+1. Stabilize role architecture.
+2. Standardize the UI system.
+3. Clean and document database architecture.
+4. Keep factories and seeders complete.
+5. Maintain feature tests.
+6. Harden security.
+7. Optimize performance.
+8. Improve notifications.
+9. Improve cart and checkout.
+10. Complete production hardening.
 
-### Phase 2 - Standardize The UI System
-
-Finish the Mary-first Livewire UI direction and retire or isolate remaining WireUI/daisyUI/Flowbite overlap. This lowers frontend maintenance cost and makes shared components predictable.
-
-### Phase 3 - Improve Livewire Flows
-
-Audit buyer, seller, admin, auth, upload, filtering, sorting, pagination, confirmation, and notification flows. This matters because most screens are route-mounted Livewire components.
-
-### Phase 4 - Improve Database Structure
-
-Finish pending relationship/media/status migrations, reconcile legacy and normalized tables, and verify indexes/foreign keys. This protects business history and reduces broken relationships.
-
-### Phase 5 - Standardize Order Statuses
-
-Complete the strict order lifecycle, actor permissions, status history, notifications, and UI badges. This is central to buyer, seller, and admin order behavior.
-
-### Phase 6 - Improve Cart And Checkout
-
-Reconcile LaraCart session state with database cart/cart item tables, add stronger checkout tests, and replace simulated payment when a real payment method is selected.
-
-### Phase 7 - Improve Image Pipeline
-
-Finish product image variants, migration from legacy image fields, cleanup behavior, fallback handling, upload validation, and storage documentation.
-
-### Phase 8 - Harden Factories And Seeders
-
-Keep demo data realistic, idempotent, localized, and aligned with model casts/enums. This keeps local setup and tests trustworthy.
-
-### Phase 9 - Add Feature Tests
-
-Broaden regression coverage for buyer catalog/cart/checkout/orders, seller products/orders/transactions, admin CRUD/settings, translations, storage, and access control.
-
-### Phase 10 - Production Hardening
-
-Finalize environment defaults, cache/build steps, debugbar safety, queue/mail choices, storage permissions, deployment notes, logging, backups, and monitoring.
+The local GSD modernization roadmap also lives in `.planning/`.
 
 ## Known Issues
 
-- The current local database had pending development migrations during this README audit. Run `php artisan migrate:status` and migrate before testing current branch work.
-- `.env.example` still defaults to MySQL while the local project uses SQLite. Set `DB_CONNECTION=sqlite` and `DB_DATABASE=birza.sqlite` for the easiest local setup.
-- Checkout currently simulates payment success; no real payment provider is configured.
-- Screenshots are missing.
-- UI packages are in transition: maryUI is active, while WireUI, daisyUI, and Flowbite are still present.
-- Product images have legacy fields and newer image-record/variant direction; finish and verify the migration path before relying on one canonical image model.
-- Cart behavior still uses LaraCart session state; database cart/cart item tables need final alignment.
-- Some newer relationship/status/media work is in active development and should be verified with migrations and tests before production use.
-- No `LICENSE` file exists, although `composer.json` declares `MIT`.
+- Payment provider integration is not complete; checkout simulates successful payment.
+- Full screenshot documentation is missing.
+- UI dependencies are still in transition: maryUI is the target, while WireUI/daisyUI/Flowbite remain installed.
+- Product images still have legacy compatibility fields alongside normalized `product_images`.
+- Some release notes are local docs only; no git tags or GitHub releases exist yet.
+- No standalone `LICENSE` file exists, although `composer.json` declares `MIT`.
+- Marketplace messaging/disputes are not implemented.
+- Production deployment automation is not complete.
 
-## Contributing Rules
+## Release Management
 
-- Follow `AGENTS.md` and Laravel Boost guidance.
-- Use Eloquent models, scopes, relationships, and actions. Do not add raw SQL strings.
-- Do not query inside Blade views or loops.
-- Keep controllers and Livewire components thin; move reusable business logic to `app/Actions` or model scopes.
-- Validate input with Form Requests where possible.
-- Eager load relationships used by views and tables.
-- Keep all visible UI text translatable.
-- Add or update PHPUnit tests for code changes.
-- Run focused tests before committing.
-- Run `vendor/bin/pint --dirty --format agent` after PHP changes.
-- Keep commits focused and avoid mixing unrelated refactors with feature work.
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
+- Release workflow: [docs/releases/README.md](docs/releases/README.md)
+- Release notes template: [docs/release-notes-template.md](docs/release-notes-template.md)
+
+Tag example:
+
+```bash
+git tag -a v0.1.0 -m "Release v0.1.0"
+git push origin v0.1.0
+```
+
+## Developer Workflow
+
+1. Create a focused branch.
+2. Inspect related routes, models, migrations, seeders, tests, docs, and policies.
+3. Make the smallest coherent change.
+4. Add or update tests for behavior changes.
+5. Run focused tests, then broader tests when appropriate.
+6. Run `npm run build` for frontend-impacting changes.
+7. Update README/docs/CHANGELOG/release notes when behavior changes.
+8. Commit with a clear message.
+
+Examples:
+
+```text
+refactor: standardize role architecture
+test: add feature coverage for core flows
+security: harden marketplace authorization
+perf: audit and optimize marketplace queries
+docs: add project documentation
+```
+
+See [docs/developer-workflow.md](docs/developer-workflow.md).
 
 ## Production Notes
 
-Production install/build checklist:
+Production checklist:
 
 ```bash
 composer install --no-dev --optimize-autoloader
@@ -595,34 +458,22 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-Production environment requirements:
+Do not run `migrate:fresh` in production. Configure backups, writable storage/cache directories, real mail credentials, debug-safe environment values, and a queue worker if async queues are enabled.
 
-```env
-APP_ENV=production
-APP_DEBUG=false
-DEBUGBAR_ENABLED=false
-QUEUE_CONNECTION=sync
-```
+See [docs/production.md](docs/production.md).
 
-If `QUEUE_CONNECTION` is changed to an async driver, run a supervised queue worker:
+## Contributing Rules
 
-```bash
-php artisan queue:work
-```
-
-Also verify:
-
-- `storage` and `bootstrap/cache` are writable by the web server user.
-- Real mail credentials are configured.
-- `APP_KEY` is set and secret.
-- Database backups are in place.
-- Uploaded files are backed up if using local/public storage.
-- Debugbar is not installed/enabled in production deployments.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
+- Follow `AGENTS.md` and Laravel Boost guidance.
+- Use Eloquent models, scopes, relationships, and actions. Do not add raw SQL strings.
+- Do not query inside Blade views or loops.
+- Keep controllers and Livewire components thin.
+- Validate input and authorize actions.
+- Keep visible UI text translatable.
+- Add or update PHPUnit tests for code changes.
+- Run `vendor/bin/pint --dirty --format agent` after PHP changes.
+- Keep commits focused.
 
 ## License
 
-`composer.json` declares the project license as `MIT`. No standalone `LICENSE` file was present during this README audit.
+`composer.json` declares the project license as `MIT`. No standalone `LICENSE` file was found during the documentation audit.

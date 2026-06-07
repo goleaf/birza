@@ -54,6 +54,16 @@
                 @if ($guard)
                     <!-- start user menu -->
                     <div class="flex items-center space-x-4">
+                        @if (($notificationDropdown['indexRoute'] ?? null) !== null)
+                            <x-notifications.dropdown
+                                :notifications="$notificationDropdown['notifications']"
+                                :unread-count="$notificationDropdown['unreadCount']"
+                                :index-route="$notificationDropdown['indexRoute']"
+                                :mark-read-route-name="$notificationDropdown['markReadRouteName']"
+                                :mark-all-route="$notificationDropdown['markAllRoute']"
+                            />
+                        @endif
+
                         <!-- start company name -->
                         <x-ui.popover position="bottom-end">
                             <x-slot:trigger>
@@ -108,9 +118,24 @@
                                         sm
                                         aria-label="{{ __('common_cart') }} {{ $cartItemsCount }}"
                                     />
-                                </a>
-                                <!-- end cart link -->
-                            @endif
+	                                </a>
+	                                <!-- end cart link -->
+
+	                                <!-- start wishlist link -->
+	                                <a
+	                                    href="{{ route('buyer.wishlists.index') }}"
+	                                    class="inline-flex items-center gap-2 transition-colors {{ $wishlistItemsCount > 0 ? 'text-blue-600' : 'text-gray-700 hover:text-blue-500' }}"
+	                                >
+	                                    {{ __('wishlists.title') }}
+	                                    <x-ui.badge
+	                                        :value="(string) $wishlistItemsCount"
+	                                        color="primary"
+	                                        sm
+	                                        aria-label="{{ __('wishlists.title') }} {{ $wishlistItemsCount }}"
+	                                    />
+	                                </a>
+	                                <!-- end wishlist link -->
+	                            @endif
 
                             <!-- start dashboard link -->
                             <a 
@@ -120,6 +145,44 @@
                                 {{ __('dashboard_title') }}
                             </a>
                             <!-- end dashboard link -->
+
+                            @if ($guard == 'seller')
+                                <!-- start seller products link -->
+                                <a
+                                    href="{{ route('seller.products.index') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('products.title') }}
+                                </a>
+                                <!-- end seller products link -->
+
+                                <!-- start discounts link -->
+                                <a
+                                    href="{{ route('seller.discounts.index') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('discounts.title') }}
+                                </a>
+                                <!-- end discounts link -->
+
+                                <!-- start promo codes link -->
+                                <a
+                                    href="{{ route('seller.promo-codes.index') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('promo_codes.title') }}
+                                </a>
+                                <!-- end promo codes link -->
+
+                                <!-- start product questions link -->
+                                <a
+                                    href="{{ route('seller.product-questions.index') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('products.questions.nav_seller') }}
+                                </a>
+                                <!-- end product questions link -->
+                            @endif
 
                             <!-- start profile link -->
                             <a 

@@ -2,10 +2,16 @@
 
 namespace App\Models\Users;
 
+use App\Models\AuditLog;
 use App\Models\Category;
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductBundle;
+use App\Models\ProductQuestion;
+use App\Models\ProductReport;
+use App\Models\PromoCode;
 use App\Models\SellerTransaction;
 use App\Models\User;
 use Database\Factories\SellerFactory;
@@ -14,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,7 +33,6 @@ class Seller extends Authenticatable
 
     protected $fillable = [
         'name',
-        'user_id',
         'email',
         'password',
         'company_name',
@@ -37,10 +43,6 @@ class Seller extends Authenticatable
         'veterinary_certificate_number',
         'bank_account',
         'password_reset_at',
-        'remember_token',
-        'is_verified',
-        'is_active',
-        'balance',
     ];
 
     protected $guarded = ['id', 'remember_token', 'email_verified_at'];
@@ -87,6 +89,48 @@ class Seller extends Authenticatable
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function productBundles(): HasMany
+    {
+        return $this->hasMany(ProductBundle::class);
+    }
+
+    public function productReports(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ProductReport::class,
+            Product::class,
+            'seller_id',
+            'product_id',
+            'id',
+            'id',
+        );
+    }
+
+    public function discounts(): HasMany
+    {
+        return $this->hasMany(Discount::class);
+    }
+
+    public function promoCodes(): HasMany
+    {
+        return $this->hasMany(PromoCode::class);
+    }
+
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, 'auditable')->latest('created_at');
+    }
+
+    public function productQuestions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class);
+    }
+
+    public function answeredProductQuestions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class, 'answered_by_seller_id');
     }
 
     public function orders(): HasManyThrough
