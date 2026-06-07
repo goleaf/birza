@@ -2,8 +2,14 @@
 
 namespace App\Livewire\Frontend\Buyer\Products;
 
+use App\Actions\StockAlerts\CancelStockAlertAction;
+use App\Actions\StockAlerts\CreateStockAlertAction;
 use App\Models\Product;
+use App\Models\ProductStockAlert;
+use App\Models\Users\Buyer;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use LukePOLO\LaraCart\Facades\LaraCart;
@@ -126,6 +132,43 @@ class Show extends Component
         session()->flash('success', __('cart_messages_product_added'));
     }
 
+    public function subscribeToStockAlert(CreateStockAlertAction $action): void
+    {
+        $buyer = $this->buyer();
+        abort_if(! $buyer, 403);
+
+        $product = $this->product->fresh(['seller']) ?? $this->product;
+
+        try {
+            $alert = $action->handle($product, $buyer);
+        } catch (ValidationException $exception) {
+            session()->flash('message', collect($exception->errors())->flatten()->first());
+
+            return;
+        }
+
+        session()->flash(
+            $alert->wasRecentlyCreated ? 'success' : 'message',
+            $alert->wasRecentlyCreated
+                ? __('stock_alerts.created_successfully')
+                : __('stock_alerts.already_subscribed'),
+        );
+    }
+
+    public function cancelStockAlert(int $alertId, CancelStockAlertAction $action): void
+    {
+        $buyer = $this->buyer();
+        abort_if(! $buyer, 403);
+
+        $alert = ProductStockAlert::query()
+            ->where('product_id', $this->product->id)
+            ->findOrFail($alertId);
+
+        $action->handle($alert, $buyer);
+
+        session()->flash('success', __('stock_alerts.cancelled_successfully'));
+    }
+
     public function render(): View
     {
         return view('frontend.buyer.products.show', [
@@ -133,8 +176,33 @@ class Show extends Component
             'productSlides' => $this->getProductSlides($this->product),
             'productGalleryImages' => $this->product->imageGalleryUrls('small'),
             'attributeValuesByAttribute' => $this->product->attributeValues->groupBy('attribute_id'),
+            'activeStockAlert' => $this->activeStockAlert(),
+            'stockAlertBuyer' => $this->buyer() !== null,
             'message' => session('message'),
         ]);
+    }
+
+    private function buyer(): ?Buyer
+    {
+        $buyer = Auth::guard('buyer')->user();
+
+        return $buyer instanceof Buyer ? $buyer : null;
+    }
+
+    private function activeStockAlert(): ?ProductStockAlert
+    {
+        $buyer = $this->buyer();
+
+        if (! $buyer) {
+            return null;
+        }
+
+        return ProductStockAlert::query()
+            ->select(['id', 'product_id', 'buyer_id', 'status', 'created_at'])
+            ->active()
+            ->where('product_id', $this->product->id)
+            ->where('buyer_id', $buyer->id)
+            ->first();
     }
 
     protected function getProductSlides(Product $product): array

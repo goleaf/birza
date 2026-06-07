@@ -290,6 +290,60 @@
                 </form>
                 <!-- end add to cart form -->
 
+
+                @if ($product->stock <= 0)
+                    <div class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h2 class="font-semibold text-amber-950">{{ __('stock_alerts.title') }}</h2>
+                                <p class="mt-1 text-sm text-amber-800">
+                                    {{ $activeStockAlert ? __('stock_alerts.already_subscribed') : __('stock_alerts.product_unavailable_help') }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-2">
+                                @if (! $stockAlertBuyer)
+                                    <x-ui.button
+                                        :href="route('buyer.login')"
+                                        positive
+                                        icon="arrow-right-on-rectangle"
+                                        :label="__('stock_alerts.login_to_subscribe')"
+                                    />
+                                @elseif ($activeStockAlert)
+                                    <x-ui.button
+                                        type="button"
+                                        negative
+                                        outline
+                                        spinner="cancelStockAlert"
+                                        wire:click="cancelStockAlert({{ $activeStockAlert->id }})"
+                                        wire:loading.attr="disabled"
+                                        :label="__('stock_alerts.cancel')"
+                                    />
+                                @else
+                                    <x-ui.button
+                                        type="button"
+                                        positive
+                                        icon="bell"
+                                        spinner="subscribeToStockAlert"
+                                        wire:click="subscribeToStockAlert"
+                                        wire:loading.attr="disabled"
+                                        :label="__('stock_alerts.notify_me')"
+                                    />
+                                @endif
+
+                                @if ($stockAlertBuyer)
+                                    <x-ui.button
+                                        :href="route('buyer.stock-alerts.index')"
+                                        flat
+                                        icon="list-bullet"
+                                        :label="__('stock_alerts.view_alerts')"
+                                    />
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
             <!-- end product details -->
         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
+use App\Observers\ProductObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
@@ -32,5 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::useScriptTagAttributes([
             'defer' => true,
         ]);
+
+        Product::observe(ProductObserver::class);
     }
 }

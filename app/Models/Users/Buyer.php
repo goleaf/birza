@@ -4,6 +4,7 @@ namespace App\Models\Users;
 
 use App\Models\BuyerCreditHistory;
 use App\Models\Order;
+use App\Models\ProductStockAlert;
 use App\Models\User;
 use Database\Factories\BuyerFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -75,6 +76,11 @@ class Buyer extends Authenticatable implements MustVerifyEmail
     public function creditHistory(): HasMany
     {
         return $this->hasMany(BuyerCreditHistory::class, 'buyer_id');
+    }
+
+    public function stockAlerts(): HasMany
+    {
+        return $this->hasMany(ProductStockAlert::class, 'buyer_id');
     }
 
     public function addCredit(float $amount, ?int $adminId = null, ?string $note = null): void

@@ -332,6 +332,37 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+
+    public function stockAlerts(): HasMany
+    {
+        return $this->hasMany(ProductStockAlert::class);
+    }
+
+    public function isVisibleToBuyers(): bool
+    {
+        if ($this->trashed() || ! $this->is_active) {
+            return false;
+        }
+
+        $seller = $this->relationLoaded('seller')
+            ? $this->seller
+            : $this->seller()->select(['id', 'is_active', 'deleted_at'])->first();
+
+        return $seller !== null
+            && ! $seller->trashed()
+            && (bool) $seller->is_active;
+    }
+
+    public function isPurchasableByBuyers(): bool
+    {
+        return $this->isVisibleToBuyers() && (int) $this->stock > 0;
+    }
+
+    public function canReceiveStockAlerts(): bool
+    {
+        return $this->isVisibleToBuyers() && (int) $this->stock <= 0;
+    }
+
     private function primaryImageRecord(): ?ProductImage
     {
         if ($this->relationLoaded('primaryImage')) {

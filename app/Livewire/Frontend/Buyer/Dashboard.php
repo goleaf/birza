@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Buyer;
 
 use App\Models\Order;
+use App\Models\ProductStockAlert;
 use App\Models\Users\Buyer;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -27,6 +28,7 @@ class Dashboard extends Component
             'buyer' => $buyer,
             'bannerSlides' => $this->getBannerSlides(),
             'ordersData' => $ordersData,
+            'recentStockAlerts' => $this->recentStockAlerts($buyer),
         ]);
     }
 
@@ -200,6 +202,20 @@ class Dashboard extends Component
     protected function monthLabel(Carbon $month): string
     {
         return __('common_months_'.strtolower($month->format('M')));
+    }
+
+    protected function recentStockAlerts(Buyer $buyer): Collection
+    {
+        return ProductStockAlert::query()
+            ->forBuyer($buyer)
+            ->select(['id', 'product_id', 'buyer_id', 'status', 'notified_at', 'created_at'])
+            ->with([
+                'product:id,name,seller_id,stock,unit,is_active,deleted_at,product_image,product_additional_image,image_library',
+                'product.seller:id,name,company_name,is_active,deleted_at',
+            ])
+            ->latest()
+            ->limit(5)
+            ->get();
     }
 
     protected function getBannerSlides(): array

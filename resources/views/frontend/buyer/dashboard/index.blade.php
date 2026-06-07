@@ -76,6 +76,60 @@
     @include('frontend.buyer.dashboard.orders')
 
 
+    <section class="my-6 rounded-lg bg-white p-4 shadow-sm">
+        <div class="mb-4 flex items-center justify-between gap-3">
+            <h2 class="font-semibold text-gray-900">{{ __('stock_alerts.dashboard_title') }}</h2>
+            <a href="{{ route('buyer.stock-alerts.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                {{ __('stock_alerts.view_alerts') }}
+            </a>
+        </div>
+
+        <div class="space-y-3">
+            @forelse ($recentStockAlerts as $alert)
+                @php
+                    $product = $alert->product;
+                    $isPurchasable = $product?->isPurchasableByBuyers() ?? false;
+                    $imageUrl = $product ? data_get($product->imageLibraryPreview()->first(), 'url') : null;
+                @endphp
+
+                <a
+                    href="{{ $product ? route('buyer.products.show', $product) : route('buyer.stock-alerts.index') }}"
+                    class="block rounded-md border border-gray-100 p-3 transition hover:border-blue-200 hover:bg-blue-50"
+                >
+                    <div class="flex items-center gap-3">
+                        <div class="h-12 w-12 shrink-0 overflow-hidden rounded-md bg-gray-100">
+                            @if ($product)
+                                <img
+                                    src="{{ $imageUrl ?: asset('images/admin-product-placeholder.svg') }}"
+                                    alt="{{ $product->name }}"
+                                    class="h-full w-full object-cover"
+                                >
+                            @else
+                                <div class="flex h-full w-full items-center justify-center text-gray-400">
+                                    <x-ui.icon name="photo" class="h-5 w-5" />
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <p class="truncate text-sm font-medium text-gray-900">
+                                {{ $product?->name ?? __('stock_alerts.product_missing') }}
+                            </p>
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ $isPurchasable ? __('stock_alerts.product_available') : __($alert->status->labelKey()) }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="rounded-md border border-dashed border-gray-200 p-4 text-sm text-gray-500">
+                    {{ __('stock_alerts.empty') }}
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+
     <div class="flex flex-wrap -mx-4 my-6">
         <!-- Left side - 2 blocks -->
         <div class="w-full lg:w-3/4 px-4">

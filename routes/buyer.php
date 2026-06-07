@@ -15,6 +15,7 @@ use App\Livewire\Frontend\Buyer\Orders\Show as BuyerOrdersShow;
 use App\Livewire\Frontend\Buyer\Products\Index as BuyerProductsIndex;
 use App\Livewire\Frontend\Buyer\Products\Show as BuyerProductsShow;
 use App\Livewire\Frontend\Buyer\Profile\Edit as BuyerProfileEdit;
+use App\Livewire\Frontend\Buyer\StockAlerts\Index as BuyerStockAlertsIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
@@ -50,5 +51,6 @@ Route::group(['prefix' => 'buyer', 'as' => 'buyer.'], function () {
 
         Route::livewire('/orders', BuyerOrdersIndex::class)->name('orders.index');
         Route::livewire('/orders/{order}', BuyerOrdersShow::class)->name('orders.show');
+        Route::livewire('/stock-alerts', BuyerStockAlertsIndex::class)->name('stock-alerts.index');
     });
 });
