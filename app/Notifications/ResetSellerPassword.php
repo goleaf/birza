@@ -10,7 +10,7 @@ class ResetSellerPassword extends ResetPassword
     protected function resetUrl($notifiable)
     {
         return url(route('seller.password.reset', [
-            'token' => $this->token,
+            'hash' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
     }
@@ -18,9 +18,9 @@ class ResetSellerPassword extends ResetPassword
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Reset Seller Password')
+            ->subject(__('emails.seller.password_reset.subject'))
             ->markdown('emails.seller.reset-password', [
                 'resetUrl' => $this->resetUrl($notifiable),
             ]);
     }
-} 
+}

@@ -1,16 +1,16 @@
 @component('mail::message')
-# Reset Your Seller Password
+# {{ __('emails.seller.password_reset.title') }}
 
-You are receiving this email because we received a password reset request for your seller account.
+{{ __('emails.seller.password_reset.intro') }}
 
 @component('mail::button', ['url' => $resetUrl])
-Reset Password
+{{ __('emails.seller.password_reset.action') }}
 @endcomponent
 
-This password reset link will expire in 60 minutes.
+{{ __('emails.seller.password_reset.expiry') }}
 
-If you did not request a password reset, no further action is required.
+{{ __('emails.seller.password_reset.ignore') }}
 
-Thanks,<br>
+{{ __('common_regards') }},<br>
 {{ config('app.name') }}
 @endcomponent 

@@ -110,8 +110,18 @@ class ProductSearchControllerTest extends TestCase
 
     public function test_search_rejects_unknown_locale(): void
     {
+        app()->setLocale('en');
+
         $response = $this->getJson('/api/products/search?query=Apple&locale=de');
 
-        $response->assertUnprocessable();
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['locale']);
+
+        $message = $response->json('errors.locale.0');
+
+        $this->assertIsString($message);
+        $this->assertStringContainsString('language', $message);
+        $this->assertStringNotContainsString('locale', $message);
     }
 }

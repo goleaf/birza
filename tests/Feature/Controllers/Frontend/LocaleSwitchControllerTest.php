@@ -15,15 +15,15 @@ class LocaleSwitchControllerTest extends TestCase
         $response->assertSessionHas('locale', 'lt');
     }
 
-    public function test_locale_switch_rejects_unknown_locale(): void
+    public function test_locale_switch_replaces_unknown_locale_with_fallback(): void
     {
-        $this->withSession(['locale' => 'en']);
+        $this->withSession(['locale' => 'lt']);
 
-        $response = $this->from(route('home'))
+        $response = $this->from(route('home', ['from' => 'language-switch']))
             ->get(route('language.switch', ['locale' => 'xx']));
 
-        $response->assertRedirect(route('home'));
-        $response->assertSessionHasErrors('locale');
-        $response->assertSessionHas('locale', 'en');
+        $response->assertRedirect(route('home', ['from' => 'language-switch']));
+        $response->assertSessionHasNoErrors();
+        $response->assertSessionHas('locale', config('app.fallback_locale'));
     }
 }

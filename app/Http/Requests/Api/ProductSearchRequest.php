@@ -24,6 +24,17 @@ class ProductSearchRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'query' => __('validation.attributes.query'),
+            'locale' => __('validation.attributes.locale'),
+        ];
+    }
+
     public function searchTerm(): string
     {
         return trim((string) $this->validated('query', ''));

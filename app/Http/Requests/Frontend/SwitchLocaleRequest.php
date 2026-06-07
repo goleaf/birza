@@ -4,7 +4,6 @@ namespace App\Http\Requests\Frontend;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SwitchLocaleRequest extends FormRequest
 {
@@ -19,8 +18,19 @@ class SwitchLocaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'locale' => ['required', 'string', Rule::in(array_values((array) config('app.locales', [])))],
+            'locale' => ['nullable', 'string'],
         ];
+    }
+
+    public function resolvedLocale(): string
+    {
+        $locale = $this->validated('locale');
+
+        if (is_string($locale) && in_array($locale, (array) config('app.locales', []), true)) {
+            return $locale;
+        }
+
+        return (string) config('app.fallback_locale');
     }
 
     protected function prepareForValidation(): void

@@ -35,7 +35,7 @@ class SetLocaleTest extends TestCase
         $this->assertEquals(config('app.locale'), app()->getLocale());
     }
 
-    public function test_set_locale_defaults_when_session_locale_is_invalid(): void
+    public function test_set_locale_uses_fallback_when_session_locale_is_invalid(): void
     {
         $middleware = new SetLocale;
         $request = Request::create('/');
@@ -45,6 +45,6 @@ class SetLocaleTest extends TestCase
             return response('OK');
         });
 
-        $this->assertEquals(config('app.locale'), app()->getLocale());
+        $this->assertEquals(config('app.fallback_locale'), app()->getLocale());
     }
 }

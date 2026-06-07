@@ -10,7 +10,7 @@ class LocaleSwitchController extends Controller
 {
     public function __invoke(SwitchLocaleRequest $request): RedirectResponse
     {
-        $request->session()->put('locale', $request->validated('locale'));
+        $request->session()->put('locale', $request->resolvedLocale());
 
         return redirect()->back();
     }
