@@ -24,15 +24,18 @@
                         :label="__('common_back_to_orders')"
                     />
                     <x-ui.badge
-                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                        :color="match (strtolower((string) $order->payment_status)) {
-                            'pending' => 'warning',
-                            'paid' => 'success',
-                            'cancelled' => 'error',
-                            default => 'neutral',
-                        }"
+                        :value="$order->paymentStatusLabel()"
+                        :color="$order->paymentStatusUiColor()"
                         soft
                         class="font-medium"
+                    />
+                    <x-ui.button
+                        type="button"
+                        primary
+                        icon="chat-bubble-left-right"
+                        spinner="openBuyerConversation"
+                        wire:click="openBuyerConversation"
+                        :label="__('messages.message_buyer')"
                     />
                 </div>
             </x-slot:actions>
@@ -78,23 +81,29 @@
 
             <!-- start status update form -->
             <div class="pt-4">
-                @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
+                @if(! empty($allowedStatusTransitions))
                     <div class="flex space-x-4">
-                        <x-ui.button
-                            positive
-                            icon="check"
-                            :label="__('orders_confirm_order')"
-                            wire:click="updateStatus('{{ \App\Models\Order::STATUS['PAID'] }}')"
-                            spinner="updateStatus"
-                        />
-
-                        <x-ui.button
-                            negative
-                            icon="x-mark"
-                            :label="__('orders_cancel_order')"
-                            wire:click="confirmCancelOrder"
-                            spinner="confirmCancelOrder"
-                        />
+                        @forelse ($allowedStatusTransitions as $nextStatus)
+                            @if ($nextStatus === \App\Enums\OrderStatus::Cancelled)
+                                <x-ui.button
+                                    negative
+                                    icon="x-mark"
+                                    :label="$nextStatus->label()"
+                                    wire:click="confirmCancelOrder"
+                                    spinner="confirmCancelOrder"
+                                />
+                            @else
+                                <x-ui.button
+                                    :positive="$nextStatus === $acceptedStatus"
+                                    :secondary="$nextStatus !== $acceptedStatus"
+                                    icon="check"
+                                    :label="$nextStatus->label()"
+                                    wire:click="updateStatus('{{ $nextStatus->value }}')"
+                                    spinner="updateStatus"
+                                />
+                            @endif
+                        @empty
+                        @endforelse
                     </div>
 
                     <div class="mt-4">
@@ -109,13 +118,55 @@
                     </div>
                 @else
                     <div class="text-sm text-gray-500">
-                        {{ __('orders_status_cannot_be_changed') }}
+                        {{ __('orders.status.messages.cannot_be_changed') }}
                     </div>
                 @endif
             </div>
             <!-- end status update form -->
         </x-ui.card>
         <!-- end order header -->
+
+        @if ($orderBundles->isNotEmpty())
+            <x-ui.card
+                class="mb-6 rounded-lg shadow-sm"
+                :title="__('orders.bundle_snapshot')"
+            >
+                <div class="space-y-4">
+                    @foreach ($orderBundles as $orderBundle)
+                        <div class="rounded-lg border p-4">
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">{{ $orderBundle->bundle_name_snapshot }}</h3>
+                                    <div class="mt-1 text-sm text-gray-600">
+                                        {{ __('bundles.quantity') }}: {{ $orderBundle->quantity }}
+                                    </div>
+                                </div>
+                                <div class="text-sm sm:text-right">
+                                    <div>{{ __('bundles.base_price') }}: {{ number_format((float) $orderBundle->base_price, 2) }} €</div>
+                                    @if ((float) $orderBundle->discount_amount > 0)
+                                        <div class="text-green-700">{{ __('bundles.discount') }}: -{{ number_format((float) $orderBundle->discount_amount, 2) }} €</div>
+                                    @endif
+                                    <div class="font-bold">{{ __('bundles.final_price') }}: {{ number_format((float) $orderBundle->final_price, 2) }} €</div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid gap-3 md:grid-cols-2">
+                                @foreach ($orderBundle->products_snapshot ?? [] as $snapshotProduct)
+                                    <div class="rounded-md bg-gray-50 p-3 text-sm text-gray-700">
+                                        <div class="font-medium">{{ $snapshotProduct['title'] ?? __('common_unnamed_product') }}</div>
+                                        <div>
+                                            {{ __('orders_quantity') }}: {{ $snapshotProduct['quantity'] ?? 0 }}
+                                            -
+                                            {{ __('orders_unit_price') }}: {{ number_format((float) ($snapshotProduct['unit_price'] ?? 0), 2) }} €
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-ui.card>
+        @endif
 
         <!-- start order items -->
         <x-ui.card
@@ -153,18 +204,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <img
+                                            <img 
                                                 src="{{ $item->product?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product')) }}"
                                                 alt="{{ $item->product?->name ?? __('common_unnamed_product') }}"
                                                 class="h-10 w-10 rounded-full object-cover"
                                                 loading="lazy"
-                                                width="160"
-                                                height="160"
                                             >
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{ $item->product->name }}
+                                                {{ $item->product?->name ?? __('common_unnamed_product') }}
                                             </div>
                                         </div>
                                     </div>

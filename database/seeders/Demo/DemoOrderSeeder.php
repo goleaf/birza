@@ -2,12 +2,14 @@
 
 namespace Database\Seeders\Demo;
 
+use App\Actions\ProductBundles\CalculateBundlePriceAction;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatusActorRole;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
 use App\Models\Product;
+use App\Models\ProductBundle;
 use App\Models\SellerTransaction;
 use App\Models\Users\Buyer;
 use Illuminate\Database\Seeder;
@@ -41,6 +43,7 @@ class DemoOrderSeeder extends Seeder
         }
 
         $this->deletedProductSnapshotOrder($buyer);
+        $this->bundleSnapshotOrder($ordersBuyer);
     }
 
     private function statusOrder(
@@ -110,6 +113,90 @@ class DemoOrderSeeder extends Seeder
         $this->item($order, $product, 2);
         $this->history($order, OrderStatus::Completed, $createdAt);
         $this->sellerTransaction($order, $product, OrderStatus::Completed, $subtotal);
+    }
+
+    private function bundleSnapshotOrder(Buyer $buyer): void
+    {
+        if (! Schema::hasTable('order_bundles')) {
+            return;
+        }
+
+        $bundle = ProductBundle::query()
+            ->with(['seller', 'items.product.seller'])
+            ->where('slug', 'demo-weekend-fruit-cheese-set')
+            ->first();
+
+        if (! $bundle) {
+            return;
+        }
+
+        $price = app(CalculateBundlePriceAction::class)->handle($bundle);
+        $createdAt = now()->subDays(21);
+
+        $order = Order::query()->firstOrNew([
+            'buyer_id' => $buyer->id,
+            'payment_method' => 'demo_bundle_snapshot',
+        ]);
+
+        $order->forceFill([
+            'subtotal' => $price['base_price'],
+            'discount_total' => $price['discount_amount'],
+            'order_total' => $price['final_price'],
+            'payment_status' => OrderPaymentStatus::Paid,
+            'status' => OrderStatus::Completed,
+            'shipping_address_snapshot' => $buyer->address ?? 'Demo bundle shipping address',
+            'billing_address_snapshot' => $buyer->address ?? 'Demo bundle billing address',
+            'delivery_method' => 'courier',
+        ]);
+        $order->created_at = $createdAt;
+        $order->updated_at = $createdAt->copy()->addHours(4);
+
+        Order::allowStatusMutation(fn (): bool => $order->save());
+
+        $orderBundle = $order->orderBundles()->updateOrCreate([
+            'product_bundle_id' => $bundle->id,
+        ], [
+            'seller_id' => $bundle->seller_id,
+            'bundle_name_snapshot' => $bundle->name,
+            'quantity' => 1,
+            'base_price' => $price['base_price'],
+            'discount_type' => $bundle->discount_type,
+            'discount_value' => $bundle->discount_value,
+            'discount_amount' => $price['discount_amount'],
+            'final_price' => $price['final_price'],
+            'products_snapshot' => $price['products'],
+        ]);
+
+        $bundle->items->each(function ($bundleItem) use ($order, $orderBundle): void {
+            $product = $bundleItem->product;
+
+            if (! $product instanceof Product) {
+                return;
+            }
+
+            $unitPrice = (float) $product->price;
+            $quantity = (int) $bundleItem->quantity;
+
+            $order->items()->updateOrCreate([
+                'order_bundle_id' => $orderBundle->id,
+                'product_id' => $product->id,
+            ], [
+                'seller_id' => $product->seller_id,
+                'quantity' => $quantity,
+                'unit_price' => $unitPrice,
+                'original_unit_price' => $unitPrice,
+                'discount_amount' => 0,
+                'final_unit_price' => $unitPrice,
+                'total_price' => round($unitPrice * $quantity, 2),
+                'product_title_snapshot' => $product->name,
+                'product_price_snapshot' => $unitPrice,
+                'seller_name_snapshot' => $product->seller?->company_name,
+                'discount_source' => 'product_bundle:'.$bundleItem->product_bundle_id,
+            ]);
+        });
+
+        $this->history($order, OrderStatus::Completed, $createdAt);
+        $this->sellerTransaction($order, $bundle->items->first()->product, OrderStatus::Completed, (float) $price['final_price']);
     }
 
     private function item(Order $order, Product $product, int $quantity): void

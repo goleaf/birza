@@ -71,7 +71,7 @@ class Form extends Component
         $this->country->save();
 
         session()->flash('success', __('backend_common_success_message'));
-        $this->redirectRoute('backend.countries.index');
+        $this->redirectRoute('admin.countries.index');
     }
 
     public function render()

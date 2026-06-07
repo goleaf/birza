@@ -31,7 +31,7 @@
             <x-mary-button
                 :label="__('backend_attributes_actions_create')"
                 icon="o-plus"
-                :link="route('backend.attributes.create')"
+                :link="route('admin.attributes.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -81,12 +81,12 @@
                 <x-backend.action-dropdown>
                     <x-mary-menu-item
                         :title="__('backend_attributes_actions_add_value')"
-                        :link="route('backend.attributes.values.create', $attribute)"
+                        :link="route('admin.attributes.values.create', $attribute)"
                         icon="o-plus"
                     />
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.attributes.edit', $attribute)"
+                        :link="route('admin.attributes.edit', $attribute)"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-separator />

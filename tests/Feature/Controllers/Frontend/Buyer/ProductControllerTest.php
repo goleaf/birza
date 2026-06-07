@@ -13,19 +13,34 @@ use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_product_index_requires_authentication(): void
+    public function test_product_index_displays_for_guest(): void
     {
-        Product::factory()->active()->count(5)->create();
+        $category = Category::factory()->create([
+            'category_name' => ['en' => 'Vegetables', 'lt' => 'Darzoves'],
+        ]);
+        $subcategory = Category::factory()->create([
+            'parent_category_id' => $category->id,
+            'category_name' => ['en' => 'Root Vegetables', 'lt' => 'Saknines darzoves'],
+        ]);
+        $product = Product::factory()->active()->create([
+            'name' => 'Guest Visible Product',
+            'category_id' => $subcategory->id,
+        ]);
 
         $response = $this->get(route('buyer.products.index'));
 
-        $response->assertRedirect(route('home'));
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerProductsIndex::class)
+            ->assertSee($product->name)
+            ->assertSee(route('buyer.compare.index'))
+            ->assertSee('wire:click="addToCompare', false);
     }
 
     public function test_product_index_displays_for_authenticated_buyer(): void
@@ -144,17 +159,23 @@ class ProductControllerTest extends TestCase
             ->assertDontSee('Above stock range');
     }
 
-    public function test_product_show_requires_authentication(): void
+    public function test_product_show_displays_for_guest(): void
     {
         $product = Product::factory()->active()->create();
 
         $response = $this->get(route('buyer.products.show', $product));
 
-        $response->assertRedirect(route('home'));
+        $response->assertStatus(200)
+            ->assertSeeLivewire(BuyerProductsShow::class)
+            ->assertSee($product->name)
+            ->assertSee(route('buyer.compare.index'))
+            ->assertSee('wire:click="addToCompare"', false);
     }
 
     public function test_product_show_displays_for_authenticated_buyer(): void
     {
+        Storage::fake('public');
+
         $buyer = Buyer::factory()->create();
         $seller = Seller::factory()->create([
             'name' => 'Seller Jane',
@@ -171,6 +192,9 @@ class ProductControllerTest extends TestCase
             ],
         ]);
 
+        Storage::disk('public')->put('products/primary.webp', 'primary');
+        Storage::disk('public')->put('products/secondary.webp', 'secondary');
+
         $response = $this->actingAs($buyer, 'buyer')
             ->get(route('buyer.products.show', $product));
 
@@ -179,11 +203,10 @@ class ProductControllerTest extends TestCase
             ->assertSee(__('common_dashboard'))
             ->assertSee(__('common_products'))
             ->assertSee($product->name)
-            ->assertSee('seller@example.com')
+            ->assertDontSee('seller@example.com')
             ->assertSee('photoswipe.umd.min.js')
             ->assertSee('PhotoSwipeLightbox', false)
             ->assertSee('pswp-gallery', false)
-            ->assertSee((string) config('images.fallbacks.product'))
             ->assertSee('<h1>Fresh Farm</h1>', false)
             ->assertSee('<li>Organic</li>', false);
     }

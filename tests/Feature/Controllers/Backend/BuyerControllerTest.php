@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Backend;
 
+use App\Enums\OrderPaymentStatus;
 use App\Livewire\Backend\Buyers\Credit as BuyerCreditPage;
 use App\Livewire\Backend\Buyers\Form as BuyerForm;
 use App\Livewire\Backend\Buyers\Index as BuyerIndex;
@@ -23,7 +24,7 @@ class BuyerControllerTest extends TestCase
 
     public function test_buyer_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.buyers.index'));
+        $response = $this->get(route('admin.buyers.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -34,7 +35,7 @@ class BuyerControllerTest extends TestCase
         Buyer::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.index'));
+            ->get(route('admin.buyers.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerIndex::class)
@@ -52,7 +53,7 @@ class BuyerControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.create'));
+            ->get(route('admin.buyers.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerForm::class)
@@ -67,7 +68,7 @@ class BuyerControllerTest extends TestCase
         $buyer = Buyer::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.edit', $buyer));
+            ->get(route('admin.buyers.edit', $buyer));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerForm::class)
@@ -83,11 +84,11 @@ class BuyerControllerTest extends TestCase
         ]);
         $order = Order::factory()->for($buyer, 'buyer')->create([
             'order_total' => 150.25,
-            'payment_status' => 'paid',
+            'payment_status' => OrderPaymentStatus::Paid,
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.orders', $buyer));
+            ->get(route('admin.buyers.orders', $buyer));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerOrdersPage::class)
@@ -115,7 +116,7 @@ class BuyerControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.credit', $buyer));
+            ->get(route('admin.buyers.credit', $buyer));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerCreditPage::class)

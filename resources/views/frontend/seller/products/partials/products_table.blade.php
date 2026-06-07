@@ -27,22 +27,57 @@
     <!-- end table header -->
     --}}
     
+    <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_image_2') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_name') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_category') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_price') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_is_organic') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_is_active') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_stock') }}
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {{ __('product_actions') }}
+            </th>
+        </tr>
+    </thead>
+
     <!-- start table body -->
     <tbody class="bg-white divide-y divide-gray-200">
-        @foreach ($products as $product)
+        @forelse ($products as $product)
             <tr>
                 <!-- start image cell -->
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <img
-                        src="{{ $product->imageUrl('thumb') }}"
+                    <img 
+                        src="{{ $product->imageUrl('thumb') }}" 
                         alt="{{ $product->name }}"
                         class="h-10 w-10 rounded-lg object-cover"
                         loading="lazy"
-                        width="160"
-                        height="160"
                     >
                 </td>
                 <!-- end image cell -->
+
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    {{ $product->name }}
+                </td>
+
+                <td class="px-6 py-4 text-gray-600">
+                    {{ $product->category?->getTranslation('category_name', app()->getLocale()) ?? __('common_not_specified') }}
+                </td>
 
                 <!-- start price cell -->
                 <td class="px-6 py-4">
@@ -65,8 +100,8 @@
                 <!-- start active cell -->
                 <td class="px-6 py-4">
                     <x-ui.badge
-                        :value="$product->is_active ? __('product_active') : __('product_inactive')"
-                        :color="$product->is_active ? 'info' : 'error'"
+                        :value="$product->statusLabel()"
+                        :color="$product->statusBadgeColor()"
                         soft
                         sm
                         class="font-semibold"
@@ -128,7 +163,13 @@
                 </td>
                 <!-- end actions cell -->
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                    {{ __('product_no_products_found') }}
+                </td>
+            </tr>
+        @endforelse
     </tbody>
     <!-- end table body -->
 </table>

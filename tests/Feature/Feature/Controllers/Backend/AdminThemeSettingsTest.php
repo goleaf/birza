@@ -25,6 +25,7 @@ class AdminThemeSettingsTest extends TestCase
             ->set('admin_accent_color', '#445566')
             ->set('admin_surface_color', '#778899')
             ->set('admin_spotlight_tags', ['ops', 'catalog'])
+            ->set('audit_reason', 'Update admin theme colors.')
             ->call('save')
             ->assertHasNoErrors();
 

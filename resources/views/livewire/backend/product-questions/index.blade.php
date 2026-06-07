@@ -59,7 +59,7 @@
                                 </div>
                                 @if ($productQuestion->product)
                                     <a
-                                        href="{{ route('backend.products.show', $productQuestion->product) }}"
+                                        href="{{ route('admin.products.show', $productQuestion->product) }}"
                                         class="text-xs text-primary hover:underline"
                                     >
                                         {{ __('products.questions.view_product') }}

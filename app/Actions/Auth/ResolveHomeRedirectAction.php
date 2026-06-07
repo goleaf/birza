@@ -2,27 +2,22 @@
 
 namespace App\Actions\Auth;
 
+use App\Enums\MarketplaceRole;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ResolveHomeRedirectAction
 {
-    /**
-     * @var array<string, string>
-     */
-    private const DASHBOARD_ROUTES = [
-        'seller' => 'seller.dashboard',
-        'buyer' => 'buyer.dashboard',
-    ];
-
     public function __construct(
         private readonly LogoutGuardAction $logoutGuardAction,
     ) {}
 
     public function handle(Request $request): ?RedirectResponse
     {
-        foreach (self::DASHBOARD_ROUTES as $guard => $dashboardRoute) {
+        foreach ([MarketplaceRole::Seller, MarketplaceRole::Buyer] as $role) {
+            $guard = $role->guard();
+
             if (! Auth::guard($guard)->check()) {
                 continue;
             }
@@ -30,7 +25,7 @@ class ResolveHomeRedirectAction
             $user = Auth::guard($guard)->user();
 
             if ($user?->is_active) {
-                return redirect()->route($dashboardRoute);
+                return redirect()->route($role->dashboardRoute());
             }
 
             $this->logoutGuardAction->handle($request, $guard);

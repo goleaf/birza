@@ -4,7 +4,7 @@
     :items="array_merge([
         [
             'label' => __('backend_dashboard_title'),
-            'link' => route('backend.dashboard'),
+            'link' => route('admin.dashboard'),
             'icon' => 'o-home',
         ],
     ], $items)"

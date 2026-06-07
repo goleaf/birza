@@ -1,0 +1,554 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "imk24.lt" [ref=e8] [cursor=pointer]:
+          - /url: https://birza.test/buyer/dashboard
+          - img [ref=e9]
+          - heading "imk24.lt" [level=1] [ref=e11]
+        - generic [ref=e12]:
+          - link "LT" [ref=e13] [cursor=pointer]:
+            - /url: https://birza.test/language/lt
+          - link "EN" [ref=e14] [cursor=pointer]:
+            - /url: https://birza.test/language/en
+      - generic [ref=e16]:
+        - button "Pranešimai" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e22]: "4"
+        - button "Demo Buyer Ltd" [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: Demo Buyer Ltd
+        - navigation [ref=e29]:
+          - link "Krepšelis Krepšelis 6" [ref=e30] [cursor=pointer]:
+            - /url: https://birza.test/buyer/cart
+            - text: Krepšelis
+            - generic "Krepšelis 6" [ref=e31]: "6"
+          - link "Norų sąrašai Norų sąrašai 2" [ref=e32] [cursor=pointer]:
+            - /url: https://birza.test/buyer/wishlists
+            - text: Norų sąrašai
+            - generic "Norų sąrašai 2" [ref=e33]: "2"
+          - link "Titulinis puslapis" [ref=e34] [cursor=pointer]:
+            - /url: https://birza.test/buyer/dashboard
+          - link "Redaguoti profilį" [ref=e35] [cursor=pointer]:
+            - /url: https://birza.test/buyer/profile
+          - button "Logout" [ref=e37] [cursor=pointer]
+  - main [ref=e38]:
+    - main [ref=e42]:
+      - list [ref=e44]:
+        - listitem [ref=e45]:
+          - link "Valdymo skydelis" [ref=e46] [cursor=pointer]:
+            - /url: https://birza.test/buyer/dashboard
+            - img [ref=e47]
+            - generic [ref=e49]: Valdymo skydelis
+        - img [ref=e51]
+        - listitem [ref=e53]:
+          - generic [ref=e55]: Products
+      - generic [ref=e56]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - checkbox [ref=e61] [cursor=pointer]
+              - generic [ref=e62] [cursor=pointer]: Šviežia mėsa
+            - generic [ref=e63]:
+              - checkbox [ref=e64] [cursor=pointer]
+              - generic [ref=e65] [cursor=pointer]: Malta mėsa
+            - generic [ref=e66]:
+              - checkbox [ref=e67] [cursor=pointer]
+              - generic [ref=e68] [cursor=pointer]: Marinuoti mėsa ir paukštiena
+            - generic [ref=e69]:
+              - checkbox [ref=e70] [cursor=pointer]
+              - generic [ref=e71] [cursor=pointer]: Šviežios dešrelės
+            - generic [ref=e72]:
+              - checkbox [ref=e73] [cursor=pointer]
+              - generic [ref=e74] [cursor=pointer]: Mėsos ir paukštienos gaminiai
+            - generic [ref=e75]:
+              - checkbox [ref=e76] [cursor=pointer]
+              - generic [ref=e77] [cursor=pointer]: Kulinarija
+            - generic [ref=e78]:
+              - checkbox [ref=e79] [cursor=pointer]
+              - generic [ref=e80] [cursor=pointer]: Žuvis, žuvų gaminiai
+            - generic [ref=e81]:
+              - checkbox [ref=e82] [cursor=pointer]
+              - generic [ref=e83] [cursor=pointer]: Daržovės ir vaisiai
+            - generic [ref=e84]:
+              - checkbox [ref=e85] [cursor=pointer]
+              - generic [ref=e86] [cursor=pointer]: Pieno gaminiai
+            - generic [ref=e87]:
+              - checkbox [ref=e88] [cursor=pointer]
+              - generic [ref=e89] [cursor=pointer]: Demo tuscia kategorija
+            - generic [ref=e90]:
+              - checkbox [ref=e91] [cursor=pointer]
+              - generic [ref=e92] [cursor=pointer]: Majonezas
+            - generic [ref=e93]:
+              - checkbox [ref=e94] [cursor=pointer]
+              - generic [ref=e95] [cursor=pointer]: Kiaušiniai
+            - generic [ref=e96]:
+              - checkbox [ref=e97] [cursor=pointer]
+              - generic [ref=e98] [cursor=pointer]: Duonos gaminiai ir konditerija
+            - generic [ref=e99]:
+              - checkbox [ref=e100] [cursor=pointer]
+              - generic [ref=e101] [cursor=pointer]: Maistas sportui
+            - generic [ref=e102]:
+              - checkbox [ref=e103] [cursor=pointer]
+              - generic [ref=e104] [cursor=pointer]: Medus
+            - generic [ref=e105]:
+              - checkbox [ref=e106] [cursor=pointer]
+              - generic [ref=e107] [cursor=pointer]: Bakalėja
+            - generic [ref=e108]:
+              - checkbox [ref=e109] [cursor=pointer]
+              - generic [ref=e110] [cursor=pointer]: Konservuoti gaminiai
+            - generic [ref=e111]:
+              - checkbox [ref=e112] [cursor=pointer]
+              - generic [ref=e113] [cursor=pointer]: Padažai
+            - generic [ref=e114]:
+              - checkbox [ref=e115] [cursor=pointer]
+              - generic [ref=e116] [cursor=pointer]: Prieskoniai
+            - generic [ref=e117]:
+              - checkbox [ref=e118] [cursor=pointer]
+              - generic [ref=e119] [cursor=pointer]: Gėrimai
+            - generic [ref=e120]:
+              - checkbox [ref=e121] [cursor=pointer]
+              - generic [ref=e122] [cursor=pointer]: Alkoholiniai gėrimai
+            - generic [ref=e123]:
+              - checkbox [ref=e124] [cursor=pointer]
+              - generic [ref=e125] [cursor=pointer]: Stiprieji alkoholiniai gėrimai
+            - generic [ref=e126]:
+              - checkbox [ref=e127] [cursor=pointer]
+              - generic [ref=e128] [cursor=pointer]: Gyvūnų prekės
+            - generic [ref=e129]:
+              - checkbox [ref=e130] [cursor=pointer]
+              - generic [ref=e131] [cursor=pointer]: Buitinės chemijos prekės
+            - generic [ref=e132]:
+              - checkbox [ref=e133] [cursor=pointer]
+              - generic [ref=e134] [cursor=pointer]: Probiotikai
+            - generic [ref=e135]:
+              - checkbox [ref=e136] [cursor=pointer]
+              - generic [ref=e137] [cursor=pointer]: Sėklos
+            - generic [ref=e138]:
+              - checkbox [ref=e139] [cursor=pointer]
+              - generic [ref=e140] [cursor=pointer]: Gėlės
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - generic [ref=e143]: Kainos intervalas
+              - generic [ref=e144]:
+                - spinbutton [ref=e145]
+                - generic [ref=e146]: "-"
+                - spinbutton [ref=e147]
+            - generic [ref=e148]:
+              - generic [ref=e149]: Likučio intervalas
+              - generic [ref=e150]:
+                - spinbutton [ref=e151]
+                - generic [ref=e152]: "-"
+                - spinbutton [ref=e153]
+            - generic [ref=e154]:
+              - generic [ref=e155]: Šalis
+              - combobox [ref=e156]:
+                - option "Pasirinkite šalį" [selected]
+                - option "Airija"
+                - option "Alandų Salos"
+                - option "Albanija"
+                - option "Andora"
+                - option "Austrija"
+                - option "Baltarusija"
+                - option "Belgija"
+                - option "Bosnija ir Hercegovina"
+                - option "Bulgarija"
+                - option "Danija"
+                - option "Džersis"
+                - option "Estija"
+                - option "Farerų Salos"
+                - option "Gernsis"
+                - option "Gibraltaras"
+                - option "Graikija"
+                - option "Islandija"
+                - option "Ispanija"
+                - option "Italija"
+                - option "Jungtinė Karalystė"
+                - option "Juodkalnija"
+                - option "Kroatija"
+                - option "Latvija"
+                - option "Lenkija"
+                - option "Lichtenšteinas"
+                - option "Lietuva"
+                - option "Liuksemburgas"
+                - option "Malta"
+                - option "Meno Sala"
+                - option "Moldova"
+                - option "Monakas"
+                - option "Norvegija"
+                - option "Nyderlandai"
+                - option "Portugalija"
+                - option "Prancūzija"
+                - option "Rumunija"
+                - option "Rusija"
+                - option "San Marinas"
+                - option "Serbija"
+                - option "Slovakija"
+                - option "Slovėnija"
+                - option "Suomija"
+                - option "Svalbardas ir Janas Majenas"
+                - option "Ukraina"
+                - option "Vatikano Miesto Valstybė"
+                - option "Vengrija"
+                - option "Vokietija"
+                - option "Čekija"
+                - option "Šiaurės Makedonija"
+                - option "Švedija"
+                - option "Šveicarija"
+            - generic [ref=e157]:
+              - generic [ref=e158]: Ekologiškas
+              - combobox [ref=e159]:
+                - option "Ekologiškų produktų filtras" [selected]
+                - option "Taip"
+                - option "Ne"
+            - button "Filtruoti" [ref=e161] [cursor=pointer]
+        - generic [ref=e162]:
+          - generic [ref=e163]:
+            - textbox "Ieškoti produktų..." [ref=e165]
+            - link "Palyginimas (0/4)" [ref=e166] [cursor=pointer]:
+              - /url: https://birza.test/buyer/compare
+              - img [ref=e168]
+              - generic [ref=e170]: Palyginimas (0/4)
+          - generic [ref=e171]:
+            - generic [ref=e172]:
+              - generic [ref=e173]:
+                - link "Šviežia mėsa" [ref=e174] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e175] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 25" [ref=e176] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1789
+                - img "Demo Pagination Product 25" [ref=e177]
+              - heading "Demo Pagination Product 25" [level=3] [ref=e178]
+              - generic [ref=e179]:
+                - generic [ref=e180]: 28.50 € / units_unit_kg
+                - generic [ref=e181]: "Likutis: 35 units_unit_kg"
+              - generic [ref=e182]:
+                - generic [ref=e183]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e184] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1789
+              - generic [ref=e185]:
+                - button "Išsaugoti" [ref=e186] [cursor=pointer]:
+                  - img [ref=e188]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e190] [cursor=pointer]:
+                  - img [ref=e192]
+                  - text: Palyginti
+            - generic [ref=e194]:
+              - generic [ref=e195]:
+                - link "Šviežia mėsa" [ref=e196] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e197] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 24" [ref=e198] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1788
+                - img "Demo Pagination Product 24" [ref=e199]
+              - heading "Demo Pagination Product 24" [level=3] [ref=e200]
+              - generic [ref=e201]:
+                - generic [ref=e202]: 27.50 € / units_unit_kg
+                - generic [ref=e203]: "Likutis: 34 units_unit_kg"
+              - generic [ref=e204]:
+                - generic [ref=e205]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e206] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1788
+              - generic [ref=e207]:
+                - button "Išsaugoti" [ref=e208] [cursor=pointer]:
+                  - img [ref=e210]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e212] [cursor=pointer]:
+                  - img [ref=e214]
+                  - text: Palyginti
+            - generic [ref=e216]:
+              - generic [ref=e217]:
+                - link "Šviežia mėsa" [ref=e218] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e219] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 23" [ref=e220] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1787
+                - img "Demo Pagination Product 23" [ref=e221]
+              - heading "Demo Pagination Product 23" [level=3] [ref=e222]
+              - generic [ref=e223]:
+                - generic [ref=e224]: 26.50 € / units_unit_kg
+                - generic [ref=e225]: "Likutis: 33 units_unit_kg"
+              - generic [ref=e226]:
+                - generic [ref=e227]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e228] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1787
+              - generic [ref=e229]:
+                - button "Išsaugoti" [ref=e230] [cursor=pointer]:
+                  - img [ref=e232]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e234] [cursor=pointer]:
+                  - img [ref=e236]
+                  - text: Palyginti
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - link "Šviežia mėsa" [ref=e240] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e241] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 22" [ref=e242] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1786
+                - img "Demo Pagination Product 22" [ref=e243]
+              - heading "Demo Pagination Product 22" [level=3] [ref=e244]
+              - generic [ref=e245]:
+                - generic [ref=e246]: 25.50 € / units_unit_kg
+                - generic [ref=e247]: "Likutis: 32 units_unit_kg"
+              - generic [ref=e248]:
+                - generic [ref=e249]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e250] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1786
+              - generic [ref=e251]:
+                - button "Išsaugoti" [ref=e252] [cursor=pointer]:
+                  - img [ref=e254]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e256] [cursor=pointer]:
+                  - img [ref=e258]
+                  - text: Palyginti
+            - generic [ref=e260]:
+              - generic [ref=e261]:
+                - link "Šviežia mėsa" [ref=e262] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e263] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 21" [ref=e264] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1785
+                - img "Demo Pagination Product 21" [ref=e265]
+              - heading "Demo Pagination Product 21" [level=3] [ref=e266]
+              - generic [ref=e267]:
+                - generic [ref=e268]: 24.50 € / units_unit_kg
+                - generic [ref=e269]: "Likutis: 31 units_unit_kg"
+              - generic [ref=e270]:
+                - generic [ref=e271]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e272] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1785
+              - generic [ref=e273]:
+                - button "Išsaugoti" [ref=e274] [cursor=pointer]:
+                  - img [ref=e276]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e278] [cursor=pointer]:
+                  - img [ref=e280]
+                  - text: Palyginti
+            - generic [ref=e282]:
+              - generic [ref=e283]:
+                - link "Šviežia mėsa" [ref=e284] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e285] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 20" [ref=e286] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1784
+                - img "Demo Pagination Product 20" [ref=e287]
+              - heading "Demo Pagination Product 20" [level=3] [ref=e288]
+              - generic [ref=e289]:
+                - generic [ref=e290]: 23.50 € / units_unit_kg
+                - generic [ref=e291]: "Likutis: 30 units_unit_kg"
+              - generic [ref=e292]:
+                - generic [ref=e293]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e294] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1784
+              - generic [ref=e295]:
+                - button "Išsaugoti" [ref=e296] [cursor=pointer]:
+                  - img [ref=e298]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e300] [cursor=pointer]:
+                  - img [ref=e302]
+                  - text: Palyginti
+            - generic [ref=e304]:
+              - generic [ref=e305]:
+                - link "Šviežia mėsa" [ref=e306] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e307] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 19" [ref=e308] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1783
+                - img "Demo Pagination Product 19" [ref=e309]
+              - heading "Demo Pagination Product 19" [level=3] [ref=e310]
+              - generic [ref=e311]:
+                - generic [ref=e312]: 22.50 € / units_unit_kg
+                - generic [ref=e313]: "Likutis: 29 units_unit_kg"
+              - generic [ref=e314]:
+                - generic [ref=e315]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e316] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1783
+              - generic [ref=e317]:
+                - button "Išsaugoti" [ref=e318] [cursor=pointer]:
+                  - img [ref=e320]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e322] [cursor=pointer]:
+                  - img [ref=e324]
+                  - text: Palyginti
+            - generic [ref=e326]:
+              - generic [ref=e327]:
+                - link "Šviežia mėsa" [ref=e328] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e329] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 18" [ref=e330] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1782
+                - img "Demo Pagination Product 18" [ref=e331]
+              - heading "Demo Pagination Product 18" [level=3] [ref=e332]
+              - generic [ref=e333]:
+                - generic [ref=e334]: 21.50 € / units_unit_kg
+                - generic [ref=e335]: "Likutis: 28 units_unit_kg"
+              - generic [ref=e336]:
+                - generic [ref=e337]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e338] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1782
+              - generic [ref=e339]:
+                - button "Išsaugoti" [ref=e340] [cursor=pointer]:
+                  - img [ref=e342]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e344] [cursor=pointer]:
+                  - img [ref=e346]
+                  - text: Palyginti
+            - generic [ref=e348]:
+              - generic [ref=e349]:
+                - link "Šviežia mėsa" [ref=e350] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e351] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 17" [ref=e352] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1781
+                - img "Demo Pagination Product 17" [ref=e353]
+              - heading "Demo Pagination Product 17" [level=3] [ref=e354]
+              - generic [ref=e355]:
+                - generic [ref=e356]: 20.50 € / units_unit_kg
+                - generic [ref=e357]: "Likutis: 27 units_unit_kg"
+              - generic [ref=e358]:
+                - generic [ref=e359]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e360] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1781
+              - generic [ref=e361]:
+                - button "Išsaugoti" [ref=e362] [cursor=pointer]:
+                  - img [ref=e364]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e366] [cursor=pointer]:
+                  - img [ref=e368]
+                  - text: Palyginti
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - link "Šviežia mėsa" [ref=e372] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e373] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 16" [ref=e374] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1780
+                - img "Demo Pagination Product 16" [ref=e375]
+              - heading "Demo Pagination Product 16" [level=3] [ref=e376]
+              - generic [ref=e377]:
+                - generic [ref=e378]: 19.50 € / units_unit_kg
+                - generic [ref=e379]: "Likutis: 26 units_unit_kg"
+              - generic [ref=e380]:
+                - generic [ref=e381]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e382] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1780
+              - generic [ref=e383]:
+                - button "Išsaugoti" [ref=e384] [cursor=pointer]:
+                  - img [ref=e386]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e388] [cursor=pointer]:
+                  - img [ref=e390]
+                  - text: Palyginti
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - link "Šviežia mėsa" [ref=e394] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e395] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 15" [ref=e396] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1779
+                - img "Demo Pagination Product 15" [ref=e397]
+              - heading "Demo Pagination Product 15" [level=3] [ref=e398]
+              - generic [ref=e399]:
+                - generic [ref=e400]: 18.50 € / units_unit_kg
+                - generic [ref=e401]: "Likutis: 25 units_unit_kg"
+              - generic [ref=e402]:
+                - generic [ref=e403]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e404] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1779
+              - generic [ref=e405]:
+                - button "Išsaugoti" [ref=e406] [cursor=pointer]:
+                  - img [ref=e408]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e410] [cursor=pointer]:
+                  - img [ref=e412]
+                  - text: Palyginti
+            - generic [ref=e414]:
+              - generic [ref=e415]:
+                - link "Šviežia mėsa" [ref=e416] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=1
+                - text: ">"
+                - link "Kiauliena" [ref=e417] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products?category=2
+              - link "Demo Pagination Product 14" [ref=e418] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products/1778
+                - img "Demo Pagination Product 14" [ref=e419]
+              - heading "Demo Pagination Product 14" [level=3] [ref=e420]
+              - generic [ref=e421]:
+                - generic [ref=e422]: 17.50 € / units_unit_kg
+                - generic [ref=e423]: "Likutis: 24 units_unit_kg"
+              - generic [ref=e424]:
+                - generic [ref=e425]: Buyer Seller Demo User
+                - link "Peržiūrėti →" [ref=e426] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products/1778
+              - generic [ref=e427]:
+                - button "Išsaugoti" [ref=e428] [cursor=pointer]:
+                  - img [ref=e430]
+                  - text: Išsaugoti
+                - button "Palyginti" [ref=e432] [cursor=pointer]:
+                  - img [ref=e434]
+                  - text: Palyginti
+          - navigation "Puslapiavimo navigacija" [ref=e437]:
+            - generic [ref=e440]:
+              - generic "Ankstesnis" [ref=e441]:
+                - img [ref=e443]
+              - generic [ref=e446]: "1"
+              - link "Eiti į puslapį 2" [ref=e447] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=2
+                - text: "2"
+              - link "Eiti į puslapį 3" [ref=e448] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=3
+                - text: "3"
+              - link "Eiti į puslapį 4" [ref=e449] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=4
+                - text: "4"
+              - link "Eiti į puslapį 5" [ref=e450] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=5
+                - text: "5"
+              - link "Eiti į puslapį 6" [ref=e451] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=6
+                - text: "6"
+              - link "Eiti į puslapį 7" [ref=e452] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=7
+                - text: "7"
+              - link "Eiti į puslapį 8" [ref=e453] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=8
+                - text: "8"
+              - link "Eiti į puslapį 9" [ref=e454] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=9
+                - text: "9"
+              - link "Eiti į puslapį 10" [ref=e455] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=10
+                - text: "10"
+              - generic [ref=e457]: ...
+              - link "Eiti į puslapį 148" [ref=e458] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=148
+                - text: "148"
+              - link "Eiti į puslapį 149" [ref=e459] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=149
+                - text: "149"
+              - link "Sekantis" [ref=e460] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?page=2
+                - img [ref=e461]

@@ -17,13 +17,8 @@
             <x-slot:actions>
                 <div class="flex flex-wrap items-center gap-4">
                     <x-ui.badge
-                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                        :color="match (strtolower((string) $order->payment_status)) {
-                            'pending' => 'warning',
-                            'paid' => 'success',
-                            'cancelled' => 'error',
-                            default => 'neutral',
-                        }"
+                        :value="$order->paymentStatusLabel()"
+                        :color="$order->paymentStatusUiColor()"
                         soft
                         class="font-medium"
                     />
@@ -36,8 +31,7 @@
                     />
                     <!-- end back link -->
                     
-                    <!-- start cancel form -->
-                    @if($order->payment_status === \App\Models\Order::STATUS['PENDING'])
+                    @if ($order->canBeCancelled())
                         <x-ui.button
                             negative
                             :label="__('orders_cancel_order')"
@@ -45,7 +39,6 @@
                             spinner="confirmCancelOrder"
                         />
                     @endif
-                    <!-- end cancel form -->
                 </div>
             </x-slot:actions>
         </x-ui.header>
@@ -66,6 +59,68 @@
             :subtitle="__('orders_timeline_subtitle')"
             :items="$orderTimelineItems"
         />
+
+        @if ($orderSellers->isNotEmpty())
+            <x-ui.card
+                class="mb-6 rounded-lg shadow-sm"
+                :title="__('messages.order_contacts')"
+            >
+                <div class="flex flex-wrap gap-3">
+                    @foreach ($orderSellers as $seller)
+                        <x-ui.button
+                            type="button"
+                            secondary
+                            icon="chat-bubble-left-right"
+                            spinner="openSellerConversation"
+                            wire:click="openSellerConversation({{ $seller->id }})"
+                            :label="__('messages.message_seller', ['seller' => $seller->company_name ?: $seller->name])"
+                        />
+                    @endforeach
+                </div>
+            </x-ui.card>
+        @endif
+
+        @if ($order->orderBundles->isNotEmpty())
+            <x-ui.card
+                class="mb-6 rounded-lg shadow-sm"
+                :title="__('orders.bundle_snapshot')"
+            >
+                <div class="space-y-4">
+                    @foreach ($order->orderBundles as $orderBundle)
+                        <div class="rounded-lg border p-4">
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">{{ $orderBundle->bundle_name_snapshot }}</h3>
+                                    <div class="mt-1 text-sm text-gray-600">
+                                        {{ __('bundles.quantity') }}: {{ $orderBundle->quantity }}
+                                    </div>
+                                </div>
+                                <div class="text-sm sm:text-right">
+                                    <div>{{ __('bundles.base_price') }}: {{ number_format((float) $orderBundle->base_price, 2) }} €</div>
+                                    @if ((float) $orderBundle->discount_amount > 0)
+                                        <div class="text-green-700">{{ __('bundles.discount') }}: -{{ number_format((float) $orderBundle->discount_amount, 2) }} €</div>
+                                    @endif
+                                    <div class="font-bold">{{ __('bundles.final_price') }}: {{ number_format((float) $orderBundle->final_price, 2) }} €</div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid gap-3 md:grid-cols-2">
+                                @foreach ($orderBundle->products_snapshot ?? [] as $snapshotProduct)
+                                    <div class="rounded-md bg-gray-50 p-3 text-sm text-gray-700">
+                                        <div class="font-medium">{{ $snapshotProduct['title'] ?? __('common_unnamed_product') }}</div>
+                                        <div>
+                                            {{ __('orders_quantity') }}: {{ $snapshotProduct['quantity'] ?? 0 }}
+                                            -
+                                            {{ __('orders_unit_price') }}: {{ number_format((float) ($snapshotProduct['unit_price'] ?? 0), 2) }} €
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-ui.card>
+        @endif
 
         <!-- start order items -->
         <x-ui.card
@@ -100,7 +155,7 @@
 
                 <!-- start table body -->
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($order->orderItems as $item)
+                    @foreach($order->items as $item)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <!-- start product info -->
@@ -112,8 +167,6 @@
                                             alt="{{ $item->product?->name ?? __('common_unnamed_product') }}"
                                             class="h-10 w-10 rounded-full object-cover"
                                             loading="lazy"
-                                            width="160"
-                                            height="160"
                                         >
                                     </div>
                                     <!-- end product image -->
@@ -121,7 +174,7 @@
                                     <!-- start product name -->
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ $item->product->name }}
+                                            {{ $item->product?->name ?? __('common_unnamed_product') }}
                                         </div>
                                     </div>
                                     <!-- end product name -->

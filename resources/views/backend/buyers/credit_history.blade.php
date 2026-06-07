@@ -12,9 +12,9 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+            ['label' => __('navigation_buyers'), 'link' => route('admin.buyers.index')],
             ['label' => $buyer->company_name ?: $buyer->name],
-            ['label' => __('backend_buyers_credit_manage_credit'), 'link' => route('backend.buyers.credit', $buyer)],
+            ['label' => __('backend_buyers_credit_manage_credit'), 'link' => route('admin.buyers.credit', $buyer)],
             ['label' => __('backend_buyers_credit_view_history')],
         ]"
     />
@@ -28,7 +28,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.buyers.credit', $buyer)"
+                :link="route('admin.buyers.credit', $buyer)"
             />
             <x-mary-button
                 :label="__('common_filter')"

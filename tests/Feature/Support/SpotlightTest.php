@@ -71,27 +71,27 @@ class SpotlightTest extends TestCase
         $response->assertOk()
             ->assertJsonFragment([
                 'name' => 'Nordic Product',
-                'link' => route('backend.products.edit', $product, false),
+                'link' => route('admin.products.edit', $product, false),
             ])
             ->assertJsonFragment([
                 'name' => 'Nordic Seller',
-                'link' => route('backend.sellers.edit', $seller, false),
+                'link' => route('admin.sellers.edit', $seller, false),
             ])
             ->assertJsonFragment([
                 'name' => 'Nordic Buyer',
-                'link' => route('backend.buyers.edit', $buyer, false),
+                'link' => route('admin.buyers.edit', $buyer, false),
             ])
             ->assertJsonFragment([
                 'name' => 'Nordic Category',
-                'link' => route('backend.categories.edit', $category, false),
+                'link' => route('admin.categories.edit', $category, false),
             ])
             ->assertJsonFragment([
                 'name' => 'Nordic Country',
-                'link' => route('backend.countries.edit', $country, false),
+                'link' => route('admin.countries.edit', $country, false),
             ])
             ->assertJsonFragment([
                 'name' => 'Nordic Attribute',
-                'link' => route('backend.attributes.edit', $attribute, false),
+                'link' => route('admin.attributes.edit', $attribute, false),
             ]);
     }
 
@@ -114,7 +114,7 @@ class SpotlightTest extends TestCase
         $quickActionResponse->assertOk()
             ->assertJsonFragment([
                 'name' => __('navigation_global_settings'),
-                'link' => route('backend.settings.index', absolute: false),
+                'link' => route('admin.settings.index', absolute: false),
             ]);
 
         $orderResponse = $this->actingAs($admin, 'admin')
@@ -123,7 +123,7 @@ class SpotlightTest extends TestCase
         $orderResponse->assertOk()
             ->assertJsonFragment([
                 'name' => '#'.$order->id,
-                'link' => route('backend.orders.show', $order, false),
+                'link' => route('admin.orders.show', $order, false),
             ]);
     }
 
@@ -140,7 +140,7 @@ class SpotlightTest extends TestCase
         $response->assertOk()
             ->assertJsonFragment([
                 'name' => __('navigation_products'),
-                'link' => route('backend.products.create', absolute: false),
+                'link' => route('admin.products.create', absolute: false),
             ]);
     }
 }

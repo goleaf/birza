@@ -1,0 +1,224 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "imk24.lt" [ref=e8] [cursor=pointer]:
+          - /url: https://birza.test/buyer/dashboard
+          - img [ref=e9]
+          - heading "imk24.lt" [level=1] [ref=e11]
+        - generic [ref=e12]:
+          - link "LT" [ref=e13] [cursor=pointer]:
+            - /url: https://birza.test/language/lt
+          - link "EN" [ref=e14] [cursor=pointer]:
+            - /url: https://birza.test/language/en
+      - generic [ref=e16]:
+        - button "Pranešimai" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e22]: "4"
+        - button "Demo Buyer Ltd" [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: Demo Buyer Ltd
+        - navigation [ref=e29]:
+          - link "Krepšelis Krepšelis 6" [ref=e30] [cursor=pointer]:
+            - /url: https://birza.test/buyer/cart
+            - text: Krepšelis
+            - generic "Krepšelis 6" [ref=e31]: "6"
+          - link "Norų sąrašai Norų sąrašai 2" [ref=e32] [cursor=pointer]:
+            - /url: https://birza.test/buyer/wishlists
+            - text: Norų sąrašai
+            - generic "Norų sąrašai 2" [ref=e33]: "2"
+          - link "Titulinis puslapis" [ref=e34] [cursor=pointer]:
+            - /url: https://birza.test/buyer/dashboard
+          - link "Redaguoti profilį" [ref=e35] [cursor=pointer]:
+            - /url: https://birza.test/buyer/profile
+          - button "Logout" [ref=e37] [cursor=pointer]
+  - main [ref=e38]:
+    - generic [ref=e40]:
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - text: 1 - nepanauduotas kredito likutis
+          - paragraph [ref=e45]: 1 000 €
+          - text: Credit Balance
+        - generic [ref=e46]:
+          - text: 2 - panaudota kredito suma
+          - paragraph [ref=e47]: 2 000 €
+          - text: Credit Spent Amount
+        - generic [ref=e48]:
+          - text: 3 - suteikta kredito suma
+          - paragraph [ref=e49]: 3 000 €
+          - text: Total Credit Amount
+      - link "Prekių paieška" [ref=e51] [cursor=pointer]:
+        - /url: https://birza.test/buyer/products
+        - generic [ref=e52]:
+          - generic [ref=e54]: Prekių paieška
+          - img [ref=e56]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Naujausi užsakymai" [level=4] [ref=e60]
+          - link "Žiūrėti viską →" [ref=e61] [cursor=pointer]:
+            - /url: https://birza.test/buyer/orders
+        - table [ref=e63]:
+          - rowgroup [ref=e64]:
+            - row "ID Date Būsena Viso Veiksmai" [ref=e65]:
+              - columnheader "ID" [ref=e66]
+              - columnheader "Date" [ref=e67]
+              - columnheader "Būsena" [ref=e68]
+              - columnheader "Viso" [ref=e69]
+              - columnheader "Veiksmai" [ref=e70]
+          - rowgroup [ref=e71]:
+            - row "#1 2026-05-31 Laukiama €12.50 Peržiūrėti užsakymą" [ref=e72]:
+              - cell "#1" [ref=e73]
+              - cell "2026-05-31" [ref=e74]
+              - cell "Laukiama" [ref=e75]:
+                - generic [ref=e76]: Laukiama
+              - cell "€12.50" [ref=e77]
+              - cell "Peržiūrėti užsakymą" [ref=e78]:
+                - link "Peržiūrėti užsakymą" [ref=e79] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/orders/1
+            - row "#3 2026-05-09 Atšauktas €54.00 Peržiūrėti užsakymą" [ref=e80]:
+              - cell "#3" [ref=e81]
+              - cell "2026-05-09" [ref=e82]
+              - cell "Atšauktas" [ref=e83]:
+                - generic [ref=e84]: Atšauktas
+              - cell "€54.00" [ref=e85]
+              - cell "Peržiūrėti užsakymą" [ref=e86]:
+                - link "Peržiūrėti užsakymą" [ref=e87] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/orders/3
+            - row "#5 2026-04-17 Apmokėtas €4.95 Peržiūrėti užsakymą" [ref=e88]:
+              - cell "#5" [ref=e89]
+              - cell "2026-04-17" [ref=e90]
+              - cell "Apmokėtas" [ref=e91]:
+                - generic [ref=e92]: Apmokėtas
+              - cell "€4.95" [ref=e93]
+              - cell "Peržiūrėti užsakymą" [ref=e94]:
+                - link "Peržiūrėti užsakymą" [ref=e95] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/orders/5
+            - row "#7 2026-03-26 Apmokėtas €42.75 Peržiūrėti užsakymą" [ref=e96]:
+              - cell "#7" [ref=e97]
+              - cell "2026-03-26" [ref=e98]
+              - cell "Apmokėtas" [ref=e99]:
+                - generic [ref=e100]: Apmokėtas
+              - cell "€42.75" [ref=e101]
+              - cell "Peržiūrėti užsakymą" [ref=e102]:
+                - link "Peržiūrėti užsakymą" [ref=e103] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/orders/7
+            - row "#9 2026-03-04 Grąžintas €6.00 Peržiūrėti užsakymą" [ref=e104]:
+              - cell "#9" [ref=e105]
+              - cell "2026-03-04" [ref=e106]
+              - cell "Grąžintas" [ref=e107]:
+                - generic [ref=e108]: Grąžintas
+              - cell "€6.00" [ref=e109]
+              - cell "Peržiūrėti užsakymą" [ref=e110]:
+                - link "Peržiūrėti užsakymą" [ref=e111] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/orders/9
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - heading "Recent Notifications" [level=2] [ref=e115]
+          - link "Peržiūrėti visus pranešimus" [ref=e116] [cursor=pointer]:
+            - /url: https://birza.test/buyer/notifications
+        - generic [ref=e117]:
+          - 'link "Užsakymo #11 būsena atnaujinta Užsakymas #11 pakeistas iš Laukiantis į Užbaigtas." [ref=e118] [cursor=pointer]':
+            - /url: /buyer/orders/11
+            - generic [ref=e121]:
+              - paragraph [ref=e122]: "Užsakymo #11 būsena atnaujinta"
+              - paragraph [ref=e123]: "Užsakymas #11 pakeistas iš Laukiantis į Užbaigtas."
+          - 'link "Užsakymo #9 būsena atnaujinta Užsakymas #9 pakeistas iš Laukiantis į Grąžintas." [ref=e124] [cursor=pointer]':
+            - /url: /buyer/orders/9
+            - generic [ref=e127]:
+              - paragraph [ref=e128]: "Užsakymo #9 būsena atnaujinta"
+              - paragraph [ref=e129]: "Užsakymas #9 pakeistas iš Laukiantis į Grąžintas."
+          - 'link "Užsakymo #7 būsena atnaujinta Užsakymas #7 pakeistas iš Laukiantis į Užbaigtas." [ref=e130] [cursor=pointer]':
+            - /url: /buyer/orders/7
+            - generic [ref=e133]:
+              - paragraph [ref=e134]: "Užsakymo #7 būsena atnaujinta"
+              - paragraph [ref=e135]: "Užsakymas #7 pakeistas iš Laukiantis į Užbaigtas."
+          - 'link "Užsakymo #5 būsena atnaujinta Užsakymas #5 pakeistas iš Laukiantis į Išsiųstas." [ref=e136] [cursor=pointer]':
+            - /url: /buyer/orders/5
+            - generic [ref=e139]:
+              - paragraph [ref=e140]: "Užsakymo #5 būsena atnaujinta"
+              - paragraph [ref=e141]: "Užsakymas #5 pakeistas iš Laukiantis į Išsiųstas."
+          - 'link "Užsakymo #3 būsena atnaujinta Užsakymas #3 pakeistas iš Laukiantis į Atmestas." [ref=e142] [cursor=pointer]':
+            - /url: /buyer/orders/3
+            - generic [ref=e145]:
+              - paragraph [ref=e146]: "Užsakymo #3 būsena atnaujinta"
+              - paragraph [ref=e147]: "Užsakymas #3 pakeistas iš Laukiantis į Atmestas."
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - heading "Išsaugoti sąrašai" [level=2] [ref=e150]
+          - link "Peržiūrėti visus" [ref=e151] [cursor=pointer]:
+            - /url: https://birza.test/buyer/wishlists
+        - link "Išsaugoti produktai 2 produktai Numatytasis" [ref=e153] [cursor=pointer]:
+          - /url: https://birza.test/buyer/wishlists/5
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - paragraph [ref=e156]: Išsaugoti produktai
+              - paragraph [ref=e157]: 2 produktai
+            - generic [ref=e158]: Numatytasis
+      - generic [ref=e159]:
+        - generic [ref=e160]:
+          - heading "Likučio pranešimai" [level=2] [ref=e161]
+          - link "Peržiūrėti pranešimus" [ref=e162] [cursor=pointer]:
+            - /url: https://birza.test/buyer/stock-alerts
+        - link "Demo Out Of Stock Milk Demo Out Of Stock Milk Aktyvus" [ref=e164] [cursor=pointer]:
+          - /url: https://birza.test/buyer/products/1756
+          - generic [ref=e165]:
+            - img "Demo Out Of Stock Milk" [ref=e167]
+            - generic [ref=e168]:
+              - paragraph [ref=e169]: Demo Out Of Stock Milk
+              - paragraph [ref=e170]: Aktyvus
+      - generic [ref=e171]:
+        - generic [ref=e173]:
+          - generic [ref=e175]:
+            - heading "Pardavimų rezultatai" [level=4] [ref=e176]
+            - paragraph [ref=e177]: Pirkėjo užsakymų aktyvumas per pastaruosius šešis mėnesius
+          - generic [ref=e181]:
+            - heading "Calendar" [level=4] [ref=e182]
+            - generic [ref=e183]:
+              - generic [ref=e184]: Pirmadienis
+              - generic [ref=e185]: Antradienis
+              - generic [ref=e186]: Trečiadienis
+              - generic [ref=e187]: Ketvirtadienis
+              - generic [ref=e188]: Penktadienis
+              - generic [ref=e189]: Šeštadienis
+              - generic [ref=e190]: Sekmadienis
+              - generic [ref=e191]: "1"
+              - generic [ref=e192]: "2"
+              - generic [ref=e193]: "3"
+              - generic [ref=e194]: "4"
+              - generic [ref=e195]: "5"
+              - generic [ref=e196]: "6"
+              - generic [ref=e197]: "7"
+              - generic [ref=e198]: "8"
+              - generic [ref=e199]: "9"
+              - generic [ref=e200]: "10"
+              - generic [ref=e201]: "11"
+              - generic [ref=e202]: "12"
+              - generic [ref=e203]: "13"
+              - generic [ref=e204]: "14"
+              - generic [ref=e205]: "15"
+              - generic [ref=e206]: "16"
+              - generic [ref=e207]: "17"
+              - generic [ref=e208]: "18"
+              - generic [ref=e209]: "19"
+              - generic [ref=e210]: "20"
+              - generic [ref=e211]: "21"
+              - generic [ref=e212]: "22"
+              - generic [ref=e213]: "23"
+              - generic [ref=e214]: "24"
+              - generic [ref=e215]: "25"
+              - generic [ref=e216]: "26"
+              - generic [ref=e217]: "27"
+              - generic [ref=e218]: "28"
+              - generic [ref=e219]: "29"
+              - generic [ref=e220]: "30"
+        - generic [ref=e222]:
+          - generic [ref=e226]: Banneriai
+          - generic [ref=e228]:
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - heading [level=3]
+              - img "Banner 1" [ref=e232]
+            - group "slides" [ref=e233]:
+              - button "Image 1" [ref=e234] [cursor=pointer]
+              - button "Image 2" [ref=e235] [cursor=pointer]
+              - button "Image 3" [ref=e236] [cursor=pointer]

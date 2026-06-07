@@ -130,7 +130,7 @@ The following requested guide files are missing or incomplete:
 - Public: `/`, `/language/{locale}`.
 - Buyer prefix: `/buyer`, route names `buyer.*`.
 - Seller prefix: `/seller`, route names `seller.*`.
-- Admin prefix: `/admin`, route names mostly `backend.*`.
+- Admin prefix: `/admin`, route names standardized on `admin.*`.
 - API: `/api/products/search` throttled at `30,1`; `/api/user` protected by Sanctum.
 - Private buyer routes use `auth:buyer`, `active.account:buyer`, `verified.account:buyer`, and `can:accessBuyerCabinet`.
 - Private seller routes use `auth:seller`, `active.account:seller`, `verified.account:seller`, and `can:accessSellerCabinet`.

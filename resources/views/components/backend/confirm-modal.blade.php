@@ -2,6 +2,9 @@
     'title' => '',
     'description' => null,
     'confirmLabel' => __('common_delete'),
+    'reasonModel' => null,
+    'reasonLabel' => __('audit_logs.reason'),
+    'reasonHint' => __('audit_logs.reason_hint'),
 ])
 
 <x-mary-modal
@@ -23,6 +26,18 @@
             @endif
         </div>
     </div>
+
+    @if (is_string($reasonModel) && $reasonModel !== '')
+        <div class="mt-5">
+            <x-mary-textarea
+                :label="$reasonLabel"
+                :hint="$reasonHint"
+                wire:model="{{ $reasonModel }}"
+                rows="3"
+                required
+            />
+        </div>
+    @endif
 
     <x-slot:actions>
         <x-mary-button

@@ -43,6 +43,8 @@ Release notes live in [docs/releases](docs/releases/README.md).
 - Added product reports and abuse moderation for guest and buyer reports, duplicate and rate-limit protection, admin triage, product hiding, seller notifications without reporter identity, audit logs, demo seed data, documentation, and tests.
 - Added authenticated buyer product wishlists with named private/public lists, default list creation, catalog/detail save controls, wishlist management pages, move/remove/clear actions, add-to-cart handoff, translations, demo seeding, documentation, and feature tests.
 - Added seller discounts and promo codes with seller management pages, buyer cart promo application, backend checkout revalidation, multi-seller scoping, usage/per-user limits, order snapshots, redemption records, audit logs, demo seeding, translations, documentation, and feature tests.
+- Added buyer-seller private messaging with product/order conversations, buyer and seller inboxes, admin moderation visibility, read/unread state, recipient notifications, metadata-only audit logs, demo data, translations, documentation, and tests.
+- Added seller product bundles with seller-owned bundle management, public bundle detail pages, bundle cart rows, backend price recalculation, checkout snapshots, stock validation, admin moderation screens, demo seed data, documentation, and feature tests.
 
 ### Changed
 

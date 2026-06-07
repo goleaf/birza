@@ -34,12 +34,19 @@ class ProductControllerTest extends TestCase
         ]);
         $seller->categories()->attach($subcategory);
 
-        Product::factory()->count(3)->create([
-            'category_id' => $subcategory->id,
-            'seller_id' => $seller->id,
-            'is_active' => true,
-            'is_organic' => true,
-        ]);
+        Product::factory()
+            ->count(3)
+            ->sequence(
+                ['name' => 'Seller Product One'],
+                ['name' => 'Seller Product Two'],
+                ['name' => 'Seller Product Three'],
+            )
+            ->create([
+                'category_id' => $subcategory->id,
+                'seller_id' => $seller->id,
+                'is_active' => true,
+                'is_organic' => true,
+            ]);
 
         $response = $this->actingAs($seller, 'seller')
             ->get(route('seller.products.index'));
@@ -53,8 +60,9 @@ class ProductControllerTest extends TestCase
             ->assertSee($category->getTranslation('category_name', app()->getLocale()))
             ->assertSee($subcategory->getTranslation('category_name', app()->getLocale()))
             ->assertSee('collapse-title', false)
-            ->assertSee('badge-info')
-            ->assertSee('badge-success');
+            ->assertSee(__('product_products_list'))
+            ->assertSee('Seller Product One')
+            ->assertSee(__('common_yes'));
     }
 
     public function test_product_create_form_displays_for_authenticated_seller(): void

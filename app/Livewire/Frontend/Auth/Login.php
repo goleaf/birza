@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend\Auth;
 
+use App\Actions\Cart\MergeGuestCartAction;
+use App\Models\Users\Buyer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -13,11 +15,15 @@ use Livewire\Component;
 class Login extends Component
 {
     public string $userType = 'buyer';
+
     public string $email = '';
+
     public string $password = '';
+
     public bool $remember = false;
 
     protected int $maxAttempts = 5;
+
     protected int $decayMinutes = 15;
 
     public function mount(?string $userType = null): void
@@ -35,7 +41,7 @@ class Login extends Component
         }
     }
 
-    public function login(): void
+    public function login(MergeGuestCartAction $mergeGuestCartAction): void
     {
         $credentials = $this->validate([
             'email' => ['required', 'email'],
@@ -66,29 +72,36 @@ class Login extends Component
 
             $user = Auth::guard($this->userType)->user();
 
-            if ($this->userType === 'seller') {
-                if (! $user?->is_verified) {
-                    Auth::guard('seller')->logout();
-                    throw ValidationException::withMessages([
-                        'email' => __('auth_verification_required'),
-                    ]);
-                }
+            if (! $user?->is_active) {
+                Auth::guard($this->userType)->logout();
 
-                if (! $user?->is_active) {
-                    Auth::guard('seller')->logout();
-                    throw ValidationException::withMessages([
-                        'email' => __('messages_account_inactive'),
-                    ]);
-                }
+                throw ValidationException::withMessages([
+                    'email' => __('messages_account_inactive'),
+                ]);
+            }
+
+            if ($this->userType === 'seller' && ! $user?->is_verified) {
+                Auth::guard('seller')->logout();
+
+                throw ValidationException::withMessages([
+                    'email' => __('auth_verification_required'),
+                ]);
+            }
+
+            if ($this->userType === 'buyer' && $user instanceof Buyer && session()->has('cart_guest_token')) {
+                $mergeGuestCartAction->handle((string) session('cart_guest_token'), $user);
+                session()->forget('cart_guest_token');
             }
 
             if ($user && (empty($user->company_name) || empty($user->company_code) || empty($user->address) || empty($user->phone))) {
                 session()->flash('warning', __('profile_complete_profile'));
                 $this->redirectRoute("{$this->userType}.profile.edit");
+
                 return;
             }
 
             $this->redirectIntended(route("{$this->userType}.dashboard"));
+
             return;
         }
 
@@ -111,5 +124,3 @@ class Login extends Component
         return view('livewire.frontend.auth.login');
     }
 }
-
-

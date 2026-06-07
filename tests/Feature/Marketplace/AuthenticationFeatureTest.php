@@ -21,14 +21,14 @@ class AuthenticationFeatureTest extends TestCase
         $this->get(route('buyer.register'))->assertOk();
         $this->get(route('seller.login'))->assertOk();
         $this->get(route('seller.register'))->assertOk();
-        $this->get(route('backend.login'))->assertOk();
+        $this->get(route('admin.login'))->assertOk();
     }
 
     public function test_guest_cannot_open_private_pages(): void
     {
         $this->get(route('buyer.dashboard'))->assertRedirect(route('home'));
         $this->get(route('seller.dashboard'))->assertRedirect(route('home'));
-        $this->get(route('backend.dashboard'))->assertRedirect(route('home'));
+        $this->get(route('admin.dashboard'))->assertRedirect(route('home'));
     }
 
     public function test_buyer_can_login_and_logout(): void
@@ -130,8 +130,8 @@ class AuthenticationFeatureTest extends TestCase
         $this->assertGuest('admin');
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.dashboard'))
-            ->assertRedirect(route('backend.login'))
+            ->get(route('admin.dashboard'))
+            ->assertRedirect(route('admin.login'))
             ->assertSessionHas('error', __('messages_account_inactive'));
 
         $this->assertGuest('admin');

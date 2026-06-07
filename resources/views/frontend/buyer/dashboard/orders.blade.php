@@ -131,16 +131,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap"> 
                             <x-ui.badge
-                                :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                                :color="match (strtolower((string) $order->payment_status)) {
-                                    'pending' => 'warning',
-                                    'paid' => 'success',
-                                    'failed' => 'error',
-                                    default => 'neutral',
-                                }"
+                                :value="$order->paymentStatusLabel()"
+                                :color="$order->paymentStatusUiColor()"
                                 soft
-                                sm
-                                class="font-semibold"
+                                class="font-medium"
                             />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">

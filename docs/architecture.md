@@ -57,6 +57,7 @@ Core marketplace models include:
 - promotions: `Discount`, `PromoCode`, `PromoCodeRedemption`
 - buyer features: `Wishlist`, `WishlistItem`, `ProductStockAlert`, `Address`
 - moderation/community: `Review`, `ProductQuestion`, `ProductReport`
+- messaging: `Conversation`, `Message`
 - system: `Notification`, `AdminAction`, `AuditLog`, `GlobalSettings`
 
 ## Cart And Checkout
@@ -97,6 +98,19 @@ Notifications should:
 - store translated keys and safe render data
 - filter rows by the authenticated notifiable model
 - not replace audit logs
+
+## Messaging
+
+Buyer-seller messaging is modeled with `conversations` and `messages`.
+
+- Buyers can start or reopen a conversation from an active product or from their own order.
+- Sellers can reply only to conversations connected to their own products or order items.
+- Product and order conversation creation goes through `StartConversationAction`.
+- Message validation, read-state updates, recipient notifications, and activity timestamps go through messaging actions under `app/Actions/Messaging`.
+- `ConversationPolicy` and `MessagePolicy` protect route mounts, Livewire actions, and admin moderation views.
+- Admin message pages are read-only moderation views and write metadata-only audit entries when opened.
+
+Message bodies are rendered as escaped text. Attachments, guest messaging, and formal dispute records are not part of the current implementation.
 
 ## Audit Logs
 

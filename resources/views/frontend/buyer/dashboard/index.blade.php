@@ -75,8 +75,48 @@
 
     @include('frontend.buyer.dashboard.orders')
 
+	    <div class="my-6">
+	        <x-notifications.recent-panel
+	            :notifications="$recentNotifications"
+	            :href="route('buyer.notifications.index')"
+	        />
+	    </div>
 
-    <section class="my-6 rounded-lg bg-white p-4 shadow-sm">
+	    <section class="my-6 rounded-lg bg-white p-4 shadow-sm">
+	        <div class="mb-4 flex items-center justify-between gap-3">
+	            <h2 class="font-semibold text-gray-900">{{ __('wishlists.dashboard_title') }}</h2>
+	            <a href="{{ route('buyer.wishlists.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+	                {{ __('wishlists.view_all') }}
+	            </a>
+	        </div>
+
+	        <div class="grid gap-3 md:grid-cols-3">
+	            @forelse ($wishlistSummary as $wishlist)
+	                <a
+	                    href="{{ route('buyer.wishlists.show', $wishlist) }}"
+	                    class="rounded-md border border-gray-100 p-3 transition hover:border-blue-200 hover:bg-blue-50"
+	                >
+	                    <div class="flex items-center justify-between gap-3">
+	                        <div class="min-w-0">
+	                            <p class="truncate text-sm font-medium text-gray-900">{{ $wishlist->name }}</p>
+	                            <p class="mt-1 text-sm text-gray-600">
+	                                {{ __('wishlists.items_count', ['count' => $wishlist->items_count]) }}
+	                            </p>
+	                        </div>
+	                        @if ($wishlist->is_default)
+	                            <x-ui.badge color="primary" soft :value="__('wishlists.default_badge')" />
+	                        @endif
+	                    </div>
+	                </a>
+	            @empty
+	                <div class="rounded-md border border-dashed border-gray-200 p-4 text-sm text-gray-600 md:col-span-3">
+	                    {{ __('wishlists.empty') }}
+	                </div>
+	            @endforelse
+	        </div>
+	    </section>
+
+	    <section class="my-6 rounded-lg bg-white p-4 shadow-sm">
         <div class="mb-4 flex items-center justify-between gap-3">
             <h2 class="font-semibold text-gray-900">{{ __('stock_alerts.dashboard_title') }}</h2>
             <a href="{{ route('buyer.stock-alerts.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">

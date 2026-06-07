@@ -14,7 +14,7 @@ class GlobalSettingsControllerTest extends TestCase
 
     public function test_settings_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.settings.index'));
+        $response = $this->get(route('admin.settings.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -25,7 +25,7 @@ class GlobalSettingsControllerTest extends TestCase
         GlobalSettings::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.settings.index'));
+            ->get(route('admin.settings.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SettingsIndex::class)

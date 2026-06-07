@@ -13,7 +13,7 @@ class AdminProfileControllerTest extends TestCase
 
     public function test_profile_edit_requires_authentication(): void
     {
-        $response = $this->get(route('backend.admin.profile'));
+        $response = $this->get(route('admin.profile'));
 
         $response->assertRedirect(route('home'));
     }
@@ -23,7 +23,7 @@ class AdminProfileControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.admin.profile'));
+            ->get(route('admin.profile'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AdminProfile::class)

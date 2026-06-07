@@ -1,8 +1,25 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\EnsureAdminAccess;
+use App\Http\Middleware\EnsureActiveAccount;
+use App\Http\Middleware\EnsureBuyerAccess;
+use App\Http\Middleware\EnsureSellerAccess;
+use App\Http\Middleware\EnsureVerifiedAccount;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\ValidateSignature;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Http\Middleware\SetCacheHeaders;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,35 +31,40 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('web')
                 ->group(base_path('routes/admin.php'));
-            
+
             Route::middleware('web')
                 ->group(base_path('routes/buyer.php'));
-            
+
             Route::middleware('web')
                 ->group(base_path('routes/seller.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            \App\Http\Middleware\SetLocale::class,
+            SetLocale::class,
         ]);
-        
+
         $middleware->api(prepend: [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
-        
+
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
-            'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-            'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
-            'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-            'can' => \Illuminate\Auth\Middleware\Authorize::class,
-            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-            'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-            'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
-            'signed' => \App\Http\Middleware\ValidateSignature::class,
-            'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-            'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+            'auth' => Authenticate::class,
+            'admin.access' => EnsureAdminAccess::class,
+            'active.account' => EnsureActiveAccount::class,
+            'buyer.access' => EnsureBuyerAccess::class,
+            'seller.access' => EnsureSellerAccess::class,
+            'verified.account' => EnsureVerifiedAccount::class,
+            'auth.basic' => AuthenticateWithBasicAuth::class,
+            'auth.session' => AuthenticateSession::class,
+            'cache.headers' => SetCacheHeaders::class,
+            'can' => Authorize::class,
+            'guest' => RedirectIfAuthenticated::class,
+            'password.confirm' => RequirePassword::class,
+            'precognitive' => HandlePrecognitiveRequests::class,
+            'signed' => ValidateSignature::class,
+            'throttle' => ThrottleRequests::class,
+            'verified' => EnsureEmailIsVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

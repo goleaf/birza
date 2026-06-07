@@ -4,11 +4,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_countries'), 'link' => route('backend.countries.index')],
+                ['label' => __('navigation_countries'), 'link' => route('admin.countries.index')],
                 ['label' => strtoupper($alpha2)],
             ]
             : [
-                ['label' => __('navigation_countries'), 'link' => route('backend.countries.index')],
+                ['label' => __('navigation_countries'), 'link' => route('admin.countries.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -83,7 +83,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('backend_common_cancel')"
-                :link="route('backend.countries.index')"
+                :link="route('admin.countries.index')"
             />
             <x-mary-button
                 :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"

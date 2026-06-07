@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Buyers;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Users\Buyer;
 use Livewire\Attributes\Layout;
@@ -22,11 +23,15 @@ class Orders extends Component
         $request = request();
 
         $query = Order::query()
-            ->select(['id', 'buyer_id', 'order_total', 'payment_status', 'created_at'])
+            ->select(['id', 'buyer_id', 'order_total', 'payment_status', 'status', 'created_at'])
             ->where('buyer_id', $this->buyer->id);
 
-        if ($request->filled('status')) {
-            $query->where('payment_status', $request->status);
+        $status = $request->filled('status')
+            ? OrderStatus::tryFrom((string) $request->status)
+            : null;
+
+        if ($status !== null) {
+            $query->where('status', $status->value);
         }
 
         if ($request->filled('date_from')) {

@@ -17,7 +17,7 @@ class CategoryControllerTest extends TestCase
 
     public function test_category_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.categories.index'));
+        $response = $this->get(route('admin.categories.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -28,7 +28,7 @@ class CategoryControllerTest extends TestCase
         Category::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.categories.index'));
+            ->get(route('admin.categories.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CategoryIndex::class)
@@ -77,7 +77,7 @@ class CategoryControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.categories.create'));
+            ->get(route('admin.categories.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CategoryForm::class)
@@ -91,7 +91,7 @@ class CategoryControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.categories.edit', $category));
+            ->get(route('admin.categories.edit', $category));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CategoryForm::class)

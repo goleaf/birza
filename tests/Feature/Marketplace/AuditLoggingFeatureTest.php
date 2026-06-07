@@ -185,19 +185,19 @@ class AuditLoggingFeatureTest extends TestCase
         $seller = Seller::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.audit.index'))
+            ->get(route('admin.audit.index'))
             ->assertOk();
 
         auth('admin')->logout();
 
         $this->actingAs($buyer, 'buyer')
-            ->get(route('backend.audit.index'))
+            ->get(route('admin.audit.index'))
             ->assertRedirect(route('home'));
 
         auth('buyer')->logout();
 
         $this->actingAs($seller, 'seller')
-            ->get(route('backend.audit.index'))
+            ->get(route('admin.audit.index'))
             ->assertRedirect(route('home'));
     }
 

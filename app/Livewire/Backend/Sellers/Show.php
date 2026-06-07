@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Sellers;
 
-use App\Models\Order;
+use App\Models\AuditLog;
 use App\Models\Users\Seller;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
@@ -22,10 +22,7 @@ class Show extends Component
     {
         $products = $this->seller->products()
             ->select('id', 'name', 'price', 'is_active', 'product_image', 'category_id')
-            ->with([
-                'category:id,category_name',
-                'primaryImage:id,product_id,disk,path,variants,is_primary,sort_order',
-            ])
+            ->with(['category:id,category_name', 'primaryImage'])
             ->withCount('orderItems')
             ->latest()
             ->paginate(10);
@@ -35,6 +32,7 @@ class Show extends Component
                 'orders.id',
                 'orders.buyer_id',
                 'orders.payment_status',
+                'orders.status',
                 'orders.order_total',
                 'orders.created_at',
             ])
@@ -45,12 +43,13 @@ class Show extends Component
             ->limit(10)
             ->get();
 
-        $orders->each(fn (Order $order) => $order->setAttribute(
-            'payment_status_badge_class',
-            $order->paymentStatusBadgeClass()
-        ));
-
         return view('backend.sellers.show', [
+            'auditLogs' => AuditLog::query()
+                ->entity($this->seller)
+                ->with('actor')
+                ->latest('created_at')
+                ->limit(10)
+                ->get(),
             'seller' => $this->seller,
             'sellerDetails' => $this->sellerDetails(),
             'products' => $products,

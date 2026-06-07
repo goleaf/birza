@@ -2,119 +2,148 @@
 
 namespace App\Models;
 
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
+use App\Enums\OrderStatusActorRole;
+use App\Models\Users\Admin;
 use App\Models\Users\Buyer;
 use App\Models\Users\Seller;
+use App\Support\LocaleFormatter;
+use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use LogicException;
 
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public const STATUS = [
-        'PENDING' => 'pending',
-        'PAID' => 'paid',
-        'FAILED' => 'failed',
-        'PROCESSING' => 'processing',
-        'SHIPPED' => 'shipped',
-        'DELIVERED' => 'delivered',
-        'CANCELLED' => 'cancelled',
-        'REFUNDED' => 'refunded',
-    ];
+    protected static bool $allowsStatusMutation = false;
 
     protected $fillable = [
-        'order_total',
-        'buyer_id',
         'payment_method',
-        'payment_status',
-        'status',
-    ];
-
-    protected $casts = [
-        'order_total' => 'decimal:2',
-        'buyer_id' => 'integer',
+        'promo_code',
+        'shipping_address_snapshot',
+        'billing_address_snapshot',
+        'delivery_method',
     ];
 
     /**
-     * Get the buyer associated with the order
+     * @return array<string, string>
      */
+    protected function casts(): array
+    {
+        return [
+            'order_total' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+            'discount_total' => 'decimal:2',
+            'promo_code_id' => 'integer',
+            'promo_discount_amount' => 'decimal:2',
+            'buyer_id' => 'integer',
+            'payment_status' => OrderPaymentStatus::class,
+            'status' => OrderStatus::class,
+        ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (self $order): void {
+            if (! $order->exists || self::$allowsStatusMutation || ! $order->isDirty('status')) {
+                return;
+            }
+
+            throw new LogicException(__('orders.status.messages.direct_change_forbidden'));
+        });
+    }
+
+    public static function allowStatusMutation(Closure $callback): mixed
+    {
+        $previous = self::$allowsStatusMutation;
+        self::$allowsStatusMutation = true;
+
+        try {
+            return $callback();
+        } finally {
+            self::$allowsStatusMutation = $previous;
+        }
+    }
+
     public function buyer(): BelongsTo
     {
         return $this->belongsTo(Buyer::class)->withTrashed();
     }
 
-    /**
-     * Get the sellers associated with the order through order items
-     */
     public function sellers(): HasManyThrough
     {
         return $this->hasManyThrough(
             Seller::class,
             OrderItem::class,
-            'order_id', // Foreign key on order_items table
-            'id', // Foreign key on sellers table
-            'id', // Local key on orders table
-            'seller_id' // Local key on order_items table
+            'order_id',
+            'id',
+            'id',
+            'seller_id'
         )->withTrashed();
     }
 
-    /**
-     * Get the order items for the order
-     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_of_origin');
+    }
+
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Get the total price of the order
-     */
-    public function getTotalAttribute(): float
+    public function orderBundles(): HasMany
     {
-        return (float) $this->order_total;
+        return $this->hasMany(OrderBundle::class);
     }
 
-    /**
-     * Scope a query to only include pending orders
-     */
-    public function scopePending($query)
+    public function bundles(): HasMany
     {
-        return $query->where('status', self::STATUS['PENDING']);
+        return $this->orderBundles();
     }
 
-    /**
-     * Scope a query to only include paid orders
-     */
-    public function scopePaid($query)
+    public function items(): HasMany
     {
-        return $query->where('status', self::STATUS['PAID']);
+        return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Scope a query to only include failed orders
-     */
-    public function scopeFailed($query)
+    public function statusHistory(): HasMany
     {
-        return $query->where('status', self::STATUS['FAILED']);
+        return $this->hasMany(OrderStatusHistory::class)->latest('created_at');
     }
 
-    /**
-     * Scope a query to include orders with full details
-     */
-    public function scopeWithFullDetails($query)
+    public function conversations(): HasMany
     {
-        return $query->with(['buyer', 'orderItems.product', 'orderItems.seller']);
+        return $this->hasMany(Conversation::class);
     }
 
-    /**
-     * Get the products associated with the order
-     */
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, 'auditable')->latest('created_at');
+    }
+
+    public function promoCode(): BelongsTo
+    {
+        return $this->belongsTo(PromoCode::class);
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_items')
@@ -123,23 +152,164 @@ class Order extends Model
             ->withTimestamps();
     }
 
-    public function lifecycleStatus(): string
+    public function getTotalAttribute(): float
     {
-        return (string) ($this->payment_status ?: $this->status ?: self::STATUS['PENDING']);
+        return (float) $this->order_total;
+    }
+
+    public function scopeStatus(Builder $query, OrderStatus $status): Builder
+    {
+        return $query->where('status', $status->value);
+    }
+
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->status(OrderStatus::Pending);
+    }
+
+    public function scopeAccepted(Builder $query): Builder
+    {
+        return $query->status(OrderStatus::Accepted);
+    }
+
+    public function scopePaid(Builder $query): Builder
+    {
+        return $query->where('payment_status', OrderPaymentStatus::Paid->value);
+    }
+
+    public function scopeFailed(Builder $query): Builder
+    {
+        return $query->where('payment_status', OrderPaymentStatus::Failed->value);
+    }
+
+    public function scopeRevenueRecognized(Builder $query): Builder
+    {
+        return $query->whereIn('status', OrderStatus::revenueStatuses());
+    }
+
+    public function scopeForBuyer(Builder $query, Buyer|int $buyer): Builder
+    {
+        $buyerId = $buyer instanceof Buyer ? $buyer->id : $buyer;
+
+        return $query->where('buyer_id', $buyerId);
+    }
+
+    public function scopeSummaryColumns(Builder $query): Builder
+    {
+        return $query->select([
+            'id',
+            'buyer_id',
+            'payment_method',
+            'payment_status',
+            'status',
+            'order_total',
+            'created_at',
+            'updated_at',
+        ]);
+    }
+
+    public function scopePlacedBetween(Builder $query, ?string $dateFrom = null, ?string $dateTo = null): Builder
+    {
+        if (filled($dateFrom)) {
+            $query->where('created_at', '>=', Carbon::parse($dateFrom)->startOfDay());
+        }
+
+        if (filled($dateTo)) {
+            $query->where('created_at', '<=', Carbon::parse($dateTo)->endOfDay());
+        }
+
+        return $query;
+    }
+
+    public function scopeWithFullDetails(Builder $query): Builder
+    {
+        return $query->with(['buyer', 'orderBundles.items.product', 'orderItems.product', 'orderItems.seller', 'statusHistory']);
+    }
+
+    public function lifecycleStatus(): OrderStatus
+    {
+        return $this->status ?? OrderStatus::Pending;
+    }
+
+    public function statusLabel(): string
+    {
+        return $this->lifecycleStatus()->label();
+    }
+
+    public function statusDescription(): string
+    {
+        return $this->lifecycleStatus()->description();
+    }
+
+    public function statusBadgeClass(): string
+    {
+        return $this->lifecycleStatus()->maryBadgeClass();
     }
 
     public function paymentStatusBadgeClass(): string
     {
-        return match ($this->payment_status) {
-            self::STATUS['PENDING'] => 'badge-warning badge-outline',
-            self::STATUS['PAID'] => 'badge-success badge-outline',
-            self::STATUS['PROCESSING'] => 'badge-info badge-outline',
-            self::STATUS['SHIPPED'] => 'badge-secondary badge-outline',
-            self::STATUS['DELIVERED'] => 'badge-success',
-            self::STATUS['CANCELLED'], self::STATUS['FAILED'] => 'badge-error badge-outline',
-            self::STATUS['REFUNDED'] => 'badge-neutral badge-outline',
-            default => 'badge-neutral badge-outline',
+        return $this->payment_status?->maryBadgeClass() ?? OrderPaymentStatus::Pending->maryBadgeClass();
+    }
+
+    public function paymentStatusLabel(): string
+    {
+        return $this->payment_status?->label() ?? OrderPaymentStatus::Pending->label();
+    }
+
+    public function paymentStatusUiColor(): string
+    {
+        return $this->payment_status?->uiBadgeColor() ?? OrderPaymentStatus::Pending->uiBadgeColor();
+    }
+
+    public function canBeCancelled(): bool
+    {
+        return $this->lifecycleStatus()->canTransitionTo(OrderStatus::Cancelled);
+    }
+
+    /**
+     * @return array<int, OrderStatus>
+     */
+    public function availableTransitionsFor(?Authenticatable $actor): array
+    {
+        $role = OrderStatusActorRole::fromActor($actor);
+
+        return collect($this->lifecycleStatus()->allowedNextStatuses())
+            ->filter(fn (OrderStatus $status): bool => $status->canBeChangedBy($role))
+            ->filter(fn (): bool => $this->isManageableBy($actor, $role))
+            ->values()
+            ->all();
+    }
+
+    public function canTransitionTo(OrderStatus $status, ?Authenticatable $actor = null): bool
+    {
+        if ($actor === null) {
+            return $this->lifecycleStatus()->canTransitionTo($status);
+        }
+
+        return in_array($status, $this->availableTransitionsFor($actor), true);
+    }
+
+    public function isManageableBy(?Authenticatable $actor, ?OrderStatusActorRole $role = null): bool
+    {
+        $role ??= OrderStatusActorRole::fromActor($actor);
+
+        return match ($role) {
+            OrderStatusActorRole::System => $actor === null,
+            OrderStatusActorRole::Admin => $actor instanceof Admin,
+            OrderStatusActorRole::Buyer => $actor instanceof Buyer
+                && (int) $this->buyer_id === (int) $actor->getAuthIdentifier(),
+            OrderStatusActorRole::Seller => $actor instanceof Seller
+                && $this->hasSellerItems((int) $actor->getAuthIdentifier()),
         };
+    }
+
+    public function hasSellerItems(int $sellerId): bool
+    {
+        if ($this->relationLoaded('items')) {
+            return $this->items->contains(fn (OrderItem $item): bool => (int) $item->seller_id === $sellerId);
+        }
+
+        return $this->items()->where('seller_id', $sellerId)->exists();
     }
 
     /**
@@ -147,34 +317,17 @@ class Order extends Model
      */
     public function lifecycleSteps(): array
     {
-        return [
-            ['step' => 1, 'label' => 'orders_status_pending', 'icon' => 'o-clock'],
-            ['step' => 2, 'label' => 'orders_status_paid', 'icon' => 'o-check-badge'],
-            ['step' => 3, 'label' => 'orders_status_processing', 'icon' => 'o-cog-6-tooth'],
-            ['step' => 4, 'label' => 'orders_status_shipped', 'icon' => 'o-truck'],
-            ['step' => 5, 'label' => 'orders_status_delivered', 'icon' => 'o-home'],
-        ];
+        return OrderStatus::lifecycleSteps();
     }
 
     public function lifecycleCurrentStep(): int
     {
-        return match ($this->lifecycleStatus()) {
-            self::STATUS['PAID'], self::STATUS['FAILED'] => 2,
-            self::STATUS['PROCESSING'] => 3,
-            self::STATUS['SHIPPED'] => 4,
-            self::STATUS['DELIVERED'], self::STATUS['REFUNDED'] => 5,
-            default => 1,
-        };
+        return $this->lifecycleStatus()->lifecycleStep();
     }
 
     public function lifecycleStepsColor(): string
     {
-        return match ($this->lifecycleStatus()) {
-            self::STATUS['PENDING'] => 'step-warning',
-            self::STATUS['DELIVERED'] => 'step-success',
-            self::STATUS['FAILED'], self::STATUS['CANCELLED'], self::STATUS['REFUNDED'] => 'step-error',
-            default => 'step-primary',
-        };
+        return $this->lifecycleStatus()->lifecycleStepsColor();
     }
 
     /**
@@ -182,56 +335,7 @@ class Order extends Model
      */
     public function lifecyclePanel(): array
     {
-        return match ($this->lifecycleStatus()) {
-            self::STATUS['PAID'] => [
-                'label' => 'orders_status_paid',
-                'description' => 'orders_steps_paid_description',
-                'badgeColor' => 'success',
-                'icon' => 'o-check-badge',
-            ],
-            self::STATUS['FAILED'] => [
-                'label' => 'orders_status_failed',
-                'description' => 'orders_steps_failed_description',
-                'badgeColor' => 'error',
-                'icon' => 'o-exclamation-circle',
-            ],
-            self::STATUS['PROCESSING'] => [
-                'label' => 'orders_status_processing',
-                'description' => 'orders_steps_processing_description',
-                'badgeColor' => 'info',
-                'icon' => 'o-cog-6-tooth',
-            ],
-            self::STATUS['SHIPPED'] => [
-                'label' => 'orders_status_shipped',
-                'description' => 'orders_steps_shipped_description',
-                'badgeColor' => 'primary',
-                'icon' => 'o-truck',
-            ],
-            self::STATUS['DELIVERED'] => [
-                'label' => 'orders_status_delivered',
-                'description' => 'orders_steps_delivered_description',
-                'badgeColor' => 'success',
-                'icon' => 'o-home',
-            ],
-            self::STATUS['CANCELLED'] => [
-                'label' => 'orders_status_cancelled',
-                'description' => 'orders_steps_cancelled_description',
-                'badgeColor' => 'error',
-                'icon' => 'o-x-circle',
-            ],
-            self::STATUS['REFUNDED'] => [
-                'label' => 'orders_status_refunded',
-                'description' => 'orders_steps_refunded_description',
-                'badgeColor' => 'error',
-                'icon' => 'o-arrow-uturn-left',
-            ],
-            default => [
-                'label' => 'orders_status_pending',
-                'description' => 'orders_steps_pending_description',
-                'badgeColor' => 'warning',
-                'icon' => 'o-clock',
-            ],
-        };
+        return $this->lifecycleStatus()->lifecyclePanel();
     }
 
     /**
@@ -248,19 +352,21 @@ class Order extends Model
     {
         $timeline = [[
             'title' => 'orders_timeline_order_placed_title',
-            'subtitle' => $this->created_at?->format('Y-m-d H:i'),
+            'subtitle' => LocaleFormatter::dateTime($this->created_at),
             'description' => 'orders_timeline_order_placed_description',
             'icon' => 'o-shopping-bag',
             'pending' => false,
             'tone' => 'success',
         ]];
 
-        if ($this->lifecycleStatus() === self::STATUS['PENDING']) {
+        $currentStatus = $this->lifecycleStatus();
+
+        if ($currentStatus === OrderStatus::Pending) {
             $timeline[] = [
-                'title' => 'orders_status_paid',
+                'title' => OrderStatus::Accepted->labelKey(),
                 'subtitle' => null,
                 'description' => 'orders_timeline_waiting_confirmation_description',
-                'icon' => 'o-credit-card',
+                'icon' => OrderStatus::Accepted->icon(),
                 'pending' => true,
                 'tone' => 'neutral',
             ];
@@ -272,31 +378,14 @@ class Order extends Model
 
         $timeline[] = [
             'title' => $currentPanel['label'],
-            'subtitle' => $this->updated_at?->format('Y-m-d H:i'),
+            'subtitle' => LocaleFormatter::dateTime($this->updated_at),
             'description' => $currentPanel['description'],
             'icon' => $currentPanel['icon'],
             'pending' => false,
             'tone' => $currentPanel['badgeColor'],
         ];
 
-        $nextMilestone = match ($this->lifecycleStatus()) {
-            self::STATUS['PAID'] => [
-                'title' => 'orders_status_processing',
-                'description' => 'orders_timeline_processing_next_description',
-                'icon' => 'o-cog-6-tooth',
-            ],
-            self::STATUS['PROCESSING'] => [
-                'title' => 'orders_status_shipped',
-                'description' => 'orders_timeline_shipped_next_description',
-                'icon' => 'o-truck',
-            ],
-            self::STATUS['SHIPPED'] => [
-                'title' => 'orders_status_delivered',
-                'description' => 'orders_timeline_delivered_next_description',
-                'icon' => 'o-home',
-            ],
-            default => null,
-        };
+        $nextMilestone = $currentStatus->nextMilestone();
 
         if ($nextMilestone) {
             $timeline[] = [
@@ -317,13 +406,13 @@ class Order extends Model
      */
     public function calendarEvent(?float $displayTotal = null): array
     {
-        $status = strtolower((string) $this->payment_status ?: self::STATUS['PENDING']);
+        $status = $this->lifecycleStatus();
         $total = $displayTotal ?? (float) $this->order_total;
 
         return [
             'label' => __('orders_order_number').' #'.$this->id,
-            'description' => __('common_status').': '.__('orders_status_3_'.$status).'<br>'.__('orders_total').': '.number_format($total, 2).' €',
-            'css' => $this->calendarEventCssClass($status),
+            'description' => __('common_status').': '.$status->label().'<br>'.__('orders_total').': '.LocaleFormatter::currency($total),
+            'css' => $status->calendarCssClass(),
             'date' => $this->created_at,
         ];
     }
@@ -335,21 +424,10 @@ class Order extends Model
     public static function calendarEventsFrom(iterable $orders): array
     {
         return collect($orders)
-            ->filter(fn ($order) => $order instanceof self)
+            ->filter(fn (mixed $order): bool => $order instanceof self)
             ->sortBy('created_at')
-            ->map(fn (self $order) => $order->calendarEvent())
+            ->map(fn (self $order): array => $order->calendarEvent())
             ->values()
             ->all();
-    }
-
-    private function calendarEventCssClass(string $status): string
-    {
-        return match ($status) {
-            self::STATUS['PENDING'] => 'order-calendar-event-pending',
-            self::STATUS['PAID'], self::STATUS['DELIVERED'] => 'order-calendar-event-success',
-            self::STATUS['PROCESSING'] => 'order-calendar-event-info',
-            self::STATUS['SHIPPED'] => 'order-calendar-event-shipped',
-            default => 'order-calendar-event-error',
-        };
     }
 }

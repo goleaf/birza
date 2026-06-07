@@ -4,11 +4,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+                ['label' => __('navigation_sellers'), 'link' => route('admin.sellers.index')],
                 ['label' => $seller->company_name ?: $seller->name ?: $email],
             ]
             : [
-                ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+                ['label' => __('navigation_sellers'), 'link' => route('admin.sellers.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -74,6 +74,14 @@
                             wire:model="is_active"
                             right
                         />
+                        @if ($isEditing)
+                            <x-mary-textarea
+                                :label="__('audit_logs.reason')"
+                                :hint="__('audit_logs.reason_hint')"
+                                wire:model="audit_reason"
+                                rows="3"
+                            />
+                        @endif
                     </div>
                 </div>
             </x-mary-card>
@@ -82,7 +90,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('backend_common_cancel')"
-                :link="route('backend.sellers.index')"
+                :link="route('admin.sellers.index')"
             />
             <x-mary-button
                 :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"

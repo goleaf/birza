@@ -21,7 +21,7 @@ class Login extends Component
     public function mount(): void
     {
         if (Auth::guard('admin')->check()) {
-            $this->redirectRoute('backend.dashboard');
+            $this->redirectRoute('admin.dashboard');
         }
     }
 
@@ -33,9 +33,19 @@ class Login extends Component
         ]);
 
         if (Auth::guard('admin')->attempt($credentials, $this->remember)) {
+            $user = Auth::guard('admin')->user();
+
+            if (! $user?->is_active) {
+                Auth::guard('admin')->logout();
+
+                throw ValidationException::withMessages([
+                    'email' => __('messages_account_inactive'),
+                ]);
+            }
+
             session()->regenerate();
 
-            $this->redirectIntended(route('backend.dashboard'));
+            $this->redirectIntended(route('admin.dashboard'));
 
             return;
         }

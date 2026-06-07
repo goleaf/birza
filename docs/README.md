@@ -35,6 +35,7 @@ This folder contains project-owned documentation for Birza.
 - [Demo seeding guide](demo-seeding.md)
 - [Deployment notes](deployment.md)
 - [Image pipeline](image-pipeline.md)
+- [Marketplace messaging](messaging.md)
 - [Marketplace notifications](notifications.md)
 - [Product reports and abuse moderation](product-reports.md)
 - [Product wishlists](product-wishlists.md)
@@ -49,6 +50,7 @@ This folder contains project-owned documentation for Birza.
 - [Frontend stack compatibility report - 2026-06-07](frontend-stack-compatibility-2026-06-07.md)
 - [Query index audit - 2026-06-07](query-index-audit-2026-06-07.md)
 - [Security and authorization audit](security-authorization.md)
+- [Messaging system audit - 2026-06-07](messaging-system-audit-2026-06-07.md)
 
 Some audit files are historical snapshots. Prefer the current guide files above for day-to-day implementation decisions.
 
@@ -57,6 +59,8 @@ Some audit files are historical snapshots. Prefer the current guide files above 
 - [Unreleased product questions](releases/unreleased-product-questions.md)
 - [Unreleased product reports](releases/unreleased-product-reports.md)
 - [Unreleased product wishlists](releases/unreleased-product-wishlists.md)
+- [Unreleased product bundles](releases/unreleased-product-bundles.md)
+- [Unreleased buyer-seller messaging](releases/unreleased-messaging.md)
 - [Unreleased seller discounts and promo codes](releases/unreleased-seller-discounts-promo-codes.md)
 
 ## Screenshots

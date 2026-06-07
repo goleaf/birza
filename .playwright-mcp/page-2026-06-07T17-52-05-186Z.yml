@@ -1,0 +1,32 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e7]:
+      - link "imk24.lt" [ref=e8] [cursor=pointer]:
+        - /url: https://birza.test
+        - img [ref=e9]
+        - heading "imk24.lt" [level=1] [ref=e11]
+      - generic [ref=e12]:
+        - link "LT" [ref=e13] [cursor=pointer]:
+          - /url: https://birza.test/language/lt
+        - link "EN" [ref=e14] [cursor=pointer]:
+          - /url: https://birza.test/language/en
+  - main [ref=e15]:
+    - generic [ref=e20]:
+      - heading "Sign in" [level=2] [ref=e22]
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e26]: Email
+          - textbox "Email" [ref=e28]:
+            - /placeholder: ""
+        - generic [ref=e29]:
+          - generic [ref=e31]: Password
+          - generic [ref=e32]:
+            - textbox "Password" [ref=e33]:
+              - /placeholder: ""
+            - button [ref=e35] [cursor=pointer]:
+              - img [ref=e36]
+        - generic [ref=e40]:
+          - checkbox "Remember me" [ref=e41]
+          - generic [ref=e42]: Remember me
+        - button "Sign in" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: Sign in

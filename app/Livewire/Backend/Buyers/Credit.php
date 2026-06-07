@@ -5,6 +5,9 @@ namespace App\Livewire\Backend\Buyers;
 use App\Models\BuyerCreditHistory;
 use App\Models\CreditAttachment;
 use App\Models\Users\Buyer;
+use App\Services\AuditLogService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -13,6 +16,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.backend.app')]
 class Credit extends Component
 {
+    use AuthorizesRequests;
     use WithFileUploads;
 
     public Buyer $buyer;
@@ -27,6 +31,8 @@ class Credit extends Component
 
     public function mount(Buyer $buyer): void
     {
+        $this->authorize('manageCredit', $buyer);
+
         $this->buyer = $buyer;
     }
 
@@ -39,8 +45,10 @@ class Credit extends Component
         $this->attachment = null;
     }
 
-    public function submitCredit(): void
+    public function submitCredit(AuditLogService $auditLogService): void
     {
+        $this->authorize('manageCredit', $this->buyer);
+
         if (! in_array($this->selectedAction, ['add', 'deduct'], true)) {
             $this->addError('action', __('common_error_occurred'));
 
@@ -54,6 +62,7 @@ class Credit extends Component
         ]);
 
         $buyer = $this->buyer->refresh();
+        $oldBalance = (float) $buyer->credit_balance;
 
         if ($this->selectedAction === 'deduct' && $validated['amount'] > $buyer->credit_balance) {
             $this->addError('amount', __('backend_credit_insufficient_funds'));
@@ -61,7 +70,7 @@ class Credit extends Component
             return;
         }
 
-        DB::transaction(function () use ($buyer, $validated) {
+        DB::transaction(function () use ($auditLogService, $buyer, $oldBalance, $validated): void {
             $newBalance = $this->selectedAction === 'add'
                 ? ($buyer->credit_balance + $validated['amount'])
                 : ($buyer->credit_balance - $validated['amount']);
@@ -72,7 +81,7 @@ class Credit extends Component
                 'type' => $this->selectedAction === 'add' ? 'add' : 'deduct',
                 'balance_after' => $newBalance,
                 'note' => $validated['note'] ?? null,
-                'admin_id' => auth()->id(),
+                'admin_id' => Auth::guard('admin')->id(),
             ]);
 
             if ($this->attachment) {
@@ -85,7 +94,25 @@ class Credit extends Component
                 ]);
             }
 
-            $buyer->update(['credit_balance' => $newBalance]);
+            $buyer->forceFill(['credit_balance' => $newBalance])->save();
+
+            $auditLogService->log(
+                actor: Auth::guard('admin')->user(),
+                action: 'buyer.credit_adjusted',
+                auditable: $buyer,
+                oldValues: ['credit_balance' => $oldBalance],
+                newValues: [
+                    'credit_balance' => $newBalance,
+                    'credit_history_id' => $creditHistory->id,
+                    'amount' => $validated['amount'],
+                    'type' => $this->selectedAction === 'add' ? 'add' : 'deduct',
+                ],
+                metadata: [
+                    'source' => 'backend_buyer_credit',
+                    'has_attachment' => $this->attachment !== null,
+                ],
+                reason: $validated['note'] ?? null,
+            );
         });
 
         $this->buyer->refresh();

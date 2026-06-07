@@ -24,7 +24,7 @@
             <x-mary-button
                 :label="__('backend_categories_actions_create')"
                 icon="o-plus"
-                :link="route('backend.categories.create')"
+                :link="route('admin.categories.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -82,7 +82,7 @@
                 <x-backend.action-dropdown menu-class="!w-44">
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.categories.edit', $category)"
+                        :link="route('admin.categories.edit', $category)"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-separator />

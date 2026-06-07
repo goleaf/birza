@@ -4,11 +4,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => __('navigation_attributes'), 'link' => route('admin.attributes.index')],
                 ['label' => $attribute?->getTranslation('name', app()->getLocale()) ?? __('common_edit')],
             ]
             : [
-                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => __('navigation_attributes'), 'link' => route('admin.attributes.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -41,7 +41,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('backend_common_cancel')"
-                    :link="route('backend.attributes.index')"
+                    :link="route('admin.attributes.index')"
                 />
                 <x-mary-button
                     :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"

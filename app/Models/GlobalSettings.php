@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Cache;
 
 class GlobalSettings extends Model
@@ -75,5 +76,10 @@ class GlobalSettings extends Model
             Cache::forget('admin_theme_colors');
             Cache::forget('admin_spotlight_tags');
         });
+    }
+
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, 'auditable')->latest('created_at');
     }
 }

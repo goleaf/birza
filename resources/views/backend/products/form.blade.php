@@ -3,11 +3,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+                ['label' => __('navigation_products'), 'link' => route('admin.products.index')],
                 ['label' => $name],
             ]
             : [
-                ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+                ['label' => __('navigation_products'), 'link' => route('admin.products.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -160,6 +160,17 @@
                             right
                         />
                     </div>
+
+                    @if ($isEditing)
+                        <div class="md:col-span-2">
+                            <x-mary-textarea
+                                :label="__('audit_logs.reason')"
+                                :hint="__('audit_logs.reason_hint')"
+                                wire:model="audit_reason"
+                                rows="3"
+                            />
+                        </div>
+                    @endif
                 </div>
             </x-mary-card>
 
@@ -256,7 +267,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('backend_common_cancel')"
-                    :link="route('backend.products.index')"
+                    :link="route('admin.products.index')"
                 />
                 <x-mary-button
                     :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"

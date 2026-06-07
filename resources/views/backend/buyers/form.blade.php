@@ -4,11 +4,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+                ['label' => __('navigation_buyers'), 'link' => route('admin.buyers.index')],
                 ['label' => $buyer->company_name ?: $buyer->name ?: $email],
             ]
             : [
-                ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+                ['label' => __('navigation_buyers'), 'link' => route('admin.buyers.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -66,6 +66,27 @@
                         prefix="€"
                         icon="o-banknotes"
                     />
+
+                    @if ($isEditing)
+                        <div class="space-y-3 pt-2">
+                            <x-mary-toggle
+                                :label="__('buyers_field_verified')"
+                                wire:model="is_verified"
+                                right
+                            />
+                            <x-mary-toggle
+                                :label="__('buyers_field_active')"
+                                wire:model="is_active"
+                                right
+                            />
+                            <x-mary-textarea
+                                :label="__('audit_logs.reason')"
+                                :hint="__('audit_logs.reason_hint')"
+                                wire:model="audit_reason"
+                                rows="3"
+                            />
+                        </div>
+                    @endif
                 </div>
             </x-mary-card>
         </div>
@@ -73,7 +94,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('backend_common_cancel')"
-                :link="route('backend.buyers.index')"
+                :link="route('admin.buyers.index')"
             />
             <x-mary-button
                 :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"
@@ -84,4 +105,8 @@
             />
         </x-slot:actions>
     </x-mary-form>
+
+    @if ($isEditing)
+        <x-backend.audit-history :logs="$auditLogs" />
+    @endif
 </div>

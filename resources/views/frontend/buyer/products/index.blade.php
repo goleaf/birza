@@ -205,21 +205,32 @@
 
                 <!-- start products section -->
                 <div class="flex-1">
-                    <div class="relative mb-6">
-                        <input 
-                            type="text" 
-                            id="live-search"
-                            placeholder="{{ __('product_search_placeholder') }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        >
-                        <div 
-                            id="search-results" 
-                            class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden"
-                        >
-                            <div class="max-h-96 overflow-y-auto">
-                                <!-- Results will be populated here -->
+                    <div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-start">
+                        <div class="relative flex-1">
+                            <input
+                                type="text"
+                                id="live-search"
+                                placeholder="{{ __('product_search_placeholder') }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            >
+                            <div
+                                id="search-results"
+                                class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden"
+                            >
+                                <div class="max-h-96 overflow-y-auto">
+                                    <!-- Results will be populated here -->
+                                </div>
                             </div>
                         </div>
+
+                        <x-ui.button
+                            :href="route('buyer.compare.index')"
+                            secondary
+                            outline
+                            icon="scale"
+                            class="justify-center"
+                            :label="__('compare.actions.view_list', ['count' => $comparisonCount, 'limit' => $comparisonLimit])"
+                        />
                     </div>
 
                     @if ($products->isEmpty())
@@ -230,10 +241,15 @@
                         <!-- end empty message -->
                     @else
                         <!-- start products grid -->
-                        <div class="grid grid-cols-4 gap-4">
-                            @foreach ($products as $product)
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+	                            @foreach ($products as $product)
+	                                @php
+	                                    $isCompared = in_array((int) $product->id, $comparedProductIds, true);
+	                                    $isWishlisted = in_array((int) $product->id, $wishlistedProductIds, true);
+	                                @endphp
+
                                 <!-- start product card -->
-                                <div class="bg-white border border-gray-200 shadow p-4">
+                                <div class="bg-white border border-gray-200 shadow p-4" wire:key="buyer-product-card-{{ $product->id }}">
                                     <!-- start breadcrumb -->
                                     <div class="text-sm text-gray-600 mb-2">
                                         <a 
@@ -257,10 +273,10 @@
                                         <img 
                                             src="{{ $product->imageUrl('small') }}"
                                             alt="{{ $product->name }}"
-                                            class="w-full h-48 object-cover rounded mb-3"
                                             loading="lazy"
                                             width="320"
                                             height="240"
+                                            class="w-full h-48 object-cover rounded mb-3"
                                         >
                                     </a>
                                     <!-- end product image -->
@@ -287,7 +303,7 @@
                                     <!-- end price and stock -->
 
                                     <!-- start company and view -->
-                                    <div class="flex items-center justify-between text-sm">
+                                    <div class="flex items-center justify-between gap-3 text-sm">
                                         <span class="text-gray-600">
                                             {{ $product->seller->company_name }}
                                         </span>
@@ -299,6 +315,38 @@
                                         </a>
                                     </div>
                                     <!-- end company and view -->
+
+	                                    <div class="mt-4 grid gap-2 sm:grid-cols-2">
+                                        <x-ui.button
+                                            type="button"
+                                            primary
+                                            outline
+                                            sm
+                                            icon="heart"
+                                            class="w-full justify-center"
+                                            spinner="addToWishlist({{ $product->id }})"
+                                            wire:click="addToWishlist({{ $product->id }})"
+                                            wire:loading.attr="disabled"
+                                            :disabled="$isWishlisted"
+                                        >
+                                            {{ $isWishlisted ? __('wishlists.actions.saved') : __('wishlists.actions.add_product') }}
+                                        </x-ui.button>
+
+                                        <x-ui.button
+                                            type="button"
+                                            secondary
+                                            outline
+                                            sm
+                                            icon="scale"
+                                            class="w-full justify-center"
+                                            spinner="addToCompare({{ $product->id }})"
+                                            wire:click="addToCompare({{ $product->id }})"
+                                            wire:loading.attr="disabled"
+                                            :disabled="$isCompared"
+                                        >
+                                            {{ $isCompared ? __('compare.actions.in_list') : __('compare.actions.add') }}
+                                        </x-ui.button>
+                                    </div>
                                 </div>
                                 <!-- end product card -->
                             @endforeach

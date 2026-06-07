@@ -2,9 +2,13 @@
 
 namespace App\Livewire\Frontend\Seller;
 
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Users\Seller;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -26,7 +30,9 @@ class Dashboard extends Component
 
     public function render(): View
     {
+        /** @var Seller $seller */
         $seller = Auth::guard('seller')->user();
+        $seller->loadMissing('categories:id');
 
         $categoriesData = $this->getCategoriesData($seller);
         $ordersData = $this->getOrdersData($seller);
@@ -35,10 +41,11 @@ class Dashboard extends Component
             'seller' => $seller,
             'categoriesData' => $categoriesData,
             'ordersData' => $ordersData,
+            'recentNotifications' => $this->recentNotifications($seller),
         ]);
     }
 
-    protected function getCategoriesData($seller)
+    protected function getCategoriesData(Seller $seller)
     {
         $categories = $seller->categories()
             ->withRelationsForSeller()
@@ -62,32 +69,19 @@ class Dashboard extends Component
         });
     }
 
-    protected function getOrdersData($seller): array
+    protected function getOrdersData(Seller $seller): array
     {
-        $orderItems = OrderItem::with([
-            'order',
-            'order.buyer',
-            'product.primaryImage',
-        ])
-            ->where('seller_id', $seller->id)
-            ->latest()
-            ->get();
-
-        $orders = $orderItems->pluck('order')->unique('id')->values();
-        $paidOrders = $orders->where('payment_status', Order::STATUS['PAID']);
-        $paidOrderItems = $orderItems->filter(
-            fn (OrderItem $item): bool => $item->order?->payment_status === Order::STATUS['PAID']
-        );
-
-        $this->monthlySalesChart = $this->buildMonthlySalesChart($orders, $paidOrderItems);
+        $ordersQuery = $this->sellerOrdersQuery($seller);
+        $this->monthlySalesChart = $this->buildMonthlySalesChart($seller);
 
         return [
-            'total' => $orders->count(),
-            'pending' => $orders->where('payment_status', Order::STATUS['PENDING'])->count(),
-            'paid' => $paidOrders->count(),
-            'failed' => $orders->where('payment_status', Order::STATUS['FAILED'])->count(),
-            'totalRevenue' => $paidOrderItems->sum('total_price'),
-            'recent' => $orderItems->take(5)
+            'total' => (clone $ordersQuery)->count(),
+            'counts' => $this->statusCounts((clone $ordersQuery)),
+            'totalRevenue' => OrderItem::query()
+                ->forSeller($seller)
+                ->whereHas('order', fn ($query) => $query->paid())
+                ->sum('total_price'),
+            'recent' => $this->recentOrderItems($seller)
                 ->map(function ($item) {
                     return [
                         'order' => $item->order,
@@ -98,41 +92,50 @@ class Dashboard extends Component
                         'buyer' => $item->order->buyer,
                     ];
                 }),
-            'allOrders' => $orderItems->groupBy('order_id')
-                ->map(function ($items) {
-                    $order = $items->first()->order;
-
-                    return [
-                        'order' => $order,
-                        'items' => $items->map(function ($item) {
-                            return [
-                                'product' => $item->product,
-                                'quantity' => $item->quantity,
-                                'unit_price' => $item->unit_price,
-                                'total_price' => $item->total_price,
-                            ];
-                        }),
-                        'buyer' => $order->buyer,
-                        'total' => $items->sum('total_price'),
-                    ];
-                }),
+            'allOrders' => collect(),
         ];
     }
 
+    protected function sellerOrdersQuery(Seller $seller): Builder
+    {
+        return Order::query()
+            ->summaryColumns()
+            ->whereIn('id', OrderItem::query()->select('order_id')->forSeller($seller));
+    }
+
+    protected function recentOrderItems(Seller $seller): Collection
+    {
+        return OrderItem::query()
+            ->select(['id', 'order_id', 'product_id', 'seller_id', 'quantity', 'unit_price', 'total_price', 'created_at'])
+            ->forSeller($seller)
+            ->with([
+                'order:id,buyer_id,payment_status,status,order_total,created_at,updated_at',
+                'order.buyer:id,name,company_name',
+                'product' => function ($query): void {
+                    $query->select(['id', 'name', 'product_image'])
+                        ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order');
+                },
+            ])
+            ->latest()
+            ->limit(5)
+            ->get();
+    }
+
+    protected function recentNotifications(Seller $seller): Collection
+    {
+        return $seller->notifications()
+            ->select(['id', 'type', 'notifiable_type', 'notifiable_id', 'data', 'read_at', 'created_at'])
+            ->latest()
+            ->limit(5)
+            ->get();
+    }
+
     /**
-     * @param  Collection<int, Order>  $orders
-     * @param  Collection<int, OrderItem>  $paidOrderItems
      * @return array<string, mixed>
      */
-    protected function buildMonthlySalesChart(Collection $orders, Collection $paidOrderItems): array
+    protected function buildMonthlySalesChart(Seller $seller): array
     {
         $months = $this->recentChartMonths();
-        $ordersByMonth = $orders->groupBy(
-            fn (Order $order): string => (string) $order->created_at?->format('Y-m')
-        );
-        $paidItemsByMonth = $paidOrderItems->groupBy(
-            fn (OrderItem $item): string => (string) $item->order?->created_at?->format('Y-m')
-        );
 
         return [
             'type' => 'bar',
@@ -146,7 +149,9 @@ class Dashboard extends Component
                         'data' => $months
                             ->map(
                                 fn (Carbon $month): float => round(
-                                    (float) $paidItemsByMonth->get($month->format('Y-m'), collect())->sum('total_price'),
+                                    (float) $this->monthlyOrderItemsQuery($seller, $month)
+                                        ->whereHas('order', fn ($query) => $query->paid())
+                                        ->sum('total_price'),
                                     2
                                 )
                             )
@@ -164,9 +169,8 @@ class Dashboard extends Component
                         'label' => __('dashboard_paid_orders'),
                         'data' => $months
                             ->map(
-                                fn (Carbon $month): int => $ordersByMonth
-                                    ->get($month->format('Y-m'), collect())
-                                    ->where('payment_status', Order::STATUS['PAID'])
+                                fn (Carbon $month): int => $this->monthlyOrdersQuery($seller, $month)
+                                    ->where('payment_status', OrderPaymentStatus::Paid->value)
                                     ->count()
                             )
                             ->all(),
@@ -217,6 +221,36 @@ class Dashboard extends Component
                 ],
             ],
         ];
+    }
+
+    protected function monthlyOrdersQuery(Seller $seller, Carbon $month): Builder
+    {
+        return $this->sellerOrdersQuery($seller)
+            ->where('created_at', '>=', $month->copy()->startOfMonth())
+            ->where('created_at', '<=', $month->copy()->endOfMonth());
+    }
+
+    protected function monthlyOrderItemsQuery(Seller $seller, Carbon $month): Builder
+    {
+        return OrderItem::query()
+            ->forSeller($seller)
+            ->whereHas('order', function ($query) use ($month): void {
+                $query
+                    ->where('created_at', '>=', $month->copy()->startOfMonth())
+                    ->where('created_at', '<=', $month->copy()->endOfMonth());
+            });
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    protected function statusCounts(Builder $query): array
+    {
+        return collect(OrderStatus::cases())
+            ->mapWithKeys(fn (OrderStatus $status): array => [
+                $status->value => (clone $query)->where('status', $status->value)->count(),
+            ])
+            ->all();
     }
 
     /**

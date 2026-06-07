@@ -33,7 +33,7 @@
 
             <x-ui.statistic
                 :title="__('orders_pending_orders')"
-                :value="(string) $ordersData['pending']"
+                :value="(string) $ordersData['counts'][$pendingStatus->value]"
                 icon="clock"
                 color="text-warning"
                 class="shadow-sm"
@@ -41,7 +41,7 @@
 
             <x-ui.statistic
                 :title="__('orders_completed_orders')"
-                :value="(string) $ordersData['delivered']"
+                :value="(string) $ordersData['counts'][$deliveredStatus->value]"
                 icon="check-badge"
                 color="text-success"
                 class="shadow-sm"
@@ -83,12 +83,12 @@
                             <option value="">
                                 {{ __('common_all') }}
                             </option>
-                            @foreach ($orderStatuses as $key => $value)
+                            @foreach ($orderStatuses as $status)
                                 <option 
-                                    value="{{ $value }}" 
-                                    {{ $filters['status'] === $value ? 'selected' : '' }}
+                                    value="{{ $status->value }}" 
+                                    {{ $filters['status'] === $status->value ? 'selected' : '' }}
                                 >
-                                    {{ __('orders_status_3_' . strtolower($key)) }}
+                                    {{ $status->label() }}
                                 </option>
                             @endforeach
                         </select>
@@ -229,19 +229,10 @@
                                         <x-slot:trigger>
                                             <span>
                                                 <x-ui.badge
-                                                    :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                                                    :color="match (strtolower((string) $order->payment_status)) {
-                                                        'pending' => 'warning',
-                                                        'paid', 'delivered' => 'success',
-                                                        'failed' => 'error',
-                                                        'processing' => 'info',
-                                                        'shipped' => 'secondary',
-                                                        'cancelled', 'refunded' => 'neutral',
-                                                        default => 'neutral',
-                                                    }"
+                                                    :value="$order->paymentStatusLabel()"
+                                                    :color="$order->paymentStatusUiColor()"
                                                     soft
-                                                    sm
-                                                    class="font-semibold"
+                                                    class="font-medium"
                                                 />
                                             </span>
                                         </x-slot:trigger>
@@ -277,7 +268,7 @@
                                     </a>
                                     <!-- end view link -->
 
-                                    @if ($order->payment_status === 'pending')
+                                    @if ($order->canBeCancelled())
                                         <button
                                             type="button"
                                             wire:click="cancelOrder({{ $order->id }})"
@@ -302,6 +293,10 @@
                 <!-- end table -->
             </div>
             <!-- end overflow container -->
+
+            <div class="border-t border-gray-100 px-5 py-4">
+                {{ $ordersData['all']->links() }}
+            </div>
         </x-ui.card>
         <!-- end orders list -->
     </div>

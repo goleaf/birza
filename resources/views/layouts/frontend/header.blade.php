@@ -1,4 +1,24 @@
 <!-- start main header -->
+@php
+    $canAccessBuyerCabinet = $guard === 'buyer'
+        && $user !== null
+        && \Illuminate\Support\Facades\Gate::forUser($user)->allows('accessBuyerCabinet');
+    $canAccessSellerCabinet = $guard === 'seller'
+        && $user !== null
+        && \Illuminate\Support\Facades\Gate::forUser($user)->allows('accessSellerCabinet');
+    $canAccessCurrentCabinet = $canAccessBuyerCabinet || $canAccessSellerCabinet;
+    $dashboardRoute = match (true) {
+        $canAccessBuyerCabinet => 'buyer.dashboard',
+        $canAccessSellerCabinet => 'seller.dashboard',
+        default => 'home',
+    };
+    $frontendRoleLabel = match ($guard) {
+        'buyer' => __('buyer_role_name'),
+        'seller' => __('seller_role_name'),
+        default => '',
+    };
+@endphp
+
 <div class="bg-white shadow">
     <!-- start header container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -6,10 +26,10 @@
         <div class="flex justify-between h-16">
             <!-- start left side -->
             <div class="flex items-center">
-                @if ($guard)
+                @if ($canAccessCurrentCabinet)
                     <!-- start dashboard link -->
                     <a 
-                        href="{{ route($guard . '.dashboard') }}" 
+                        href="{{ route($dashboardRoute) }}"
                         class="flex items-center space-x-2"
                     >
                         <x-ui.icon name="cube-transparent" class="mr-2 h-8 w-8 text-blue-500" />
@@ -51,7 +71,7 @@
 
             <!-- start right side -->
             <div class="flex items-center space-x-6">
-                @if ($guard)
+                @if ($guard && $user)
                     <!-- start user menu -->
                     <div class="flex items-center space-x-4">
                         @if (($notificationDropdown['indexRoute'] ?? null) !== null)
@@ -84,7 +104,7 @@
                                         </div>
                                         <div>
                                             <div class="font-semibold text-gray-900">{{ $user->name }}</div>
-                                            <div class="text-xs text-gray-500">{{ $guard === 'buyer' ? __('buyer_role_name') : __('seller_role_name') }}</div>
+                                            <div class="text-xs text-gray-500">{{ $frontendRoleLabel }}</div>
                                         </div>
                                     </div>
 
@@ -105,7 +125,7 @@
 
                         <!-- start navigation -->
                         <nav class="flex space-x-3">
-                            @if ($guard == 'buyer')
+                            @if ($canAccessBuyerCabinet)
                                 <!-- start cart link -->
                                 <a 
                                     href="{{ route('buyer.cart.index') }}"
@@ -132,21 +152,40 @@
 	                                        color="primary"
 	                                        sm
 	                                        aria-label="{{ __('wishlists.title') }} {{ $wishlistItemsCount }}"
-	                                    />
+                                    />
 	                                </a>
 	                                <!-- end wishlist link -->
+
+                                    <!-- start buyer messages link -->
+                                    <a
+                                        href="{{ route('buyer.messages.index') }}"
+                                        class="inline-flex items-center gap-2 transition-colors {{ $messageUnreadCount > 0 ? 'text-blue-600' : 'text-gray-700 hover:text-blue-500' }}"
+                                    >
+                                        {{ __('messages.inbox') }}
+                                        @if ($messageUnreadCount > 0)
+                                            <x-ui.badge
+                                                :value="(string) $messageUnreadCount"
+                                                color="primary"
+                                                sm
+                                                aria-label="{{ __('messages.inbox') }} {{ $messageUnreadCount }}"
+                                            />
+                                        @endif
+                                    </a>
+                                    <!-- end buyer messages link -->
 	                            @endif
 
                             <!-- start dashboard link -->
-                            <a 
-                                href="{{ route($guard . '.dashboard') }}"
-                                class="text-gray-700 hover:text-blue-500 transition-colors"
-                            >
-                                {{ __('dashboard_title') }}
-                            </a>
+                            @if ($canAccessCurrentCabinet)
+                                <a
+                                    href="{{ route($dashboardRoute) }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('dashboard_title') }}
+                                </a>
+                            @endif
                             <!-- end dashboard link -->
 
-                            @if ($guard == 'seller')
+                            @if ($canAccessSellerCabinet)
                                 <!-- start seller products link -->
                                 <a
                                     href="{{ route('seller.products.index') }}"
@@ -155,6 +194,15 @@
                                     {{ __('products.title') }}
                                 </a>
                                 <!-- end seller products link -->
+
+                                <!-- start seller bundles link -->
+                                <a
+                                    href="{{ route('seller.bundles.index') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('bundles.title') }}
+                                </a>
+                                <!-- end seller bundles link -->
 
                                 <!-- start discounts link -->
                                 <a
@@ -182,15 +230,34 @@
                                     {{ __('products.questions.nav_seller') }}
                                 </a>
                                 <!-- end product questions link -->
+
+                                <!-- start seller messages link -->
+                                <a
+                                    href="{{ route('seller.messages.index') }}"
+                                    class="inline-flex items-center gap-2 transition-colors {{ $messageUnreadCount > 0 ? 'text-blue-600' : 'text-gray-700 hover:text-blue-500' }}"
+                                >
+                                    {{ __('messages.inbox') }}
+                                    @if ($messageUnreadCount > 0)
+                                        <x-ui.badge
+                                            :value="(string) $messageUnreadCount"
+                                            color="primary"
+                                            sm
+                                            aria-label="{{ __('messages.inbox') }} {{ $messageUnreadCount }}"
+                                        />
+                                    @endif
+                                </a>
+                                <!-- end seller messages link -->
                             @endif
 
                             <!-- start profile link -->
-                            <a 
-                                href="{{ route($guard . '.profile.edit') }}"
-                                class="text-gray-700 hover:text-blue-500 transition-colors"
-                            >
-                                {{ __('profile_edit_profile') }}
-                            </a>
+                            @if ($canAccessCurrentCabinet)
+                                <a
+                                    href="{{ route($guard . '.profile.edit') }}"
+                                    class="text-gray-700 hover:text-blue-500 transition-colors"
+                                >
+                                    {{ __('profile_edit_profile') }}
+                                </a>
+                            @endif
                             <!-- end profile link -->
 
                             <!-- start logout form -->

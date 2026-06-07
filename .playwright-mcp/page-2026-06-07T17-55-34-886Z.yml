@@ -1,0 +1,205 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e5]:
+      - link "Birza" [ref=e7] [cursor=pointer]:
+        - /url: https://birza.test
+        - img [ref=e8]
+        - text: Birza
+      - generic [ref=e10]:
+        - link "LT" [ref=e11] [cursor=pointer]:
+          - /url: https://birza.test/language/lt
+        - link "EN" [ref=e12] [cursor=pointer]:
+          - /url: https://birza.test/language/en
+  - generic [ref=e14]:
+    - heading "IMK24.lt" [level=1] [ref=e15]
+    - paragraph [ref=e16]: The Hero Subtitle
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - img [ref=e22]
+        - heading "Buyer access title" [level=2] [ref=e24]
+      - list [ref=e25]:
+        - listitem [ref=e26]:
+          - img [ref=e27]
+          - text: Buyer Feature 1
+        - listitem [ref=e29]:
+          - img [ref=e30]
+          - text: Buyer Feature 2
+        - listitem [ref=e32]:
+          - img [ref=e33]
+          - text: Nelieka rūpesčių dėl logistikos
+        - listitem [ref=e35]:
+          - img [ref=e36]
+          - text: Kita nauda
+      - generic [ref=e38]:
+        - link "Buyer login" [ref=e39] [cursor=pointer]:
+          - /url: https://birza.test/buyer/login
+          - img [ref=e41]
+          - text: Buyer login
+        - link "Buyer register" [ref=e43] [cursor=pointer]:
+          - /url: https://birza.test/buyer/register
+          - img [ref=e45]
+          - text: Buyer register
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - img [ref=e50]
+        - heading "Seller access title" [level=2] [ref=e52]
+      - list [ref=e53]:
+        - listitem [ref=e54]:
+          - img [ref=e55]
+          - text: Seller Feature 1
+        - listitem [ref=e57]:
+          - img [ref=e58]
+          - text: Seller Feature 2
+        - listitem [ref=e60]:
+          - img [ref=e61]
+          - text: Seller Feature 3
+        - listitem [ref=e63]:
+          - img [ref=e64]
+          - text: Seller Feature 4
+      - generic [ref=e66]:
+        - link "Seller Login" [ref=e67] [cursor=pointer]:
+          - /url: https://birza.test/seller/login
+          - img [ref=e69]
+          - text: Seller Login
+        - link "Seller registration" [ref=e71] [cursor=pointer]:
+          - /url: https://birza.test/seller/register
+          - img [ref=e73]
+          - text: Seller registration
+  - generic [ref=e75]:
+    - heading "Product categories title" [level=2] [ref=e76]
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - img "Product Category 1" [ref=e79]
+        - heading "Product Category 1" [level=3] [ref=e80]
+        - paragraph [ref=e81]: Product Category 1 Description
+      - generic [ref=e82]:
+        - img "Product category 2" [ref=e83]
+        - heading "Product category 2" [level=3] [ref=e84]
+        - paragraph [ref=e85]: Description of product category 2
+      - generic [ref=e86]:
+        - img "Product Category 3" [ref=e87]
+        - heading "Product Category 3" [level=3] [ref=e88]
+        - paragraph [ref=e89]: Įvairi paruošta vartojimui produkcija ir pan.
+      - generic [ref=e90]:
+        - img "product_category_4_title" [ref=e91]
+        - heading "product_category_4_title" [level=3] [ref=e92]
+        - paragraph [ref=e93]: Product Category 4 Description
+  - generic [ref=e94]:
+    - heading "Community title" [level=2] [ref=e95]
+    - generic [ref=e96]:
+      - generic [ref=e98]:
+        - img [ref=e100]
+        - generic [ref=e102]:
+          - heading "Seller Count" [level=3] [ref=e103]
+          - paragraph [ref=e104]: "0"
+      - generic [ref=e106]:
+        - img [ref=e108]
+        - generic [ref=e110]:
+          - heading "Product categories count title" [level=3] [ref=e111]
+          - paragraph [ref=e112]: "0"
+      - generic [ref=e114]:
+        - img [ref=e116]
+        - generic [ref=e118]:
+          - heading "Buyer Count" [level=3] [ref=e119]
+          - paragraph [ref=e120]: "0"
+  - generic [ref=e121]:
+    - heading "Frequently Asked Questions" [level=2] [ref=e122]
+    - generic [ref=e123]:
+      - generic [ref=e124]:
+        - checkbox [ref=e125]
+        - generic [ref=e126]: What services do you offer?
+        - paragraph [ref=e128]: We offer a wide range of products, including food and other everyday items. Our services include not only the sale of quality products, but also the opportunity to advertise your products on our website. This is an ideal place where your products will reach a wider audience. The platform operates as a trading exchange where suppliers and buyers can meet, exchange products and services. If you want to reach a wider audience and increase your sales, advertising on our exchange is a great solution.
+      - generic [ref=e129]:
+        - checkbox [ref=e130]
+        - generic [ref=e131]: What payment options are available?
+        - paragraph [ref=e133]: main_faq_faq_2_answer
+      - generic [ref=e134]:
+        - checkbox [ref=e135]
+        - generic [ref=e136]: Is delivery free?
+        - paragraph [ref=e138]: main_faq_faq_3_answer
+      - generic [ref=e139]:
+        - checkbox [ref=e140]
+        - generic [ref=e141]: How can I order products?
+        - paragraph [ref=e143]: Select products, you can use filtering tools to quickly find the products you want by categories, price or other parameters. Add products to cart, choose payment method and enter delivery information.
+      - generic [ref=e144]:
+        - checkbox [ref=e145]
+        - generic [ref=e146]: Can I return products? How to make a return? What to do if I received damaged products?
+        - paragraph [ref=e148]: main_faq_faq_5_answer
+      - generic [ref=e149]:
+        - checkbox [ref=e150]
+        - generic [ref=e151]: How long does order delivery take?
+        - paragraph [ref=e153]: main_faq_faq_6_answer
+      - generic [ref=e154]:
+        - checkbox [ref=e155]
+        - generic [ref=e156]: Can I change the delivery address?
+        - paragraph [ref=e158]: main_faq_faq_7_answer
+      - generic [ref=e159]:
+        - checkbox [ref=e160]
+        - generic [ref=e161]: How to delete an account?
+        - paragraph [ref=e163]: main_faq_faq_8_answer
+      - generic [ref=e164]:
+        - checkbox [ref=e165]
+        - generic [ref=e166]: main_faq_faq_9_question
+        - paragraph [ref=e168]: main_faq_faq_9_answer
+      - generic [ref=e169]:
+        - checkbox [ref=e170]
+        - generic [ref=e171]: main_faq_faq_10_question
+        - paragraph [ref=e173]: main_faq_faq_10_answer
+  - contentinfo [ref=e174]:
+    - generic [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - heading "Birza" [level=3] [ref=e178]
+          - paragraph [ref=e179]: Your trusted meat trading platform.
+          - generic [ref=e180]:
+            - link [ref=e181] [cursor=pointer]:
+              - /url: https://facebook.com
+              - img [ref=e182]
+            - link [ref=e184] [cursor=pointer]:
+              - /url: https://twitter.com
+              - img [ref=e185]
+            - link [ref=e187] [cursor=pointer]:
+              - /url: https://linkedin.com
+              - img [ref=e188]
+            - link [ref=e190] [cursor=pointer]:
+              - /url: https://instagram.com
+              - img [ref=e191]
+        - generic [ref=e193]:
+          - heading "Quick Links" [level=3] [ref=e194]
+          - list [ref=e195]:
+            - listitem [ref=e196]:
+              - link "Login to" [ref=e197] [cursor=pointer]:
+                - /url: https://birza.test/buyer/login
+            - listitem [ref=e198]:
+              - link "Login to" [ref=e199] [cursor=pointer]:
+                - /url: https://birza.test/seller/login
+            - listitem [ref=e200]:
+              - link "Buyer register" [ref=e201] [cursor=pointer]:
+                - /url: https://birza.test/buyer/register
+            - listitem [ref=e202]:
+              - link "Seller registration" [ref=e203] [cursor=pointer]:
+                - /url: https://birza.test/seller/register
+        - generic [ref=e204]:
+          - heading "Contact Us" [level=3] [ref=e205]
+          - list [ref=e206]:
+            - listitem [ref=e207]:
+              - img [ref=e208]
+              - text: contact@meattrade.com
+            - listitem [ref=e210]:
+              - img [ref=e211]
+              - text: +1 234 567 890
+            - listitem [ref=e213]:
+              - img [ref=e214]
+              - text: 123 Meat Street, Food City, FC 12345
+            - listitem [ref=e217]:
+              - img [ref=e218]
+              - text: "Mon-Fri: 9 AM - 5 PM EST"
+        - generic [ref=e220]:
+          - heading "Languages" [level=3] [ref=e221]
+          - generic [ref=e222]:
+            - link "LT" [ref=e223] [cursor=pointer]:
+              - /url: https://birza.test/language/lt
+            - link "EN" [ref=e224] [cursor=pointer]:
+              - /url: https://birza.test/language/en
+      - paragraph [ref=e226]: © 2026 Birza. All rights reserved.

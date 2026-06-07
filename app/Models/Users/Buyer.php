@@ -2,16 +2,21 @@
 
 namespace App\Models\Users;
 
+use App\Models\AuditLog;
 use App\Models\BuyerCreditHistory;
+use App\Models\Conversation;
 use App\Models\Order;
 use App\Models\ProductQuestion;
+use App\Models\ProductReport;
 use App\Models\ProductStockAlert;
 use App\Models\User;
+use App\Models\Wishlist;
 use Database\Factories\BuyerFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,7 +30,6 @@ class Buyer extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = [
         'name',
-        'user_id',
         'email',
         'password',
         'company_name',
@@ -34,11 +38,7 @@ class Buyer extends Authenticatable implements MustVerifyEmail
         'address',
         'phone',
         'bank_account',
-        'credit_balance',
         'password_reset_at',
-        'remember_token',
-        'is_verified',
-        'is_active',
     ];
 
     protected $guarded = ['id', 'remember_token', 'email_verified_at'];
@@ -74,9 +74,9 @@ class Buyer extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class, 'buyer_id');
     }
 
-    public function productQuestions(): HasMany
+    public function productReports(): HasMany
     {
-        return $this->hasMany(ProductQuestion::class, 'buyer_id');
+        return $this->hasMany(ProductReport::class, 'reporter_id');
     }
 
     public function creditHistory(): HasMany
@@ -84,9 +84,29 @@ class Buyer extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(BuyerCreditHistory::class, 'buyer_id');
     }
 
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, 'auditable')->latest('created_at');
+    }
+
+    public function productQuestions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class, 'buyer_id');
+    }
+
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'buyer_id');
+    }
+
     public function stockAlerts(): HasMany
     {
         return $this->hasMany(ProductStockAlert::class, 'buyer_id');
+    }
+
+    public function wishlists(): HasMany
+    {
+        return $this->hasMany(Wishlist::class, 'buyer_id');
     }
 
     public function addCredit(float $amount, ?int $adminId = null, ?string $note = null): void

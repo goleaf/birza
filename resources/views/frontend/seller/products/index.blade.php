@@ -22,7 +22,7 @@
             </x-slot:actions>
         </x-ui.header>
 
-        <x-ui.card class="rounded-xl shadow-lg">
+        <x-ui.card class="mb-6 rounded-xl shadow-lg">
                 <!-- start categories list -->
                 <div class="space-y-6">
                     @foreach ($categories as $category)
@@ -37,37 +37,18 @@
                             <x-slot:content class="bg-white">
                                 <div class="space-y-4">
                                     @foreach ($category->subcategories as $subcategory)
-                                        <x-mary-collapse
-                                            open
-                                            class="rounded-lg border border-blue-100 bg-white shadow-sm"
-                                        >
-                                            <x-slot:heading class="bg-gradient-to-l from-blue-400 to-blue-500 font-medium text-white">
+                                        <div class="flex items-center justify-between rounded-lg border border-blue-100 bg-white p-4 shadow-sm">
+                                            <span class="font-medium text-gray-800">
                                                 {{ $subcategory->getTranslation('category_name', app()->getLocale()) }}
-                                            </x-slot:heading>
+                                            </span>
 
-                                            <x-slot:content class="bg-white">
-                                                @include(
-                                                    'frontend.seller.products.partials.products_table',
-                                                    [
-                                                        'products' => $subcategory->products,
-                                                        'category' => $subcategory,
-                                                    ]
-                                                )
-                                                <hr>
-                                                <!-- start create button container -->
-                                                <div class="p-6">
-                                                    <div class="flex justify-center">
-                                                        <x-ui.button
-                                                            :href="route('seller.products.create', $subcategory)"
-                                                            primary
-                                                            sm
-                                                            :label="__('product_create_product')"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <!-- end create button container -->
-                                            </x-slot:content>
-                                        </x-mary-collapse>
+                                            <x-ui.button
+                                                :href="route('seller.products.create', $subcategory)"
+                                                primary
+                                                sm
+                                                :label="__('product_create_product')"
+                                            />
+                                        </div>
                                     @endforeach
                                 </div>
                             </x-slot:content>
@@ -75,6 +56,18 @@
                     @endforeach
                 </div>
                 <!-- end categories list -->
+        </x-ui.card>
+
+        <x-ui.card class="rounded-xl shadow-lg" body-class="-mx-5 -mb-5 overflow-hidden">
+            <div class="overflow-x-auto">
+                @include('frontend.seller.products.partials.products_table', [
+                    'products' => $products,
+                ])
+            </div>
+
+            <div class="border-t border-gray-100 px-5 py-4">
+                {{ $products->links() }}
+            </div>
         </x-ui.card>
     </div>
     <!-- end main container -->

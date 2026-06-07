@@ -17,7 +17,7 @@ class BuyerCreditHistoryControllerTest extends TestCase
     public function test_credit_history_index_requires_authentication(): void
     {
         $buyer = Buyer::factory()->create();
-        $response = $this->get(route('backend.buyers.credit_history', $buyer));
+        $response = $this->get(route('admin.buyers.credit_history', $buyer));
 
         $response->assertRedirect(route('home'));
     }
@@ -36,7 +36,7 @@ class BuyerCreditHistoryControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.buyers.credit_history', $buyer));
+            ->get(route('admin.buyers.credit_history', $buyer));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(BuyerCreditHistoryPage::class)

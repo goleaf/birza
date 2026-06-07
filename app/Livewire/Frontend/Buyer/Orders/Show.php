@@ -2,16 +2,23 @@
 
 namespace App\Livewire\Frontend\Buyer\Orders;
 
+use App\Actions\Orders\ChangeOrderStatusAction;
+use App\Actions\Messaging\StartConversationAction;
+use App\Enums\OrderStatus;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Order;
+use App\Models\Users\Seller;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app')]
 class Show extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithWireUi;
 
     public Order $order;
@@ -20,41 +27,53 @@ class Show extends Component
 
     public function mount(Order $order): void
     {
-        if ($order->buyer_id !== Auth::guard('buyer')->id()) {
-            abort(403);
-        }
+        $this->authorize('view', $order);
 
-        $this->order = $order->load(['orderItems.product.primaryImage', 'orderItems.seller']);
+        $this->order = $order->load(['items.product.primaryImage', 'items.seller', 'orderBundles.items.product.primaryImage']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
     }
 
     public function cancelOrder(): void
     {
-        if ($this->order->buyer_id !== Auth::guard('buyer')->id()) {
-            abort(403);
-        }
+        $this->updateStatus(OrderStatus::Cancelled->value);
+    }
 
-        if ($this->order->payment_status !== Order::STATUS['PENDING']) {
-            $this->notifyError(__('orders_messages_cannot_cancel'));
+    public function updateStatus(string $status): void
+    {
+        $nextStatus = OrderStatus::tryFrom($status);
+
+        if (! $nextStatus) {
+            $this->notifyError(__('orders.status.messages.cannot_be_changed'));
 
             return;
         }
 
-        DB::transaction(function () {
-            $this->order->update([
-                'payment_status' => Order::STATUS['CANCELLED'],
-                'status' => Order::STATUS['CANCELLED'],
-            ]);
+        try {
+            $this->authorize('changeStatus', [$this->order, $nextStatus]);
 
-            foreach ($this->order->orderItems as $item) {
-                $item->product?->increment('stock', $item->quantity);
-            }
-        });
+            app(ChangeOrderStatusAction::class)->handle(
+                order: $this->order,
+                nextStatus: $nextStatus,
+                actor: Auth::guard('buyer')->user(),
+            );
+        } catch (ValidationException $exception) {
+            $this->notifyError(collect($exception->errors())->flatten()->first() ?? __('orders.status.messages.cannot_be_changed'));
 
-        $this->order->refresh()->load(['orderItems.product.primaryImage', 'orderItems.seller']);
+            return;
+        } catch (AuthorizationException $exception) {
+            $this->notifyError($exception->getMessage() ?: __('orders.messages.unauthorized_update'));
+
+            return;
+        }
+
+        $this->order->refresh()->load(['items.product.primaryImage', 'items.seller', 'orderBundles.items.product.primaryImage']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
 
-        $this->notifySuccess(__('orders_messages_cancelled_success'));
+        $this->notifySuccess(
+            $nextStatus === OrderStatus::Cancelled
+                ? __('orders.messages.cancelled_successfully')
+                : __('orders.status.messages.updated')
+        );
     }
 
     public function confirmCancelOrder(): void
@@ -68,14 +87,36 @@ class Show extends Component
         );
     }
 
+    public function openSellerConversation(int $sellerId, StartConversationAction $action): void
+    {
+        $buyer = Auth::guard('buyer')->user();
+        abort_if(! $buyer, 403);
+
+        $seller = Seller::query()
+            ->select(['id', 'name', 'company_name'])
+            ->findOrFail($sellerId);
+
+        try {
+            $conversation = $action->forOrder($buyer, $this->order, $seller);
+        } catch (AuthorizationException $exception) {
+            $this->notifyError($exception->getMessage() ?: __('messages.errors.not_allowed'));
+
+            return;
+        }
+
+        $this->redirectRoute('buyer.messages.show', $conversation, navigate: true);
+    }
+
     public function render()
     {
         return view('frontend.buyer.orders.show', [
             'order' => $this->order,
+            'orderSellers' => $this->order->items->pluck('seller')->filter()->unique('id')->values(),
             'orderStepItems' => $this->order->lifecycleSteps(),
             'orderStepPanel' => $this->order->lifecyclePanel(),
             'orderStepsColor' => $this->order->lifecycleStepsColor(),
             'orderTimelineItems' => $this->order->lifecycleTimeline(),
+            'allowedStatusTransitions' => $this->order->availableTransitionsFor(Auth::guard('buyer')->user()),
         ]);
     }
 }

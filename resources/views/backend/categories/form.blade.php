@@ -4,11 +4,11 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_categories'), 'link' => route('backend.categories.index')],
+                ['label' => __('navigation_categories'), 'link' => route('admin.categories.index')],
                 ['label' => $category->getTranslation('category_name', app()->getLocale())],
             ]
             : [
-                ['label' => __('navigation_categories'), 'link' => route('backend.categories.index')],
+                ['label' => __('navigation_categories'), 'link' => route('admin.categories.index')],
                 ['label' => __('common_create')],
             ]"
     />
@@ -53,7 +53,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('backend_common_cancel')"
-                    :link="route('backend.categories.index')"
+                    :link="route('admin.categories.index')"
                 />
                 <x-mary-button
                     :label="$isEditing ? __('backend_categories_actions_update') : __('backend_categories_actions_create')"

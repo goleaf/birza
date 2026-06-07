@@ -11,6 +11,7 @@ Current audited actions include:
 - Product actions: `product.created`, `product.updated`, `product.price_changed`, `product.published`, `product.unpublished`, `product.deleted`, `product.restored`, `product.force_deleted`, `product.image_uploaded`, `product.image_deleted`.
 - Product report actions: `product_report.created`, `product_report.reviewing`, `product_report.resolved`, `product_report.rejected`, `product_report.dismissed`, `product_report.product_hidden`.
 - Cart and order actions: `cart.checked_out`, `order.created`, `order.status_changed`, `order.cancelled`, `order.refunded`, `order.dispute_opened`.
+- Messaging actions: `conversation.started`, `conversation.message_sent`, `conversation.marked_read`, `conversation.archived`, `conversation.closed`, `conversation.admin_viewed`.
 - Account and moderation actions: `buyer.created`, `buyer.updated`, `buyer.deleted`, `seller.created`, `seller.updated`, `seller.deleted`, `seller.approved`, `seller.rejected`, `user.blocked`, `user.unblocked`.
 - Finance and settings actions: `buyer.credit_adjusted`, `settings.updated`.
 
@@ -71,6 +72,8 @@ Request context is optional. If no request is passed, the service uses the curre
 For product flows, prefer `App\Actions\Products\RecordProductAuditLogsAction`; it records product updates, price changes, publish/unpublish decisions, and image deltas consistently.
 
 For order statuses, always use `App\Actions\Orders\ChangeOrderStatusAction`. It writes order status history and security audit logs inside the same transaction.
+
+For private messages, use `App\Actions\Messaging\RecordMessagingAuditAction`. It records IDs, actor role, related product/order context, and body length, but does not store full message bodies.
 
 ## Sensitive Data
 

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Controllers\Frontend\Buyer;
 
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
 use App\Livewire\Frontend\Buyer\Orders\Show as BuyerOrderShow;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -28,7 +30,7 @@ class OrderControllerTest extends TestCase
         $buyer = Buyer::factory()->create();
         Order::factory()->count(3)->create([
             'buyer_id' => $buyer->id,
-            'payment_status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
         ]);
 
         $response = $this->actingAs($buyer, 'buyer')
@@ -63,7 +65,7 @@ class OrderControllerTest extends TestCase
             'name' => 'Fresh Milk',
         ]);
         $order = Order::factory()->for($buyer, 'buyer')->create([
-            'payment_status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
         ]);
 
         OrderItem::factory()->create([
@@ -85,8 +87,8 @@ class OrderControllerTest extends TestCase
             ->assertSee(__('orders_order_timeline'))
             ->assertSee(__('orders_timeline_order_placed_title'))
             ->assertSee(__('orders_timeline_waiting_confirmation_description'))
-            ->assertSee(__('orders_status_pending'))
-            ->assertSee(__('orders_steps_pending_description'))
+            ->assertSee(OrderStatus::Pending->label())
+            ->assertSee(OrderStatus::Pending->description())
             ->assertSee('Fresh Milk')
             ->assertSee('badge-warning');
     }
@@ -100,8 +102,8 @@ class OrderControllerTest extends TestCase
             'stock' => 10,
         ]);
         $order = Order::factory()->for($buyer, 'buyer')->create([
-            'payment_status' => Order::STATUS['PENDING'],
-            'status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
+            'status' => OrderStatus::Pending,
         ]);
 
         OrderItem::factory()->create([
@@ -125,8 +127,8 @@ class OrderControllerTest extends TestCase
         $order->refresh();
         $product->refresh();
 
-        $this->assertSame(Order::STATUS['CANCELLED'], $order->payment_status);
-        $this->assertSame(Order::STATUS['CANCELLED'], $order->status);
+        $this->assertSame(OrderPaymentStatus::Cancelled, $order->payment_status);
+        $this->assertSame(OrderStatus::Cancelled, $order->status);
         $this->assertSame(12, $product->stock);
     }
 }

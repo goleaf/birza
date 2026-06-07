@@ -303,12 +303,12 @@ class ProductReportFeatureTest extends TestCase
             ->create();
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.reports.index'))
+            ->get(route('admin.reports.index'))
             ->assertOk()
             ->assertSee(__('admin.reports.title'));
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.reports.show', $report))
+            ->get(route('admin.reports.show', $report))
             ->assertOk()
             ->assertSee('Moderation Queue Product');
     }
@@ -377,7 +377,7 @@ class ProductReportFeatureTest extends TestCase
             ->create();
 
         $this->actingAs($buyer, 'buyer')
-            ->get(route('backend.reports.index'))
+            ->get(route('admin.reports.index'))
             ->assertRedirect(route('home'));
 
         Livewire::actingAs($seller, 'seller')

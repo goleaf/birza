@@ -67,9 +67,9 @@ Demo seeders create:
 - order items with product title, product price, seller name, and address snapshots.
 - database carts with empty, filled, guest-like, unavailable-product, out-of-stock, and changed-price cases.
 - wishlists and wishlist items for favorites-like buyer testing.
-- reviews, product reports, notifications, buyer credit history, credit attachments, seller transactions, audit logs, activity rows, and admin action rows.
+- reviews, product reports, buyer-seller conversations, message notifications, buyer credit history, credit attachments, seller transactions, audit logs, activity rows, and admin action rows.
 
-Unsupported by current schema: messages/conversations, delivery-method records, static pages, and separate payment records. Payment and delivery values currently live on `orders`.
+Unsupported by current schema: delivery-method records, static pages, formal dispute records, and separate payment records. Payment and delivery values currently live on `orders`.
 
 ## Adding New Factories
 

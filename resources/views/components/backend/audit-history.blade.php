@@ -6,7 +6,7 @@
     @forelse ($logs as $log)
         <x-mary-list-item
             :item="$log"
-            :link="route('backend.audit.show', $log)"
+            :link="route('admin.audit.show', $log)"
             :no-separator="$loop->last"
         >
             <x-slot:avatar>

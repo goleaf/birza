@@ -4,6 +4,7 @@ namespace Database\Seeders\Demo;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\ProductBundle;
 use App\Models\Users\Buyer;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
@@ -48,6 +49,7 @@ class DemoCartSeeder extends Seeder
         $this->cartItem($cart, 'Demo Active Apples', 2);
         $this->cartItem($cart, 'Demo Changed Price Cheese', 1, 10.00);
         $this->cartItem($cart, 'Demo Seller Two Bread', 3);
+        $this->cartBundleItem($cart, 'demo-weekend-fruit-cheese-set', 1);
     }
 
     private function guestCart(): void
@@ -86,6 +88,28 @@ class DemoCartSeeder extends Seeder
         ], [
             'quantity' => $quantity,
             'unit_price' => $unitPrice ?? (float) $product->price,
+        ]);
+    }
+
+    private function cartBundleItem(Cart $cart, string $bundleSlug, int $quantity): void
+    {
+        if (! Schema::hasTable('cart_bundle_items')) {
+            return;
+        }
+
+        $bundle = ProductBundle::query()
+            ->where('slug', $bundleSlug)
+            ->first();
+
+        if (! $bundle) {
+            return;
+        }
+
+        $cart->bundleItems()->updateOrCreate([
+            'product_bundle_id' => $bundle->id,
+        ], [
+            'quantity' => $quantity,
+            'unit_price' => $bundle->finalPrice(),
         ]);
     }
 }

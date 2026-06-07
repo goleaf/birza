@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -52,7 +54,7 @@ class OrderTest extends TestCase
         $pendingOrders = Order::pending()->get();
 
         $this->assertCount(1, $pendingOrders);
-        $this->assertEquals(Order::STATUS['PENDING'], $pendingOrders->first()->status);
+        $this->assertSame(OrderStatus::Pending, $pendingOrders->first()->status);
     }
 
     public function test_order_paid_scope(): void
@@ -63,7 +65,8 @@ class OrderTest extends TestCase
         $paidOrders = Order::paid()->get();
 
         $this->assertCount(1, $paidOrders);
-        $this->assertEquals(Order::STATUS['PAID'], $paidOrders->first()->status);
+        $this->assertSame(OrderPaymentStatus::Paid, $paidOrders->first()->payment_status);
+        $this->assertSame(OrderStatus::Accepted, $paidOrders->first()->status);
     }
 
     public function test_order_total_attribute(): void
@@ -77,10 +80,24 @@ class OrderTest extends TestCase
     public function test_order_returns_payment_status_badge_class(): void
     {
         $order = Order::factory()->make([
-            'payment_status' => Order::STATUS['PAID'],
+            'payment_status' => OrderPaymentStatus::Paid,
+            'status' => OrderStatus::Accepted,
         ]);
 
         $this->assertSame('badge-success badge-outline', $order->paymentStatusBadgeClass());
+    }
+
+    public function test_order_casts_statuses_to_enum_cases(): void
+    {
+        $order = Order::factory()->create([
+            'payment_status' => OrderPaymentStatus::Paid,
+            'status' => OrderStatus::Processing,
+        ]);
+
+        $order->refresh();
+
+        $this->assertSame(OrderPaymentStatus::Paid, $order->payment_status);
+        $this->assertSame(OrderStatus::Processing, $order->status);
     }
 
     public function test_order_soft_deletes(): void

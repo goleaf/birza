@@ -68,7 +68,7 @@ class Form extends Component
         session()->flash('success', __('backend_common_success_message'));
 
         // After creating, go straight to values list; after editing, stay in list.
-        $this->redirectRoute('backend.attributes.values.index', ['attribute' => $attribute->id]);
+        $this->redirectRoute('admin.attributes.values.index', ['attribute' => $attribute->id]);
     }
 
     public function render()

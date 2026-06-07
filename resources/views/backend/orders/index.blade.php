@@ -53,17 +53,10 @@
                 @endif
             @endscope
 
-            @scope('cell_payment_status', $order)
+            @scope('cell_status', $order)
                 <x-mary-badge
-                    :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                    class="{{
-                        match ($order->payment_status) {
-                            \App\Models\Order::STATUS['PENDING'] => 'badge-warning badge-outline',
-                            \App\Models\Order::STATUS['PAID'] => 'badge-success badge-outline',
-                            \App\Models\Order::STATUS['CANCELLED'] => 'badge-error badge-outline',
-                            default => 'badge-ghost',
-                        }
-                    }}"
+                    :value="$order->paymentStatusLabel()"
+                    class="{{ $order->paymentStatusBadgeClass() }}"
                 />
             @endscope
 
@@ -75,7 +68,7 @@
                 <div class="flex justify-end gap-1">
                     <x-mary-button
                         icon="o-eye"
-                        :link="route('backend.orders.show', $order)"
+                        :link="route('admin.orders.show', $order)"
                         class="btn-ghost btn-sm"
                         :tooltip="__('common_view')"
                     />
@@ -94,7 +87,7 @@
     >
         <div class="space-y-4">
             <x-mary-select
-                :label="__('orders_status_3')"
+                :label="__('orders.status.label')"
                 wire:model.live="statusFilter"
                 :options="$statusOptions"
                 option-value="id"

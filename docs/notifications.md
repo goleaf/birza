@@ -16,10 +16,10 @@ Implemented notification flows:
 - Product reported: active admins receive an in-app product-report alert.
 - Reported product hidden: product seller receives a report-specific product-hidden notification with the moderation reason and admin note when provided.
 - Product back in stock: subscribed buyers receive one in-app alert when a visible product becomes purchasable again.
+- New private message: the recipient receives an in-app alert with sender name, safe preview, related product/order context, and a conversation link.
 
 Not implemented because the project has no active workflow yet:
 
-- Marketplace messages.
 - Disputes.
 - Dedicated refund requests.
 - Review-created notifications. Reviews exist in the data model, but there is no active review creation action to hook safely.
@@ -65,6 +65,8 @@ Database notifications store only render-safe metadata:
 
 Do not store sensitive user input, private message bodies, raw secrets, or large relationship payloads in notification data.
 
+Message notifications store a short escaped preview only. The full body remains in the `messages` table and is protected by conversation policies.
+
 ## Translation
 
 Visible notification copy must use JSON translation keys in every supported locale. Current keys follow this pattern:
@@ -73,6 +75,7 @@ Visible notification copy must use JSON translation keys in every supported loca
 notifications.orders.created.title
 notifications.orders.status_changed.message
 notifications.products.rejected.title
+notifications.messages.new.message
 notifications.stock_alert.back_in_stock.message
 notifications.stock.low.message
 ```
@@ -101,6 +104,7 @@ Current trigger points:
 - stock threshold action
 - product observer for back-in-stock detection
 - product report creation and hide-product moderation actions
+- buyer-seller message send action
 
 ## UI
 
@@ -156,6 +160,7 @@ Focused tests live in:
 
 ```text
 tests/Feature/Notifications/MarketplaceNotificationSystemTest.php
+tests/Feature/Marketplace/MessagingFeatureTest.php
 tests/Feature/Translations/TranslationFilesTest.php
 ```
 
@@ -163,6 +168,7 @@ Useful commands:
 
 ```bash
 php artisan test --compact tests/Feature/Notifications/MarketplaceNotificationSystemTest.php
+php artisan test --compact tests/Feature/Marketplace/MessagingFeatureTest.php
 php artisan test --compact tests/Feature/Translations/TranslationFilesTest.php
 ```
 

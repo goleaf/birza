@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +32,6 @@ class Product extends Model
     protected $fillable = [
         'name',
         'category_id',
-        'seller_id',
         'price',
         'pack_type',
         'min_order_price',
@@ -39,11 +39,7 @@ class Product extends Model
         'unit',
         'is_organic',
         'country_of_origin',
-        'product_image',
-        'product_additional_image',
-        'image_library',
         'description',
-        'is_active',
         'package_weight',
         'price_per_liter',
         'stock',
@@ -168,6 +164,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
+    public function discounts(): HasMany
+    {
+        return $this->hasMany(Discount::class);
+    }
+
     public function primaryImage(): HasOne
     {
         return $this->hasOne(ProductImage::class)
@@ -180,9 +181,19 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function reports(): HasMany
+    {
+        return $this->hasMany(ProductReport::class);
+    }
+
     public function questions(): HasMany
     {
         return $this->hasMany(ProductQuestion::class);
+    }
+
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class);
     }
 
     public function publicAnsweredQuestions(): HasMany
@@ -190,9 +201,70 @@ class Product extends Model
         return $this->hasMany(ProductQuestion::class)->publicAnswered();
     }
 
+    public function wishlistItems(): HasMany
+    {
+        return $this->hasMany(WishlistItem::class);
+    }
+
+    public function wishlists(): BelongsToMany
+    {
+        return $this->belongsToMany(Wishlist::class, 'wishlist_items')
+            ->withTimestamps();
+    }
+
+    public function bundles(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductBundle::class, 'product_bundle_items')
+            ->withPivot(['quantity', 'sort_order'])
+            ->withTimestamps();
+    }
+
+    public function bundleItems(): HasMany
+    {
+        return $this->hasMany(ProductBundleItem::class);
+    }
+
+    public function auditLogs(): MorphMany
+    {
+        return $this->morphMany(AuditLog::class, 'auditable')->latest('created_at');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function statusKey(): string
+    {
+        if ($this->trashed()) {
+            return 'marketplace.products.status.deleted';
+        }
+
+        return $this->is_active
+            ? 'marketplace.products.status.active'
+            : 'marketplace.products.status.inactive';
+    }
+
+    public function statusLabel(): string
+    {
+        return __($this->statusKey());
+    }
+
+    public function statusBadgeColor(): string
+    {
+        if ($this->trashed()) {
+            return 'error';
+        }
+
+        return $this->is_active ? 'success' : 'error';
+    }
+
+    public function statusMaryBadgeClass(): string
+    {
+        return match ($this->statusBadgeColor()) {
+            'success' => 'badge-success badge-outline',
+            default => 'badge-error badge-outline',
+        };
     }
 
     public function getFallbackLocale(): string
@@ -341,7 +413,6 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-
 
     public function stockAlerts(): HasMany
     {

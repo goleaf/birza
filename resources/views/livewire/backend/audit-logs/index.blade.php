@@ -54,7 +54,7 @@
             @scope('actions', $log)
                 <x-mary-button
                     :label="__('audit_logs.view_detail')"
-                    :link="route('backend.audit.show', $log)"
+                    :link="route('admin.audit.show', $log)"
                     icon="o-eye"
                     class="btn-sm btn-ghost"
                 />

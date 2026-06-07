@@ -6,11 +6,16 @@ use App\Models\Order;
 use App\Models\Users\Seller;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.backend.app')]
 class Orders extends Component
 {
+    use WithPagination;
+
     public Seller $seller;
+
+    public int $perPage = 15;
 
     public function mount($seller): void
     {
@@ -20,7 +25,7 @@ class Orders extends Component
     public function render()
     {
         $orders = Order::query()
-            ->select(['orders.id', 'orders.buyer_id', 'orders.payment_status', 'orders.created_at', 'orders.order_total'])
+            ->select(['orders.id', 'orders.buyer_id', 'orders.payment_status', 'orders.status', 'orders.created_at', 'orders.order_total'])
             ->whereHas('orderItems', function ($query) {
                 $query->where('seller_id', $this->seller->id);
             })
@@ -33,7 +38,8 @@ class Orders extends Component
                 },
             ])
             ->latest('orders.created_at')
-            ->get();
+            ->paginate($this->perPage)
+            ->withQueryString();
 
         return view('backend.sellers.orders', [
             'orders' => $orders,

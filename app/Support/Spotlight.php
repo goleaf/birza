@@ -52,70 +52,70 @@ class Spotlight
             [
                 'name' => __('navigation_products'),
                 'description' => __('backend_spotlight_description_create_product'),
-                'link' => route('backend.products.create', absolute: false),
+                'link' => route('admin.products.create', absolute: false),
                 'icon' => $this->icon('o-cube'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_sellers'),
                 'description' => __('backend_spotlight_description_create_seller'),
-                'link' => route('backend.sellers.create', absolute: false),
+                'link' => route('admin.sellers.create', absolute: false),
                 'icon' => $this->icon('o-building-storefront'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_buyers'),
                 'description' => __('backend_spotlight_description_create_buyer'),
-                'link' => route('backend.buyers.create', absolute: false),
+                'link' => route('admin.buyers.create', absolute: false),
                 'icon' => $this->icon('o-users'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_categories'),
                 'description' => __('backend_spotlight_description_create_category'),
-                'link' => route('backend.categories.create', absolute: false),
+                'link' => route('admin.categories.create', absolute: false),
                 'icon' => $this->icon('o-squares-2x2'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_countries'),
                 'description' => __('backend_spotlight_description_create_country'),
-                'link' => route('backend.countries.create', absolute: false),
+                'link' => route('admin.countries.create', absolute: false),
                 'icon' => $this->icon('o-globe-alt'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_attributes'),
                 'description' => __('backend_spotlight_description_create_attribute'),
-                'link' => route('backend.attributes.create', absolute: false),
+                'link' => route('admin.attributes.create', absolute: false),
                 'icon' => $this->icon('o-adjustments-horizontal'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('global_dashboard'),
                 'description' => __('backend_spotlight_description_dashboard'),
-                'link' => route('backend.dashboard', absolute: false),
+                'link' => route('admin.dashboard', absolute: false),
                 'icon' => $this->icon('o-home'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('profile'),
                 'description' => __('backend_spotlight_description_profile'),
-                'link' => route('backend.admin.profile', absolute: false),
+                'link' => route('admin.profile', absolute: false),
                 'icon' => $this->icon('o-user-circle'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_global_settings'),
                 'description' => __('backend_spotlight_description_settings'),
-                'link' => route('backend.settings.index', absolute: false),
+                'link' => route('admin.settings.index', absolute: false),
                 'icon' => $this->icon('o-cog-6-tooth'),
                 'keywords' => $spotlightTags,
             ],
             [
                 'name' => __('navigation_orders'),
                 'description' => __('backend_spotlight_description_orders'),
-                'link' => route('backend.orders.index', absolute: false),
+                'link' => route('admin.orders.index', absolute: false),
                 'icon' => $this->icon('o-shopping-bag'),
                 'keywords' => $spotlightTags,
             ],
@@ -154,7 +154,7 @@ class Spotlight
                         number_format((float) $product->price, 2).' €',
                     ])->filter()->implode(' · ')
                 ),
-                'link' => route('backend.products.edit', $product, false),
+                'link' => route('admin.products.edit', $product, false),
                 'icon' => $this->icon('o-cube'),
             ]);
     }
@@ -180,7 +180,7 @@ class Spotlight
                         $seller->email,
                     ])->filter()->implode(' · ')
                 ),
-                'link' => route('backend.sellers.edit', $seller, false),
+                'link' => route('admin.sellers.edit', $seller, false),
                 'icon' => $this->icon('o-building-storefront'),
             ]);
     }
@@ -206,7 +206,7 @@ class Spotlight
                         $buyer->email,
                     ])->filter()->implode(' · ')
                 ),
-                'link' => route('backend.buyers.edit', $buyer, false),
+                'link' => route('admin.buyers.edit', $buyer, false),
                 'icon' => $this->icon('o-users'),
             ]);
     }
@@ -222,7 +222,7 @@ class Spotlight
             ->map(fn (Category $category): array => [
                 'name' => $category->getTranslation('category_name', app()->getLocale()),
                 'description' => __('navigation_categories'),
-                'link' => route('backend.categories.edit', $category, false),
+                'link' => route('admin.categories.edit', $category, false),
                 'icon' => $this->icon('o-squares-2x2'),
             ]);
     }
@@ -248,7 +248,7 @@ class Spotlight
                     strtoupper($country->alpha2),
                     $country->getRegionLabel(),
                 ])->implode(' · '),
-                'link' => route('backend.countries.edit', $country, false),
+                'link' => route('admin.countries.edit', $country, false),
                 'icon' => $this->icon('o-globe-alt'),
             ]);
     }
@@ -267,7 +267,7 @@ class Spotlight
                     __('navigation_attributes'),
                     Str::headline($attribute->type),
                 ])->implode(' · '),
-                'link' => route('backend.attributes.edit', $attribute, false),
+                'link' => route('admin.attributes.edit', $attribute, false),
                 'icon' => $this->icon('o-adjustments-horizontal'),
             ]);
     }
@@ -303,7 +303,7 @@ class Spotlight
                         number_format((float) $order->order_total, 2).' €',
                     ])->filter()->implode(' · ')
                 ),
-                'link' => route('backend.orders.show', $order, false),
+                'link' => route('admin.orders.show', $order, false),
                 'icon' => $this->icon('o-shopping-bag'),
             ]);
     }

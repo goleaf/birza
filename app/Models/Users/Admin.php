@@ -3,6 +3,8 @@
 namespace App\Models\Users;
 
 use App\Models\ProductQuestion;
+use App\Models\ProductReport;
+use Database\Factories\AdminFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-    use Notifiable, HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'users_admins';
 
@@ -34,11 +36,16 @@ class Admin extends Authenticatable
 
     protected static function newFactory()
     {
-        return \Database\Factories\AdminFactory::new();
+        return AdminFactory::new();
     }
 
     public function moderatedProductQuestions(): HasMany
     {
         return $this->hasMany(ProductQuestion::class, 'moderated_by_admin_id');
+    }
+
+    public function reviewedProductReports(): HasMany
+    {
+        return $this->hasMany(ProductReport::class, 'reviewed_by');
     }
 }

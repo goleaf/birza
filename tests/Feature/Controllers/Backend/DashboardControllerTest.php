@@ -18,7 +18,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_dashboard_requires_authentication(): void
     {
-        $response = $this->get(route('backend.dashboard'));
+        $response = $this->get(route('admin.dashboard'));
 
         $response->assertRedirect(route('home'));
     }
@@ -37,7 +37,7 @@ class DashboardControllerTest extends TestCase
         Order::factory()->count(3)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.dashboard'));
+            ->get(route('admin.dashboard'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AdminDashboard::class)
@@ -58,7 +58,7 @@ class DashboardControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.dashboard'));
+            ->get(route('admin.dashboard'));
 
         $response->assertStatus(200)
             ->assertSee(__('backend_dashboard_recent_activity_empty'));

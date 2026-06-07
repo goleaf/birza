@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Auth;
 
+use App\Actions\Cart\MergeGuestCartAction;
 use App\Models\Users\Buyer;
 use App\Models\Users\Seller;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class Register extends Component
         }
     }
 
-    public function register(): void
+    public function register(MergeGuestCartAction $mergeGuestCartAction): void
     {
         if ($this->userType === 'buyer') {
             $validated = $this->validate([
@@ -46,15 +47,23 @@ class Register extends Component
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
 
-            $buyer = Buyer::create([
+            $buyer = new Buyer;
+            $buyer->forceFill([
                 'email' => strtolower($validated['email']),
                 'password' => Hash::make($validated['password']),
                 'email_verified_at' => now(),
                 'is_verified' => true,
+                'is_active' => true,
             ]);
+            $buyer->save();
 
             Auth::guard('buyer')->login($buyer);
             session()->regenerate();
+
+            if (session()->has('cart_guest_token')) {
+                $mergeGuestCartAction->handle((string) session('cart_guest_token'), $buyer);
+                session()->forget('cart_guest_token');
+            }
 
             if (empty($buyer->company_name) || empty($buyer->company_code) || empty($buyer->address) || empty($buyer->phone)) {
                 session()->flash('warning', __('profile_complete_profile'));
@@ -77,11 +86,15 @@ class Register extends Component
 
         $verificationToken = Str::random(64);
 
-        $seller = Seller::create([
+        $seller = new Seller;
+        $seller->forceFill([
             'email' => strtolower($validated['email']),
             'password' => Hash::make($validated['password']),
             'remember_token' => $verificationToken,
+            'is_active' => true,
+            'is_verified' => false,
         ]);
+        $seller->save();
 
         $verificationUrl = route('seller.verification.verify', ['hash' => $verificationToken]);
         $verificationMessage = __('emails_verify_email_body')."\n\n".$verificationUrl;

@@ -275,7 +275,7 @@ class ProductQuestionFeatureTest extends TestCase
             ]);
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.product-questions.index'))
+            ->get(route('admin.product-questions.index'))
             ->assertOk()
             ->assertSeeLivewire(AdminProductQuestionsIndex::class)
             ->assertSee('Does this question need moderation?');

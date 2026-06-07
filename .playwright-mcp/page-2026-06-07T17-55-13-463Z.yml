@@ -1,0 +1,47 @@
+- main [ref=e2]:
+  - generic [ref=e7]:
+    - generic [ref=e14]:
+      - generic [ref=e15]: Admin portal
+      - generic [ref=e17]:
+        - paragraph [ref=e18]: Birza
+        - heading "Back office access" [level=1] [ref=e20]
+        - paragraph [ref=e22]: Manage the marketplace from one place with the same Mary-based admin experience used across products, orders, sellers, buyers, and settings.
+        - generic [ref=e23]:
+          - generic [ref=e24]: Products
+          - generic [ref=e25]: Orders
+          - generic [ref=e26]: Global Settings
+      - generic [ref=e27]:
+        - generic [ref=e30]: Products
+        - generic [ref=e33]: Orders
+        - generic [ref=e36]: Sellers
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - paragraph [ref=e40]: Birza
+        - generic [ref=e41]:
+          - heading "Sign in" [level=2] [ref=e42]
+          - paragraph [ref=e43]: Use your admin credentials to access products, orders, users, and system settings.
+      - generic [ref=e44]:
+        - group "Email Address *" [ref=e46]:
+          - generic [ref=e47]: Email Address *
+          - generic [ref=e50]:
+            - img
+            - textbox [active] [ref=e51]:
+              - /placeholder: " "
+            - img [ref=e52] [cursor=pointer]
+        - group "Password *" [ref=e55]:
+          - generic [ref=e56]: Password *
+          - generic [ref=e59]:
+            - textbox [ref=e60]:
+              - /placeholder: " "
+            - img [ref=e61] [cursor=pointer]
+            - button [ref=e63] [cursor=pointer]:
+              - img [ref=e64]
+        - group [ref=e67]:
+          - generic [ref=e69] [cursor=pointer]:
+            - checkbox "Remember me" [ref=e70]
+            - generic [ref=e72]: Remember me
+        - generic [ref=e74]:
+          - paragraph [ref=e75]: Authorized administrators only.
+          - button "Sign in" [ref=e76] [cursor=pointer]:
+            - img [ref=e78]
+            - generic [ref=e80]: Sign in

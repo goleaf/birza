@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Frontend\Seller;
 
+use App\Enums\OrderPaymentStatus;
 use App\Livewire\Frontend\Seller\Dashboard as SellerDashboard;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -28,7 +29,7 @@ class SellerDashboardControllerTest extends TestCase
         ]);
         $product = Product::factory()->create(['seller_id' => $seller->id]);
         $order = Order::factory()->create([
-            'payment_status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
         ]);
         OrderItem::factory()->create([
             'seller_id' => $seller->id,

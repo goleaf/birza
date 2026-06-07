@@ -2,14 +2,21 @@
 
 namespace App\Livewire\Backend\Settings;
 
+use App\Models\AuditLog;
 use App\Models\GlobalSettings;
+use App\Services\AuditLogService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
+
     public float $portal_additional_price = 0.0;
 
     public string $admin_primary_color = GlobalSettings::DEFAULT_ADMIN_PRIMARY_COLOR;
@@ -20,8 +27,12 @@ class Index extends Component
 
     public array $admin_spotlight_tags = [];
 
+    public ?string $audit_reason = null;
+
     public function mount(): void
     {
+        $this->authorize('manage', GlobalSettings::class);
+
         $settings = GlobalSettings::first();
 
         $this->portal_additional_price = (float) ($settings->portal_additional_price ?? 0);
@@ -35,8 +46,10 @@ class Index extends Component
             ->all();
     }
 
-    public function save(): void
+    public function save(AuditLogService $auditLogService): void
     {
+        $this->authorize('manage', GlobalSettings::class);
+
         $validated = $this->validate([
             'portal_additional_price' => ['required', 'numeric', 'min:0'],
             'admin_primary_color' => ['required', 'hex_color'],
@@ -44,6 +57,7 @@ class Index extends Component
             'admin_surface_color' => ['required', 'hex_color'],
             'admin_spotlight_tags' => ['nullable', 'array'],
             'admin_spotlight_tags.*' => ['required', 'string', 'max:50'],
+            'audit_reason' => ['required', 'string', 'max:500'],
         ]);
 
         $validated['admin_spotlight_tags'] = collect($validated['admin_spotlight_tags'] ?? [])
@@ -52,23 +66,58 @@ class Index extends Component
             ->values()
             ->all();
 
-        $settings = GlobalSettings::first();
+        $reason = $validated['audit_reason'];
+        unset($validated['audit_reason']);
 
-        if ($settings) {
-            $settings->update($validated);
-        } else {
-            GlobalSettings::create($validated);
-        }
+        DB::transaction(function () use ($auditLogService, $reason, $validated): void {
+            $settings = GlobalSettings::query()->first();
+            $oldValues = $settings ? $auditLogService->snapshot($settings, array_keys($validated)) : null;
+
+            if ($settings) {
+                $settings->update($validated);
+            } else {
+                $settings = GlobalSettings::query()->create($validated);
+            }
+
+            $newValues = $auditLogService->snapshot($settings->refresh(), array_keys($validated));
+            $changed = $oldValues === null
+                ? ['old' => null, 'new' => $newValues]
+                : $auditLogService->changedValues($oldValues, $newValues);
+
+            if ($oldValues === null || $changed['old'] !== [] || $changed['new'] !== []) {
+                $auditLogService->log(
+                    actor: Auth::guard('admin')->user(),
+                    action: 'settings.updated',
+                    auditable: $settings,
+                    oldValues: $changed['old'],
+                    newValues: $changed['new'],
+                    metadata: ['source' => 'backend_settings'],
+                    reason: $reason,
+                );
+            }
+        });
 
         Cache::forget('portal_additional_price');
         Cache::forget('admin_theme_colors');
         Cache::forget('admin_spotlight_tags');
+        $this->audit_reason = null;
 
         session()->flash('success', __('messages_settings_updated_success'));
     }
 
     public function render()
     {
-        return view('backend.settings.index');
+        $settings = GlobalSettings::query()->first();
+
+        return view('backend.settings.index', [
+            'auditLogs' => $settings
+                ? AuditLog::query()
+                    ->entity($settings)
+                    ->with('actor')
+                    ->latest('created_at')
+                    ->limit(10)
+                    ->get()
+                : collect(),
+        ]);
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Actions\Notifications\SendProductModerationNotificationAction;
+use App\Actions\Notifications\SendStockThresholdNotificationAction;
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -15,6 +19,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.frontend.app')]
 class Create extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
@@ -54,6 +59,8 @@ class Create extends Component
 
     public function mount(Category $categoryId): void
     {
+        $this->authorize('create', Product::class);
+
         $this->selectedCategory = $categoryId->load('subcategories');
 
         $this->category_id = $this->selectedCategory->id;
@@ -65,10 +72,11 @@ class Create extends Component
         }
     }
 
-    public function save(): void
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    protected function rules(): array
     {
-        $this->ensureProductImageLibraryIsPresent();
-
         $rules = array_merge([
             'category_id' => ['required', 'integer', Rule::exists('categories', 'id')],
             'name' => ['required', 'string', 'max:255'],
@@ -94,12 +102,20 @@ class Create extends Component
                 : ['nullable', 'string'];
         }
 
-        $validated = $this->validate($rules);
+        return $rules;
+    }
+
+    public function save(): void
+    {
+        $this->authorize('create', Product::class);
+        $this->ensureProductImageLibraryIsPresent();
+
+        $validated = $this->validate();
 
         $sellerId = Auth::guard('seller')->id();
 
         $product = new Product;
-        $product->fill([
+        $product->forceFill([
             'category_id' => $validated['category_id'],
             'seller_id' => $sellerId,
             'name' => $validated['name'],
@@ -123,7 +139,15 @@ class Create extends Component
         $product->setTranslations('description', $validated['description']);
 
         $product->save();
+        $this->authorize('manageGallery', $product);
         $this->syncProductImageLibrary($product);
+        app(RecordProductAuditLogsAction::class)->created(
+            actor: Auth::guard('seller')->user(),
+            product: $product,
+            source: 'seller_product_create',
+        );
+        app(SendProductModerationNotificationAction::class)->moderationRequired($product);
+        app(SendStockThresholdNotificationAction::class)->handle($product);
 
         session()->flash('success', __('messages_product_created'));
         $this->redirectRoute('seller.products.index', navigate: true);

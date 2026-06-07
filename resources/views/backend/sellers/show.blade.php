@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
+            ['label' => __('navigation_sellers'), 'link' => route('admin.sellers.index')],
             ['label' => $seller->company_name ?: $seller->name],
         ]"
     />
@@ -15,11 +15,11 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.sellers.index')"
+                :link="route('admin.sellers.index')"
             />
             <x-mary-button
                 :label="__('common_edit')"
-                :link="route('backend.sellers.edit', $seller)"
+                :link="route('admin.sellers.edit', $seller)"
                 icon="o-pencil-square"
                 class="btn-primary"
             />
@@ -37,7 +37,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('common_edit')"
-                    :link="route('backend.sellers.edit', $seller)"
+                    :link="route('admin.sellers.edit', $seller)"
                     class="btn-sm btn-warning btn-outline"
                 />
             </x-slot:actions>
@@ -55,7 +55,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('common_edit')"
-                    :link="route('backend.sellers.edit', $seller)"
+                    :link="route('admin.sellers.edit', $seller)"
                     class="btn-sm btn-info btn-outline"
                 />
             </x-slot:actions>
@@ -86,7 +86,7 @@
                 @forelse ($products as $product)
                     <x-mary-list-item
                         :item="$product"
-                        :link="route('backend.products.show', $product)"
+                        :link="route('admin.products.show', $product)"
                         :no-separator="$loop->last"
                     >
                         <x-slot:avatar>
@@ -137,7 +137,7 @@
                 @forelse ($recentOrders as $order)
                     <x-mary-list-item
                         :item="$order"
-                        :link="route('backend.orders.show', $order)"
+                        :link="route('admin.orders.show', $order)"
                         :no-separator="$loop->last"
                     >
                         <x-slot:avatar>
@@ -165,8 +165,8 @@
                                 {{ number_format((float) $order->order_total, 2) }} €
                             </span>
                             <x-mary-badge
-                                :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                                class="{{ $order->payment_status_badge_class }}"
+                                :value="$order->paymentStatusLabel()"
+                                class="{{ $order->paymentStatusBadgeClass() }}"
                             />
                         </x-slot:actions>
                     </x-mary-list-item>
@@ -180,4 +180,6 @@
             </x-mary-card>
         </div>
     </div>
+
+    <x-backend.audit-history :logs="$auditLogs" />
 </div>

@@ -1,0 +1,36 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e7]:
+      - link "imk24.lt" [ref=e8] [cursor=pointer]:
+        - /url: https://birza.test
+        - img [ref=e9]
+        - heading "imk24.lt" [level=1] [ref=e11]
+      - generic [ref=e12]:
+        - link "LT" [ref=e13] [cursor=pointer]:
+          - /url: https://birza.test/language/lt
+        - link "EN" [ref=e14] [cursor=pointer]:
+          - /url: https://birza.test/language/en
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e20]:
+        - img [ref=e21]
+        - generic [ref=e23]: Prekių nebeturime
+      - generic [ref=e27]:
+        - heading "Prisijungti" [level=2] [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e33]: El. paštas
+            - textbox "El. paštas" [ref=e35]:
+              - /placeholder: ""
+          - generic [ref=e36]:
+            - generic [ref=e38]: Slaptažodis
+            - generic [ref=e39]:
+              - textbox "Slaptažodis" [ref=e40]:
+                - /placeholder: ""
+              - button [ref=e42] [cursor=pointer]:
+                - img [ref=e43]
+          - generic [ref=e47]:
+            - checkbox "Prisiminti mane" [ref=e48]
+            - generic [ref=e49]: Prisiminti mane
+          - button "Prisijungti" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: Prisijungti

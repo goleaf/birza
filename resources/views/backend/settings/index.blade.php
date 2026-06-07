@@ -77,6 +77,16 @@
                         clearable
                     />
                 </x-mary-card>
+
+                <x-mary-card :title="__('audit_logs.reason')" shadow>
+                    <x-mary-textarea
+                        :label="__('audit_logs.reason')"
+                        :hint="__('audit_logs.reason_hint')"
+                        wire:model="audit_reason"
+                        rows="3"
+                        required
+                    />
+                </x-mary-card>
             </div>
 
             <x-mary-card
@@ -147,4 +157,6 @@
             />
         </x-slot:actions>
     </x-mary-form>
+
+    <x-backend.audit-history :logs="$auditLogs" />
 </div>

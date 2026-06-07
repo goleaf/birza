@@ -4,33 +4,15 @@ namespace App\Models;
 
 use Database\Factories\NotificationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\DatabaseNotification;
 
-class Notification extends Model
+class Notification extends DatabaseNotification
 {
     /** @use HasFactory<NotificationFactory> */
     use HasFactory;
 
-    protected $table = 'user_notifications';
-
-    protected $fillable = [
-        'user_id',
-        'type',
-        'title',
-        'body',
-        'data',
-        'read_at',
-    ];
-
-    protected $casts = [
-        'user_id' => 'integer',
-        'data' => 'array',
-        'read_at' => 'datetime',
-    ];
-
-    public function user(): BelongsTo
+    protected static function newFactory(): NotificationFactory
     {
-        return $this->belongsTo(User::class);
+        return NotificationFactory::new();
     }
 }

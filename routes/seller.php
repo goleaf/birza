@@ -13,8 +13,12 @@ use App\Livewire\Frontend\Auth\VerifyEmail as FrontendVerifyEmail;
 use App\Livewire\Frontend\Notifications\Index as FrontendNotificationsIndex;
 use App\Livewire\Frontend\Seller\Dashboard as SellerDashboard;
 use App\Livewire\Frontend\Seller\Discounts\Index as SellerDiscountsIndex;
+use App\Livewire\Frontend\Seller\Messages\Index as SellerMessagesIndex;
+use App\Livewire\Frontend\Seller\Messages\Show as SellerMessagesShow;
 use App\Livewire\Frontend\Seller\Orders\Index as SellerOrdersIndex;
 use App\Livewire\Frontend\Seller\Orders\Show as SellerOrdersShow;
+use App\Livewire\Frontend\Seller\ProductBundles\Form as SellerProductBundlesForm;
+use App\Livewire\Frontend\Seller\ProductBundles\Index as SellerProductBundlesIndex;
 use App\Livewire\Frontend\Seller\ProductQuestions\Index as SellerProductQuestionsIndex;
 use App\Livewire\Frontend\Seller\Products\Create as SellerProductsCreate;
 use App\Livewire\Frontend\Seller\Products\Edit as SellerProductsEdit;
@@ -41,7 +45,7 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
     });
 
     // Authenticated routes
-    Route::middleware(['auth:seller', 'active.account:seller', 'verified.account:seller', 'can:accessSellerCabinet'])->group(function () {
+    Route::middleware(['auth:seller', 'active.account:seller', 'verified.account:seller', 'seller.access'])->group(function () {
         Route::livewire('/dashboard', SellerDashboard::class)->name('dashboard');
         Route::livewire('/profile', SellerProfileEdit::class)->name('profile.edit');
         Route::post('/logout', LogoutController::class)
@@ -54,6 +58,9 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
         Route::livewire('/products', SellerProductsIndex::class)->name('products.index');
         Route::livewire('/products/create/{categoryId}', SellerProductsCreate::class)->name('products.create');
         Route::livewire('/products/{product}/edit', SellerProductsEdit::class)->name('products.edit');
+        Route::livewire('/bundles', SellerProductBundlesIndex::class)->name('bundles.index');
+        Route::livewire('/bundles/create', SellerProductBundlesForm::class)->name('bundles.create');
+        Route::livewire('/bundles/{productBundle}/edit', SellerProductBundlesForm::class)->name('bundles.edit');
         Route::livewire('/discounts', SellerDiscountsIndex::class)->name('discounts.index');
         Route::livewire('/promo-codes', SellerPromoCodesIndex::class)->name('promo-codes.index');
         Route::livewire('/product-questions', SellerProductQuestionsIndex::class)->name('product-questions.index');
@@ -61,6 +68,8 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.'], function () {
         // Orders
         Route::livewire('/orders', SellerOrdersIndex::class)->name('orders.index');
         Route::livewire('/orders/{order}', SellerOrdersShow::class)->name('orders.show');
+        Route::livewire('/messages', SellerMessagesIndex::class)->name('messages.index');
+        Route::livewire('/messages/{conversation}', SellerMessagesShow::class)->name('messages.show');
 
         // Transactions
         Route::livewire('/transactions', SellerTransactionsIndex::class)->name('transactions.index');

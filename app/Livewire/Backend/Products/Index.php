@@ -2,12 +2,17 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Actions\Audit\RecordAdminAction;
+use App\Actions\Notifications\SendProductModerationNotificationAction;
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Http\Filters\ProductFilter;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Users\Seller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -16,6 +21,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.backend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithMaryTableSorting;
     use InteractsWithWireUi;
     use WithPagination;
@@ -45,6 +51,8 @@ class Index extends Component
 
     public int $perPage = 15;
 
+    public ?string $auditReason = null;
+
     /**
      * @var array{column: string, direction: string}
      */
@@ -55,42 +63,129 @@ class Index extends Component
 
     public function mount(): void
     {
+        $this->authorize('viewAny', Product::class);
+
         $this->sortBy = $this->sortByFromString($this->sort, ['created_at', 'price', 'name'], 'created_at');
         $this->sort = $this->sortString($this->sortBy);
     }
 
     public function confirmDeleteProduct(int $productId): void
     {
+        $this->auditReason = null;
         $this->confirmDelete(method: 'deleteProduct', params: $productId);
     }
 
     public function confirmForceDeleteProduct(int $productId): void
     {
+        $this->auditReason = null;
         $this->confirmDelete(method: 'forceDeleteProduct', params: $productId);
+    }
+
+    public function confirmRestoreProduct(int $productId): void
+    {
+        $this->auditReason = null;
+        $this->confirmAction(
+            title: __('common_restore'),
+            description: __('product_restore_warning'),
+            acceptLabel: __('common_restore'),
+            method: 'restoreProduct',
+            params: $productId,
+            icon: 'warning',
+        );
     }
 
     public function deleteProduct(int $productId): void
     {
-        Product::query()->findOrFail($productId)->delete();
+        $this->validateAuditReason();
+
+        $product = Product::query()->findOrFail($productId);
+        $this->authorize('delete', $product);
+
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($product);
+
+        $product->delete();
+
+        $auditRecorder->deleted(
+            actor: Auth::guard('admin')->user(),
+            product: $product,
+            oldValues: $oldValues,
+            source: 'admin_product_index',
+            reason: $this->auditReason,
+        );
+
+        $admin = Auth::guard('admin')->user();
+
+        if ($admin !== null) {
+            app(RecordAdminAction::class)->handle(
+                actor: $admin,
+                action: 'product.deleted',
+                entity: $product,
+                oldValues: $oldValues,
+                metadata: ['source' => 'admin_product_index'],
+                reason: $this->auditReason,
+            );
+        }
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function restoreProduct(int $productId): void
     {
+        $this->validateAuditReason();
+
         $product = Product::withTrashed()->findOrFail($productId);
+        $this->authorize('restore', $product);
+
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($product);
+
         $product->restore();
+        app(SendProductModerationNotificationAction::class)->approved($product);
+
+        $auditRecorder->restored(
+            actor: Auth::guard('admin')->user(),
+            product: $product,
+            oldValues: $oldValues,
+            source: 'admin_product_index',
+            reason: $this->auditReason,
+        );
 
         $this->notifySuccess(__('backend_common_restore_success'));
     }
 
     public function forceDeleteProduct(int $productId): void
     {
+        $this->validateAuditReason();
+
         $product = Product::withTrashed()->findOrFail($productId);
+        $this->authorize('forceDelete', $product);
+
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($product);
+
+        $auditRecorder->deleted(
+            actor: Auth::guard('admin')->user(),
+            product: $product,
+            oldValues: $oldValues,
+            source: 'admin_product_index',
+            reason: $this->auditReason,
+            force: true,
+        );
+
         $product->deleteStoredImages();
         $product->forceDelete();
 
         $this->notifySuccess(__('backend_common_force_delete_success'));
+    }
+
+    private function validateAuditReason(): void
+    {
+        $this->validate([
+            'auditReason' => ['required', 'string', 'max:500'],
+        ], attributes: [
+            'auditReason' => __('audit_logs.reason'),
+        ]);
     }
 
     public function clear(): void

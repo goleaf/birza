@@ -25,7 +25,7 @@ class ProductControllerTest extends TestCase
 
     public function test_product_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.products.index'));
+        $response = $this->get(route('admin.products.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -40,7 +40,7 @@ class ProductControllerTest extends TestCase
         Product::factory()->count(4)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.products.index'));
+            ->get(route('admin.products.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductIndex::class)
@@ -100,6 +100,7 @@ class ProductControllerTest extends TestCase
             ->assertSet('confirmModal', true)
             ->assertSet('confirmModalMethod', 'deleteProduct')
             ->assertSet('confirmModalAcceptLabel', __('common_delete'))
+            ->set('auditReason', 'Duplicate demo product.')
             ->call('runConfirmedAction')
             ->assertSet('confirmModal', false);
 
@@ -123,7 +124,7 @@ class ProductControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.products.create'));
+            ->get(route('admin.products.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductCreate::class)
@@ -163,14 +164,14 @@ class ProductControllerTest extends TestCase
             'country_name' => ['en' => 'Latvia', 'lt' => 'Latvija'],
             'alpha2' => 'LV',
         ]);
-        $product = Product::factory()->create([
+        $product = Product::factory()->withoutImages()->create([
             'seller_id' => $seller->id,
             'category_id' => $category->id,
             'country_of_origin' => $country->id,
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.products.edit', $product));
+            ->get(route('admin.products.edit', $product));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductEdit::class)
@@ -229,7 +230,8 @@ class ProductControllerTest extends TestCase
             ->set('imageFiles.*', [$primaryImage, $secondaryImage])
             ->call('refreshMediaSources', 'imageFiles', 'imageLibrary')
             ->call('save')
-            ->assertRedirect(route('backend.products.index'));
+            ->assertHasNoErrors()
+            ->assertRedirect(route('admin.products.index'));
 
         $product = Product::query()->where('name', 'Toggle Product')->firstOrFail();
 
@@ -271,8 +273,10 @@ class ProductControllerTest extends TestCase
             ->set('temperature_conditions_to', 4)
             ->set('use_until', '2026-08-15')
             ->set('total_shelf_life', 21)
+            ->set('audit_reason', 'Testing image-safe status update.')
             ->call('save')
-            ->assertRedirect(route('backend.products.index'));
+            ->assertHasNoErrors()
+            ->assertRedirect(route('admin.products.index'));
 
         $product->refresh();
 
@@ -315,7 +319,7 @@ class ProductControllerTest extends TestCase
         $expectedAttributeValue = $attributeValue->getTranslation('value', app()->getLocale());
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.products.show', $product));
+            ->get(route('admin.products.show', $product));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(ProductShow::class)

@@ -33,7 +33,7 @@
 
             <x-ui.statistic
                 :title="__('orders_pending_orders')"
-                :value="(string) $ordersData['pending']"
+                :value="(string) $ordersData['counts'][$pendingStatus->value]"
                 icon="clock"
                 color="text-warning"
                 class="shadow-sm"
@@ -76,12 +76,12 @@
                         <option value="">
                             {{ __('common_all') }}
                         </option>
-                        @foreach ($orderStatuses as $key => $value)
+                        @foreach ($orderStatuses as $status)
                             <option
-                                value="{{ $value }}"
-                                {{ (string)$filters['status'] == (string)$value ? 'selected' : '' }}
+                                value="{{ $status->value }}"
+                                {{ (string)$filters['status'] == (string)$status->value ? 'selected' : '' }}
                             >
-                                {{ __('orders_status_3_' . strtolower($key)) }}
+                                {{ $status->label() }}
                             </option>
                         @endforeach
                     </select>
@@ -154,7 +154,7 @@
             </div>
         </x-ui.card>
 
-        @if ($ordersData['all']->isNotEmpty())
+        @if ($ordersData['all']->count() > 0)
             <!-- start table container -->
             <x-ui.card
                 class="rounded-lg shadow-sm"
@@ -200,19 +200,10 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-ui.badge
-                                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                                        :color="match (strtolower((string) $order->payment_status)) {
-                                            'pending' => 'warning',
-                                            'paid', 'delivered' => 'success',
-                                            'shipped' => 'secondary',
-                                            'cancelled', 'failed' => 'error',
-                                            'processing' => 'info',
-                                            'refunded' => 'neutral',
-                                            default => 'neutral',
-                                        }"
+                                        :value="$order->paymentStatusLabel()"
+                                        :color="$order->paymentStatusUiColor()"
                                         soft
-                                        sm
-                                        class="font-semibold"
+                                        class="font-medium"
                                     />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
@@ -240,6 +231,10 @@
                     <!-- end table body -->
                 </table>
                 <!-- end orders table -->
+                </div>
+
+                <div class="border-t border-gray-100 px-5 py-4">
+                    {{ $ordersData['all']->links() }}
                 </div>
             </x-ui.card>
             <!-- end table container -->

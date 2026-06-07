@@ -15,7 +15,7 @@ class CountryControllerTest extends TestCase
 
     public function test_country_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.countries.index'));
+        $response = $this->get(route('admin.countries.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -26,7 +26,7 @@ class CountryControllerTest extends TestCase
         Country::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.countries.index'));
+            ->get(route('admin.countries.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryIndex::class)
@@ -42,7 +42,7 @@ class CountryControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.countries.create'));
+            ->get(route('admin.countries.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryForm::class)
@@ -65,7 +65,7 @@ class CountryControllerTest extends TestCase
 
         $response = $this->withSession(['locale' => 'en'])
             ->actingAs($admin, 'admin')
-            ->get(route('backend.countries.edit', $country));
+            ->get(route('admin.countries.edit', $country));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(CountryForm::class)

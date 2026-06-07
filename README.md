@@ -2,14 +2,14 @@
 
 Birza is a Laravel marketplace platform with public, buyer, seller, and admin areas. It is a server-rendered Laravel application built with Blade, Livewire, Eloquent, Vite, Tailwind CSS, and separate authentication guards for admins, buyers, and sellers.
 
-The project currently supports localized product browsing, seller-managed products, database-backed carts, checkout, orders, notifications, product images, reviews, wishlists, product questions, product reports, seller discounts, promo codes, audit logs, and custom admin management screens. Payment provider integration, production deployment automation, full screenshots, and marketplace messaging are still planned work.
+The project currently supports localized product browsing, seller-managed products, database-backed carts, checkout, orders, buyer-seller private messaging, notifications, product images, reviews, wishlists, product questions, product reports, seller discounts, promo codes, audit logs, and custom admin management screens. Payment provider integration, production deployment automation, full screenshots, and dispute workflows are still planned work.
 
 ## Main Areas
 
 - Public marketplace: home page, language switching, public product catalog, product detail pages, comparison, product questions, and product reports.
-- Buyer area: buyer auth, profile, dashboard, cart, checkout, orders, wishlists, stock alerts, and notifications.
-- Seller area: seller auth, profile, dashboard, products, discounts, promo codes, product questions, orders, transactions, and notifications.
-- Admin area: admin login, dashboard, products, categories, countries, attributes, buyers, sellers, orders, product questions, product reports, settings, notifications, and audit logs.
+- Buyer area: buyer auth, profile, dashboard, cart, checkout, orders, private seller messages, wishlists, stock alerts, and notifications.
+- Seller area: seller auth, profile, dashboard, products, discounts, promo codes, product questions, private buyer messages, orders, transactions, and notifications.
+- Admin area: admin login, dashboard, products, categories, countries, attributes, buyers, sellers, orders, read-only message moderation, product questions, product reports, settings, notifications, and audit logs.
 
 ## Current Features
 
@@ -18,14 +18,29 @@ The project currently supports localized product browsing, seller-managed produc
 - Database-backed carts and cart items, including guest cart support, buyer cart merging, backend price recalculation, seller discounts, promo codes, order snapshots, and stock decrementing.
 - Orders, order items, order bundles, order status history, buyer/seller/admin order views, and translatable order/payment status labels.
 - Marketplace notifications through Laravel database notifications and queued mail-capable notification classes.
+- Buyer-seller private messaging for product and order conversations, including unread state, recipient notifications, admin moderation visibility, and metadata-only audit logging.
 - Product wishlists, product stock alerts, product reports, product questions and answers, reviews, discounts, promo codes, bundles, and audit logs.
 - Multilingual UI for Lithuanian and English through JSON translation files and translated database content where models support it.
 - PHPUnit feature/unit coverage for role access, auth, catalog, cart, checkout, orders, images, notifications, translations, factories, seeders, security, and performance query budgets.
 
+## Product Bundles
+
+Sellers can group their own products into product bundles. A bundle belongs to one seller, must contain at least two unique seller-owned products before publishing, and can be draft, active, inactive, expired, or archived. Sellers can set quantities, ordering, an optional image, optional availability dates, and either a percentage or fixed bundle discount.
+
+Bundle pricing is calculated dynamically from current active product prices and item quantities. The backend recalculates the base price, discount amount, and final price when bundles are added to cart and again during checkout. Frontend or stored cart prices are not trusted. Fixed discounts cannot make the final bundle price negative.
+
+Cart rows store bundles separately from normal product rows in `cart_bundle_items`. Checkout keeps each bundle inside the seller order that owns it, revalidates every included product, checks combined stock, creates an `order_bundles` snapshot, writes linked `order_items` rows for included products, decrements stock, audits purchase activity, and clears bundle cart rows only after the transaction succeeds.
+
+Demo data seeds active, draft, archived, discounted, unavailable-product, and out-of-stock bundles, plus bundle cart and order snapshot examples. Focused bundle tests can be run with:
+
+```bash
+php artisan test --compact tests/Feature/ProductBundleFeatureTest.php tests/Feature/BundleCartCheckoutTest.php
+```
+
 ## Planned Or Incomplete
 
 - Real payment gateway integration. Checkout currently simulates successful payment.
-- Marketplace messaging and disputes.
+- Dedicated dispute workflow. Private product/order messaging exists, but formal dispute records are still planned.
 - Complete production deployment automation.
 - Full screenshot set for every major page.
 - Final UI consolidation. maryUI is active, while WireUI, daisyUI, and Flowbite remain during migration.
@@ -165,9 +180,9 @@ Roles are implemented through separate guards and user tables rather than a shar
 | Role | Route area | Dashboard | Summary |
 | --- | --- | --- | --- |
 | Guest | `/`, `/buyer/login`, `/seller/login`, `/admin/login`, public catalog routes | None | Can browse public marketplace pages, switch language, compare products, ask public questions, and report active products when guest reports are enabled. |
-| Buyer | `/buyer` | `/buyer/dashboard` | Can manage own profile, cart, checkout, orders, wishlists, stock alerts, notifications, and product interactions. Cannot manage seller products or admin data. |
-| Seller | `/seller` | `/seller/dashboard` | Can manage own profile, products, discounts, promo codes, product questions, orders, transactions, and notifications. Cannot manage another seller's products or access admin tools. |
-| Admin | `/admin` | `/admin/dashboard` | Can manage platform data according to policies, gates, middleware, and audit rules. Dangerous actions should be audited. |
+| Buyer | `/buyer` | `/buyer/dashboard` | Can manage own profile, cart, checkout, orders, product/order conversations with sellers, wishlists, stock alerts, notifications, and product interactions. Cannot manage seller products or admin data. |
+| Seller | `/seller` | `/seller/dashboard` | Can manage own profile, products, discounts, promo codes, product questions, product/order conversations with buyers, orders, transactions, and notifications. Cannot manage another seller's products or access admin tools. |
+| Admin | `/admin` | `/admin/dashboard` | Can manage platform data according to policies, gates, middleware, and audit rules. Message moderation is read-only and audited. Dangerous actions should be audited. |
 
 See [docs/roles.md](docs/roles.md) and [docs/security.md](docs/security.md).
 
@@ -175,7 +190,7 @@ See [docs/roles.md](docs/roles.md) and [docs/security.md](docs/security.md).
 
 | Path | Purpose |
 | --- | --- |
-| `app/Actions` | Single-purpose business operations for carts, orders, images, notifications, reports, products, promotions, stock alerts, and wishlists. |
+| `app/Actions` | Single-purpose business operations for carts, orders, images, messaging, notifications, reports, products, promotions, stock alerts, and wishlists. |
 | `app/Enums` | Domain enums such as order and moderation status values. |
 | `app/Http/Controllers` | Thin HTTP controllers for public/API/auth/notification entry points. |
 | `app/Http/Middleware` | Locale, active account, verified account, auth redirect, and signature middleware. |
@@ -400,7 +415,7 @@ The local GSD modernization roadmap also lives in `.planning/`.
 - Product images still have legacy compatibility fields alongside normalized `product_images`.
 - Some release notes are local docs only; no git tags or GitHub releases exist yet.
 - No standalone `LICENSE` file exists, although `composer.json` declares `MIT`.
-- Marketplace messaging/disputes are not implemented.
+- Formal dispute records are not implemented. Product/order messaging exists, but it is not a full dispute workflow.
 - Production deployment automation is not complete.
 
 ## Release Management

@@ -24,7 +24,7 @@
             <x-mary-button
                 :label="__('products_actions_create')"
                 icon="o-plus"
-                :link="route('backend.products.create')"
+                :link="route('admin.products.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -75,8 +75,8 @@
 
             @scope('cell_status', $product)
                 <x-mary-badge
-                    :value="$product->trashed() ? __('common_trashed') : __('common_active')"
-                    class="{{ $product->trashed() ? 'badge-error badge-outline' : 'badge-success badge-outline' }}"
+                    :value="$product->statusLabel()"
+                    class="{{ $product->statusMaryBadgeClass() }}"
                 />
             @endscope
 
@@ -87,7 +87,7 @@
                             :title="__('common_restore')"
                             icon="o-arrow-uturn-left"
                             class="text-success"
-                            wire:click.stop="restoreProduct({{ $product->id }})"
+                            wire:click.stop="confirmRestoreProduct({{ $product->id }})"
                             spinner
                         />
                         <x-mary-menu-separator />
@@ -101,7 +101,7 @@
                     @else
                         <x-mary-menu-item
                             :title="__('common_edit')"
-                            :link="route('backend.products.edit', $product)"
+                            :link="route('admin.products.edit', $product)"
                             icon="o-pencil-square"
                         />
                         <x-mary-menu-separator />
@@ -200,5 +200,6 @@
         :title="$confirmModalTitle"
         :description="$confirmModalDescription"
         :confirm-label="$confirmModalAcceptLabel"
+        reason-model="auditReason"
     />
 </div>

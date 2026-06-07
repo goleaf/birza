@@ -15,9 +15,9 @@ Every new private route must be named and placed in the correct grouped route fi
 ## Role Access Rules
 
 - Guests can access public pages and auth routes only.
-- Buyers can access only their own cart, orders, wishlists, stock alerts, notifications, profile, and allowed product interactions.
-- Sellers can access only their own products, promotions, seller orders, transactions, notifications, and product questions.
-- Admins can access backend management pages according to gates and policies.
+- Buyers can access only their own cart, orders, wishlists, stock alerts, conversations, notifications, profile, and allowed product interactions.
+- Sellers can access only their own products, promotions, seller orders, transactions, conversations, notifications, and product questions.
+- Admins can access backend management pages according to gates and policies. Private message moderation is read-only, policy-controlled, and audited.
 
 ## Policies And Gates
 
@@ -53,9 +53,17 @@ Authorize on mount before loading private data and again before every create, up
 
 ## Ownership Rules
 
-- Buyers see only their own orders, carts, wishlists, stock alerts, addresses, and notifications.
-- Sellers manage only their own products, discounts, promo codes, product bundles, product questions, seller orders, and transactions.
+- Buyers see only their own orders, carts, wishlists, stock alerts, addresses, conversations, and notifications.
+- Sellers manage only their own products, discounts, promo codes, product bundles, product questions, seller orders, conversations, and transactions.
 - Admin actions should be policy-checked and audited when sensitive.
+
+Conversation rules:
+
+- Buyers can start private conversations only from active products or their own orders.
+- Sellers can reply only to conversations for their own products or seller order items.
+- Sellers cannot initiate random buyer messages without an existing product/order relationship.
+- Admin moderation views must not expose private messages unless `ConversationPolicy::moderate` allows it, and admin views are audit logged.
+- Message bodies must be escaped in Blade and must not be copied into notifications or audit logs.
 
 ## Dangerous Fields
 

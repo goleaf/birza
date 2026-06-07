@@ -4,7 +4,7 @@
         ['key' => 'buyer', 'label' => __('orders_buyer'), 'class' => 'w-64'],
         ['key' => 'items_preview', 'label' => __('orders_products')],
         ['key' => 'created_at', 'label' => __('orders_date'), 'class' => 'w-44'],
-        ['key' => 'payment_status', 'label' => __('orders_status_3'), 'class' => 'text-center w-40'],
+        ['key' => 'status', 'label' => __('orders.status.label'), 'class' => 'text-center w-40'],
         ['key' => 'actions', 'label' => __('orders_actions'), 'class' => 'text-right w-24'],
     ];
 @endphp
@@ -12,8 +12,8 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_sellers'), 'link' => route('backend.sellers.index')],
-            ['label' => $seller->company_name ?: $seller->name, 'link' => route('backend.sellers.show', $seller)],
+            ['label' => __('navigation_sellers'), 'link' => route('admin.sellers.index')],
+            ['label' => $seller->company_name ?: $seller->name, 'link' => route('admin.sellers.show', $seller)],
             ['label' => __('common_orders')],
         ]"
     />
@@ -27,7 +27,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.sellers.show', $seller)"
+                :link="route('admin.sellers.show', $seller)"
             />
         </x-slot:actions>
     </x-mary-header>
@@ -36,6 +36,8 @@
         <x-mary-table
             :headers="$headers"
             :rows="$orders"
+            with-pagination
+            per-page="perPage"
             striped
             no-hover
             show-empty-text
@@ -73,24 +75,11 @@
                 {{ $order->created_at?->format('Y-m-d H:i') ?? __('common_not_specified') }}
             @endscope
 
-            @scope('cell_payment_status', $order)
-                @php
-                    $statusClass = match ($order->payment_status) {
-                        'paid' => 'badge-success badge-outline',
-                        'pending' => 'badge-warning badge-outline',
-                        'processing' => 'badge-info badge-outline',
-                        'shipped' => 'badge-secondary badge-outline',
-                        'delivered' => 'badge-success',
-                        'cancelled', 'failed' => 'badge-error badge-outline',
-                        'refunded' => 'badge-neutral badge-outline',
-                        default => 'badge-neutral badge-outline',
-                    };
-                @endphp
-
+            @scope('cell_status', $order)
                 <div class="text-center">
                     <x-mary-badge
-                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                        class="{{ $statusClass }}"
+                        :value="$order->paymentStatusLabel()"
+                        class="{{ $order->paymentStatusBadgeClass() }}"
                     />
                 </div>
             @endscope
@@ -99,7 +88,7 @@
                 <div class="flex justify-end">
                     <x-mary-button
                         icon="o-eye"
-                        :link="route('backend.orders.show', $order)"
+                        :link="route('admin.orders.show', $order)"
                         class="btn-ghost btn-sm"
                         :tooltip="__('orders_view_details')"
                     />

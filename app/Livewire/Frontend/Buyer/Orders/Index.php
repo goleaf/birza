@@ -2,18 +2,23 @@
 
 namespace App\Livewire\Frontend\Buyer\Orders;
 
+use App\Actions\Orders\ChangeOrderStatusAction;
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Users\Buyer;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    use WithPagination;
+
     #[Url(as: 'status')]
     public string $status = '';
 
@@ -23,46 +28,44 @@ class Index extends Component
     #[Url(as: 'date_to')]
     public ?string $dateTo = null;
 
+    public int $perPage = 15;
+
     public function cancelOrder(int $orderId): void
     {
         /** @var Buyer $buyer */
         $buyer = Auth::guard('buyer')->user();
 
-        $order = Order::with(['orderItems.product'])
+        $order = Order::with(['items.product'])
             ->where('buyer_id', $buyer->id)
             ->findOrFail($orderId);
 
-        if ($order->payment_status !== Order::STATUS['PENDING']) {
-            session()->flash('error', __('orders_messages_cannot_cancel'));
+        if (! $order->canBeCancelled()) {
+            session()->flash('error', __('orders.messages.cannot_cancel'));
 
             return;
         }
 
-        DB::transaction(function () use ($order) {
-            $order->update([
-                'payment_status' => Order::STATUS['CANCELLED'],
-                'status' => Order::STATUS['CANCELLED'],
-            ]);
+        app(ChangeOrderStatusAction::class)->handle($order, OrderStatus::Cancelled, $buyer);
 
-            foreach ($order->orderItems as $item) {
-                $item->product?->increment('stock', $item->quantity);
-            }
-        });
-
-        session()->flash('success', __('orders_messages_cancelled_success'));
+        session()->flash('success', __('orders.messages.cancelled_successfully'));
     }
 
     public function applyFilters(): void
     {
-        //
+        $this->resetPage();
+    }
+
+    public function updated(string $property): void
+    {
+        if (in_array($property, ['status', 'dateFrom', 'dateTo'], true)) {
+            $this->resetPage();
+        }
     }
 
     public function render()
     {
         /** @var Buyer $buyer */
         $buyer = Auth::guard('buyer')->user();
-
-        $orderStatuses = Order::STATUS;
 
         $filters = [
             'status' => $this->status,
@@ -75,41 +78,68 @@ class Index extends Component
         return view('frontend.buyer.orders.index', [
             'ordersData' => $ordersData,
             'filters' => $filters,
-            'orderStatuses' => $orderStatuses,
-            'orderCalendarEvents' => Order::calendarEventsFrom($ordersData['all']),
+            'orderStatuses' => OrderStatus::cases(),
+            'buyer' => $buyer,
+            'pendingStatus' => OrderStatus::Pending,
+            'deliveredStatus' => OrderStatus::Delivered,
+            'cancelledStatus' => OrderStatus::Cancelled,
+            'orderCalendarEvents' => $ordersData['calendarEvents'],
         ]);
     }
 
     protected function getOrdersData(Buyer $buyer, $status = null, $dateFrom = null, $dateTo = null): array
     {
-        $query = Order::where('buyer_id', $buyer->id);
+        $status = is_string($status) ? OrderStatus::tryFrom($status) : null;
+        $query = $this->filteredOrdersQuery($buyer, $status, $dateFrom, $dateTo);
 
-        if ($status) {
-            $query->where('payment_status', $status);
-        }
+        $orders = (clone $query)
+            ->orderBy('created_at', 'desc')
+            ->paginate($this->perPage)
+            ->withQueryString();
 
-        if ($dateFrom) {
-            $query->whereDate('created_at', '>=', Carbon::parse($dateFrom));
-        }
-
-        if ($dateTo) {
-            $query->whereDate('created_at', '<=', Carbon::parse($dateTo));
-        }
-
-        $orders = $query->orderBy('created_at', 'desc')->get();
+        $calendarOrders = (clone $query)
+            ->orderBy('created_at', 'desc')
+            ->limit(100)
+            ->get();
 
         return [
             'all' => $orders,
-            'pending' => $orders->where('payment_status', Order::STATUS['PENDING'])->count(),
-            'processing' => $orders->where('payment_status', Order::STATUS['PROCESSING'])->count(),
-            'shipped' => $orders->where('payment_status', Order::STATUS['SHIPPED'])->count(),
-            'delivered' => $orders->where('payment_status', Order::STATUS['DELIVERED'])->count(),
-            'cancelled' => $orders->where('payment_status', Order::STATUS['CANCELLED'])->count(),
-            'refunded' => $orders->where('payment_status', Order::STATUS['REFUNDED'])->count(),
-            'paid' => $orders->where('payment_status', Order::STATUS['PAID'])->count(),
-            'failed' => $orders->where('payment_status', Order::STATUS['FAILED'])->count(),
-            'total' => $orders->count(),
-            'totalSpent' => $orders->where('payment_status', Order::STATUS['PAID'])->sum('order_total'),
+            'counts' => $this->statusCounts((clone $query)),
+            'total' => (clone $query)->count(),
+            'totalSpent' => (clone $query)
+                ->where('payment_status', OrderPaymentStatus::Paid->value)
+                ->sum('order_total'),
+            'calendarEvents' => Order::calendarEventsFrom($calendarOrders),
         ];
+    }
+
+    protected function filteredOrdersQuery(
+        Buyer $buyer,
+        ?OrderStatus $status = null,
+        ?string $dateFrom = null,
+        ?string $dateTo = null,
+    ): Builder {
+        $query = Order::query()
+            ->summaryColumns()
+            ->forBuyer($buyer)
+            ->placedBetween($dateFrom, $dateTo);
+
+        if ($status !== null) {
+            $query->where('status', $status->value);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    protected function statusCounts(Builder $query): array
+    {
+        return collect(OrderStatus::cases())
+            ->mapWithKeys(fn (OrderStatus $status): array => [
+                $status->value => (clone $query)->where('status', $status->value)->count(),
+            ])
+            ->all();
     }
 }

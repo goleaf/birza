@@ -14,9 +14,11 @@ use App\Models\BuyerCreditHistory;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\Conversation;
 use App\Models\Country;
 use App\Models\CreditAttachment;
 use App\Models\GlobalSettings;
+use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -156,6 +158,16 @@ class ModelFactoriesTest extends TestCase
                 'reporter_id' => $buyer->id,
             ]);
 
+        $conversation = Conversation::factory()
+            ->forProduct($product, $buyer)
+            ->withMessages(2)
+            ->create();
+
+        $message = Message::factory()
+            ->fromSeller($conversation)
+            ->read()
+            ->create();
+
         $statusHistory = OrderStatusHistory::factory()
             ->for($order)
             ->transition(OrderStatus::Pending, OrderStatus::Completed)
@@ -191,6 +203,9 @@ class ModelFactoriesTest extends TestCase
         $this->assertSame($seller->id, $productQuestion->seller_id);
         $this->assertSame($buyer->id, $stockAlert->buyer_id);
         $this->assertSame($product->id, $productReport->product_id);
+        $this->assertSame($buyer->id, $conversation->buyer_id);
+        $this->assertSame($seller->id, $conversation->seller_id);
+        $this->assertSame($seller->id, $message->sender_id);
         $this->assertSame(OrderStatus::Completed, $statusHistory->new_status);
         $this->assertSame($product->id, $auditLog->auditable_id);
         $this->assertNotNull($activity->id);

@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('audit_logs.navigation'), 'link' => route('backend.audit.index')],
+            ['label' => __('audit_logs.navigation'), 'link' => route('admin.audit.index')],
             ['label' => '#' . $auditLog->id],
         ]"
     />
@@ -15,7 +15,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.audit.index')"
+                :link="route('admin.audit.index')"
             />
         </x-slot:actions>
     </x-mary-header>

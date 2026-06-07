@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Frontend\Buyer;
 
+use App\Enums\OrderPaymentStatus;
 use App\Livewire\Frontend\Buyer\Dashboard as BuyerDashboard;
 use App\Models\Order;
 use App\Models\Users\Buyer;
@@ -26,7 +27,7 @@ class DashboardControllerTest extends TestCase
         ]);
         Order::factory()->count(3)->create([
             'buyer_id' => $buyer->id,
-            'payment_status' => Order::STATUS['PENDING'],
+            'payment_status' => OrderPaymentStatus::Pending,
         ]);
 
         $response = $this->actingAs($buyer, 'buyer')

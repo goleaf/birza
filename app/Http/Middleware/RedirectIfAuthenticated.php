@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\MarketplaceRole;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
@@ -21,15 +22,12 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                if ($guard === 'admin') {
-                    return redirect()->route('backend.dashboard');
+                $role = MarketplaceRole::fromGuard($guard);
+
+                if ($role?->dashboardRoute() !== null) {
+                    return redirect()->route($role->dashboardRoute());
                 }
-                if ($guard === 'seller') {
-                    return redirect()->route('seller.dashboard');
-                }
-                if ($guard === 'buyer') {
-                    return redirect()->route('buyer.dashboard');
-                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

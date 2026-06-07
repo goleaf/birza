@@ -14,7 +14,7 @@ class LoginControllerTest extends TestCase
 
     public function test_login_form_displays(): void
     {
-        $response = $this->get(route('backend.login'));
+        $response = $this->get(route('admin.login'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AdminLogin::class)
@@ -29,7 +29,7 @@ class LoginControllerTest extends TestCase
     {
         $response = $this->get('/admin');
 
-        $response->assertRedirect(route('backend.login'));
+        $response->assertRedirect(route('admin.login'));
     }
 
     public function test_admin_root_redirects_authenticated_admin_to_dashboard(): void
@@ -39,7 +39,7 @@ class LoginControllerTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->get('/admin');
 
-        $response->assertRedirect(route('backend.dashboard'));
+        $response->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_login_redirects_if_already_authenticated(): void
@@ -47,9 +47,9 @@ class LoginControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.login'));
+            ->get(route('admin.login'));
 
-        $response->assertRedirect(route('backend.dashboard'));
+        $response->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_login_with_valid_credentials(): void
@@ -62,7 +62,7 @@ class LoginControllerTest extends TestCase
             ->set('email', $admin->email)
             ->set('password', 'password')
             ->call('login')
-            ->assertRedirect(route('backend.dashboard'));
+            ->assertRedirect(route('admin.dashboard'));
 
         $this->assertAuthenticatedAs($admin, 'admin');
     }
@@ -85,9 +85,9 @@ class LoginControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->post(route('backend.logout'));
+            ->post(route('admin.logout'));
 
-        $response->assertRedirect(route('backend.login'));
+        $response->assertRedirect(route('admin.login'));
         $this->assertGuest('admin');
     }
 }

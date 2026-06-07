@@ -128,7 +128,9 @@ class ProductTest extends TestCase
 
         $this->assertContains('name', $fillable);
         $this->assertContains('price', $fillable);
-        $this->assertContains('is_active', $fillable);
+        $this->assertNotContains('seller_id', $fillable);
+        $this->assertNotContains('is_active', $fillable);
+        $this->assertNotContains('product_image', $fillable);
     }
 
     public function test_product_casts(): void
@@ -168,5 +170,18 @@ class ProductTest extends TestCase
             ['id' => 'pack', 'name' => __('units_unit_pack')],
             ['id' => 'piece', 'name' => __('units_unit_piece')],
         ], Product::unitOptions());
+    }
+
+    public function test_product_status_labels_are_translated(): void
+    {
+        $activeProduct = Product::factory()->active()->create();
+        $inactiveProduct = Product::factory()->inactive()->create();
+        $deletedProduct = Product::factory()->active()->create();
+
+        $deletedProduct->delete();
+
+        $this->assertSame(__('marketplace.products.status.active'), $activeProduct->statusLabel());
+        $this->assertSame(__('marketplace.products.status.inactive'), $inactiveProduct->statusLabel());
+        $this->assertSame(__('marketplace.products.status.deleted'), $deletedProduct->statusLabel());
     }
 }

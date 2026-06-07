@@ -6,6 +6,8 @@ use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Product;
@@ -81,6 +83,8 @@ class DemoScenarioSeederTest extends TestCase
         $this->assertGreaterThan(0, Review::query()->count());
         $this->assertGreaterThan(0, Wishlist::query()->count());
         $this->assertGreaterThan(0, ProductReport::query()->count());
+        $this->assertGreaterThan(0, Conversation::query()->count());
+        $this->assertGreaterThan(0, Message::query()->count());
         $this->assertGreaterThan(0, Notification::query()->count());
         $this->assertGreaterThanOrEqual(
             12,
@@ -91,6 +95,7 @@ class DemoScenarioSeederTest extends TestCase
         $this->assertTrue(Notification::query()->where('type', 'marketplace.stock.low')->exists());
         $this->assertTrue(Notification::query()->where('type', 'marketplace.product.moderation_required')->exists());
         $this->assertTrue(Notification::query()->where('type', 'marketplace.product_report.created')->exists());
+        $this->assertTrue(Notification::query()->where('type', 'marketplace.message.new')->exists());
         $this->assertGreaterThan(0, ProductImage::query()->count());
 
         $image = ProductImage::query()
@@ -124,6 +129,8 @@ class DemoScenarioSeederTest extends TestCase
             'reviews' => Review::withTrashed()->count(),
             'wishlists' => Wishlist::query()->count(),
             'product_reports' => ProductReport::withTrashed()->count(),
+            'conversations' => Conversation::withTrashed()->count(),
+            'messages' => Message::withTrashed()->count(),
             'notifications' => Notification::query()->count(),
         ];
     }

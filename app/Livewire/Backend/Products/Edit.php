@@ -2,11 +2,16 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Actions\Notifications\SendProductModerationNotificationAction;
+use App\Actions\Notifications\SendStockThresholdNotificationAction;
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Users\Seller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -15,6 +20,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.backend.app')]
 class Edit extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
@@ -60,8 +66,12 @@ class Edit extends Component
 
     public array $attributeSelections = [];
 
+    public ?string $audit_reason = null;
+
     public function mount(Product $product): void
     {
+        $this->authorize('update', $product);
+
         $this->product = $product->load('attributeValues');
 
         $this->seller_id = (int) $product->seller_id;
@@ -119,16 +129,32 @@ class Edit extends Component
             'description' => ['required', 'string'],
             'attributeSelections' => ['nullable', 'array'],
             'attributeSelections.*' => ['nullable', 'integer', Rule::exists('attribute_values', 'id')],
+            'audit_reason' => ['nullable', 'string', 'max:500'],
         ], $this->productImageLibraryRules());
     }
 
     public function save(): void
     {
+        $this->authorize('update', $this->product);
+        $this->authorize('manageGallery', $this->product);
         $this->ensureProductImageLibraryIsPresent();
 
         $validated = $this->validate();
+        $wasActive = (bool) $this->product->is_active;
+        $previousStock = (int) $this->product->stock;
+        $willBeActive = (bool) ($validated['is_active'] ?? false);
 
-        $this->product->fill([
+        if ($wasActive !== $willBeActive && blank($validated['audit_reason'] ?? null)) {
+            $this->addError('audit_reason', __('audit_logs.reason_required'));
+
+            return;
+        }
+
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($this->product);
+        $oldImages = $auditRecorder->imagePaths($this->product);
+
+        $this->product->forceFill([
             'category_id' => $validated['category_id'],
             'seller_id' => $validated['seller_id'],
             'name' => $validated['name'],
@@ -152,6 +178,19 @@ class Edit extends Component
         $this->product->setTranslation('description', app()->getLocale(), $validated['description']);
         $this->product->save();
         $this->syncProductImageLibrary($this->product);
+        $this->product->refresh()->load('images');
+
+        $auditRecorder->updated(
+            actor: Auth::guard('admin')->user(),
+            product: $this->product,
+            oldValues: $oldValues,
+            oldImages: $oldImages,
+            source: 'admin_product_edit',
+            reason: $validated['audit_reason'] ?? null,
+        );
+
+        app(SendStockThresholdNotificationAction::class)->handle($this->product, $previousStock);
+        $this->sendProductDecisionNotification($wasActive, (bool) $this->product->is_active);
 
         $sync = [];
         foreach (($validated['attributeSelections'] ?? []) as $attributeId => $valueId) {
@@ -164,7 +203,24 @@ class Edit extends Component
         $this->product->attributeValues()->sync($sync);
 
         session()->flash('success', __('messages_product_updated'));
-        $this->redirectRoute('backend.products.index');
+        $this->redirectRoute('admin.products.index');
+    }
+
+    private function sendProductDecisionNotification(bool $wasActive, bool $isActive): void
+    {
+        if ($wasActive === $isActive) {
+            return;
+        }
+
+        $action = app(SendProductModerationNotificationAction::class);
+
+        if ($isActive) {
+            $action->approved($this->product);
+
+            return;
+        }
+
+        $action->rejected($this->product);
     }
 
     public function updatedCategoryId(): void

@@ -16,6 +16,12 @@
         </div>
     </div>
 
+    <x-notifications.recent-panel
+        :notifications="$recentNotifications"
+        :href="route('admin.notifications.index')"
+        :title="__('notifications.ui.admin_alerts')"
+    />
+
     <x-mary-card :title="__('backend_dashboard_recent_activity_title')" shadow>
         @forelse ($recentActivities as $activity)
             <x-mary-list-item :item="$activity" @class(['rounded-xl'])>

@@ -6,6 +6,8 @@ use App\Models\Concerns\HasJsonTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Country extends Model
@@ -13,6 +15,8 @@ class Country extends Model
     use HasFactory, HasJsonTranslations;
 
     public const REGIONS = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania'];
+
+    private const CACHE_TTL_SECONDS = 21_600;
 
     protected $table = 'countries';
 
@@ -36,6 +40,12 @@ class Country extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn (): bool => self::flushReferenceCache());
+        static::deleted(fn (): bool => self::flushReferenceCache());
+    }
 
     public function products(): HasMany
     {
@@ -73,5 +83,44 @@ class Country extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public static function cachedActiveEuropeanOptions(): Collection
+    {
+        return Cache::remember(
+            'countries.active.europe',
+            self::CACHE_TTL_SECONDS,
+            fn (): Collection => self::active()
+                ->select(['id', 'country_name'])
+                ->where('region', 'Europe')
+                ->orderBy('country_name')
+                ->get(),
+        );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function cachedNameMapByAlpha2(): array
+    {
+        return Cache::remember(
+            'countries.active.alpha2_names',
+            self::CACHE_TTL_SECONDS,
+            fn (): array => self::active()
+                ->orderBy('country_name')
+                ->pluck('country_name', 'alpha2')
+                ->toArray(),
+        );
+    }
+
+    public static function flushReferenceCache(): bool
+    {
+        Cache::forget('countries.active.europe');
+        Cache::forget('countries.active.alpha2_names');
+
+        return true;
     }
 }

@@ -74,6 +74,7 @@ Demo seeders create data for:
 - product questions and answers
 - product reports
 - stock alerts
+- buyer-seller conversations and messages
 - notifications
 - buyer credit history and attachments
 - seller transactions
@@ -90,6 +91,11 @@ Factory rules:
 - Use relationship helpers for graph setup.
 - Keep deterministic states for common scenarios, such as active/inactive products or pending/completed orders.
 - Add coverage to `tests/Feature/Factories/ModelFactoriesTest.php` when adding a new factory or important state.
+
+Messaging factories:
+
+- `ConversationFactory` creates buyer-seller conversations and supports active, closed, blocked, buyer-archived, seller-archived, product-linked, order-linked, and message-populated states.
+- `MessageFactory` creates buyer/seller/admin-role messages, read/unread states, and conversation-linked message rows.
 
 ## Adding A Seeder
 

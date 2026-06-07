@@ -1,0 +1,205 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e5]:
+      - link "Birza" [ref=e7] [cursor=pointer]:
+        - /url: https://birza.test
+        - img [ref=e8]
+        - text: Birza
+      - generic [ref=e10]:
+        - link "LT" [ref=e11] [cursor=pointer]:
+          - /url: https://birza.test/language/lt
+        - link "EN" [ref=e12] [cursor=pointer]:
+          - /url: https://birza.test/language/en
+  - generic [ref=e14]:
+    - heading "IMK24.lt" [level=1] [ref=e15]
+    - paragraph [ref=e16]: Platforma, kur susitinka gamintojai ir pirkėjai. Tegul laimi patogumas !
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - img [ref=e22]
+        - heading "Pirkėjams" [level=2] [ref=e24]
+      - list [ref=e25]:
+        - listitem [ref=e26]:
+          - img [ref=e27]
+          - text: Galimybė matyti parduodamas prekes
+        - listitem [ref=e29]:
+          - img [ref=e30]
+          - text: Patogus prekių užsakymas ir komplektavimas
+        - listitem [ref=e32]:
+          - img [ref=e33]
+          - text: Nelieka rūpesčių dėl logistikos
+        - listitem [ref=e35]:
+          - img [ref=e36]
+          - text: Kita nauda
+      - generic [ref=e38]:
+        - link "Prisijungimas pirkėjui" [ref=e39] [cursor=pointer]:
+          - /url: https://birza.test/buyer/login
+          - img [ref=e41]
+          - text: Prisijungimas pirkėjui
+        - link "Pirkėjo registracija" [ref=e43] [cursor=pointer]:
+          - /url: https://birza.test/buyer/register
+          - img [ref=e45]
+          - text: Pirkėjo registracija
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - img [ref=e50]
+        - heading "Tiekėjams" [level=2] [ref=e52]
+      - list [ref=e53]:
+        - listitem [ref=e54]:
+          - img [ref=e55]
+          - text: Parduodamų prekių pridėjimas
+        - listitem [ref=e57]:
+          - img [ref=e58]
+          - text: Galimybė parduoti produkciją plačiam pirkėjų ratui
+        - listitem [ref=e60]:
+          - img [ref=e61]
+          - text: Galimybė gauti išankstinių užsakymų
+        - listitem [ref=e63]:
+          - img [ref=e64]
+          - text: Išspręsti logistikos galvosūkiai
+      - generic [ref=e66]:
+        - link "Prisijungimas tiekėjui" [ref=e67] [cursor=pointer]:
+          - /url: https://birza.test/seller/login
+          - img [ref=e69]
+          - text: Prisijungimas tiekėjui
+        - link "Tiekėjo registracija" [ref=e71] [cursor=pointer]:
+          - /url: https://birza.test/seller/register
+          - img [ref=e73]
+          - text: Tiekėjo registracija
+  - generic [ref=e75]:
+    - heading "Produktų kategorijos" [level=2] [ref=e76]
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - img "Šviežios mėsos kategorija" [ref=e79]
+        - heading "Šviežios mėsos kategorija" [level=3] [ref=e80]
+        - paragraph [ref=e81]: Šviežia vištiena, kiauliena, jautiena, aviena, kalakutiena, antiena.
+      - generic [ref=e82]:
+        - img "Termiškai apdorotų produktų kategorija" [ref=e83]
+        - heading "Termiškai apdorotų produktų kategorija" [level=3] [ref=e84]
+        - paragraph [ref=e85]: Prekės aprašymas 2
+      - generic [ref=e86]:
+        - img "Paruoštų vartojimui produktų kategorija" [ref=e87]
+        - heading "Paruoštų vartojimui produktų kategorija" [level=3] [ref=e88]
+        - paragraph [ref=e89]: Įvairi paruošta vartojimui produkcija ir pan.
+      - generic [ref=e90]:
+        - img "Šaldytų produktų kategorija" [ref=e91]
+        - heading "Šaldytų produktų kategorija" [level=3] [ref=e92]
+        - paragraph [ref=e93]: 4 kategorijos gaminio aprašymas
+  - generic [ref=e94]:
+    - heading "Apie mūsų plaftformą" [level=2] [ref=e95]
+    - generic [ref=e96]:
+      - generic [ref=e98]:
+        - img [ref=e100]
+        - generic [ref=e102]:
+          - heading "Seller Count" [level=3] [ref=e103]
+          - paragraph [ref=e104]: "10"
+      - generic [ref=e106]:
+        - img [ref=e108]
+        - generic [ref=e110]:
+          - heading "Produktų kategorijos" [level=3] [ref=e111]
+          - paragraph [ref=e112]: "201"
+      - generic [ref=e114]:
+        - img [ref=e116]
+        - generic [ref=e118]:
+          - heading "Buyer Count" [level=3] [ref=e119]
+          - paragraph [ref=e120]: "10"
+  - generic [ref=e121]:
+    - heading "Dažniausiai uzduodami klausimai" [level=2] [ref=e122]
+    - generic [ref=e123]:
+      - generic [ref=e124]:
+        - checkbox [ref=e125]
+        - generic [ref=e126]: Kokias paslaugas siūlote?
+        - paragraph [ref=e128]: Mes siūlome platų produktų asortimentą, įskaitant maistą ir kitus kasdienio naudojimo daiktus. Mūsų paslaugos apima ne tik kokybiškų produktų pardavimą, bet ir galimybę reklamuoti savo prekes mūsų svetainėje. Tai ideali vieta, kur jūsų produktai pasieks platesnę auditoriją. Platforma veikia kaip prekybos birža, kurioje tiekėjai ir pirkėjai gali susitikti, keistis produktais ir paslaugomis. Jei norite pasiekti platesnę auditoriją ir didinti savo pardavimus, reklama mūsų biržoje yra puikus sprendimas.
+      - generic [ref=e129]:
+        - checkbox [ref=e130]
+        - generic [ref=e131]: Kokios atsiskaitymo galimybės?
+        - paragraph [ref=e133]: main_faq_faq_2_answer
+      - generic [ref=e134]:
+        - checkbox [ref=e135]
+        - generic [ref=e136]: Ar pristatymas yra nemokamas?
+        - paragraph [ref=e138]: main_faq_faq_3_answer
+      - generic [ref=e139]:
+        - checkbox [ref=e140]
+        - generic [ref=e141]: Kaip galiu užsakyti prekes?
+        - paragraph [ref=e143]: Pasirinkite prekes, galite pasinaudoti filtravimo įrankiais, kad greičiau rastumėte norimus produktus pagal kategorijas, kainą ar kitus parametrus. Įdėkite prekes į krepšelį, pasirinkite atsiskaitymo būdą ir įveskite pristatymo informaciją.
+      - generic [ref=e144]:
+        - checkbox [ref=e145]
+        - generic [ref=e146]: Ar galiu grąžinti prekes? Kaip atlikti grąžinimą? Ką daryti, jei gavau sugadintas prekes?
+        - paragraph [ref=e148]: main_faq_faq_5_answer
+      - generic [ref=e149]:
+        - checkbox [ref=e150]
+        - generic [ref=e151]: Kiek laiko užtrunka užsakymo pristatymas?
+        - paragraph [ref=e153]: main_faq_faq_6_answer
+      - generic [ref=e154]:
+        - checkbox [ref=e155]
+        - generic [ref=e156]: Ar galiu pakeisti pristatymo adresą?
+        - paragraph [ref=e158]: main_faq_faq_7_answer
+      - generic [ref=e159]:
+        - checkbox [ref=e160]
+        - generic [ref=e161]: Kaip ištrinti paskyrą?
+        - paragraph [ref=e163]: main_faq_faq_8_answer
+      - generic [ref=e164]:
+        - checkbox [ref=e165]
+        - generic [ref=e166]: main_faq_faq_9_question
+        - paragraph [ref=e168]: main_faq_faq_9_answer
+      - generic [ref=e169]:
+        - checkbox [ref=e170]
+        - generic [ref=e171]: main_faq_faq_10_question
+        - paragraph [ref=e173]: main_faq_faq_10_answer
+  - contentinfo [ref=e174]:
+    - generic [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - heading "Birza" [level=3] [ref=e178]
+          - paragraph [ref=e179]: Jūsų patikima mėsos prekybos platforma.
+          - generic [ref=e180]:
+            - link [ref=e181] [cursor=pointer]:
+              - /url: https://facebook.com
+              - img [ref=e182]
+            - link [ref=e184] [cursor=pointer]:
+              - /url: https://twitter.com
+              - img [ref=e185]
+            - link [ref=e187] [cursor=pointer]:
+              - /url: https://linkedin.com
+              - img [ref=e188]
+            - link [ref=e190] [cursor=pointer]:
+              - /url: https://instagram.com
+              - img [ref=e191]
+        - generic [ref=e193]:
+          - heading "Greitos nuorodos" [level=3] [ref=e194]
+          - list [ref=e195]:
+            - listitem [ref=e196]:
+              - link "Prisijungti" [ref=e197] [cursor=pointer]:
+                - /url: https://birza.test/buyer/login
+            - listitem [ref=e198]:
+              - link "Prisijungti" [ref=e199] [cursor=pointer]:
+                - /url: https://birza.test/seller/login
+            - listitem [ref=e200]:
+              - link "Pirkėjo registracija" [ref=e201] [cursor=pointer]:
+                - /url: https://birza.test/buyer/register
+            - listitem [ref=e202]:
+              - link "Tiekėjo registracija" [ref=e203] [cursor=pointer]:
+                - /url: https://birza.test/seller/register
+        - generic [ref=e204]:
+          - heading "Susisiekite su mumis" [level=3] [ref=e205]
+          - list [ref=e206]:
+            - listitem [ref=e207]:
+              - img [ref=e208]
+              - text: contact@meattrade.com
+            - listitem [ref=e210]:
+              - img [ref=e211]
+              - text: +1 234 567 890
+            - listitem [ref=e213]:
+              - img [ref=e214]
+              - text: 123 Meat Street, Food City, FC 12345
+            - listitem [ref=e217]:
+              - img [ref=e218]
+              - text: "Mon-Fri: 9 AM - 5 PM EST"
+        - generic [ref=e220]:
+          - heading "Kalbos" [level=3] [ref=e221]
+          - generic [ref=e222]:
+            - link "LT" [ref=e223] [cursor=pointer]:
+              - /url: https://birza.test/language/lt
+            - link "EN" [ref=e224] [cursor=pointer]:
+              - /url: https://birza.test/language/en
+      - paragraph [ref=e226]: © 2026 Birza. Visos teisės saugomos.

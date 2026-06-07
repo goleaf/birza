@@ -4,6 +4,7 @@ namespace App\Models\Users;
 
 use App\Models\AuditLog;
 use App\Models\Category;
+use App\Models\Conversation;
 use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -126,6 +127,11 @@ class Seller extends Authenticatable
     public function productQuestions(): HasMany
     {
         return $this->hasMany(ProductQuestion::class);
+    }
+
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'seller_id');
     }
 
     public function answeredProductQuestions(): HasMany

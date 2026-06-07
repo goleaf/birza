@@ -18,7 +18,7 @@ class AttributeValueControllerTest extends TestCase
     {
         $attribute = Attribute::factory()->create();
 
-        $response = $this->get(route('backend.attributes.values.index', $attribute));
+        $response = $this->get(route('admin.attributes.values.index', $attribute));
 
         $response->assertRedirect(route('home'));
     }
@@ -32,7 +32,7 @@ class AttributeValueControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.values.index', $attribute));
+            ->get(route('admin.attributes.values.index', $attribute));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeValueIndex::class)
@@ -50,7 +50,7 @@ class AttributeValueControllerTest extends TestCase
         $attribute = Attribute::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.values.create', $attribute));
+            ->get(route('admin.attributes.values.create', $attribute));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeValueForm::class)
@@ -69,7 +69,7 @@ class AttributeValueControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.values.edit', [
+            ->get(route('admin.attributes.values.edit', [
                 'attribute' => $attribute,
                 'value' => $attributeValue,
             ]));

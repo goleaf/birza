@@ -35,18 +35,21 @@ php artisan migrate:fresh --seed
 | Promotions | `discounts`, `promo_codes`, `promo_code_redemptions` |
 | Buyer features | `wishlists`, `wishlist_items`, `product_stock_alerts` |
 | Community/moderation | `reviews`, `product_questions`, `product_reports` |
+| Messaging | `conversations`, `messages` |
 | Notifications/audit | `notifications`, `admin_actions`, `audit_logs`, `activities` |
 | Support | `global_settings`, `cache`, `cache_locks`, `failed_jobs`, `password_reset_tokens`, `personal_access_tokens`, `migrations` |
 
 ## Key Relationships
 
-- Buyers have many carts, orders, wishlists, stock alerts, addresses, product questions, reports, and notifications.
-- Sellers have many products, discounts, promo codes, product bundles, seller transactions, product questions, and notifications.
+- Buyers have many carts, orders, wishlists, stock alerts, addresses, product questions, reports, conversations, and notifications.
+- Sellers have many products, discounts, promo codes, product bundles, seller transactions, product questions, conversations, and notifications.
 - Products belong to sellers, categories, and countries.
 - Products have many product images, cart items, order items, reviews, reports, questions, wishlist items, stock alerts, discounts, and bundle items.
 - Orders belong to buyers and have many order items, order bundles, status histories, promo redemptions, audit logs, and notifications.
 - Order items keep product, seller, price, and discount snapshots.
 - Promo codes belong to sellers and record redemptions.
+- Conversations belong to one buyer and one seller, may link to a product or order, and contain messages from buyer, seller, or policy-authorized admin context.
+- Messages belong to one conversation and store sender identity, sender role, read state, optional edit state, metadata, and escaped plain-text body content.
 - Audit logs are polymorphic around actors and audited entities.
 - Notifications are standard Laravel polymorphic database notifications.
 
@@ -92,6 +95,7 @@ Examples:
 - `product_questions.status`
 - `product_reports.status`
 - `product_stock_alerts.status`
+- `conversations.status`
 
 Do not display raw status values. Use translation keys and helper methods.
 
@@ -141,6 +145,8 @@ Current query-driven indexes cover common paths such as:
 - notification notifiable/read/latest lookups
 - credit and transaction filters
 - product questions/reports status filters
+- conversation buyer/seller activity filters
+- message conversation/read/date filters
 - wishlists and wishlist item uniqueness
 - promo code uniqueness and redemption lookups
 
@@ -157,5 +163,4 @@ See [seeders guide](seeders.md) and [demo seeding guide](demo-seeding.md).
 - Product attribute data still has multiple pivot tables. Future work should keep one canonical path and document it.
 - Legacy product image fields still exist alongside `product_images`.
 - Payment provider records are not modeled separately.
-- Marketplace messages/conversations are not implemented.
 - No database constraints enforce every enum/status value; PHP enums/constants remain the main guard.

@@ -24,7 +24,7 @@
             <x-mary-button
                 :label="__('common_create')"
                 icon="o-plus"
-                :link="route('backend.sellers.create')"
+                :link="route('admin.sellers.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -52,17 +52,17 @@
                 <x-backend.action-dropdown>
                     <x-mary-menu-item
                         :title="__('common_view')"
-                        :link="route('backend.sellers.show', $seller)"
+                        :link="route('admin.sellers.show', $seller)"
                         icon="o-eye"
                     />
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.sellers.edit', $seller)"
+                        :link="route('admin.sellers.edit', $seller)"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-item
                         :title="__('sellers_orders_list')"
-                        :link="route('backend.sellers.orders', $seller)"
+                        :link="route('admin.sellers.orders', $seller)"
                         icon="o-clipboard-document-list"
                     />
                     <x-mary-menu-separator />
@@ -121,5 +121,6 @@
         :title="$confirmModalTitle"
         :description="$confirmModalDescription"
         :confirm-label="$confirmModalAcceptLabel"
+        reason-model="auditReason"
     />
 </div>

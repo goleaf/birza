@@ -15,7 +15,7 @@ class AttributeControllerTest extends TestCase
 
     public function test_attribute_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.attributes.index'));
+        $response = $this->get(route('admin.attributes.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -26,7 +26,7 @@ class AttributeControllerTest extends TestCase
         Attribute::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.index'));
+            ->get(route('admin.attributes.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeIndex::class)
@@ -43,7 +43,7 @@ class AttributeControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.create'));
+            ->get(route('admin.attributes.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeForm::class)
@@ -61,7 +61,7 @@ class AttributeControllerTest extends TestCase
         $attribute = Attribute::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.attributes.edit', $attribute));
+            ->get(route('admin.attributes.edit', $attribute));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(AttributeForm::class)

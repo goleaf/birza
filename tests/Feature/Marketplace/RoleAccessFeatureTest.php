@@ -18,7 +18,7 @@ class RoleAccessFeatureTest extends TestCase
     {
         $this->get(route('buyer.dashboard'))->assertRedirect(route('home'));
         $this->get(route('seller.dashboard'))->assertRedirect(route('home'));
-        $this->get(route('backend.dashboard'))->assertRedirect(route('home'));
+        $this->get(route('admin.dashboard'))->assertRedirect(route('home'));
     }
 
     public function test_buyer_can_access_buyer_dashboard_only(): void
@@ -34,7 +34,7 @@ class RoleAccessFeatureTest extends TestCase
             ->assertRedirect(route('home'));
 
         $this->actingAs($buyer, 'buyer')
-            ->get(route('backend.dashboard'))
+            ->get(route('admin.dashboard'))
             ->assertRedirect(route('home'));
     }
 
@@ -51,7 +51,7 @@ class RoleAccessFeatureTest extends TestCase
             ->assertRedirect(route('home'));
 
         $this->actingAs($seller, 'seller')
-            ->get(route('backend.dashboard'))
+            ->get(route('admin.dashboard'))
             ->assertRedirect(route('home'));
     }
 
@@ -60,7 +60,7 @@ class RoleAccessFeatureTest extends TestCase
         $admin = $this->createAdmin();
 
         $this->actingAs($admin, 'admin')
-            ->get(route('backend.dashboard'))
+            ->get(route('admin.dashboard'))
             ->assertOk();
     }
 
@@ -69,7 +69,7 @@ class RoleAccessFeatureTest extends TestCase
         $normalUser = User::factory()->create();
 
         $this->actingAs($normalUser)
-            ->get(route('backend.dashboard'))
+            ->get(route('admin.dashboard'))
             ->assertRedirect(route('home'));
     }
 

@@ -61,7 +61,7 @@ class Form extends Component
         }
 
         session()->flash('success', __('backend_common_success_message'));
-        $this->redirectRoute('backend.categories.index');
+        $this->redirectRoute('admin.categories.index');
     }
 
     private function propagateAttributesToSubcategories(Category $category, array $attributes): void

@@ -36,7 +36,7 @@ class CartTest extends TestCase
         $fillable = $cart->getFillable();
 
         $this->assertContains('user_id', $fillable);
-        $this->assertContains('product_id', $fillable);
-        $this->assertContains('quantity', $fillable);
+        $this->assertContains('guest_token', $fillable);
+        $this->assertContains('status', $fillable);
     }
 }

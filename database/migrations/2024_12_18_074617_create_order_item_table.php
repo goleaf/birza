@@ -19,6 +19,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total_price', 10, 2);
+            $table->string('product_title_snapshot');
+            $table->decimal('product_price_snapshot', 10, 2);
+            $table->string('seller_name_snapshot')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

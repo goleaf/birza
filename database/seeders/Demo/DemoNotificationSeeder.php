@@ -3,6 +3,7 @@
 namespace Database\Seeders\Demo;
 
 use App\Models\Order;
+use App\Models\Conversation;
 use App\Models\Product;
 use App\Models\ProductReport;
 use App\Models\Users\Admin;
@@ -31,10 +32,12 @@ class DemoNotificationSeeder extends Seeder
 
         if ($buyer instanceof Buyer) {
             $this->seedBuyerNotifications($buyer);
+            $this->seedBuyerMessageNotification($buyer);
         }
 
         if ($seller instanceof Seller) {
             $this->seedSellerNotifications($seller);
+            $this->seedSellerMessageNotification($seller);
         }
 
         if ($sellerOne instanceof Seller) {
@@ -152,6 +155,78 @@ class DemoNotificationSeeder extends Seeder
                 read: true,
             );
         }
+    }
+
+    private function seedBuyerMessageNotification(Buyer $buyer): void
+    {
+        $conversation = Conversation::query()
+            ->forBuyer($buyer)
+            ->unreadFor($buyer)
+            ->with(['latestMessage.senderSeller'])
+            ->latestActivity()
+            ->first();
+
+        if (! $conversation instanceof Conversation || ! $conversation->latestMessage) {
+            return;
+        }
+
+        $message = $conversation->latestMessage;
+
+        $this->notification(
+            notifiable: $buyer,
+            type: 'marketplace.message.new',
+            data: [
+                'title_key' => 'notifications.messages.new.title',
+                'message_key' => 'notifications.messages.new.message',
+                'title_params' => ['sender' => $message->senderLabel()],
+                'message_params' => [
+                    'sender' => $message->senderLabel(),
+                    'preview' => $message->preview(),
+                ],
+                'related_type' => 'conversation',
+                'related_id' => $conversation->id,
+                'url' => route('buyer.messages.show', $conversation, false),
+                'status' => $conversation->status->value,
+                'icon' => 'chat-bubble-left-right',
+            ],
+            daysAgo: 1,
+        );
+    }
+
+    private function seedSellerMessageNotification(Seller $seller): void
+    {
+        $conversation = Conversation::query()
+            ->forSeller($seller)
+            ->unreadFor($seller)
+            ->with(['latestMessage.senderBuyer'])
+            ->latestActivity()
+            ->first();
+
+        if (! $conversation instanceof Conversation || ! $conversation->latestMessage) {
+            return;
+        }
+
+        $message = $conversation->latestMessage;
+
+        $this->notification(
+            notifiable: $seller,
+            type: 'marketplace.message.new',
+            data: [
+                'title_key' => 'notifications.messages.new.title',
+                'message_key' => 'notifications.messages.new.message',
+                'title_params' => ['sender' => $message->senderLabel()],
+                'message_params' => [
+                    'sender' => $message->senderLabel(),
+                    'preview' => $message->preview(),
+                ],
+                'related_type' => 'conversation',
+                'related_id' => $conversation->id,
+                'url' => route('seller.messages.show', $conversation, false),
+                'status' => $conversation->status->value,
+                'icon' => 'chat-bubble-left-right',
+            ],
+            daysAgo: 1,
+        );
     }
 
     private function seedRejectedProductNotification(Seller $seller): void

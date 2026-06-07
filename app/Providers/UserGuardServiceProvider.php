@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\MarketplaceRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -17,8 +18,8 @@ class UserGuardServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $guard = match (true) {
-                Auth::guard('buyer')->check() => 'buyer',
-                Auth::guard('seller')->check() => 'seller',
+                Auth::guard(MarketplaceRole::Buyer->guard())->check() => MarketplaceRole::Buyer->value,
+                Auth::guard(MarketplaceRole::Seller->guard())->check() => MarketplaceRole::Seller->value,
                 default => null,
             };
 

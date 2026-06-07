@@ -11,7 +11,7 @@ class AdminLandingController extends Controller
     public function __invoke(): RedirectResponse
     {
         return Auth::guard('admin')->check()
-            ? redirect()->route('backend.dashboard')
-            : redirect()->route('backend.login');
+            ? redirect()->route('admin.dashboard')
+            : redirect()->route('admin.login');
     }
 }

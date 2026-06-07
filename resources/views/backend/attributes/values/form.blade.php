@@ -4,15 +4,15 @@
     <x-backend.breadcrumbs
         :items="$isEditing
             ? [
-                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => __('navigation_attributes'), 'link' => route('admin.attributes.index')],
                 ['label' => $attribute->getTranslation('name', app()->getLocale())],
-                ['label' => __('common_values'), 'link' => route('backend.attributes.values.index', $attribute)],
+                ['label' => __('common_values'), 'link' => route('admin.attributes.values.index', $attribute)],
                 ['label' => $attributeValue?->getTranslation('value', app()->getLocale()) ?? __('common_edit')],
             ]
             : [
-                ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+                ['label' => __('navigation_attributes'), 'link' => route('admin.attributes.index')],
                 ['label' => $attribute->getTranslation('name', app()->getLocale())],
-                ['label' => __('common_values'), 'link' => route('backend.attributes.values.index', $attribute)],
+                ['label' => __('common_values'), 'link' => route('admin.attributes.values.index', $attribute)],
                 ['label' => __('common_create')],
             ]"
     />
@@ -45,7 +45,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('backend_common_cancel')"
-                    :link="route('backend.attributes.values.index', $attribute)"
+                    :link="route('admin.attributes.values.index', $attribute)"
                 />
                 <x-mary-button
                     :label="$isEditing ? __('backend_common_update') : __('backend_common_create')"

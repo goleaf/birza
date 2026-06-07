@@ -19,7 +19,7 @@ class OrderControllerTest extends TestCase
 
     public function test_order_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.orders.index'));
+        $response = $this->get(route('admin.orders.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -30,7 +30,7 @@ class OrderControllerTest extends TestCase
         Order::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.orders.index'));
+            ->get(route('admin.orders.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(OrderIndex::class)
@@ -63,7 +63,7 @@ class OrderControllerTest extends TestCase
         $product->delete();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.orders.show', $order));
+            ->get(route('admin.orders.show', $order));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(OrderShow::class)

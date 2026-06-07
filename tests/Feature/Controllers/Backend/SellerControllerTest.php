@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Backend;
 
+use App\Enums\OrderPaymentStatus;
 use App\Livewire\Backend\Sellers\Form as SellerForm;
 use App\Livewire\Backend\Sellers\Index as SellerIndex;
 use App\Livewire\Backend\Sellers\Orders as SellerOrdersPage;
@@ -22,7 +23,7 @@ class SellerControllerTest extends TestCase
 
     public function test_seller_index_requires_authentication(): void
     {
-        $response = $this->get(route('backend.sellers.index'));
+        $response = $this->get(route('admin.sellers.index'));
 
         $response->assertRedirect(route('home'));
     }
@@ -33,7 +34,7 @@ class SellerControllerTest extends TestCase
         Seller::factory()->count(5)->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.index'));
+            ->get(route('admin.sellers.index'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SellerIndex::class)
@@ -51,7 +52,7 @@ class SellerControllerTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.create'));
+            ->get(route('admin.sellers.create'));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SellerForm::class)
@@ -68,7 +69,7 @@ class SellerControllerTest extends TestCase
         $seller = Seller::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.edit', $seller));
+            ->get(route('admin.sellers.edit', $seller));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SellerForm::class)
@@ -100,7 +101,7 @@ class SellerControllerTest extends TestCase
             ->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.show', $seller));
+            ->get(route('admin.sellers.show', $seller));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SellerShow::class)
@@ -122,7 +123,7 @@ class SellerControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.show', $seller));
+            ->get(route('admin.sellers.show', $seller));
 
         $response->assertStatus(200)
             ->assertSee(__('backend_dashboard_title'))
@@ -165,7 +166,7 @@ class SellerControllerTest extends TestCase
 
         try {
             $response = $this->actingAs($admin, 'admin')
-                ->get(route('backend.sellers.show', $seller));
+                ->get(route('admin.sellers.show', $seller));
 
             $orderItemEagerLoads = collect(DB::getQueryLog())
                 ->pluck('query')
@@ -197,7 +198,7 @@ class SellerControllerTest extends TestCase
             'name' => 'Fresh Apples',
         ]);
         $order = Order::factory()->for($buyer, 'buyer')->create([
-            'payment_status' => 'paid',
+            'payment_status' => OrderPaymentStatus::Paid,
         ]);
 
         OrderItem::factory()
@@ -210,7 +211,7 @@ class SellerControllerTest extends TestCase
             ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->get(route('backend.sellers.orders', $seller));
+            ->get(route('admin.sellers.orders', $seller));
 
         $response->assertStatus(200)
             ->assertSeeLivewire(SellerOrdersPage::class)

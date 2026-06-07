@@ -1,0 +1,211 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "imk24.lt" [ref=e8] [cursor=pointer]:
+          - /url: https://birza.test/buyer/dashboard
+          - img [ref=e9]
+          - heading "imk24.lt" [level=1] [ref=e11]
+        - generic [ref=e12]:
+          - link "LT" [ref=e13] [cursor=pointer]:
+            - /url: https://birza.test/language/lt
+          - link "EN" [ref=e14] [cursor=pointer]:
+            - /url: https://birza.test/language/en
+      - generic [ref=e16]:
+        - button "Pranešimai" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e22]: "4"
+        - button "Demo Buyer Ltd" [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: Demo Buyer Ltd
+        - navigation [ref=e29]:
+          - link "Krepšelis Krepšelis 6" [ref=e30] [cursor=pointer]:
+            - /url: https://birza.test/buyer/cart
+            - text: Krepšelis
+            - generic "Krepšelis 6" [ref=e31]: "6"
+          - link "Norų sąrašai Norų sąrašai 2" [ref=e32] [cursor=pointer]:
+            - /url: https://birza.test/buyer/wishlists
+            - text: Norų sąrašai
+            - generic "Norų sąrašai 2" [ref=e33]: "2"
+          - link "Titulinis puslapis" [ref=e34] [cursor=pointer]:
+            - /url: https://birza.test/buyer/dashboard
+          - link "Redaguoti profilį" [ref=e35] [cursor=pointer]:
+            - /url: https://birza.test/buyer/profile
+          - button "Logout" [ref=e37] [cursor=pointer]
+  - main [ref=e38]:
+    - generic [ref=e40]:
+      - generic [ref=e42]:
+        - list [ref=e44]:
+          - listitem [ref=e45]:
+            - link "Valdymo skydelis" [ref=e46] [cursor=pointer]:
+              - /url: https://birza.test/buyer/dashboard
+              - img [ref=e47]
+              - generic [ref=e49]: Valdymo skydelis
+          - img [ref=e51]
+          - listitem [ref=e53]:
+            - link "Products" [ref=e54] [cursor=pointer]:
+              - /url: https://birza.test/buyer/products
+              - generic [ref=e55]: Products
+          - img [ref=e57]
+          - listitem [ref=e59]:
+            - link "Šviežia mėsa" [ref=e60] [cursor=pointer]:
+              - /url: https://birza.test/buyer/products?category=1
+              - generic [ref=e61]: Šviežia mėsa
+          - img [ref=e63]
+          - listitem [ref=e65]:
+            - link "Kiauliena" [ref=e66] [cursor=pointer]:
+              - /url: https://birza.test/buyer/products?category=2
+              - generic [ref=e67]: Kiauliena
+          - img [ref=e69]
+          - listitem [ref=e71]:
+            - generic [ref=e73]: Seed product 2-01
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e78]: Seed product 2-01
+              - generic [ref=e79]: "Pardavėjas: Seller1 test company"
+            - generic [ref=e80]:
+              - link "Grįžti į produktų sąrašą" [ref=e81] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products
+                - generic [ref=e82]: Grįžti į produktų sąrašą
+              - link "Palyginimas (0/4)" [ref=e83] [cursor=pointer]:
+                - /url: https://birza.test/buyer/compare
+                - img [ref=e85]
+                - generic [ref=e87]: Palyginimas (0/4)
+          - separator [ref=e88]
+        - generic [ref=e89]:
+          - generic [ref=e91]: Nėra nuotraukos
+          - generic [ref=e92]:
+            - paragraph [ref=e93]:
+              - strong [ref=e94]: "Temperatūros režimas:"
+              - text: Nuo 2°C Iki 6°C
+            - paragraph [ref=e95]:
+              - strong [ref=e96]: "Tinka vartoti iki:"
+              - text: 2026-07-07
+            - paragraph [ref=e97]:
+              - strong [ref=e98]: "Bendras galiojimo laikas:"
+              - text: "30"
+            - paragraph [ref=e99]:
+              - strong [ref=e100]: "Šalis:"
+              - text: Austrija
+            - paragraph [ref=e101]:
+              - strong [ref=e102]: "Ekologiškas:"
+              - text: Taip
+            - paragraph [ref=e103]:
+              - strong [ref=e104]: "Pardavėjas:"
+            - button "Seller1 test company" [ref=e107] [cursor=pointer]:
+              - generic [ref=e108]: Seller1 test company
+              - img [ref=e109]
+            - paragraph
+            - paragraph [ref=e111]:
+              - strong [ref=e112]: "Likutis:"
+              - text: 22 units_unit_piece
+            - paragraph [ref=e113]:
+              - strong [ref=e114]: "Minimalus užsakymas:"
+              - text: 5.90€ / 6 units_unit_piece
+            - paragraph [ref=e115]:
+              - strong [ref=e116]: "Pakuotės svoris:"
+              - text: 0.500 kg
+            - paragraph [ref=e117]:
+              - strong [ref=e118]: "Pakuotės tipas:"
+              - text: Standard pack 01
+            - strong [ref=e120]: "Atributai:"
+            - paragraph [ref=e121]: Aprašymas
+            - paragraph [ref=e123]: Sultingi apelsinai, kupini vitamino C. Idealūs šviežioms sultims.
+            - paragraph [ref=e124]:
+              - strong [ref=e125]: "Kaina be PVM:"
+              - text: 5.90 € / units_unit_piece
+            - generic [ref=e126]:
+              - button "Palyginti" [ref=e127] [cursor=pointer]:
+                - img [ref=e129]
+                - text: Palyginti
+              - link "Atidaryti palyginimą" [ref=e131] [cursor=pointer]:
+                - /url: https://birza.test/buyer/compare
+                - img [ref=e133]
+                - generic [ref=e135]: Atidaryti palyginimą
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: Išsaugoti
+                - combobox "Išsaugoti" [ref=e140]:
+                  - option "Išsaugoti produktai" [selected]
+              - button "Išsaugoti" [ref=e141] [cursor=pointer]:
+                - img [ref=e143]
+                - text: Išsaugoti
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - heading "Pranešti apie šį produktą" [level=2] [ref=e148]
+                - paragraph [ref=e149]: Naudokite įtartiniems, neteisėtiems, klaidinantiems, dubliuotiems, apgaulingiems, įžeidžiantiems ar taisykles pažeidžiantiems produktams.
+              - button "Pranešti apie produktą" [ref=e150] [cursor=pointer]:
+                - img [ref=e152]
+                - generic [ref=e154]: Pranešti apie produktą
+            - generic [ref=e156]:
+              - spinbutton [ref=e158]: "6"
+              - button "Į krepšelį" [ref=e159] [cursor=pointer]
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - heading "Klausimai ir atsakymai" [level=2] [ref=e163]
+              - paragraph [ref=e164]: Skaitykite viešus pardavėjo atsakymus arba klauskite prieš pirkimą.
+            - generic [ref=e165]: Viešų atsakymų dar nėra
+          - generic [ref=e167]: Atsakytų klausimų dar nėra.
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - generic [ref=e170]: Užduoti klausimą
+              - textbox "Užduoti klausimą" [ref=e171]:
+                - /placeholder: Paklauskite apie pakuotę, kilmę, pristatymo laiką, alergenus ar kitą prekės informaciją.
+            - generic [ref=e172]:
+              - paragraph [ref=e173]: Atsakyti klausimai yra vieši. Atmesti arba paslėpti klausimai nerodomi.
+              - button "Pateikti klausimą" [ref=e174] [cursor=pointer]:
+                - generic [ref=e175]: Pateikti klausimą
+        - link "Grįžti į produktų sąrašą" [ref=e177] [cursor=pointer]:
+          - /url: https://birza.test/buyer/products
+          - generic [ref=e178]: Grįžti į produktų sąrašą
+      - dialog:
+        - generic:
+          - generic:
+            - button:
+              - generic:
+                - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Pranešti apie šį produktą
+            - separator
+          - generic:
+            - generic:
+              - generic:
+                - group "Priežastis *":
+                  - generic: Priežastis *
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                        - combobox:
+                          - option "Pasirinkite priežastį" [selected]
+                          - option "Apgaulė"
+                          - option "Netikras produktas"
+                          - option "Netinkama kaina"
+                          - option "Netinkama kategorija"
+                          - option "Draudžiama prekė"
+                          - option "Įžeidžiantis turinys"
+                          - option "Autorių teisių problema"
+                          - option "Dubliuotas produktas"
+                          - option "Klaidinantis aprašymas"
+                          - option "Kita"
+              - generic:
+                - group "Žinutė":
+                  - generic: Žinutė
+                  - generic:
+                    - generic:
+                      - textbox:
+                        - /placeholder: " "
+                  - generic: Pridėkite kontekstą moderavimo komandai. Neįveskite mokėjimo kortelių duomenų ar paslapčių.
+          - separator
+          - generic:
+            - button "Atšaukti":
+              - generic: Atšaukti
+            - button "Pateikti pranešimą":
+              - generic: Pateikti pranešimą
+        - generic:
+          - button "close"

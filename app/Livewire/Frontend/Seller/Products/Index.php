@@ -2,41 +2,76 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Users\Seller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.frontend.app')]
 class Index extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithWireUi;
+    use WithPagination;
+
+    public int $perPage = 15;
 
     public function softDeleteProduct(int $productId): void
     {
-        $sellerId = Auth::guard('seller')->id();
-
         $product = Product::query()
-            ->where('seller_id', $sellerId)
             ->findOrFail($productId);
+        $this->authorize('delete', $product);
 
-        $product->update(['is_active' => false]);
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($product);
+        $oldImages = $auditRecorder->imagePaths($product);
+
+        $product->forceFill(['is_active' => false])->save();
+        $product->refresh();
+        $auditRecorder->updated(
+            actor: Auth::guard('seller')->user(),
+            product: $product,
+            oldValues: $oldValues,
+            oldImages: $oldImages,
+            source: 'seller_product_index',
+        );
+
+        $deleteOldValues = $auditRecorder->snapshot($product);
         $product->delete();
+        $auditRecorder->deleted(
+            actor: Auth::guard('seller')->user(),
+            product: $product,
+            oldValues: $deleteOldValues,
+            source: 'seller_product_index',
+        );
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }
 
     public function restoreProduct(int $productId): void
     {
-        $sellerId = Auth::guard('seller')->id();
-
         $product = Product::onlyTrashed()
-            ->where('seller_id', $sellerId)
             ->findOrFail($productId);
+        $this->authorize('restore', $product);
+
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($product);
 
         $product->restore();
+        $product->refresh();
+        $auditRecorder->restored(
+            actor: Auth::guard('seller')->user(),
+            product: $product,
+            oldValues: $oldValues,
+            source: 'seller_product_index',
+        );
 
         $this->notifySuccess(__('backend_common_restore_success'));
     }
@@ -69,34 +104,66 @@ class Index extends Component
     {
         $seller = Auth::guard('seller')->user();
 
-        $categories = $this->getCategoriesWithProducts($seller);
+        $categories = $this->sellerCategoryTree($seller);
+        $products = Product::query()
+            ->withTrashed()
+            ->select([
+                'id',
+                'name',
+                'category_id',
+                'seller_id',
+                'price',
+                'unit',
+                'stock',
+                'is_organic',
+                'is_active',
+                'product_image',
+                'deleted_at',
+                'created_at',
+            ])
+            ->where('seller_id', $seller->id)
+            ->with([
+                'primaryImage:id,product_id,disk,path,variants,is_primary,sort_order',
+                'category:id,category_name,parent_category_id',
+            ])
+            ->latest()
+            ->paginate($this->perPage)
+            ->withQueryString();
 
         return view('frontend.seller.products.index', [
             'categories' => $categories,
+            'products' => $products,
         ]);
     }
 
-    private function getCategoriesWithProducts($seller)
+    /**
+     * @return Collection<int, Category>
+     */
+    private function sellerCategoryTree(Seller $seller): Collection
     {
-        return Category::whereHas('sellers', function ($query) use ($seller) {
-            $query->where('seller_id', $seller->id);
-        })
-            ->with(['products' => function ($query) use ($seller) {
-                $query->withTrashed()
-                    ->where('seller_id', $seller->id)
-                    ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order');
-            }])
-            ->whereNull('parent_category_id')
-            ->orWhereHas('subcategories', function ($query) use ($seller) {
-                $query->whereHas('sellers', function ($q) use ($seller) {
-                    $q->where('seller_id', $seller->id);
-                });
+        $sellerCategoryIds = $seller->categories()
+            ->pluck('categories.id')
+            ->map(fn (mixed $categoryId): int => (int) $categoryId);
+
+        return Category::cachedVisibleTree()
+            ->filter(function (Category $category) use ($sellerCategoryIds): bool {
+                return $sellerCategoryIds->contains((int) $category->id)
+                    || $category->subcategories->contains(
+                        fn (Category $subcategory): bool => $sellerCategoryIds->contains((int) $subcategory->id),
+                    );
             })
-            ->with(['subcategories.products' => function ($query) use ($seller) {
-                $query->withTrashed()
-                    ->where('seller_id', $seller->id)
-                    ->with('primaryImage:id,product_id,disk,path,variants,is_primary,sort_order');
-            }])
-            ->get();
+            ->map(function (Category $category) use ($sellerCategoryIds): Category {
+                if (! $sellerCategoryIds->contains((int) $category->id)) {
+                    $category->setRelation(
+                        'subcategories',
+                        $category->subcategories
+                            ->filter(fn (Category $subcategory): bool => $sellerCategoryIds->contains((int) $subcategory->id))
+                            ->values(),
+                    );
+                }
+
+                return $category;
+            })
+            ->values();
     }
 }

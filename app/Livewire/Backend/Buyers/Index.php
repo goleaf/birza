@@ -5,6 +5,9 @@ namespace App\Livewire\Backend\Buyers;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Livewire\Concerns\InteractsWithWireUi;
 use App\Models\Users\Buyer;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -39,6 +42,8 @@ class Index extends Component
 
     public int $perPage = 15;
 
+    public ?string $auditReason = null;
+
     /**
      * @var array{column: string, direction: string}
      */
@@ -55,12 +60,33 @@ class Index extends Component
 
     public function confirmDeleteBuyer(int $buyerId): void
     {
+        $this->auditReason = null;
         $this->confirmDelete(method: 'deleteBuyer', params: $buyerId);
     }
 
-    public function deleteBuyer(int $buyerId): void
+    public function deleteBuyer(int $buyerId, AuditLogService $auditLogService): void
     {
-        Buyer::query()->findOrFail($buyerId)->delete();
+        $this->validateAuditReason();
+
+        DB::transaction(function () use ($auditLogService, $buyerId): void {
+            $buyer = Buyer::query()->findOrFail($buyerId);
+            $oldValues = $auditLogService->snapshot($buyer, $this->auditedFields());
+
+            $buyer->delete();
+
+            $auditLogService->log(
+                actor: Auth::guard('admin')->user(),
+                action: 'buyer.deleted',
+                auditable: $buyer,
+                oldValues: $oldValues,
+                newValues: [
+                    'deleted_at' => $buyer->deleted_at?->toISOString(),
+                    'is_active' => $buyer->is_active,
+                ],
+                metadata: ['source' => 'admin_buyer_index'],
+                reason: $this->auditReason,
+            );
+        });
 
         $this->notifySuccess(__('backend_common_delete_success'));
     }
@@ -152,6 +178,36 @@ class Index extends Component
             'buyers' => $query->paginate($this->perPage)->withQueryString(),
             'headers' => $this->headers(),
             'verificationOptions' => $this->verificationOptions(),
+        ]);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function auditedFields(): array
+    {
+        return [
+            'name',
+            'email',
+            'company_name',
+            'company_code',
+            'vat_code',
+            'address',
+            'phone',
+            'bank_account',
+            'credit_balance',
+            'is_verified',
+            'is_active',
+            'deleted_at',
+        ];
+    }
+
+    private function validateAuditReason(): void
+    {
+        $this->validate([
+            'auditReason' => ['required', 'string', 'max:500'],
+        ], [], [
+            'auditReason' => __('audit_logs.reason'),
         ]);
     }
 }

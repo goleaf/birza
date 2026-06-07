@@ -30,6 +30,13 @@
                     secondary
                     :label="__('common_back_to_products')"
                 />
+                <x-ui.button
+                    :href="route('buyer.compare.index')"
+                    secondary
+                    outline
+                    icon="scale"
+                    :label="__('compare.actions.view_list', ['count' => $comparisonCount, 'limit' => $comparisonLimit])"
+                />
             </x-slot:actions>
         </x-ui.header>
 
@@ -150,10 +157,6 @@
                                         <dt class="font-medium text-gray-500">{{ __('auth_name') }}</dt>
                                         <dd class="text-right">{{ $product->seller->name }}</dd>
                                     </div>
-                                    <div class="flex items-start justify-between gap-3">
-                                        <dt class="font-medium text-gray-500">{{ __('auth_email') }}</dt>
-                                        <dd class="text-right break-all">{{ $product->seller->email }}</dd>
-                                    </div>
                                 </dl>
                             </div>
                         </x-slot:content>
@@ -266,7 +269,136 @@
                 </p>
                 <!-- end price -->
 
-                <!-- start add to cart form -->
+                <!-- start compare actions -->
+                <div class="mb-6 flex flex-col gap-3 sm:flex-row">
+                    <x-ui.button
+                        type="button"
+                        secondary
+                        outline
+                        icon="scale"
+                        spinner="addToCompare"
+                        wire:click="addToCompare"
+                        wire:loading.attr="disabled"
+                        :disabled="$isCompared"
+                    >
+                        {{ $isCompared ? __('compare.actions.in_list') : __('compare.actions.add') }}
+                    </x-ui.button>
+                    <x-ui.button
+                        :href="route('buyer.compare.index')"
+                        flat
+                        icon="arrows-right-left"
+                        :label="__('compare.actions.open')"
+                    />
+	                </div>
+	                <!-- end compare actions -->
+
+	                <!-- start wishlist actions -->
+	                <div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+	                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+	                        <div class="flex-1">
+	                            <label for="wishlist_id" class="mb-1 block text-sm font-medium text-gray-700">
+	                                {{ __('wishlists.actions.add_product') }}
+	                            </label>
+	                            <select
+	                                id="wishlist_id"
+	                                wire:model="wishlistId"
+	                                class="w-full rounded-lg border-gray-300 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+	                            >
+	                                @forelse ($buyerWishlists as $wishlistOption)
+	                                    <option value="{{ $wishlistOption->id }}">
+	                                        {{ $wishlistOption->name }}
+	                                    </option>
+	                                @empty
+	                                    <option value="">{{ __('wishlists.default_name') }}</option>
+	                                @endforelse
+	                            </select>
+	                        </div>
+
+	                        @if ($wishlistBuyer)
+	                            <x-ui.button
+	                                type="button"
+	                                primary
+	                                icon="heart"
+	                                spinner="addToWishlist"
+	                                wire:click="addToWishlist"
+	                                wire:loading.attr="disabled"
+	                                :disabled="$isWishlisted"
+	                            >
+	                                {{ $isWishlisted ? __('wishlists.actions.saved') : __('wishlists.actions.add_product') }}
+	                            </x-ui.button>
+	                        @else
+	                            <x-ui.button
+	                                href="{{ route('buyer.login') }}"
+	                                primary
+	                                icon="arrow-right-on-rectangle"
+	                                :label="__('wishlists.actions.login_to_save')"
+	                            />
+	                        @endif
+	                    </div>
+                </div>
+                <!-- end wishlist actions -->
+
+                <!-- start seller contact action -->
+                <div class="mb-6 rounded-lg border border-blue-100 bg-blue-50 p-4">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 class="font-semibold text-blue-950">{{ __('messages.contact_seller') }}</h2>
+                            <p class="mt-1 text-sm text-blue-800">{{ __('messages.contact_seller_help') }}</p>
+                        </div>
+
+                        @if ($isBuyerAuthenticated)
+                            <x-ui.button
+                                type="button"
+                                primary
+                                icon="chat-bubble-left-right"
+                                spinner="contactSeller"
+                                wire:click="contactSeller"
+                                wire:loading.attr="disabled"
+                                :label="__('messages.ask_seller')"
+                            />
+                        @else
+                            <x-ui.button
+                                :href="route('buyer.login')"
+                                primary
+                                icon="arrow-right-on-rectangle"
+                                :label="__('messages.login_to_contact_seller')"
+                            />
+                        @endif
+                    </div>
+                </div>
+                <!-- end seller contact action -->
+
+                <!-- start report action -->
+                <div class="mb-6 rounded-lg border border-red-100 bg-red-50 p-4">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 class="font-semibold text-red-950">{{ __('reports.product.title') }}</h2>
+                            <p class="mt-1 text-sm text-red-800">{{ __('reports.product.help') }}</p>
+                        </div>
+
+                        @if ($isBuyerAuthenticated || $guestReportsEnabled)
+                            <x-ui.button
+                                type="button"
+                                warning
+                                outline
+                                icon="flag"
+                                wire:click="openReportModal"
+                                :label="__('reports.product.button')"
+                            />
+                        @else
+                            <x-ui.button
+                                :href="route('buyer.login')"
+                                warning
+                                outline
+                                icon="arrow-right-on-rectangle"
+                                :label="__('reports.product.login_to_report')"
+                            />
+                        @endif
+                    </div>
+                </div>
+                <!-- end report action -->
+
+	                <!-- start add to cart form -->
                 <form wire:submit.prevent="addToCart" class="mt-6">
                     <div class="flex items-center space-x-4">
                         <div class="flex-1">
@@ -283,13 +415,13 @@
                             positive
                             spinner="addToCart"
                             wire:loading.attr="disabled"
-                            :label="$product->stock <= 0 ? __('common_out_of_stock') : __('common_add_to_cart')"
-                            @disabled($product->stock <= 0)
-                        />
+                            :disabled="$product->stock <= 0"
+                        >
+                            {{ $product->stock <= 0 ? __('common_out_of_stock') : __('common_add_to_cart') }}
+                        </x-ui.button>
                     </div>
                 </form>
                 <!-- end add to cart form -->
-
 
                 @if ($product->stock <= 0)
                     <div class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-4">
@@ -349,6 +481,34 @@
         </div>
         <!-- end product grid -->
 
+        @if ($relatedBundles->isNotEmpty())
+            <div class="rounded-lg border border-blue-100 bg-blue-50/40 p-4 sm:p-6">
+                <h2 class="mb-4 text-xl font-bold text-gray-900">{{ __('bundles.related_title') }}</h2>
+                <div class="grid gap-4 md:grid-cols-3">
+                    @foreach ($relatedBundles as $bundle)
+                        <a
+                            href="{{ route('buyer.bundles.show', $bundle) }}"
+                            class="rounded-lg border bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md"
+                        >
+                            <img
+                                src="{{ $bundle->imageUrl() }}"
+                                alt="{{ $bundle->name }}"
+                                class="mb-3 h-32 w-full rounded-lg object-cover"
+                                loading="lazy"
+                            >
+                            <div class="font-semibold text-gray-900">{{ $bundle->name }}</div>
+                            <div class="mt-1 text-sm text-gray-600">
+                                {{ __('bundles.included_products_count', ['count' => $bundle->items->count()]) }}
+                            </div>
+                            <div class="mt-2 text-lg font-bold text-green-700">
+                                {{ number_format($bundle->finalPrice(), 2) }} €
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <livewire:frontend.product-questions.panel :product="$product" />
 
         <!-- start back button -->
@@ -362,5 +522,64 @@
         <!-- end back button -->
     </x-ui.card>
     <!-- end main container -->
+
+    <x-mary-modal
+        wire:model="reportModal"
+        :title="__('reports.product.title')"
+        box-class="max-w-lg"
+        separator
+    >
+        <div class="space-y-4">
+            @error('product')
+                <x-mary-alert
+                    :title="$message"
+                    icon="o-exclamation-triangle"
+                    class="alert-error alert-soft"
+                />
+            @enderror
+
+            <x-mary-select
+                :label="__('reports.product.reason')"
+                wire:model="reportReason"
+                :options="$reportReasonOptions"
+                option-value="id"
+                option-label="name"
+                icon="o-flag"
+                :placeholder="__('reports.product.reason_placeholder')"
+                required
+            />
+
+            @if (! $isBuyerAuthenticated)
+                <x-mary-input
+                    :label="__('reports.product.reporter_email')"
+                    type="email"
+                    wire:model="reporterEmail"
+                    icon="o-envelope"
+                    :placeholder="__('reports.product.reporter_email_placeholder')"
+                    required
+                />
+            @endif
+
+            <x-mary-textarea
+                :label="__('reports.product.message')"
+                :hint="__('reports.product.message_hint')"
+                wire:model="reportMessage"
+                rows="4"
+            />
+        </div>
+
+        <x-slot:actions>
+            <x-mary-button
+                :label="__('common_cancel')"
+                @click="$wire.reportModal = false"
+            />
+            <x-mary-button
+                :label="__('reports.product.submit')"
+                wire:click="submitReport"
+                spinner="submitReport"
+                class="btn-warning"
+            />
+        </x-slot:actions>
+    </x-mary-modal>
 </div>
 <!-- end section -->

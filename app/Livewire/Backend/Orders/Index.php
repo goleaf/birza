@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Backend\Orders;
 
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
 use App\Livewire\Concerns\InteractsWithMaryTableSorting;
 use App\Models\Order;
 use Livewire\Attributes\Layout;
@@ -77,37 +79,31 @@ class Index extends Component
             ['key' => 'id', 'label' => __('orders_table_order_id'), 'class' => 'w-24'],
             ['key' => 'created_at', 'label' => __('orders_table_date')],
             ['key' => 'buyer', 'label' => __('buyer_buyer'), 'sortable' => false],
-            ['key' => 'payment_status', 'label' => __('orders_status_3'), 'sortable' => false],
+            ['key' => 'status', 'label' => __('orders.status.label'), 'sortable' => false],
             ['key' => 'order_total', 'label' => __('orders_table_amount')],
         ];
     }
 
     public function statusOptions(): array
     {
-        return collect(Order::STATUS)
-            ->map(fn (string $status) => [
-                'id' => $status,
-                'name' => __('orders_status_3_'.strtolower($status)),
-            ])
-            ->values()
-            ->all();
+        return OrderStatus::options();
     }
 
     public function render()
     {
-        $query = Order::withFullDetails();
+        $query = Order::query()
+            ->summaryColumns()
+            ->with('buyer:id,name,email');
 
-        if ($this->statusFilter !== null && $this->statusFilter !== '') {
-            $query->where('payment_status', $this->statusFilter);
+        $statusFilter = $this->statusFilter !== null && $this->statusFilter !== ''
+            ? OrderStatus::tryFrom($this->statusFilter)
+            : null;
+
+        if ($statusFilter !== null) {
+            $query->where('status', $statusFilter->value);
         }
 
-        if ($this->dateFrom !== null && $this->dateFrom !== '') {
-            $query->whereDate('created_at', '>=', $this->dateFrom);
-        }
-
-        if ($this->dateTo !== null && $this->dateTo !== '') {
-            $query->whereDate('created_at', '<=', $this->dateTo);
-        }
+        $query->placedBetween($this->dateFrom, $this->dateTo);
 
         $orders = $query
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
@@ -119,9 +115,9 @@ class Index extends Component
             'headers' => $this->headers(),
             'statusOptions' => $this->statusOptions(),
             'totalOrders' => Order::count(),
-            'pendingOrders' => Order::where('payment_status', Order::STATUS['PENDING'])->count(),
-            'averageOrderValue' => Order::where('payment_status', Order::STATUS['PAID'])->avg('order_total') ?? 0,
-            'totalRevenue' => Order::where('payment_status', Order::STATUS['PAID'])->sum('order_total') ?? 0,
+            'pendingOrders' => Order::pending()->count(),
+            'averageOrderValue' => Order::where('payment_status', OrderPaymentStatus::Paid->value)->avg('order_total') ?? 0,
+            'totalRevenue' => Order::where('payment_status', OrderPaymentStatus::Paid->value)->sum('order_total') ?? 0,
         ]);
     }
 }

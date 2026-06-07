@@ -1,0 +1,218 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e7]:
+      - link "imk24.lt" [ref=e8] [cursor=pointer]:
+        - /url: https://birza.test
+        - img [ref=e9]
+        - heading "imk24.lt" [level=1] [ref=e11]
+      - generic [ref=e12]:
+        - link "LT" [ref=e13] [cursor=pointer]:
+          - /url: https://birza.test/language/lt
+        - link "EN" [ref=e14] [cursor=pointer]:
+          - /url: https://birza.test/language/en
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e20]:
+        - img [ref=e21]
+        - generic [ref=e23]: Prekių nebeturime
+      - generic [ref=e24]:
+        - generic [ref=e26]:
+          - list [ref=e28]:
+            - listitem [ref=e29]:
+              - link "Valdymo skydelis" [ref=e30] [cursor=pointer]:
+                - /url: https://birza.test/buyer/dashboard
+                - img [ref=e31]
+                - generic [ref=e33]: Valdymo skydelis
+            - img [ref=e35]
+            - listitem [ref=e37]:
+              - link "Products" [ref=e38] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products
+                - generic [ref=e39]: Products
+            - img [ref=e41]
+            - listitem [ref=e43]:
+              - link "Šviežia mėsa" [ref=e44] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?category=1
+                - generic [ref=e45]: Šviežia mėsa
+            - img [ref=e47]
+            - listitem [ref=e49]:
+              - link "Kiauliena" [ref=e50] [cursor=pointer]:
+                - /url: https://birza.test/buyer/products?category=2
+                - generic [ref=e51]: Kiauliena
+            - img [ref=e53]
+            - listitem [ref=e55]:
+              - generic [ref=e57]: Demo Out Of Stock Milk
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e62]: Demo Out Of Stock Milk
+                - generic [ref=e63]: "Pardavėjas: Demo Seller One"
+              - generic [ref=e64]:
+                - link "Grįžti į produktų sąrašą" [ref=e65] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/products
+                  - generic [ref=e66]: Grįžti į produktų sąrašą
+                - link "Palyginimas (0/4)" [ref=e67] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/compare
+                  - img [ref=e69]
+                  - generic [ref=e71]: Palyginimas (0/4)
+            - separator [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - img "Demo Out Of Stock Milk 1" [ref=e75]
+              - generic [ref=e76]:
+                - generic [ref=e77]: Produkto nuotraukos
+                - link [ref=e80] [cursor=pointer]:
+                  - /url: https://birza.test/storage/images/products/1756/demo-out-of-stock-milk-01/thumb.svg
+                  - img [ref=e81]
+            - generic [ref=e82]:
+              - paragraph [ref=e83]:
+                - strong [ref=e84]: "Temperatūros režimas:"
+                - text: Nuo 2°C Iki 6°C
+              - paragraph [ref=e85]:
+                - strong [ref=e86]: "Tinka vartoti iki:"
+                - text: 2026-07-07
+              - paragraph [ref=e87]:
+                - strong [ref=e88]: "Bendras galiojimo laikas:"
+                - text: "30"
+              - paragraph [ref=e89]:
+                - strong [ref=e90]: "Šalis:"
+                - text: Lietuva
+              - paragraph [ref=e91]:
+                - strong [ref=e92]: "Ekologiškas:"
+                - text: Taip
+              - paragraph [ref=e93]:
+                - strong [ref=e94]: "Pardavėjas:"
+              - button "Demo Seller One" [ref=e97] [cursor=pointer]:
+                - generic [ref=e98]: Demo Seller One
+                - img [ref=e99]
+              - paragraph
+              - paragraph [ref=e101]:
+                - strong [ref=e102]: "Likutis:"
+                - text: 0 units_unit_kg
+              - paragraph [ref=e103]:
+                - strong [ref=e104]: "Minimalus užsakymas:"
+                - text: 7.00€ / 1 units_unit_kg
+              - paragraph [ref=e105]:
+                - strong [ref=e106]: "Pakuotės svoris:"
+                - text: 1.000 kg
+              - paragraph [ref=e107]:
+                - strong [ref=e108]: "Pakuotės tipas:"
+                - text: box
+              - strong [ref=e110]: "Atributai:"
+              - paragraph [ref=e111]: Aprašymas
+              - paragraph [ref=e113]: Demo Out Of Stock Milk
+              - paragraph [ref=e114]:
+                - strong [ref=e115]: "Kaina be PVM:"
+                - text: 7.00 € / units_unit_kg
+              - link "Atidaryti palyginimą" [ref=e118] [cursor=pointer]:
+                - /url: https://birza.test/buyer/compare
+                - img [ref=e120]
+                - generic [ref=e122]: Atidaryti palyginimą
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - generic [ref=e126]: Išsaugoti
+                  - combobox "Išsaugoti" [ref=e127]:
+                    - option "Išsaugoti produktai" [selected]
+                - link "Prisijunkite išsaugoti" [ref=e128] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/login
+                  - img [ref=e130]
+                  - generic [ref=e132]: Prisijunkite išsaugoti
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - heading "Pranešti apie šį produktą" [level=2] [ref=e136]
+                  - paragraph [ref=e137]: Naudokite įtartiniems, neteisėtiems, klaidinantiems, dubliuotiems, apgaulingiems, įžeidžiantiems ar taisykles pažeidžiantiems produktams.
+                - button "Pranešti apie produktą" [ref=e138] [cursor=pointer]:
+                  - img [ref=e140]
+                  - generic [ref=e142]: Pranešti apie produktą
+              - spinbutton [disabled] [ref=e146]: "1"
+              - generic [ref=e148]:
+                - generic [ref=e149]:
+                  - heading "Pranešimai apie grįžusį likutį" [level=2] [ref=e150]
+                  - paragraph [ref=e151]: Užsiprenumeruokite ir pranešime, kai ši prekė vėl bus pasiekiama.
+                - link "Prisijunkite pranešimui gauti" [ref=e153] [cursor=pointer]:
+                  - /url: https://birza.test/buyer/login
+                  - img [ref=e155]
+                  - generic [ref=e157]: Prisijunkite pranešimui gauti
+          - generic [ref=e158]:
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - heading "Klausimai ir atsakymai" [level=2] [ref=e161]
+                - paragraph [ref=e162]: Skaitykite viešus pardavėjo atsakymus arba klauskite prieš pirkimą.
+              - generic [ref=e163]: Viešų atsakymų dar nėra
+            - generic [ref=e165]: Atsakytų klausimų dar nėra.
+            - generic [ref=e166]:
+              - generic [ref=e167]:
+                - generic [ref=e168]: Užduoti klausimą
+                - textbox "Užduoti klausimą" [ref=e169]:
+                  - /placeholder: Paklauskite apie pakuotę, kilmę, pristatymo laiką, alergenus ar kitą prekės informaciją.
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - generic [ref=e172]: Jūsų vardas
+                  - textbox "Jūsų vardas" [ref=e173]
+                - generic [ref=e174]:
+                  - generic [ref=e175]: El. paštas atsakymo pranešimui, neprivaloma
+                  - textbox "El. paštas atsakymo pranešimui, neprivaloma" [ref=e176]
+              - generic [ref=e177]:
+                - paragraph [ref=e178]: Atsakyti klausimai yra vieši. Atmesti arba paslėpti klausimai nerodomi.
+                - button "Pateikti klausimą" [ref=e179] [cursor=pointer]:
+                  - generic [ref=e180]: Pateikti klausimą
+          - link "Grįžti į produktų sąrašą" [ref=e182] [cursor=pointer]:
+            - /url: https://birza.test/buyer/products
+            - generic [ref=e183]: Grįžti į produktų sąrašą
+        - dialog:
+          - generic:
+            - generic:
+              - button:
+                - generic:
+                  - img
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: Pranešti apie šį produktą
+              - separator
+            - generic:
+              - generic:
+                - generic:
+                  - group "Priežastis *":
+                    - generic: Priežastis *
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - combobox:
+                            - option "Pasirinkite priežastį" [selected]
+                            - option "Apgaulė"
+                            - option "Netikras produktas"
+                            - option "Netinkama kaina"
+                            - option "Netinkama kategorija"
+                            - option "Draudžiama prekė"
+                            - option "Įžeidžiantis turinys"
+                            - option "Autorių teisių problema"
+                            - option "Dubliuotas produktas"
+                            - option "Klaidinantis aprašymas"
+                            - option "Kita"
+                - generic:
+                  - group "Jūsų el. paštas *":
+                    - generic: Jūsų el. paštas *
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - textbox:
+                            - /placeholder: "vardas@example.com "
+                - generic:
+                  - group "Žinutė":
+                    - generic: Žinutė
+                    - generic:
+                      - generic:
+                        - textbox:
+                          - /placeholder: " "
+                    - generic: Pridėkite kontekstą moderavimo komandai. Neįveskite mokėjimo kortelių duomenų ar paslapčių.
+            - separator
+            - generic:
+              - button "Atšaukti":
+                - generic: Atšaukti
+              - button "Pateikti pranešimą":
+                - generic: Pateikti pranešimą
+          - generic:
+            - button "close"

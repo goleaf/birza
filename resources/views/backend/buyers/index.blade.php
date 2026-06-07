@@ -24,7 +24,7 @@
             <x-mary-button
                 :label="__('common_create')"
                 icon="o-plus"
-                :link="route('backend.buyers.create')"
+                :link="route('admin.buyers.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -63,17 +63,17 @@
                 <x-backend.action-dropdown>
                     <x-mary-menu-item
                         :title="__('common_balance')"
-                        :link="route('backend.buyers.credit', $buyer)"
+                        :link="route('admin.buyers.credit', $buyer)"
                         icon="o-banknotes"
                     />
                     <x-mary-menu-item
                         :title="__('common_orders')"
-                        :link="route('backend.buyers.orders', $buyer)"
+                        :link="route('admin.buyers.orders', $buyer)"
                         icon="o-clipboard-document-list"
                     />
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.buyers.edit', $buyer)"
+                        :link="route('admin.buyers.edit', $buyer)"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-separator />
@@ -160,5 +160,6 @@
         :title="$confirmModalTitle"
         :description="$confirmModalDescription"
         :confirm-label="$confirmModalAcceptLabel"
+        reason-model="auditReason"
     />
 </div>

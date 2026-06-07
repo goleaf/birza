@@ -24,7 +24,7 @@
             <x-mary-button
                 :label="__('backend_countries_actions_create')"
                 icon="o-plus"
-                :link="route('backend.countries.create')"
+                :link="route('admin.countries.create')"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -60,7 +60,7 @@
                 <x-backend.action-dropdown menu-class="!w-44">
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.countries.edit', $country)"
+                        :link="route('admin.countries.edit', $country)"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-separator />

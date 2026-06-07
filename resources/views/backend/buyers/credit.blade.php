@@ -12,7 +12,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+            ['label' => __('navigation_buyers'), 'link' => route('admin.buyers.index')],
             ['label' => $buyer->company_name ?: $buyer->name],
             ['label' => __('backend_buyers_credit_manage_credit')],
         ]"
@@ -27,11 +27,11 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.buyers.index')"
+                :link="route('admin.buyers.index')"
             />
             <x-mary-button
                 :label="__('backend_buyers_credit_view_history')"
-                :link="route('backend.buyers.credit_history', $buyer)"
+                :link="route('admin.buyers.credit_history', $buyer)"
                 icon="o-clock"
                 class="btn-primary"
             />

@@ -1,0 +1,1125 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "Stack" [ref=e9] [cursor=pointer]:
+              - /url: "#stack"
+              - button "Stack" [ref=e10]:
+                - img [ref=e12]
+                - text: Stack
+          - listitem [ref=e14]:
+            - link "Context" [ref=e15] [cursor=pointer]:
+              - /url: "#context"
+              - button "Context" [ref=e16]:
+                - img [ref=e18]
+                - text: Context
+          - listitem [ref=e20]:
+            - link "Debug" [ref=e21] [cursor=pointer]:
+              - /url: "#debug"
+              - button "Debug" [ref=e22]:
+                - img [ref=e24]
+                - text: Debug
+          - listitem [ref=e26]:
+            - link "Flare" [ref=e27] [cursor=pointer]:
+              - /url: https://flareapp.io/?utm_campaign=ignition&utm_source=ignition
+              - button "Flare" [ref=e28]:
+                - img [ref=e30]
+                - text: Flare
+        - list [ref=e35]:
+          - listitem [ref=e36]:
+            - link "Share" [ref=e37] [cursor=pointer]:
+              - /url: "#share"
+              - button "Share" [ref=e38]:
+                - img [ref=e40]
+                - text: Share
+            - generic:
+              - generic:
+                - generic:
+                  - heading "Share with Flare" [level=4]
+                  - link "Docs":
+                    - /url: https://flareapp.io/docs/ignition/introducing-ignition/sharing-errors?utm_campaign=ignition&utm_source=ignition
+                    - text: Docs
+                    - img
+                - list:
+                  - listitem:
+                    - generic:
+                      - checkbox "Stack" [checked]
+                      - generic: Stack
+                  - listitem:
+                    - generic:
+                      - checkbox "Context" [checked]
+                      - generic: Context
+                  - listitem:
+                    - generic:
+                      - checkbox "Debug" [checked]
+                      - generic: Debug
+                - generic:
+                  - button "Create Share":
+                    - img
+                    - text: Create Share
+          - listitem [ref=e42]:
+            - link "Docs" [ref=e43] [cursor=pointer]:
+              - /url: https://laravel.com/docs/
+              - button "Docs" [ref=e44]:
+                - img [ref=e46]
+                - text: Docs
+          - listitem [ref=e48]:
+            - link [ref=e49] [cursor=pointer]:
+              - /url: "#settings"
+              - button [ref=e50]:
+                - img [ref=e52]
+            - generic:
+              - generic:
+                - generic:
+                  - heading "Ignition Settings" [level=4]
+                  - link "Docs":
+                    - /url: https://flareapp.io/ignition?utm_campaign=ignition&utm_source=ignition
+                    - text: Docs
+                    - img
+                - generic:
+                  - text: Editor
+                  - generic:
+                    - combobox "Editor":
+                      - option "Clipboard"
+                      - option "Sublime"
+                      - option "TextMate"
+                      - option "Emacs"
+                      - option "MacVim"
+                      - option "PhpStorm" [selected]
+                      - option "PHPStorm Remote"
+                      - option "Idea"
+                      - option "VS Code"
+                      - option "VS Code Insiders"
+                      - option "VS Code Remote"
+                      - option "VS Code Insiders Remote"
+                      - option "VS Codium"
+                      - option "Cursor"
+                      - option "Atom"
+                      - option "Nova"
+                      - option "NetBeans"
+                      - option "Zed"
+                      - option "Windsurf"
+                      - option "Xdebug"
+                    - generic:
+                      - img
+                - generic:
+                  - text: Theme
+                  - button "auto":
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img
+                        - generic:
+                          - generic:
+                            - img
+                        - generic:
+                          - generic:
+                            - img
+                      - generic: auto
+                - generic:
+                  - button "Save settings"
+                - paragraph:
+                  - text: Settings will be saved locally in
+                  - code: ~/.ignition.json
+                  - text: .
+      - link "syntax error, unexpected token \"endif\"" [ref=e56] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e57]: syntax error, unexpected token "endif"
+  - main [ref=e58]:
+    - main [ref=e62]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e68]: ParseError
+          - generic [ref=e69]:
+            - generic [ref=e70]: PHP 8.5.5
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: 12.61.1
+        - generic [ref=e75]: syntax error, unexpected token "endif"
+    - generic [ref=e78]:
+      - complementary [ref=e79]:
+        - generic [ref=e80]:
+          - button "Expand vendor frames" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - img [ref=e86]
+            - text: Expand vendor frames
+          - list [ref=e89]:
+            - listitem [ref=e90]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: App
+                - generic [ref=e94]: \
+                - generic [ref=e95]: Livewire
+                - generic [ref=e96]: \
+                - generic [ref=e97]: Frontend
+                - generic [ref=e98]: \
+                - generic [ref=e99]: Buyer
+                - generic [ref=e100]: \
+                - generic [ref=e101]: Products
+                - generic [ref=e102]: \
+                - generic [ref=e103]: Index
+                - generic [ref=e104]: ": 332"
+              - generic [ref=e105]: "{closure:Livewire\\Mechanisms\\ExtendBlade\\ExtendedCompilerEngine::evaluatePath():35}"
+            - listitem [ref=e106]
+            - listitem [ref=e107] [cursor=pointer]:
+              - text: 27 vendor frames
+              - img [ref=e108]
+            - listitem [ref=e110] [cursor=pointer]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: App
+                - generic [ref=e114]: \
+                - generic [ref=e115]: Http
+                - generic [ref=e116]: \
+                - generic [ref=e117]: Middleware
+                - generic [ref=e118]: \
+                - generic [ref=e119]: SetLocale
+                - generic [ref=e120]: ": 24"
+              - generic [ref=e121]: handle
+            - listitem [ref=e122] [cursor=pointer]:
+              - text: 44 vendor frames
+              - img [ref=e123]
+            - listitem [ref=e125] [cursor=pointer]:
+              - generic [ref=e127]:
+                - generic [ref=e128]: public
+                - generic [ref=e129]: /
+                - generic [ref=e130]: index
+                - generic [ref=e131]: .php
+                - generic [ref=e132]: ": 51"
+              - generic [ref=e133]: require
+            - listitem [ref=e134] [cursor=pointer]:
+              - generic [ref=e136]:
+                - generic [ref=e137]: /
+                - generic [ref=e138]: Applications
+                - generic [ref=e139]: /
+                - generic [ref=e140]: Herd.app
+                - generic [ref=e141]: /
+                - generic [ref=e142]: Contents
+                - generic [ref=e143]: /
+                - generic [ref=e144]: Resources
+                - generic [ref=e145]: /
+                - generic [ref=e146]: valet
+                - generic [ref=e147]: /
+                - generic [ref=e148]: server
+                - generic [ref=e149]: .php
+                - generic [ref=e150]: ": 167"
+              - generic [ref=e151]: "[top]"
+      - generic [ref=e152]:
+        - 'link "resources / views / frontend / buyer / products / index.blade .php : 332" [ref=e154] [cursor=pointer]':
+          - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=332
+          - generic [ref=e155]:
+            - generic [ref=e156]: resources
+            - generic [ref=e157]: /
+            - generic [ref=e158]: views
+            - generic [ref=e159]: /
+            - generic [ref=e160]: frontend
+            - generic [ref=e161]: /
+            - generic [ref=e162]: buyer
+            - generic [ref=e163]: /
+            - generic [ref=e164]: products
+            - generic [ref=e165]: /
+            - generic [ref=e166]: index.blade
+            - generic [ref=e167]: .php
+            - generic [ref=e168]: ": 332"
+        - main [ref=e169]:
+          - navigation [ref=e170]:
+            - generic [ref=e171]:
+              - paragraph [ref=e172]: "317"
+              - paragraph [ref=e173]: "318"
+              - paragraph [ref=e174]: "319"
+              - paragraph [ref=e175]: "320"
+              - paragraph [ref=e176]: "321"
+              - paragraph [ref=e177]: "322"
+              - paragraph [ref=e178]: "323"
+              - paragraph [ref=e179]: "324"
+              - paragraph [ref=e180]: "325"
+              - paragraph [ref=e181]: "326"
+              - paragraph [ref=e182]: "327"
+              - paragraph [ref=e183]: "328"
+              - paragraph [ref=e184]: "329"
+              - paragraph [ref=e185]: "330"
+              - paragraph [ref=e186]: "331"
+              - paragraph [ref=e187]: "332"
+              - paragraph [ref=e188]: "333"
+              - paragraph [ref=e189]: "334"
+              - paragraph [ref=e190]: "335"
+              - paragraph [ref=e191]: "336"
+              - paragraph [ref=e192]: "337"
+              - paragraph [ref=e193]: "338"
+              - paragraph [ref=e194]: "339"
+              - paragraph [ref=e195]: "340"
+              - paragraph [ref=e196]: "341"
+              - paragraph [ref=e197]: "342"
+              - paragraph [ref=e198]: "343"
+              - paragraph [ref=e199]: "344"
+              - paragraph [ref=e200]: "345"
+              - paragraph [ref=e201]: "346"
+          - code [ref=e204]:
+            - generic [ref=e205]:
+              - link [ref=e206] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=317
+                - button [ref=e207]:
+                  - img [ref=e208]
+              - generic [ref=e211]: <!-- end company and view -->
+            - link [ref=e213] [cursor=pointer]:
+              - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=318
+              - button [ref=e214]:
+                - img [ref=e215]
+            - generic [ref=e218]:
+              - link [ref=e219] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=319
+                - button [ref=e220]:
+                  - img [ref=e221]
+              - generic [ref=e224]: <div class="mt-4 grid gap-2 sm:grid-cols-2">
+            - generic [ref=e225]:
+              - link [ref=e226] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=320
+                - button [ref=e227]:
+                  - img [ref=e228]
+              - generic [ref=e231]: <x-ui.button
+            - generic [ref=e232]:
+              - link [ref=e233] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=321
+                - button [ref=e234]:
+                  - img [ref=e235]
+              - generic [ref=e238]: type="button"
+            - generic [ref=e239]:
+              - link [ref=e240] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=322
+                - button [ref=e241]:
+                  - img [ref=e242]
+              - generic [ref=e245]: primary
+            - generic [ref=e246]:
+              - link [ref=e247] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=323
+                - button [ref=e248]:
+                  - img [ref=e249]
+              - generic [ref=e252]: outline
+            - generic [ref=e253]:
+              - link [ref=e254] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=324
+                - button [ref=e255]:
+                  - img [ref=e256]
+              - generic [ref=e259]: sm
+            - generic [ref=e260]:
+              - link [ref=e261] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=325
+                - button [ref=e262]:
+                  - img [ref=e263]
+              - generic [ref=e266]: icon="heart"
+            - generic [ref=e267]:
+              - link [ref=e268] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=326
+                - button [ref=e269]:
+                  - img [ref=e270]
+              - generic [ref=e273]: class="w-full justify-center"
+            - generic [ref=e274]:
+              - link [ref=e275] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=327
+                - button [ref=e276]:
+                  - img [ref=e277]
+              - generic [ref=e280]: "spinner=\"addToWishlist({{ $product->id }})\""
+            - generic [ref=e281]:
+              - link [ref=e282] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=328
+                - button [ref=e283]:
+                  - img [ref=e284]
+              - generic [ref=e287]: "wire:click=\"addToWishlist({{ $product->id }})\""
+            - generic [ref=e288]:
+              - link [ref=e289] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=329
+                - button [ref=e290]:
+                  - img [ref=e291]
+              - generic [ref=e293]: wire:loading.attr="disabled"
+            - generic [ref=e294]:
+              - link [ref=e295] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=330
+                - button [ref=e296]:
+                  - img [ref=e297]
+              - generic [ref=e300]: "@disabled($isWishlisted)"
+            - generic [ref=e301]:
+              - link [ref=e302] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=331
+                - button [ref=e303]:
+                  - img [ref=e304]
+              - generic [ref=e306]: ">"
+            - generic [ref=e307]:
+              - link [ref=e308] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=332
+                - button [ref=e309]:
+                  - img [ref=e310]
+              - generic [ref=e313]: "{{ $isWishlisted ? __('wishlists.actions.saved') : __('wishlists.actions.add_product') }}"
+            - generic [ref=e314]:
+              - link [ref=e315] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=333
+                - button [ref=e316]:
+                  - img [ref=e317]
+              - generic [ref=e320]: </x-ui.button>
+            - link [ref=e322] [cursor=pointer]:
+              - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=334
+              - button [ref=e323]:
+                - img [ref=e324]
+            - generic [ref=e327]:
+              - link [ref=e328] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=335
+                - button [ref=e329]:
+                  - img [ref=e330]
+              - generic [ref=e333]: <x-ui.button
+            - generic [ref=e334]:
+              - link [ref=e335] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=336
+                - button [ref=e336]:
+                  - img [ref=e337]
+              - generic [ref=e340]: type="button"
+            - generic [ref=e341]:
+              - link [ref=e342] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=337
+                - button [ref=e343]:
+                  - img [ref=e344]
+              - generic [ref=e347]: secondary
+            - generic [ref=e348]:
+              - link [ref=e349] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=338
+                - button [ref=e350]:
+                  - img [ref=e351]
+              - generic [ref=e354]: outline
+            - generic [ref=e355]:
+              - link [ref=e356] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=339
+                - button [ref=e357]:
+                  - img [ref=e358]
+              - generic [ref=e361]: sm
+            - generic [ref=e362]:
+              - link [ref=e363] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=340
+                - button [ref=e364]:
+                  - img [ref=e365]
+              - generic [ref=e368]: icon="scale"
+            - generic [ref=e369]:
+              - link [ref=e370] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=341
+                - button [ref=e371]:
+                  - img [ref=e372]
+              - generic [ref=e375]: class="w-full justify-center"
+            - generic [ref=e376]:
+              - link [ref=e377] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=342
+                - button [ref=e378]:
+                  - img [ref=e379]
+              - generic [ref=e382]: "spinner=\"addToCompare({{ $product->id }})\""
+            - generic [ref=e383]:
+              - link [ref=e384] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=343
+                - button [ref=e385]:
+                  - img [ref=e386]
+              - generic [ref=e389]: "wire:click=\"addToCompare({{ $product->id }})\""
+            - generic [ref=e390]:
+              - link [ref=e391] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=344
+                - button [ref=e392]:
+                  - img [ref=e393]
+              - generic [ref=e395]: wire:loading.attr="disabled"
+            - generic [ref=e396]:
+              - link [ref=e397] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=345
+                - button [ref=e398]:
+                  - img [ref=e399]
+              - generic [ref=e402]: "@disabled($isCompared)"
+            - generic [ref=e403]:
+              - link [ref=e404] [cursor=pointer]:
+                - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=346
+                - button [ref=e405]:
+                  - img [ref=e406]
+              - generic [ref=e408]: ">"
+    - generic [ref=e410]:
+      - navigation [ref=e411]:
+        - list [ref=e413]:
+          - listitem [ref=e414]:
+            - link "App" [ref=e415] [cursor=pointer]:
+              - /url: "#context-app"
+            - list [ref=e416]:
+              - listitem [ref=e417]:
+                - link "Routing" [ref=e418] [cursor=pointer]:
+                  - /url: "#context-app-routing"
+                  - img [ref=e420]
+                  - generic [ref=e422]: Routing
+              - listitem [ref=e423]:
+                - link "Views" [ref=e424] [cursor=pointer]:
+                  - /url: "#context-app-views"
+                  - img [ref=e426]
+                  - generic [ref=e428]: Views
+          - listitem [ref=e429]:
+            - link "Request" [ref=e430] [cursor=pointer]:
+              - /url: "#context-request"
+            - list [ref=e431]:
+              - listitem [ref=e432]:
+                - link "Browser" [ref=e433] [cursor=pointer]:
+                  - /url: "#context-request-browser"
+                  - img [ref=e435]
+                  - generic [ref=e437]: Browser
+              - listitem [ref=e438]:
+                - link "Headers" [ref=e439] [cursor=pointer]:
+                  - /url: "#context-request-headers"
+                  - img [ref=e441]
+                  - generic [ref=e443]: Headers
+              - listitem [ref=e444]:
+                - link "Body" [ref=e445] [cursor=pointer]:
+                  - /url: "#context-request-body"
+                  - img [ref=e447]
+                  - generic [ref=e449]: Body
+          - listitem [ref=e450]:
+            - link "Context" [ref=e451] [cursor=pointer]:
+              - /url: "#context-context"
+            - list [ref=e452]:
+              - listitem [ref=e453]:
+                - link "Git" [ref=e454] [cursor=pointer]:
+                  - /url: "#context-context-git"
+                  - img [ref=e456]
+                  - generic [ref=e458]: Git
+              - listitem [ref=e459]:
+                - link "Versions" [ref=e460] [cursor=pointer]:
+                  - /url: "#context-context-versions"
+                  - img [ref=e462]
+                  - generic [ref=e464]: Versions
+      - generic [ref=e465]:
+        - generic [ref=e466]:
+          - heading "App" [level=2] [ref=e467]
+          - generic [ref=e468]:
+            - generic [ref=e469]:
+              - heading "Routing" [level=1] [ref=e470]:
+                - text: Routing
+                - img [ref=e472]
+              - generic [ref=e474]:
+                - generic [ref=e475]:
+                  - term [ref=e476]: Controller
+                  - definition [ref=e477]:
+                    - generic [ref=e478]:
+                      - code [ref=e481]: Livewire\Mechanisms\HandleRouting\LivewirePageController
+                      - button "Copy to clipboard" [ref=e483] [cursor=pointer]:
+                        - img [ref=e484]
+                - generic [ref=e486]:
+                  - term [ref=e487]: Route name
+                  - definition [ref=e488]:
+                    - generic [ref=e489]:
+                      - code [ref=e492]: buyer.products.index
+                      - button "Copy to clipboard" [ref=e494] [cursor=pointer]:
+                        - img [ref=e495]
+                - generic [ref=e497]:
+                  - term [ref=e498]: Middleware
+                  - definition [ref=e499]:
+                    - list [ref=e500]:
+                      - listitem [ref=e501]:
+                        - generic [ref=e502]:
+                          - code [ref=e505]: web
+                          - button "Copy to clipboard" [ref=e507] [cursor=pointer]:
+                            - img [ref=e508]
+            - generic [ref=e510]:
+              - heading "Views" [level=1] [ref=e511]:
+                - text: Views
+                - img [ref=e513]
+              - generic [ref=e515]:
+                - generic [ref=e516]:
+                  - term [ref=e517]: View
+                  - definition [ref=e518]:
+                    - link "resources / views / frontend / buyer / products / index.blade .php" [ref=e519] [cursor=pointer]:
+                      - /url: phpstorm://open?file=%2FUsers%2Fandrejprus%2FHerd%2Fbirza%2Fresources%2Fviews%2Ffrontend%2Fbuyer%2Fproducts%2Findex.blade.php&line=1
+                      - generic [ref=e520]:
+                        - generic [ref=e521]: resources
+                        - generic [ref=e522]: /
+                        - generic [ref=e523]: views
+                        - generic [ref=e524]: /
+                        - generic [ref=e525]: frontend
+                        - generic [ref=e526]: /
+                        - generic [ref=e527]: buyer
+                        - generic [ref=e528]: /
+                        - generic [ref=e529]: products
+                        - generic [ref=e530]: /
+                        - generic [ref=e531]: index.blade
+                        - generic [ref=e532]: .php
+                - generic [ref=e533]:
+                  - term [ref=e534]: Data
+                  - definition
+        - generic [ref=e535]:
+          - heading "Request" [level=2] [ref=e536]
+          - generic [ref=e537]:
+            - generic [ref=e538]:
+              - generic [ref=e539]:
+                - generic [ref=e540]: https://birza.test/buyer/products
+                - generic [ref=e541]: GET
+              - generic [ref=e543] [cursor=pointer]:
+                - code [ref=e546]:
+                  - code [ref=e548]: "curl \"https://birza.test/buyer/products\" \\ -X GET \\ -H 'cookie: <CENSORED>' \\ -H 'priority: u=0, i' \\ -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \\ -H 'accept-encoding: gzip, deflate, br, zstd' \\ -H 'sec-fetch-dest: document' \\ -H 'sec-fetch-user: ?1' \\ -H 'sec-fetch-mode: navigate' \\ -H 'sec-fetch-site: none' \\ -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \\ -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36' \\ -H 'upgrade-insecure-requests: 1' \\ -H 'sec-ch-ua-platform: \"macOS\"' \\ -H 'sec-ch-ua-mobile: ?0' \\ -H 'sec-ch-ua: \"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"' \\ -H 'host: birza.test';"
+                - button "Copy to clipboard" [ref=e550]:
+                  - img [ref=e551]
+                - button [ref=e553]:
+                  - img [ref=e554]
+            - generic [ref=e556]:
+              - heading "Browser" [level=1] [ref=e557]:
+                - text: Browser
+                - img [ref=e559]
+              - generic [ref=e561]:
+                - code [ref=e564]: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+                - button "Copy to clipboard" [ref=e566] [cursor=pointer]:
+                  - img [ref=e567]
+            - generic [ref=e569]:
+              - heading "Headers" [level=1] [ref=e570]:
+                - text: Headers
+                - img [ref=e572]
+              - generic [ref=e574]:
+                - generic [ref=e575]:
+                  - term [ref=e576]: cookie
+                  - definition [ref=e577]:
+                    - generic [ref=e578]:
+                      - code [ref=e581]: <CENSORED>
+                      - button "Copy to clipboard" [ref=e583] [cursor=pointer]:
+                        - img [ref=e584]
+                - generic [ref=e586]:
+                  - term [ref=e587]: priority
+                  - definition [ref=e588]:
+                    - generic [ref=e589]:
+                      - code [ref=e592]: u=0, i
+                      - button "Copy to clipboard" [ref=e594] [cursor=pointer]:
+                        - img [ref=e595]
+                - generic [ref=e597]:
+                  - term [ref=e598]: accept-language
+                  - definition [ref=e599]:
+                    - generic [ref=e600]:
+                      - code [ref=e603]: en-GB,en-US;q=0.9,en;q=0.8
+                      - button "Copy to clipboard" [ref=e605] [cursor=pointer]:
+                        - img [ref=e606]
+                - generic [ref=e608]:
+                  - term [ref=e609]: accept-encoding
+                  - definition [ref=e610]:
+                    - generic [ref=e611]:
+                      - code [ref=e614]: gzip, deflate, br, zstd
+                      - button "Copy to clipboard" [ref=e616] [cursor=pointer]:
+                        - img [ref=e617]
+                - generic [ref=e619]:
+                  - term [ref=e620]: sec-fetch-dest
+                  - definition [ref=e621]:
+                    - generic [ref=e622]:
+                      - code [ref=e625]: document
+                      - button "Copy to clipboard" [ref=e627] [cursor=pointer]:
+                        - img [ref=e628]
+                - generic [ref=e630]:
+                  - term [ref=e631]: sec-fetch-user
+                  - definition [ref=e632]:
+                    - generic [ref=e633]:
+                      - code [ref=e636]: "?1"
+                      - button "Copy to clipboard" [ref=e638] [cursor=pointer]:
+                        - img [ref=e639]
+                - generic [ref=e641]:
+                  - term [ref=e642]: sec-fetch-mode
+                  - definition [ref=e643]:
+                    - generic [ref=e644]:
+                      - code [ref=e647]: navigate
+                      - button "Copy to clipboard" [ref=e649] [cursor=pointer]:
+                        - img [ref=e650]
+                - generic [ref=e652]:
+                  - term [ref=e653]: sec-fetch-site
+                  - definition [ref=e654]:
+                    - generic [ref=e655]:
+                      - code [ref=e658]: none
+                      - button "Copy to clipboard" [ref=e660] [cursor=pointer]:
+                        - img [ref=e661]
+                - generic [ref=e663]:
+                  - term [ref=e664]: accept
+                  - definition [ref=e665]:
+                    - generic [ref=e666]:
+                      - code [ref=e669]: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+                      - button "Copy to clipboard" [ref=e671] [cursor=pointer]:
+                        - img [ref=e672]
+                - generic [ref=e674]:
+                  - term [ref=e675]: user-agent
+                  - definition [ref=e676]:
+                    - generic [ref=e677]:
+                      - code [ref=e680]: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+                      - button "Copy to clipboard" [ref=e682] [cursor=pointer]:
+                        - img [ref=e683]
+                - generic [ref=e685]:
+                  - term [ref=e686]: upgrade-insecure-requests
+                  - definition [ref=e687]:
+                    - generic [ref=e688]:
+                      - code [ref=e691]: "1"
+                      - button "Copy to clipboard" [ref=e693] [cursor=pointer]:
+                        - img [ref=e694]
+                - generic [ref=e696]:
+                  - term [ref=e697]: sec-ch-ua-platform
+                  - definition [ref=e698]:
+                    - generic [ref=e699]:
+                      - code [ref=e702]: "\"macOS\""
+                      - button "Copy to clipboard" [ref=e704] [cursor=pointer]:
+                        - img [ref=e705]
+                - generic [ref=e707]:
+                  - term [ref=e708]: sec-ch-ua-mobile
+                  - definition [ref=e709]:
+                    - generic [ref=e710]:
+                      - code [ref=e713]: "?0"
+                      - button "Copy to clipboard" [ref=e715] [cursor=pointer]:
+                        - img [ref=e716]
+                - generic [ref=e718]:
+                  - term [ref=e719]: sec-ch-ua
+                  - definition [ref=e720]:
+                    - generic [ref=e721]:
+                      - code [ref=e724]: "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\""
+                      - button "Copy to clipboard" [ref=e726] [cursor=pointer]:
+                        - img [ref=e727]
+                - generic [ref=e729]:
+                  - term [ref=e730]: host
+                  - definition [ref=e731]:
+                    - generic [ref=e732]:
+                      - code [ref=e735]: birza.test
+                      - button "Copy to clipboard" [ref=e737] [cursor=pointer]:
+                        - img [ref=e738]
+            - generic [ref=e740]:
+              - heading "Body" [level=1] [ref=e741]:
+                - text: Body
+                - img [ref=e743]
+              - generic [ref=e745]:
+                - code [ref=e748]: "[]"
+                - button "Copy to clipboard" [ref=e750] [cursor=pointer]:
+                  - img [ref=e751]
+        - generic [ref=e753]:
+          - heading "Context" [level=2] [ref=e754]
+          - generic [ref=e755]:
+            - generic [ref=e756]:
+              - heading "Git" [level=1] [ref=e757]:
+                - text: Git
+                - img [ref=e759]
+              - generic [ref=e761]:
+                - generic [ref=e762]: "feat: add product comparison system"
+                - generic [ref=e763]:
+                  - generic [ref=e764]:
+                    - code [ref=e767]: de1cacaafe9c119499ec5c54000ddb6178434706
+                    - button "Copy to clipboard" [ref=e769] [cursor=pointer]:
+                      - img [ref=e770]
+                  - link "View commit de1caca" [ref=e772] [cursor=pointer]:
+                    - /url: https://github.com/goleaf/birza/commit/de1cacaafe9c119499ec5c54000ddb6178434706
+                    - button "View commit de1caca" [ref=e773]:
+                      - img [ref=e774]
+                      - text: View commit de1caca
+              - generic [ref=e778]:
+                - img [ref=e780]
+                - paragraph [ref=e782]: Last commit is dirty. (Un)staged changes have been made since this commit.
+            - generic [ref=e783]:
+              - heading "Versions" [level=1] [ref=e784]:
+                - text: Versions
+                - img [ref=e786]
+              - generic [ref=e788]:
+                - generic [ref=e789]:
+                  - term [ref=e790]: Php Version
+                  - definition [ref=e791]:
+                    - generic [ref=e792]:
+                      - code [ref=e795]: 8.5.5
+                      - button "Copy to clipboard" [ref=e797] [cursor=pointer]:
+                        - img [ref=e798]
+                - generic [ref=e800]:
+                  - term [ref=e801]: Laravel Version
+                  - definition [ref=e802]:
+                    - generic [ref=e803]:
+                      - code [ref=e806]: 12.61.1
+                      - button "Copy to clipboard" [ref=e808] [cursor=pointer]:
+                        - img [ref=e809]
+                - generic [ref=e811]:
+                  - term [ref=e812]: Laravel Locale
+                  - definition [ref=e813]:
+                    - generic [ref=e814]:
+                      - code [ref=e817]: lt
+                      - button "Copy to clipboard" [ref=e819] [cursor=pointer]:
+                        - img [ref=e820]
+                - generic [ref=e822]:
+                  - term [ref=e823]: Laravel Config Cached
+                  - definition [ref=e824]:
+                    - generic [ref=e825]:
+                      - img [ref=e826]
+                      - generic [ref=e828]: "false"
+                - generic [ref=e829]:
+                  - term [ref=e830]: App Debug
+                  - definition [ref=e831]:
+                    - generic [ref=e832]:
+                      - img [ref=e833]
+                      - generic [ref=e835]: "true"
+                - generic [ref=e836]:
+                  - term [ref=e837]: App Env
+                  - definition [ref=e838]:
+                    - generic [ref=e839]:
+                      - code [ref=e842]: local
+                      - button "Copy to clipboard" [ref=e844] [cursor=pointer]:
+                        - img [ref=e845]
+    - generic [ref=e848]:
+      - navigation:
+        - list [ref=e849]:
+          - listitem [ref=e850]:
+            - button "18 Queries" [ref=e851] [cursor=pointer]:
+              - generic [ref=e852]: "18"
+              - generic [ref=e853]: Queries
+          - listitem [ref=e854]:
+            - button "14 Logs" [ref=e855] [cursor=pointer]:
+              - generic [ref=e856]: "14"
+              - generic [ref=e857]: Logs
+      - generic [ref=e858]:
+        - generic [ref=e859]:
+          - generic [ref=e860]:
+            - generic [ref=e861]: 21:58:41
+            - generic [ref=e862]:
+              - img "Runtime" [ref=e863]
+              - text: 84.36ms
+            - generic [ref=e865]:
+              - img "Connection" [ref=e866]
+              - text: sqlite
+          - generic [ref=e869]:
+            - generic [ref=e870] [cursor=pointer]:
+              - code [ref=e873]:
+                - code [ref=e875]: select * from "cache" where "key" in (birza_cache_categories.filters.locale.lt)
+              - button "Copy to clipboard" [ref=e877]:
+                - img [ref=e878]
+              - button [ref=e880]:
+                - img [ref=e881]
+            - button "1 query parameter" [ref=e884] [cursor=pointer]:
+              - img [ref=e885]
+              - text: 1 query parameter
+        - generic [ref=e887]:
+          - generic [ref=e888]:
+            - generic [ref=e889]: 21:58:41
+            - generic [ref=e890]:
+              - img "Runtime" [ref=e891]
+              - text: 0.14ms
+            - generic [ref=e893]:
+              - img "Connection" [ref=e894]
+              - text: sqlite
+          - generic [ref=e897]:
+            - generic [ref=e898] [cursor=pointer]:
+              - code [ref=e901]:
+                - code [ref=e903]: select * from "cache" where "key" in (birza_cache_countries.active.europe)
+              - button "Copy to clipboard" [ref=e905]:
+                - img [ref=e906]
+              - button [ref=e908]:
+                - img [ref=e909]
+            - button "1 query parameter" [ref=e912] [cursor=pointer]:
+              - img [ref=e913]
+              - text: 1 query parameter
+        - generic [ref=e915]:
+          - generic [ref=e916]:
+            - generic [ref=e917]: 21:58:41
+            - generic [ref=e918]:
+              - img "Runtime" [ref=e919]
+              - text: 27.95ms
+            - generic [ref=e921]:
+              - img "Connection" [ref=e922]
+              - text: sqlite
+          - generic [ref=e925]:
+            - generic [ref=e926] [cursor=pointer]:
+              - code [ref=e929]:
+                - code [ref=e931]: select count(*) as aggregate from "products" where "is_active" = true and "products"."deleted_at" is null
+              - button "Copy to clipboard" [ref=e933]:
+                - img [ref=e934]
+              - button [ref=e936]:
+                - img [ref=e937]
+            - button "1 query parameter" [ref=e940] [cursor=pointer]:
+              - img [ref=e941]
+              - text: 1 query parameter
+        - generic [ref=e943]:
+          - generic [ref=e944]:
+            - generic [ref=e945]: 21:58:41
+            - generic [ref=e946]:
+              - img "Runtime" [ref=e947]
+              - text: 0.08ms
+            - generic [ref=e949]:
+              - img "Connection" [ref=e950]
+              - text: sqlite
+          - generic [ref=e953]:
+            - generic [ref=e954] [cursor=pointer]:
+              - code [ref=e957]:
+                - code [ref=e959]: select "id", "name", "category_id", "seller_id", "price", "unit", "stock", "product_image" from "products" where "is_active" = true and "products"."deleted_at" is null order by "created_at" desc limit 12 offset 0
+              - button "Copy to clipboard" [ref=e961]:
+                - img [ref=e962]
+              - button [ref=e964]:
+                - img [ref=e965]
+            - button "1 query parameter" [ref=e968] [cursor=pointer]:
+              - img [ref=e969]
+              - text: 1 query parameter
+        - generic [ref=e971]:
+          - generic [ref=e972]:
+            - generic [ref=e973]: 21:58:41
+            - generic [ref=e974]:
+              - img "Runtime" [ref=e975]
+              - text: 1.39ms
+            - generic [ref=e977]:
+              - img "Connection" [ref=e978]
+              - text: sqlite
+          - generic [ref=e981]:
+            - generic [ref=e982] [cursor=pointer]:
+              - code [ref=e985]:
+                - code [ref=e987]: select "id", "product_id", "disk", "path", "variants", "is_primary", "sort_order" from "product_images" where "is_primary" = true and "product_images"."product_id" in (1778, 1779, 1780, 1781, 1782, 1783, 1784, 1785, 1786, 1787, 1788, 1789) order by "sort_order" asc
+              - button "Copy to clipboard" [ref=e989]:
+                - img [ref=e990]
+              - button [ref=e992]:
+                - img [ref=e993]
+            - button "1 query parameter" [ref=e996] [cursor=pointer]:
+              - img [ref=e997]
+              - text: 1 query parameter
+        - generic [ref=e999]:
+          - generic [ref=e1000]:
+            - generic [ref=e1001]: 21:58:41
+            - generic [ref=e1002]:
+              - img "Runtime" [ref=e1003]
+              - text: 1.56ms
+            - generic [ref=e1005]:
+              - img "Connection" [ref=e1006]
+              - text: sqlite
+          - generic [ref=e1009] [cursor=pointer]:
+            - code [ref=e1012]:
+              - code [ref=e1014]: select "id", "company_name" from "users_sellers" where "users_sellers"."id" in (18) and "users_sellers"."deleted_at" is null
+            - button "Copy to clipboard" [ref=e1016]:
+              - img [ref=e1017]
+            - button [ref=e1019]:
+              - img [ref=e1020]
+        - generic [ref=e1022]:
+          - generic [ref=e1023]:
+            - generic [ref=e1024]: 21:58:41
+            - generic [ref=e1025]:
+              - img "Runtime" [ref=e1026]
+              - text: 1.72ms
+            - generic [ref=e1028]:
+              - img "Connection" [ref=e1029]
+              - text: sqlite
+          - generic [ref=e1032] [cursor=pointer]:
+            - code [ref=e1035]:
+              - code [ref=e1037]: select "id", "category_name", "parent_category_id" from "categories" where "categories"."id" in (2)
+            - button "Copy to clipboard" [ref=e1039]:
+              - img [ref=e1040]
+            - button [ref=e1042]:
+              - img [ref=e1043]
+        - generic [ref=e1045]:
+          - generic [ref=e1046]:
+            - generic [ref=e1047]: 21:58:41
+            - generic [ref=e1048]:
+              - img "Runtime" [ref=e1049]
+              - text: 0.08ms
+            - generic [ref=e1051]:
+              - img "Connection" [ref=e1052]
+              - text: sqlite
+          - generic [ref=e1055] [cursor=pointer]:
+            - code [ref=e1058]:
+              - code [ref=e1060]: select "id", "category_name" from "categories" where "categories"."id" in (1)
+            - button "Copy to clipboard" [ref=e1062]:
+              - img [ref=e1063]
+            - button [ref=e1065]:
+              - img [ref=e1066]
+        - generic [ref=e1068]:
+          - generic [ref=e1069]:
+            - generic [ref=e1070]: 21:58:41
+            - generic [ref=e1071]:
+              - img "Runtime" [ref=e1072]
+              - text: 0.55ms
+            - generic [ref=e1074]:
+              - img "Connection" [ref=e1075]
+              - text: sqlite
+          - generic [ref=e1078]:
+            - generic [ref=e1079] [cursor=pointer]:
+              - code [ref=e1082]:
+                - code [ref=e1084]: select * from "users_buyers" where "id" = 11 and "users_buyers"."deleted_at" is null limit 1
+              - button "Copy to clipboard" [ref=e1086]:
+                - img [ref=e1087]
+              - button [ref=e1089]:
+                - img [ref=e1090]
+            - button "1 query parameter" [ref=e1093] [cursor=pointer]:
+              - img [ref=e1094]
+              - text: 1 query parameter
+        - generic [ref=e1096]:
+          - generic [ref=e1097]:
+            - generic [ref=e1098]: 21:58:41
+            - generic [ref=e1099]:
+              - img "Runtime" [ref=e1100]
+              - text: 1.66ms
+            - generic [ref=e1102]:
+              - img "Connection" [ref=e1103]
+              - text: sqlite
+          - generic [ref=e1106]:
+            - generic [ref=e1107] [cursor=pointer]:
+              - code [ref=e1110]:
+                - code [ref=e1112]: select "product_id" from "wishlist_items" where "product_id" in (1789, 1788, 1787, 1786, 1785, 1784, 1783, 1782, 1781, 1780, 1779, 1778) and exists (select * from "wishlists" where "wishlist_items"."wishlist_id" = "wishlists"."id" and "buyer_id" = 11)
+              - button "Copy to clipboard" [ref=e1114]:
+                - img [ref=e1115]
+              - button [ref=e1117]:
+                - img [ref=e1118]
+            - button "13 query parameters" [ref=e1121] [cursor=pointer]:
+              - img [ref=e1122]
+              - text: 13 query parameters
+        - generic [ref=e1124]:
+          - generic [ref=e1125]:
+            - generic [ref=e1126]: 21:58:41
+            - generic [ref=e1127]:
+              - img "Runtime" [ref=e1128]
+              - text: 0.04ms
+            - generic [ref=e1130]:
+              - img "Connection" [ref=e1131]
+              - text: sqlite
+          - generic [ref=e1134]:
+            - generic [ref=e1135] [cursor=pointer]:
+              - code [ref=e1138]:
+                - code [ref=e1140]: select * from "cache" where "key" in (birza_cache_portal_additional_price)
+              - button "Copy to clipboard" [ref=e1142]:
+                - img [ref=e1143]
+              - button [ref=e1145]:
+                - img [ref=e1146]
+            - button "1 query parameter" [ref=e1149] [cursor=pointer]:
+              - img [ref=e1150]
+              - text: 1 query parameter
+        - generic [ref=e1152]:
+          - generic [ref=e1153]:
+            - generic [ref=e1154]: 21:58:41
+            - generic [ref=e1155]:
+              - img "Runtime" [ref=e1156]
+              - text: 4.01ms
+            - generic [ref=e1158]:
+              - img "Connection" [ref=e1159]
+              - text: sqlite
+          - generic [ref=e1162]:
+            - generic [ref=e1163] [cursor=pointer]:
+              - code [ref=e1166]:
+                - code [ref=e1168]: delete from "cache" where "key" in (birza_cache_portal_additional_price, birza_cache_illuminate:cache:flexible:created:portal_additional_price) and "expiration" <= 1780858721
+              - button "Copy to clipboard" [ref=e1170]:
+                - img [ref=e1171]
+              - button [ref=e1173]:
+                - img [ref=e1174]
+            - button "3 query parameters" [ref=e1177] [cursor=pointer]:
+              - img [ref=e1178]
+              - text: 3 query parameters
+        - generic [ref=e1180]:
+          - generic [ref=e1181]:
+            - generic [ref=e1182]: 21:58:41
+            - generic [ref=e1183]:
+              - img "Runtime" [ref=e1184]
+              - text: 0.05ms
+            - generic [ref=e1186]:
+              - img "Connection" [ref=e1187]
+              - text: sqlite
+          - generic [ref=e1190] [cursor=pointer]:
+            - code [ref=e1193]:
+              - code [ref=e1195]: select * from "global_settings" limit 1
+            - button "Copy to clipboard" [ref=e1197]:
+              - img [ref=e1198]
+            - button [ref=e1200]:
+              - img [ref=e1201]
+        - generic [ref=e1203]:
+          - generic [ref=e1204]:
+            - generic [ref=e1205]: 21:58:41
+            - generic [ref=e1206]:
+              - img "Runtime" [ref=e1207]
+              - text: 1.45ms
+            - generic [ref=e1209]:
+              - img "Connection" [ref=e1210]
+              - text: sqlite
+          - generic [ref=e1213]:
+            - generic [ref=e1214] [cursor=pointer]:
+              - code [ref=e1217]:
+                - code [ref=e1219]: insert into "cache" ("expiration", "key", "value") values (1780858781, birza_cache_portal_additional_price, s:4:"0.00";) on conflict ("key") do update set "expiration" = "excluded"."expiration", "key" = "excluded"."key", "value" = "excluded"."value"
+              - button "Copy to clipboard" [ref=e1221]:
+                - img [ref=e1222]
+              - button [ref=e1224]:
+                - img [ref=e1225]
+            - button "3 query parameters" [ref=e1228] [cursor=pointer]:
+              - img [ref=e1229]
+              - text: 3 query parameters
+        - generic [ref=e1231]:
+          - generic [ref=e1232]:
+            - generic [ref=e1233]: 21:58:41
+            - generic [ref=e1234]:
+              - img "Runtime" [ref=e1235]
+              - text: 0.04ms
+            - generic [ref=e1237]:
+              - img "Connection" [ref=e1238]
+              - text: sqlite
+          - generic [ref=e1241]:
+            - generic [ref=e1242] [cursor=pointer]:
+              - code [ref=e1245]:
+                - code [ref=e1247]: select * from "cache" where "key" in (birza_cache_admin_theme_colors)
+              - button "Copy to clipboard" [ref=e1249]:
+                - img [ref=e1250]
+              - button [ref=e1252]:
+                - img [ref=e1253]
+            - button "1 query parameter" [ref=e1256] [cursor=pointer]:
+              - img [ref=e1257]
+              - text: 1 query parameter
+        - generic [ref=e1259]:
+          - generic [ref=e1260]:
+            - generic [ref=e1261]: 21:58:41
+            - generic [ref=e1262]:
+              - img "Runtime" [ref=e1263]
+              - text: 0.45ms
+            - generic [ref=e1265]:
+              - img "Connection" [ref=e1266]
+              - text: sqlite
+          - generic [ref=e1269]:
+            - generic [ref=e1270] [cursor=pointer]:
+              - code [ref=e1273]:
+                - code [ref=e1275]: delete from "cache" where "key" in (birza_cache_admin_theme_colors, birza_cache_illuminate:cache:flexible:created:admin_theme_colors) and "expiration" <= 1780858721
+              - button "Copy to clipboard" [ref=e1277]:
+                - img [ref=e1278]
+              - button [ref=e1280]:
+                - img [ref=e1281]
+            - button "3 query parameters" [ref=e1284] [cursor=pointer]:
+              - img [ref=e1285]
+              - text: 3 query parameters
+        - generic [ref=e1287]:
+          - generic [ref=e1288]:
+            - generic [ref=e1289]: 21:58:41
+            - generic [ref=e1290]:
+              - img "Runtime" [ref=e1291]
+              - text: 0.03ms
+            - generic [ref=e1293]:
+              - img "Connection" [ref=e1294]
+              - text: sqlite
+          - generic [ref=e1297] [cursor=pointer]:
+            - code [ref=e1300]:
+              - code [ref=e1302]: select * from "global_settings" limit 1
+            - button "Copy to clipboard" [ref=e1304]:
+              - img [ref=e1305]
+            - button [ref=e1307]:
+              - img [ref=e1308]
+        - generic [ref=e1310]:
+          - generic [ref=e1311]:
+            - generic [ref=e1312]: 21:58:41
+            - generic [ref=e1313]:
+              - img "Runtime" [ref=e1314]
+              - text: 0.38ms
+            - generic [ref=e1316]:
+              - img "Connection" [ref=e1317]
+              - text: sqlite
+          - generic [ref=e1320]:
+            - generic [ref=e1321] [cursor=pointer]:
+              - code [ref=e1324]:
+                - code [ref=e1326]: "insert into \"cache\" (\"expiration\", \"key\", \"value\") values (1780858781, birza_cache_admin_theme_colors, a:3:{s:7:\"primary\";s:7:\"#13261F\";s:6:\"accent\";s:7:\"#D2FF72\";s:7:\"surface\";s:7:\"#F4C16D\";}) on conflict (\"key\") do update set \"expiration\" = \"excluded\".\"expiration\", \"key\" = \"excluded\".\"key\", \"value\" = \"excluded\".\"value\""
+              - button "Copy to clipboard" [ref=e1328]:
+                - img [ref=e1329]
+              - button [ref=e1331]:
+                - img [ref=e1332]
+            - button "3 query parameters" [ref=e1335] [cursor=pointer]:
+              - img [ref=e1336]
+              - text: 3 query parameters
+    - generic [ref=e1339]:
+      - list [ref=e1340]:
+        - listitem [ref=e1341]:
+          - img [ref=e1342]
+        - listitem [ref=e1350]: ·
+        - listitem [ref=e1351]:
+          - link "Source" [ref=e1352] [cursor=pointer]:
+            - /url: https://github.com/spatie/laravel-ignition
+        - listitem [ref=e1353]: ·
+        - listitem [ref=e1354]:
+          - link "Docs" [ref=e1355] [cursor=pointer]:
+            - /url: https://flareapp.io/docs/ignition/introducing-ignition/overview
+        - listitem [ref=e1356]: ·
+        - listitem [ref=e1357]:
+          - link "Laravel" [ref=e1358] [cursor=pointer]:
+            - /url: https://laravel.com
+      - paragraph [ref=e1360]:
+        - text: Ignition is built by
+        - link "Flare" [ref=e1361] [cursor=pointer]:
+          - /url: https://flareapp.io/?utm_campaign=ignition&utm_source=ignition
+          - img [ref=e1362]
+          - text: Flare
+        - text: ", the Laravel error reporting service."

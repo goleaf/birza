@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -17,7 +16,9 @@ use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class EloquentRelationshipMapTest extends TestCase
@@ -100,14 +101,27 @@ class EloquentRelationshipMapTest extends TestCase
     {
         $user = User::factory()->create();
         $review = Review::factory()->create(['user_id' => $user->id]);
-        $notification = Notification::factory()->create(['user_id' => $user->id]);
+        $notification = $user->notifications()->create([
+            'id' => (string) Str::uuid(),
+            'type' => 'marketplace.demo',
+            'data' => [
+                'title_key' => 'notifications.demo.title',
+                'message_key' => 'notifications.demo.message',
+                'title_params' => [],
+                'message_params' => [],
+                'related_type' => 'system',
+                'related_id' => null,
+                'url' => null,
+                'status' => null,
+                'icon' => 'bell',
+            ],
+        ]);
         $address = Address::factory()->create(['user_id' => $user->id]);
 
         $this->assertInstanceOf(BelongsTo::class, $review->user());
-        $this->assertInstanceOf(BelongsTo::class, $notification->user());
         $this->assertInstanceOf(BelongsTo::class, $address->user());
         $this->assertInstanceOf(HasMany::class, $user->reviews());
-        $this->assertInstanceOf(HasMany::class, $user->notifications());
+        $this->assertInstanceOf(MorphMany::class, $user->notifications());
         $this->assertInstanceOf(HasMany::class, $user->addresses());
         $this->assertSame($review->id, $user->reviews->sole()->id);
         $this->assertSame($notification->id, $user->notifications->sole()->id);

@@ -2,50 +2,88 @@
 
 namespace App\Livewire\Frontend\Buyer\Products;
 
+use App\Actions\Products\Comparison\AddProductToCompareAction;
+use App\Actions\Wishlists\AddProductToWishlistAction;
 use App\Http\Filters\ProductFilter;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\Users\Buyer;
+use App\Models\WishlistItem;
+use App\Support\Products\ProductComparison;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.frontend.app', ['fullWidth' => true])]
 class Index extends Component
 {
+    public function addToWishlist(int $productId, AddProductToWishlistAction $action): void
+    {
+        $buyer = $this->buyer();
+
+        if (! $buyer) {
+            session()->flash('message', __('wishlists.messages.login_required'));
+            $this->redirectRoute('buyer.login', navigate: true);
+
+            return;
+        }
+
+        $product = Product::query()
+            ->withTrashed()
+            ->select(['id'])
+            ->find($productId);
+
+        if (! $product) {
+            session()->flash('message', __('wishlists.messages.product_unavailable'));
+
+            return;
+        }
+
+        try {
+            $action->handle($buyer, $product);
+        } catch (ValidationException $exception) {
+            session()->flash('message', collect($exception->errors())->flatten()->first());
+
+            return;
+        }
+
+        session()->flash('success', __('wishlists.messages.product_added'));
+    }
+
+    public function addToCompare(int $productId, AddProductToCompareAction $action): void
+    {
+        $product = Product::query()
+            ->select(['id'])
+            ->find($productId);
+
+        if (! $product) {
+            session()->flash('message', __('compare.messages.product_unavailable'));
+
+            return;
+        }
+
+        try {
+            $action->handle($product);
+        } catch (ValidationException $exception) {
+            session()->flash('message', collect($exception->errors())->flatten()->first());
+
+            return;
+        }
+
+        session()->flash('success', __('compare.messages.added'));
+    }
+
     public function render(): View
     {
         $request = request();
+        $comparison = app(ProductComparison::class);
 
-        $categories = Category::query()
-            ->select(['id', 'category_name', 'parent_category_id'])
-            ->with(['subcategories' => function ($query) {
-                $query->select(['id', 'category_name', 'parent_category_id'])
-                    ->with(['attributes' => function ($attributeQuery) {
-                        $attributeQuery
-                            ->select([
-                                'attributes.id',
-                                'attributes.name',
-                                'attributes.is_required',
-                            ])
-                            ->where('is_active', true)
-                            ->where('is_filterable', true)
-                            ->with(['values' => function ($valueQuery) {
-                                $valueQuery
-                                    ->select(['id', 'attribute_id', 'value'])
-                                    ->where('is_active', true)
-                                    ->orderBy('value');
-                            }]);
-                    }]);
-            }])
-            ->whereNull('parent_category_id')
-            ->get();
-
-        $countries = Country::active()
-            ->select(['id', 'country_name'])
-            ->where('region', 'Europe')
-            ->orderBy('country_name')
-            ->get();
+        $categories = Category::cachedFilterTree();
+        $countries = Country::cachedActiveEuropeanOptions();
 
         $categoryIds = [];
         $attributeValueFilters = [];
@@ -112,11 +150,42 @@ class Index extends Component
             ->latest();
 
         $products = $query->paginate(12)->withQueryString();
+        $buyer = $this->buyer();
 
         return view('frontend.buyer.products.index', [
             'products' => $products,
             'categories' => $categories,
             'countries' => $countries,
+            'wishlistedProductIds' => $this->wishlistedProductIds($buyer, $products->getCollection()->pluck('id')),
+            'comparedProductIds' => $comparison->ids(),
+            'comparisonCount' => $comparison->count(),
+            'comparisonLimit' => ProductComparison::MAX_PRODUCTS,
         ]);
+    }
+
+    private function buyer(): ?Buyer
+    {
+        $buyer = Auth::guard('buyer')->user();
+
+        return $buyer instanceof Buyer ? $buyer : null;
+    }
+
+    /**
+     * @param  Collection<int, int>  $productIds
+     * @return array<int, int>
+     */
+    private function wishlistedProductIds(?Buyer $buyer, Collection $productIds): array
+    {
+        if (! $buyer || $productIds->isEmpty()) {
+            return [];
+        }
+
+        return WishlistItem::query()
+            ->select(['product_id'])
+            ->whereIn('product_id', $productIds->values())
+            ->whereHas('wishlist', fn ($query) => $query->where('buyer_id', $buyer->id))
+            ->pluck('product_id')
+            ->map(fn ($productId): int => (int) $productId)
+            ->all();
     }
 }

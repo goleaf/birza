@@ -3,7 +3,7 @@
         ['key' => 'id', 'label' => __('backend_orders_order_number'), 'class' => 'w-24'],
         ['key' => 'created_at', 'label' => __('backend_orders_date'), 'class' => 'w-40'],
         ['key' => 'order_total', 'label' => __('backend_orders_total'), 'class' => 'text-right w-36'],
-        ['key' => 'payment_status', 'label' => __('backend_orders_status'), 'class' => 'text-center w-40'],
+        ['key' => 'status', 'label' => __('backend_orders_status'), 'class' => 'text-center w-40'],
         ['key' => 'actions', 'label' => __('backend_common_actions'), 'class' => 'text-right w-24'],
     ];
 @endphp
@@ -11,7 +11,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_buyers'), 'link' => route('backend.buyers.index')],
+            ['label' => __('navigation_buyers'), 'link' => route('admin.buyers.index')],
             ['label' => $buyer->company_name ?: $buyer->name],
             ['label' => __('common_orders')],
         ]"
@@ -26,7 +26,7 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.buyers.index')"
+                :link="route('admin.buyers.index')"
             />
         </x-slot:actions>
     </x-mary-header>
@@ -55,24 +55,11 @@
                 </div>
             @endscope
 
-            @scope('cell_payment_status', $order)
-                @php
-                    $statusClass = match ($order->payment_status) {
-                        'paid' => 'badge-success badge-outline',
-                        'pending' => 'badge-warning badge-outline',
-                        'processing' => 'badge-info badge-outline',
-                        'shipped' => 'badge-secondary badge-outline',
-                        'delivered' => 'badge-success',
-                        'cancelled', 'failed' => 'badge-error badge-outline',
-                        'refunded' => 'badge-neutral badge-outline',
-                        default => 'badge-neutral badge-outline',
-                    };
-                @endphp
-
+            @scope('cell_status', $order)
                 <div class="text-center">
                     <x-mary-badge
-                        :value="__('orders_status_3_' . strtolower($order->payment_status))"
-                        class="{{ $statusClass }}"
+                        :value="$order->paymentStatusLabel()"
+                        class="{{ $order->paymentStatusBadgeClass() }}"
                     />
                 </div>
             @endscope
@@ -81,7 +68,7 @@
                 <div class="flex justify-end">
                     <x-mary-button
                         icon="o-eye"
-                        :link="route('backend.orders.show', $order)"
+                        :link="route('admin.orders.show', $order)"
                         class="btn-ghost btn-sm"
                         :tooltip="__('common_view')"
                     />

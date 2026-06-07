@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderPaymentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,10 @@ class UpdateOrdersTableAddPaymentFields extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (!Schema::hasColumn('orders', 'payment_status')) {
-                $table->string('payment_status')->default('pending');
+            if (! Schema::hasColumn('orders', 'payment_status')) {
+                $table->string('payment_status')->default(OrderPaymentStatus::Pending->value);
             }
-            if (!Schema::hasColumn('orders', 'payment_method')) {
+            if (! Schema::hasColumn('orders', 'payment_method')) {
                 $table->string('payment_method')->nullable();
             }
         });

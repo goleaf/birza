@@ -11,10 +11,12 @@ use App\Models\BuyerCreditHistory;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\Conversation;
 use App\Models\Country;
 use App\Models\CreditAttachment;
 use App\Models\Discount;
 use App\Models\GlobalSettings;
+use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -45,10 +47,12 @@ use App\Policies\BuyerPolicy;
 use App\Policies\CartItemPolicy;
 use App\Policies\CartPolicy;
 use App\Policies\CategoryPolicy;
+use App\Policies\ConversationPolicy;
 use App\Policies\CountryPolicy;
 use App\Policies\CreditAttachmentPolicy;
 use App\Policies\DiscountPolicy;
 use App\Policies\GlobalSettingsPolicy;
+use App\Policies\MessagePolicy;
 use App\Policies\NotificationPolicy;
 use App\Policies\OrderItemPolicy;
 use App\Policies\OrderPolicy;
@@ -90,10 +94,12 @@ class AuthServiceProvider extends ServiceProvider
         Cart::class => CartPolicy::class,
         CartItem::class => CartItemPolicy::class,
         Category::class => CategoryPolicy::class,
+        Conversation::class => ConversationPolicy::class,
         Country::class => CountryPolicy::class,
         CreditAttachment::class => CreditAttachmentPolicy::class,
         Discount::class => DiscountPolicy::class,
         GlobalSettings::class => GlobalSettingsPolicy::class,
+        Message::class => MessagePolicy::class,
         Notification::class => NotificationPolicy::class,
         Order::class => OrderPolicy::class,
         OrderItem::class => OrderItemPolicy::class,

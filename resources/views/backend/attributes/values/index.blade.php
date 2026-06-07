@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_attributes'), 'link' => route('backend.attributes.index')],
+            ['label' => __('navigation_attributes'), 'link' => route('admin.attributes.index')],
             ['label' => $attribute->getTranslation('name', app()->getLocale())],
             ['label' => __('common_values')],
         ]"
@@ -31,7 +31,7 @@
             <x-mary-button
                 :label="__('backend_attribute_values_actions_create')"
                 icon="o-plus"
-                :link="route('backend.attributes.values.create', $attribute)"
+                :link="route('admin.attributes.values.create', $attribute)"
                 class="btn-primary"
             />
         </x-slot:actions>
@@ -62,7 +62,7 @@
                 <x-backend.action-dropdown menu-class="!w-44">
                     <x-mary-menu-item
                         :title="__('common_edit')"
-                        :link="route('backend.attributes.values.edit', [$this->attribute, $value])"
+                        :link="route('admin.attributes.values.edit', [$this->attribute, $value])"
                         icon="o-pencil-square"
                     />
                     <x-mary-menu-separator />

@@ -30,7 +30,7 @@
 <div class="space-y-6">
     <x-backend.breadcrumbs
         :items="[
-            ['label' => __('navigation_products'), 'link' => route('backend.products.index')],
+            ['label' => __('navigation_products'), 'link' => route('admin.products.index')],
             ['label' => $product->name],
         ]"
     />
@@ -44,11 +44,11 @@
         <x-slot:actions>
             <x-mary-button
                 :label="__('common_back')"
-                :link="route('backend.products.index')"
+                :link="route('admin.products.index')"
             />
             <x-mary-button
                 :label="__('common_edit')"
-                :link="route('backend.products.edit', $product)"
+                :link="route('admin.products.edit', $product)"
                 icon="o-pencil-square"
                 class="btn-primary"
             />
@@ -66,7 +66,7 @@
             <x-slot:actions>
                 <x-mary-button
                     :label="__('common_edit')"
-                    :link="route('backend.products.edit', $product)"
+                    :link="route('admin.products.edit', $product)"
                     class="btn-sm btn-warning btn-outline"
                 />
             </x-slot:actions>
@@ -86,8 +86,8 @@
                     <dt class="text-sm font-medium text-gray-600">{{ __('common_status') }}</dt>
                     <dd class="text-right">
                         <x-mary-badge
-                            :value="$product->is_active ? __('common_active') : __('common_inactive')"
-                            class="{{ $product->is_active ? 'badge-success badge-outline' : 'badge-error badge-outline' }}"
+                            :value="$product->statusLabel()"
+                            class="{{ $product->statusMaryBadgeClass() }}"
                         />
                     </dd>
                 </div>
@@ -145,6 +145,8 @@
             <div class="text-sm text-base-content/60">{{ __('common_not_specified') }}</div>
         @endif
     </x-mary-card>
+
+    <x-backend.audit-history :logs="$auditLogs" />
 
     @if ($productImages->isNotEmpty())
         <x-mary-card :title="__('common_product_images')" shadow>

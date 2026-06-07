@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Backend\Products;
 
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Users\Seller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -15,6 +18,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.backend.app')]
 class Create extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
@@ -60,6 +64,8 @@ class Create extends Component
 
     public function mount(): void
     {
+        $this->authorize('create', Product::class);
+
         $this->unit = Product::defaultUnit();
         $this->initializeProductImageLibrary();
     }
@@ -101,12 +107,13 @@ class Create extends Component
 
     public function save(): void
     {
+        $this->authorize('create', Product::class);
         $this->ensureProductImageLibraryIsPresent();
 
         $validated = $this->validate();
 
         $product = new Product;
-        $product->fill([
+        $product->forceFill([
             'category_id' => $validated['category_id'],
             'seller_id' => $validated['seller_id'],
             'name' => $validated['name'],
@@ -131,7 +138,13 @@ class Create extends Component
 
         $product->setTranslation('description', app()->getLocale(), $validated['description']);
         $product->save();
+        $this->authorize('manageGallery', $product);
         $this->syncProductImageLibrary($product);
+        app(RecordProductAuditLogsAction::class)->created(
+            actor: Auth::guard('admin')->user(),
+            product: $product,
+            source: 'admin_product_create',
+        );
 
         $sync = [];
         foreach (($validated['attributeSelections'] ?? []) as $attributeId => $valueId) {
@@ -145,7 +158,7 @@ class Create extends Component
         $product->attributeValues()->sync($sync);
 
         session()->flash('success', __('messages_product_created'));
-        $this->redirectRoute('backend.products.index');
+        $this->redirectRoute('admin.products.index');
     }
 
     public function render()

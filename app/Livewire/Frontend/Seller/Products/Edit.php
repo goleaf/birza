@@ -2,9 +2,13 @@
 
 namespace App\Livewire\Frontend\Seller\Products;
 
+use App\Actions\Notifications\SendProductModerationNotificationAction;
+use App\Actions\Notifications\SendStockThresholdNotificationAction;
+use App\Actions\Products\RecordProductAuditLogsAction;
 use App\Livewire\Concerns\InteractsWithProductImageLibrary;
 use App\Models\Country;
 use App\Models\Product;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -14,6 +18,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.frontend.app')]
 class Edit extends Component
 {
+    use AuthorizesRequests;
     use InteractsWithProductImageLibrary;
     use WithFileUploads;
 
@@ -53,9 +58,7 @@ class Edit extends Component
 
     public function mount(Product $product): void
     {
-        if ($product->seller_id !== Auth::guard('seller')->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $product);
 
         $this->product = $product->load('images');
 
@@ -82,10 +85,11 @@ class Edit extends Component
         $this->initializeProductImageLibrary($this->product);
     }
 
-    public function save(): void
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    protected function rules(): array
     {
-        $this->ensureProductImageLibraryIsPresent();
-
         $rules = array_merge([
             'category_id' => ['required', 'integer', Rule::exists('categories', 'id')],
             'name' => ['required', 'string', 'max:255'],
@@ -111,9 +115,22 @@ class Edit extends Component
                 : ['nullable', 'string'];
         }
 
-        $validated = $this->validate($rules);
+        return $rules;
+    }
 
-        $this->product->fill([
+    public function save(): void
+    {
+        $this->authorize('update', $this->product);
+        $this->authorize('manageGallery', $this->product);
+        $this->ensureProductImageLibraryIsPresent();
+
+        $validated = $this->validate();
+        $previousStock = (int) $this->product->stock;
+        $auditRecorder = app(RecordProductAuditLogsAction::class);
+        $oldValues = $auditRecorder->snapshot($this->product);
+        $oldImages = $auditRecorder->imagePaths($this->product);
+
+        $this->product->forceFill([
             'category_id' => $validated['category_id'],
             'name' => $validated['name'],
             'price' => $validated['price'],
@@ -135,6 +152,21 @@ class Edit extends Component
 
         $this->product->save();
         $this->syncProductImageLibrary($this->product);
+        $this->product->refresh()->load('images');
+
+        $auditRecorder->updated(
+            actor: Auth::guard('seller')->user(),
+            product: $this->product,
+            oldValues: $oldValues,
+            oldImages: $oldImages,
+            source: 'seller_product_edit',
+        );
+
+        app(SendStockThresholdNotificationAction::class)->handle($this->product, $previousStock);
+
+        if (! $this->product->is_active) {
+            app(SendProductModerationNotificationAction::class)->moderationRequired($this->product);
+        }
 
         session()->flash('success', __('messages_product_updated'));
         $this->redirectRoute('seller.products.index', navigate: true);

@@ -1,6 +1,15 @@
+@use('App\Enums\OrderStatus')
+
 <div>
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
         {{ __('dashboard_company_ads') }}
+    </div>
+
+    <div class="mb-6">
+        <x-notifications.recent-panel
+            :notifications="$recentNotifications"
+            :href="route('seller.notifications.index')"
+        />
     </div>
 
 
@@ -73,7 +82,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">{{ __('dashboard_pending_orders') }}</p>
-                        <p class="text-xl font-bold">{{ $ordersData['pending'] }}</p>
+                        <p class="text-xl font-bold">{{ $ordersData['counts'][OrderStatus::Pending->value] }}</p>
                     </div>
                     <div class="bg-yellow-100 rounded-full p-2">
                         <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,8 +96,8 @@
             <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500">{{ __('dashboard_paid_orders') }}</p>
-                        <p class="text-xl font-bold">{{ $ordersData['paid'] }}</p>
+                        <p class="text-sm text-gray-500">{{ OrderStatus::Accepted->label() }}</p>
+                        <p class="text-xl font-bold">{{ $ordersData['counts'][OrderStatus::Accepted->value] }}</p>
                     </div>
                     <div class="bg-green-100 rounded-full p-2">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,8 +110,8 @@
             <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500">{{ __('dashboard_failed_orders') }}</p>
-                        <p class="text-xl font-bold">{{ $ordersData['failed'] }}</p>
+                        <p class="text-sm text-gray-500">{{ OrderStatus::Cancelled->label() }}</p>
+                        <p class="text-xl font-bold">{{ $ordersData['counts'][OrderStatus::Cancelled->value] }}</p>
                     </div>
                     <div class="bg-red-100 rounded-full p-2">
                         <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,14 +163,7 @@
                         @foreach ($ordersData['recent'] as $item)
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center">
-                                    <img
-                                        src="{{ $item['product']?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product')) }}"
-                                        alt="{{ $item['product']?->name ?? __('common_unnamed_product') }}"
-                                        class="w-10 h-10 mr-3 rounded object-cover"
-                                        loading="lazy"
-                                        width="160"
-                                        height="160"
-                                    >
+                                    <img src="{{ $item['product']?->imageUrl('thumb') ?? asset((string) config('images.fallbacks.product')) }}" alt="{{ $item['product']?->name ?? __('common_unnamed_product') }}" class="w-10 h-10 mr-3 rounded object-cover" loading="lazy">
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -174,16 +176,10 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <x-ui.badge
-                                        :value="__('orders_status_3_' . strtolower($item['order']->payment_status))"
-                                        :color="match (strtolower((string) $item['order']->payment_status)) {
-                                            'pending' => 'warning',
-                                            'paid' => 'success',
-                                            'failed' => 'error',
-                                            default => 'neutral',
-                                        }"
+                                        :value="$item['order']->paymentStatusLabel()"
+                                        :color="$item['order']->paymentStatusUiColor()"
                                         soft
-                                        sm
-                                        class="font-semibold"
+                                        class="font-medium"
                                     />
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

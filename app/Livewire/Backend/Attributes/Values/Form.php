@@ -47,7 +47,7 @@ class Form extends Component
         $attributeValue->save();
 
         session()->flash('success', __('backend_common_success_message'));
-        $this->redirectRoute('backend.attributes.values.index', ['attribute' => $this->attribute->id]);
+        $this->redirectRoute('admin.attributes.values.index', ['attribute' => $this->attribute->id]);
     }
 
     public function render()

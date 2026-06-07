@@ -50,6 +50,7 @@ php artisan test --compact tests/Feature/Marketplace/ProductQuestionFeatureTest.
 php artisan test --compact tests/Feature/Marketplace/ProductStockAlertFeatureTest.php
 php artisan test --compact tests/Feature/Marketplace/WishlistFeatureTest.php
 php artisan test --compact tests/Feature/Marketplace/SellerDiscountPromoCodeFeatureTest.php
+php artisan test --compact tests/Feature/Marketplace/MessagingFeatureTest.php
 ```
 
 Run Livewire component tests by file or filter:
@@ -64,6 +65,8 @@ Run policy tests:
 ```bash
 php artisan test --compact tests/Unit/Policies/ProductPolicyTest.php
 php artisan test --compact tests/Unit/Policies/OrderPolicyTest.php
+php artisan test --compact tests/Unit/Policies/ConversationPolicyTest.php
+php artisan test --compact tests/Unit/Policies/MessagePolicyTest.php
 ```
 
 Run image upload tests:
@@ -135,7 +138,8 @@ The main marketplace feature suite covers:
 - Checkout stock validation, deleted-product blocking, backend price recalculation, order item snapshots, address snapshots, and cart conversion.
 - Order status transitions, invalid transitions, admin reason requirements, status history, audit logging, and notifications.
 - Product image upload through seller forms, oversized-image validation, image fallback behavior, and lower-level variant pipeline tests.
-- Product questions, product reports, product stock alerts, product wishlists, and seller discount/promo-code flows.
+- Product questions, product reports, product stock alerts, product wishlists, seller discount/promo-code flows, and buyer-seller private messaging.
+- Messaging tests cover product/order conversation creation, buyer/seller ownership, forbidden cross-user access, closed conversations, validation, escaped output, read/unread state, notifications, admin moderation, audit metadata, and translation keys.
 - Locale switching, guest/authenticated locale rendering, translated order status labels, and required marketplace translation keys.
 
 When adding a new feature test, prefer the narrowest file that matches the user scenario and run that file before broader suites.
