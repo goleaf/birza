@@ -6,6 +6,7 @@ use App\Providers\EventServiceProvider;
 use App\Providers\GlobalSettingsServiceProvider;
 use App\Providers\UserGuardServiceProvider;
 use App\Providers\ViewServiceProvider;
+use Barryvdh\Debugbar\ServiceProvider as DebugbarServiceProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -47,17 +48,22 @@ return [
         'bypass_secret' => env('MAINTENANCE_BYPASS_SECRET'),
     ],
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
+    'providers' => ServiceProvider::defaultProviders()->merge(array_filter([
         AppServiceProvider::class,
         AuthServiceProvider::class,
         EventServiceProvider::class,
-        IdeHelperServiceProvider::class,
+        env('APP_ENV', 'production') === 'local' && (bool) env('DEBUGBAR_ENABLED', false) && class_exists(DebugbarServiceProvider::class)
+            ? DebugbarServiceProvider::class
+            : null,
+        env('APP_ENV', 'production') === 'local' && class_exists(IdeHelperServiceProvider::class)
+            ? IdeHelperServiceProvider::class
+            : null,
         UserGuardServiceProvider::class,
         ViewServiceProvider::class,
         GlobalSettingsServiceProvider::class,
         FilterableServiceProvider::class,
 
-    ])->toArray(),
+    ]))->toArray(),
 
     'aliases' => Facade::defaultAliases()->merge([
     ])->toArray(),

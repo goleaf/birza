@@ -19,6 +19,7 @@ Release notes live in [docs/releases](docs/releases/README.md).
 ### Changed
 
 - Hardened foreign key delete behavior for buyer credit history, category trees, and review history, and added the missing credit-history admin constraint.
+- Moved Laravel Debugbar to development-only dependencies and disabled it outside local opt-in environments.
 - Standardized Eloquent relationship models for users, buyer and seller profiles, products, orders, carts, reviews, notifications, images, and addresses.
 - Added a strict `OrderStatus` enum as the single source for order lifecycle values, model casts, filters, badges, helper output, and order flow tests.
 
