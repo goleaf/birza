@@ -180,6 +180,16 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function questions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class);
+    }
+
+    public function publicAnsweredQuestions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class)->publicAnswered();
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

@@ -26,6 +26,11 @@
                     'icon' => 'o-cube',
                 ],
                 [
+                    'title' => __('products.questions.nav_admin'),
+                    'link' => route('backend.product-questions.index'),
+                    'icon' => 'o-question-mark-circle',
+                ],
+                [
                     'title' => __('navigation_sellers'),
                     'link' => route('backend.sellers.index'),
                     'icon' => 'o-building-storefront',

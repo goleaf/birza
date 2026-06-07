@@ -4,6 +4,7 @@ namespace App\Models\Users;
 
 use App\Models\BuyerCreditHistory;
 use App\Models\Order;
+use App\Models\ProductQuestion;
 use App\Models\ProductStockAlert;
 use App\Models\User;
 use Database\Factories\BuyerFactory;
@@ -71,6 +72,11 @@ class Buyer extends Authenticatable implements MustVerifyEmail
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    public function productQuestions(): HasMany
+    {
+        return $this->hasMany(ProductQuestion::class, 'buyer_id');
     }
 
     public function creditHistory(): HasMany

@@ -22,6 +22,7 @@ use App\Livewire\Backend\Countries\Index as CountriesIndex;
 use App\Livewire\Backend\Dashboard as AdminDashboard;
 use App\Livewire\Backend\Orders\Index as OrdersIndex;
 use App\Livewire\Backend\Orders\Show as OrdersShow;
+use App\Livewire\Backend\ProductQuestions\Index as ProductQuestionsIndex;
 use App\Livewire\Backend\Products\Create as ProductCreate;
 use App\Livewire\Backend\Products\Edit as ProductEdit;
 use App\Livewire\Backend\Products\Index as ProductsIndex;
@@ -72,6 +73,9 @@ Route::prefix('admin')->group(function () {
         Route::livewire('products/create', ProductCreate::class)->name('backend.products.create');
         Route::livewire('products/{product}', ProductShow::class)->name('backend.products.show');
         Route::livewire('products/{product}/edit', ProductEdit::class)->name('backend.products.edit');
+
+        // Product Questions
+        Route::livewire('product-questions', ProductQuestionsIndex::class)->name('backend.product-questions.index');
 
         // Attributes
         Route::livewire('attributes', AttributesIndex::class)->name('backend.attributes.index');

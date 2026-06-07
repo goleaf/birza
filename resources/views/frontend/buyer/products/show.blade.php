@@ -349,6 +349,8 @@
         </div>
         <!-- end product grid -->
 
+        <livewire:frontend.product-questions.panel :product="$product" />
+
         <!-- start back button -->
         <x-slot:footer>
             <x-ui.button

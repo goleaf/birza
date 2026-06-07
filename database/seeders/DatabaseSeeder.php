@@ -25,4 +25,3 @@ class DatabaseSeeder extends Seeder
         });
     }
 }
-                AuditLogSeeder::class,
