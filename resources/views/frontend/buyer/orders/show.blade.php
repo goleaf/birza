@@ -100,7 +100,7 @@
 
                 <!-- start table body -->
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($order->items as $item)
+                    @foreach($order->orderItems as $item)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <!-- start product info -->

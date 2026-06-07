@@ -2,24 +2,28 @@
 
 namespace App\Models\Users;
 
+use App\Models\BuyerCreditHistory;
+use App\Models\Order;
+use App\Models\User;
+use Database\Factories\BuyerFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Order;
-use App\Models\BuyerCreditHistory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Buyer extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, SoftDeletes, HasFactory;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'users_buyers';
 
     protected $fillable = [
         'name',
+        'user_id',
         'email',
         'password',
         'company_name',
@@ -45,6 +49,7 @@ class Buyer extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'user_id' => 'integer',
         'password' => 'hashed',
         'password_reset_at' => 'datetime',
         'credit_balance' => 'decimal:2',
@@ -54,7 +59,12 @@ class Buyer extends Authenticatable implements MustVerifyEmail
 
     protected static function newFactory()
     {
-        return \Database\Factories\BuyerFactory::new();
+        return BuyerFactory::new();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function orders(): HasMany
@@ -96,8 +106,10 @@ class Buyer extends Authenticatable implements MustVerifyEmail
                 'admin_id' => $adminId,
                 'note' => $note,
             ]);
+
             return true;
         }
+
         return false;
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -72,7 +73,7 @@ class Product extends Model
         'total_shelf_life' => 'integer',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         /*
         static::created(function ($product) {
@@ -82,24 +83,37 @@ class Product extends Model
         */
     }
 
-    public function attributeValues()
+    public function attributeValues(): BelongsToMany
     {
-        return $this->belongsToMany(AttributeValue::class, 'product_attribute_value');
+        return $this->belongsToMany(AttributeValue::class, 'product_attribute_value')
+            ->withPivot('attribute_id')
+            ->withTimestamps();
     }
 
-    public function attributes()
+    public function attributes(): BelongsToMany
     {
-        return $this->belongsToMany(AttributeValue::class, 'product_attribute_value');
+        return $this->belongsToMany(Attribute::class, 'product_attribute');
     }
 
-    public function syncAttributeValues($attributes)
+    public function syncAttributeValues($attributes): void
     {
         $attributeValueIds = collect($attributes)
             ->filter()
+            ->map(fn (mixed $attributeValueId): int => (int) $attributeValueId)
             ->values()
             ->all();
 
-        $this->attributeValues()->sync($attributeValueIds);
+        $syncValues = AttributeValue::query()
+            ->whereKey($attributeValueIds)
+            ->pluck('attribute_id', 'id')
+            ->mapWithKeys(
+                fn (int $attributeId, int $attributeValueId): array => [
+                    $attributeValueId => ['attribute_id' => $attributeId],
+                ],
+            )
+            ->all();
+
+        $this->attributeValues()->sync($syncValues);
     }
 
     /**
@@ -145,6 +159,16 @@ class Product extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_of_origin');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function scopeActive($query)

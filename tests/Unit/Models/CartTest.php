@@ -2,37 +2,37 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Users\Buyer;
-use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_cart_belongs_to_user(): void
+    public function test_cart_belongs_to_buyer(): void
     {
         $buyer = Buyer::factory()->create();
         $cart = Cart::factory()->create(['user_id' => $buyer->id]);
 
-        $this->assertInstanceOf(Buyer::class, $cart->user);
-        $this->assertEquals($buyer->id, $cart->user->id);
+        $this->assertInstanceOf(Buyer::class, $cart->buyer);
+        $this->assertEquals($buyer->id, $cart->buyer->id);
     }
 
-    public function test_cart_belongs_to_product(): void
+    public function test_cart_has_many_cart_items(): void
     {
-        $product = Product::factory()->create();
-        $cart = Cart::factory()->create(['product_id' => $product->id]);
+        $cart = Cart::factory()->create();
+        CartItem::factory()->count(3)->create(['cart_id' => $cart->id]);
 
-        $this->assertInstanceOf(Product::class, $cart->product);
-        $this->assertEquals($product->id, $cart->product->id);
+        $this->assertCount(3, $cart->cartItems);
+        $this->assertInstanceOf(CartItem::class, $cart->cartItems->first());
     }
 
     public function test_cart_fillable_attributes(): void
     {
-        $cart = new Cart();
+        $cart = new Cart;
         $fillable = $cart->getFillable();
 
         $this->assertContains('user_id', $fillable);
@@ -40,4 +40,3 @@ class CartTest extends TestCase
         $this->assertContains('quantity', $fillable);
     }
 }
-

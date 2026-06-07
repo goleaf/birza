@@ -28,7 +28,7 @@ class Index extends Component
         /** @var Buyer $buyer */
         $buyer = Auth::guard('buyer')->user();
 
-        $order = Order::with(['items.product'])
+        $order = Order::with(['orderItems.product'])
             ->where('buyer_id', $buyer->id)
             ->findOrFail($orderId);
 
@@ -44,7 +44,7 @@ class Index extends Component
                 'status' => Order::STATUS['CANCELLED'],
             ]);
 
-            foreach ($order->items as $item) {
+            foreach ($order->orderItems as $item) {
                 $item->product?->increment('stock', $item->quantity);
             }
         });

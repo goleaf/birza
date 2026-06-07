@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Concerns\HasJsonTranslations;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Attribute extends Model
 {
-    use HasJsonTranslations, HasFactory;
+    use HasFactory, HasJsonTranslations;
 
     protected $table = 'attributes';
 
@@ -21,7 +21,7 @@ class Attribute extends Model
         // 'text' => 'Text',
         'number' => 'Number',
         'boolean' => 'Boolean',
-        'date' => 'Date'
+        'date' => 'Date',
     ];
 
     protected $fillable = [
@@ -29,7 +29,7 @@ class Attribute extends Model
         'type',
         'is_filterable',
         'is_required',
-        'is_active'
+        'is_active',
     ];
 
     public $translatable = ['name'];
@@ -38,7 +38,7 @@ class Attribute extends Model
         'name' => 'json',
         'is_filterable' => 'boolean',
         'is_required' => 'boolean',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     public function values(): HasMany
@@ -53,9 +53,7 @@ class Attribute extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_attribute_value')
-                    ->using(AttributeValue::class)
-                    ->withTimestamps();
+        return $this->belongsToMany(Product::class, 'product_attribute');
     }
 
     public function scopeActive($query)
@@ -70,20 +68,20 @@ class Attribute extends Model
 
     public function scopeForCategory($query, $categoryId)
     {
-        return $query->whereHas('categories', function($q) use ($categoryId) {
+        return $query->whereHas('categories', function ($q) use ($categoryId) {
             $q->where('categories.id', $categoryId);
         });
     }
 
     public function getActiveValuesForProduct($product)
     {
-        if (!$product || !$product->exists) {
+        if (! $product || ! $product->exists) {
             return collect();
         }
 
         return $this->values()
             ->active()
-            ->whereHas('products', function($query) use ($product) {
+            ->whereHas('products', function ($query) use ($product) {
                 $query->where('products.id', $product->getKey());
             })
             ->get();

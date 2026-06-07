@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AttributeProduct extends Model
 {
@@ -21,4 +22,19 @@ class AttributeProduct extends Model
         'product_id' => 'integer',
         'selected_value_id' => 'integer',
     ];
+
+    public function attribute(): BelongsTo
+    {
+        return $this->belongsTo(Attribute::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function selectedValue(): BelongsTo
+    {
+        return $this->belongsTo(AttributeValue::class, 'selected_value_id');
+    }
 }

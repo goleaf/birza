@@ -24,7 +24,7 @@ class Show extends Component
             abort(403);
         }
 
-        $this->order = $order->load(['items.product', 'items.seller']);
+        $this->order = $order->load(['orderItems.product', 'orderItems.seller']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
     }
 
@@ -46,12 +46,12 @@ class Show extends Component
                 'status' => Order::STATUS['CANCELLED'],
             ]);
 
-            foreach ($this->order->items as $item) {
+            foreach ($this->order->orderItems as $item) {
                 $item->product?->increment('stock', $item->quantity);
             }
         });
 
-        $this->order->refresh()->load(['items.product', 'items.seller']);
+        $this->order->refresh()->load(['orderItems.product', 'orderItems.seller']);
         $this->currentOrderStep = $this->order->lifecycleCurrentStep();
 
         $this->notifySuccess(__('orders_messages_cancelled_success'));

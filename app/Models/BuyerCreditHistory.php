@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\CreditAttachment;
 use App\Models\Users\Admin;
 use App\Models\Users\Buyer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BuyerCreditHistory extends Model
 {
     use HasFactory;
+
     protected $table = 'buyer_credit_history';
 
     protected $fillable = [
@@ -27,17 +29,17 @@ class BuyerCreditHistory extends Model
         'balance_after' => 'float',
     ];
 
-    public function buyer()
+    public function buyer(): BelongsTo
     {
         return $this->belongsTo(Buyer::class);
     }
 
-    public function admin()
+    public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class);
     }
 
-    public function attachments()
+    public function attachments(): HasMany
     {
         return $this->hasMany(CreditAttachment::class, 'credit_history_id');
     }

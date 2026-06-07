@@ -3,25 +3,30 @@
 namespace App\Models\Users;
 
 use App\Models\Category;
-use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\SellerTransaction;
+use App\Models\User;
+use Database\Factories\SellerFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Seller extends Authenticatable
 {
-    use SoftDeletes, HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'users_sellers';
 
     protected $fillable = [
         'name',
+        'user_id',
         'email',
         'password',
         'company_name',
@@ -30,6 +35,7 @@ class Seller extends Authenticatable
         'address',
         'phone',
         'veterinary_certificate_number',
+        'bank_account',
         'password_reset_at',
         'remember_token',
         'is_verified',
@@ -47,6 +53,7 @@ class Seller extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'user_id' => 'integer',
         'password' => 'hashed',
         'password_reset_at' => 'datetime',
         'is_verified' => 'boolean',
@@ -56,7 +63,12 @@ class Seller extends Authenticatable
 
     protected static function newFactory()
     {
-        return \Database\Factories\SellerFactory::new();
+        return SellerFactory::new();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -77,7 +89,7 @@ class Seller extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function orders()
+    public function orders(): HasManyThrough
     {
         return $this->hasManyThrough(
             Order::class,
@@ -88,15 +100,4 @@ class Seller extends Authenticatable
             'order_id' // Local key on order_items table
         );
     }
-
-    public function scopeWithTrashed($query)
-    {
-        return $query->withTrashed();
-    }
-
-    public function scopeOnlyTrashed($query)
-    {
-        return $query->onlyTrashed();
-    }
-
 }

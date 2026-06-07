@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -51,7 +52,7 @@ class Order extends Model
     /**
      * Get the sellers associated with the order through order items
      */
-    public function sellers()
+    public function sellers(): HasManyThrough
     {
         return $this->hasManyThrough(
             Seller::class,
@@ -61,22 +62,6 @@ class Order extends Model
             'id', // Local key on orders table
             'seller_id' // Local key on order_items table
         )->withTrashed();
-    }
-
-    /**
-     * Get the product associated with the order
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * Get the country associated with the order
-     */
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class, 'country_of_origin');
     }
 
     /**
@@ -125,14 +110,6 @@ class Order extends Model
     public function scopeWithFullDetails($query)
     {
         return $query->with(['buyer', 'orderItems.product', 'orderItems.seller']);
-    }
-
-    /**
-     * Get the order items for the order
-     */
-    public function items(): HasMany
-    {
-        return $this->hasMany(OrderItem::class);
     }
 
     /**
