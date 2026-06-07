@@ -4,5 +4,4 @@
 
 ### Documentation
 
-- Added a database structure audit covering the current live schema, migrations, models, relationships, factories, seeders, missing domain tables, missing fields, weak indexes, weak foreign keys, and schema risks to resolve before adding more marketplace features.
-
+- Added a database structure audit covering the live SQLite schema, migrations, models, relationships, factories, seeders, missing domain tables, missing fields, missing indexes, missing foreign keys, and pre-feature hardening priorities.
