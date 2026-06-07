@@ -7,6 +7,7 @@ use App\Models\GlobalSettings;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -29,6 +30,7 @@ class Index extends Component
 
         if (! $cartItem) {
             session()->flash('error', __('cart_messages_item_not_found'));
+
             return;
         }
 
@@ -36,6 +38,7 @@ class Index extends Component
 
         if ($qty < 1) {
             $this->addError("quantities.$itemHash", __('validation_min_numeric', ['min' => 1]));
+
             return;
         }
 
@@ -45,16 +48,19 @@ class Index extends Component
             LaraCart::removeItem($itemHash);
             LaraCart::update();
             session()->flash('error', __('cart_messages_product_not_found'));
+
             return;
         }
 
         if ($qty < (int) $product->min_order_count) {
             session()->flash('error', __('cart_messages_minimum_quantity', ['min' => $product->min_order_count]));
+
             return;
         }
 
         if ($qty > (int) $product->stock) {
             session()->flash('error', __('cart_messages_insufficient_stock'));
+
             return;
         }
 
@@ -70,6 +76,7 @@ class Index extends Component
 
         if (! $cartItem) {
             session()->flash('error', __('cart_messages_item_not_found'));
+
             return;
         }
 
@@ -85,6 +92,7 @@ class Index extends Component
     {
         if (LaraCart::count() === 0) {
             session()->flash('error', __('cart_messages_empty_cart'));
+
             return;
         }
 
@@ -92,6 +100,7 @@ class Index extends Component
 
         if (! $buyerId) {
             session()->flash('error', __('common_unauthorized'));
+
             return;
         }
 
@@ -135,6 +144,7 @@ class Index extends Component
             });
         } catch (\Throwable $e) {
             session()->flash('error', $e->getMessage());
+
             return;
         }
 
@@ -143,11 +153,15 @@ class Index extends Component
         $this->redirectRoute('buyer.orders.index', navigate: true);
     }
 
-    public function render()
+    public function render(): View
     {
         $this->syncQuantitiesWithCart();
 
+        $cartItems = collect(LaraCart::getItems())->values();
+
         return view('frontend.buyer.cart.index', [
+            'cartItems' => $cartItems,
+            'hasCartItems' => $cartItems->isNotEmpty(),
             'cartTotals' => $this->calculateCartTotals(),
             'countries' => Country::pluck('country_name', 'alpha2')->toArray(),
         ]);
@@ -196,5 +210,3 @@ class Index extends Component
         return GlobalSettings::first()->portal_additional_price ?? 0;
     }
 }
-
-

@@ -20,11 +20,11 @@
         <x-ui.card class="shadow-sm sm:rounded-lg">
 
             <!-- start cart items -->
-            @if (LaraCart::count() > 0)
+            @if ($hasCartItems)
                 <div class="space-y-6">
-                    @foreach (LaraCart::getItems() as $item)
+                    @foreach ($cartItems as $item)
                     <!-- start cart item -->
-                    <div class="flex items-start justify-between border rounded-lg p-6">
+                    <div wire:key="cart-item-{{ $item->getHash() }}" class="flex items-start justify-between border rounded-lg p-6">
                         <!-- start item left side -->
                         <div class="flex space-x-6">
                             <!-- start image container -->
