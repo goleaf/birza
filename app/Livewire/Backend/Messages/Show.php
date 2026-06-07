@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Messages;
 
+use App\Actions\Messaging\RecordMessagingAuditAction;
 use App\Models\Conversation;
 use App\Models\Users\Admin;
 use Illuminate\Contracts\View\View;
@@ -30,7 +31,7 @@ class Show extends Component
             'order:id',
         ]);
 
-        app(\App\Actions\Messaging\RecordMessagingAuditAction::class)
+        app(RecordMessagingAuditAction::class)
             ->adminViewed($this->admin(), $this->conversation, 'admin_messages_show');
     }
 

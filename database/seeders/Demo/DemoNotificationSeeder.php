@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Demo;
 
-use App\Models\Order;
 use App\Models\Conversation;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductReport;
 use App\Models\Users\Admin;
@@ -278,7 +278,7 @@ class DemoNotificationSeeder extends Seeder
                         'message_params' => ['product' => $product->name],
                         'related_type' => 'product',
                         'related_id' => $product->id,
-                        'url' => route('backend.products.show', $product, false),
+                        'url' => route('admin.products.show', $product, false),
                         'status' => 'pending',
                         'icon' => 'shield-exclamation',
                     ],
@@ -312,8 +312,8 @@ class DemoNotificationSeeder extends Seeder
                 'related_type' => 'product_report',
                 'related_id' => $report->id,
                 'url' => $report
-                    ? route('backend.reports.show', $report, false)
-                    : route('backend.notifications.index', absolute: false),
+                    ? route('admin.reports.show', $report, false)
+                    : route('admin.notifications.index', absolute: false),
                 'status' => $report->status->value,
                 'icon' => 'shield-exclamation',
             ],

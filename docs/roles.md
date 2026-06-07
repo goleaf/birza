@@ -1,6 +1,6 @@
 # Roles And Access Guide
 
-Birza uses separate authentication guards and profile tables instead of a shared role table.
+Birza uses separate authentication guards and profile tables instead of a shared role table. `App\Enums\MarketplaceRole` standardizes role values, guard names, login routes, dashboard routes, and notification-capable guards.
 
 ## Guards
 
@@ -11,7 +11,7 @@ Birza uses separate authentication guards and profile tables instead of a shared
 | `buyer` | `buyers` | `App\Models\Users\Buyer` | `users_buyers` |
 | `seller` | `sellers` | `App\Models\Users\Seller` | `users_sellers` |
 
-The current architecture can link a generic `users` record to buyer and seller profiles. A user can be both buyer and seller when matching profiles exist, as shown by the seeded `buyer-seller@example.com` account.
+The current architecture can link a generic `users` record to buyer and seller profiles. A user can be buyer only, seller only, or both buyer and seller when matching profile rows exist, as shown by the seeded `buyer-seller@example.com` account. Admin accounts are separate guard accounts and do not inherit buyer or seller dashboards.
 
 ## Guest
 
@@ -53,7 +53,7 @@ Middleware:
 - `auth:buyer`
 - `active.account:buyer`
 - `verified.account:buyer`
-- `can:accessBuyerCabinet`
+- `buyer.access`
 
 Can:
 
@@ -87,7 +87,7 @@ Middleware:
 - `auth:seller`
 - `active.account:seller`
 - `verified.account:seller`
-- `can:accessSellerCabinet`
+- `seller.access`
 
 Can:
 
@@ -118,7 +118,7 @@ Middleware:
 
 - `auth:admin`
 - `active.account:admin`
-- `can:accessAdminPanel`
+- `admin.access`
 
 Can:
 
@@ -136,13 +136,37 @@ Cannot:
 - mutate dangerous fields without controlled actions
 - access buyer/seller dashboards as those guards unless separately authenticated
 
+## Gates And Policies
+
+Use gates only for global abilities that are not tied to a single model instance:
+
+- `accessBuyerCabinet`
+- `accessSellerCabinet`
+- `accessAdminPanel`
+- `viewAdminDashboard`
+- `manageSystemSettings`
+- `viewAnalytics`
+
+Use policies for model-specific authorization, ownership, moderation, deletion, status changes, uploads, notification ownership, and private data access. Blade `@can` checks are only for visibility; controllers, Livewire components, and actions still need backend authorization.
+
+## Adding Protected Pages
+
+1. Add the route to the correct grouped route file: `routes/buyer.php`, `routes/seller.php`, or `routes/admin.php`.
+2. Keep the route name prefix: `buyer.*`, `seller.*`, or `admin.*`.
+3. Use the matching layout: frontend buyer/seller pages use the frontend layout, admin pages use the backend layout.
+4. Gate the route group with the correct middleware alias: `buyer.access`, `seller.access`, or `admin.access`.
+5. Authorize private Livewire data in `mount()`.
+6. Authorize every dangerous Livewire action again before saving, deleting, uploading, status-changing, exporting, or marking notifications.
+7. Put model ownership rules in a policy, not in Blade or navigation.
+8. Add tests for the allowed role and at least one forbidden cross-role or cross-owner request.
+
 ## Access Checklist
 
 - Route is in the correct grouped route file.
 - Route has a name.
 - Private route uses the correct guard middleware.
 - Active/verified middleware is applied where required.
-- Area-level gate is applied.
+- Area-level access middleware alias is applied.
 - Model ownership lives in a policy.
 - Livewire `mount()` authorizes private data.
 - Every mutating Livewire action authorizes again.
