@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasJsonTranslations;
 use App\Models\Users\Seller;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Concerns\HasJsonTranslations;
 
 class Category extends Model
 {
-    use HasJsonTranslations, HasFactory;
+    use HasFactory, HasJsonTranslations;
 
     protected $table = 'categories';
 
@@ -20,14 +20,14 @@ class Category extends Model
         'parent_category_id',
         'category_name',
         'order',
-        'slug'
+        'slug',
     ];
 
     protected $casts = [
         'order' => 'integer',
         'parent_category_id' => 'integer',
         'category_name' => 'json',
-        'slug' => 'json'
+        'slug' => 'json',
     ];
 
     public $translatable = ['category_name', 'slug'];
@@ -57,17 +57,17 @@ class Category extends Model
     public function filterableAttributes()
     {
         return $this->attributes()
-                    ->where('is_filterable', true)
-                    ->where('is_active', true)
-                    ->with(['values' => function($query) {
-                        $query->where('is_active', true);
-                    }]);
+            ->where('is_filterable', true)
+            ->where('is_active', true)
+            ->with(['values' => function ($query) {
+                $query->where('is_active', true);
+            }]);
     }
 
     public function sellers(): BelongsToMany
     {
         return $this->belongsToMany(Seller::class, 'seller_categories')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function scopeWithRelationsForSeller($query)
@@ -87,11 +87,41 @@ class Category extends Model
 
     public function getAllProductsCountAttribute(): int
     {
-        $directProducts = $this->products()->count() ?? 0;
-        $subCategoryProducts = $this->subcategories->sum(function($subcategory) {
-            return $subcategory->products()->count();
-        }) ?? 0;
+        return $this->directProductsCount() + $this->subcategoryProductsCount();
+    }
 
-        return $directProducts + $subCategoryProducts;
+    private function directProductsCount(): int
+    {
+        if (array_key_exists('products_count', $this->attributes)) {
+            return (int) $this->attributes['products_count'];
+        }
+
+        if ($this->relationLoaded('products')) {
+            return $this->products->count();
+        }
+
+        return $this->products()->count();
+    }
+
+    private function subcategoryProductsCount(): int
+    {
+        if ($this->relationLoaded('subcategories')) {
+            $subcategoryIds = $this->subcategories
+                ->pluck($this->getKeyName())
+                ->filter()
+                ->all();
+
+            if ($subcategoryIds === []) {
+                return 0;
+            }
+
+            return Product::query()
+                ->whereIn('category_id', $subcategoryIds)
+                ->count();
+        }
+
+        return Product::query()
+            ->whereIn('category_id', $this->subcategories()->select($this->getKeyName()))
+            ->count();
     }
 }

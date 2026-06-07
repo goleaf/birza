@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
+use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Attribute;
 use App\Models\Users\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
@@ -74,12 +75,19 @@ class CategoryTest extends TestCase
     public function test_category_get_all_products_count_attribute(): void
     {
         $parent = Category::factory()->create();
-        $child = Category::factory()->create(['parent_category_id' => $parent->id]);
+        $children = Category::factory()->count(3)->create(['parent_category_id' => $parent->id]);
 
         Product::factory()->count(2)->create(['category_id' => $parent->id]);
-        Product::factory()->count(3)->create(['category_id' => $child->id]);
+        Product::factory()->count(3)->create(['category_id' => $children->first()->id]);
 
-        $this->assertEquals(5, $parent->all_products_count);
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+
+        try {
+            $this->assertSame(5, $parent->all_products_count);
+            $this->assertCount(2, DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+        }
     }
 }
-
